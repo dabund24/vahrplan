@@ -1,0 +1,339 @@
+[lang="de"] .en {
+	display: none;
+}
+
+[lang="en"] .de {
+	display: none;
+}
+
+[data-color="red"] {
+	--accent-light: #cb1a29;
+	--accent-dark: #eb6c68;
+}
+
+[data-color="yellow"] {
+	--accent-light: #e19d00;
+	--accent-dark: #ffd52a;
+}
+
+[data-color="green"] {
+	--accent-light: #0e7667;
+	--accent-dark: #27f4e2;
+}
+
+[data-color="blue"] {
+	--accent-light: #0e6aba;
+	--accent-dark: #54bef6;
+}
+
+[data-color="purple"] {
+	--accent-light: #654199;
+	--accent-dark: #ba9cd4;
+}
+
+[data-color="gray"] {
+	--accent-light: #586579;
+	--accent-dark: #adbbc5;
+}
+
+:root {
+	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI Variable Text",
+		"Segoe UI", "Oxygen", "Ubuntu", "Noto Sans", "Roboto", "Helvetica Neue", Arial, sans-serif,
+		"Apple Color Emoji", "Segoe UI Symbol", "Symbola";
+	--background-color: #ffffff;
+	--foreground-color: #000000;
+	--background-color--opaque: #ffffffe0;
+	--foreground-color--opaque: #00000020;
+	--product-color: var(--foreground-color);
+	--accent-color: var(--accent-light);
+	--accent-inverted: var(--accent-dark);
+	--accent-red: #cb1a29;
+	--accent-yellow: #e19d00;
+	--accent-green: #0e7667;
+	--accent-blue: #0e6aba;
+	--accent-purple: #654199;
+	--accent-gray: #586579;
+
+	--suburban-color: #408335;
+	--suburban-color--opaque: #8cbc80;
+	--subway-color: #1455c0;
+	--subway-color--opaque: #73aef4;
+	--tram-color: #a9455d;
+	--tram-color--opaque: #da9aa8;
+	--bus-color: #814997;
+	--bus-color--opaque: #c2a1c7;
+	--ferry-color: #309fd1;
+	--ferry-color--opaque: #84cfef;
+	--taxi-color: #ffd800;
+	--taxi-color--opaque: #fff876;
+	--regional-color: #ec0016;
+	--regional-color--opaque: #fa9090;
+	--regionalExpress-color: #f39200;
+	--regionalExpress-color--opaque: #faca7f;
+	--national-color: #646973;
+	--national-color--opaque: #afb4bb;
+	--nationalExpress-color: var(--foreground-color);
+	--nationalExpress-color--opaque: var(--background-color);
+
+	--border-radius--large: 0.5rem;
+	--border-radius--small: calc(var(--line-width) / 2);
+	--line-width: 4px;
+	--line-width--small: 3px;
+	--line-length: 2rem;
+	--line-length--vertical: 1.5rem;
+	--connection-width: 24em;
+
+	--height--icon--small: 16px;
+
+	--blur: blur(1px);
+	--map-filter: none;
+	--border: var(--line-width) solid var(--foreground-color--opaque);
+}
+
+[data-theme="dark"] {
+	color-scheme: dark;
+	--background-color: #121212;
+	--foreground-color: #ffffff;
+	--background-color--opaque: #121212e0;
+	--foreground-color--opaque: #ffffff14;
+	--accent-color: var(--accent-dark);
+	--accent-inverted: var(--accent-light);
+	--accent-red: #eb6c68;
+	--accent-yellow: #ffd52a;
+	--accent-green: #27f4e2;
+	--accent-blue: #54bef6;
+	--accent-purple: #ba9cd4;
+	--accent-gray: #adbbc5;
+
+	--suburban-color: #66a558;
+	--suburban-color--opaque: #2a7230;
+	--subway-color: #347de0;
+	--subway-color--opaque: #0c3992;
+	--tram-color: #c0687b;
+	--tram-color--opaque: #8c2e46;
+	--bus-color: #9a6ca6;
+	--bus-color--opaque: #6e368c;
+	--ferry-color: #55b9e6;
+	--ferry-color--opaque: #0087b9;
+	--taxi-color: #fff000;
+	--taxi-color--opaque: #ffbb00;
+	--regional-color: #f75056;
+	--regional-color--opaque: #9b000e;
+	--regionalExpress-color: #f8ab37;
+	--regionalExpress-color--opaque: #d77b00;
+	--national-color: #878c96;
+	--national-color--opaque: #3c414b;
+
+	--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
+		brightness(0.7);
+}
+
+ul,
+ol {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+summary {
+	list-style: none;
+	cursor: pointer;
+}
+
+summary::after {
+	height: var(--line-width);
+	width: 0;
+	transition: width 0.2s ease-in-out;
+	background-color: var(--accent-color);
+	display: flex;
+	margin: calc(var(--line-width) / -2) auto;
+	position: relative;
+	top: calc(0.5rem + var(--line-width) / 2);
+	content: "";
+	border-radius: var(--border-radius--small);
+}
+
+details[open] summary::after {
+	width: var(--line-length);
+}
+
+body {
+	font-family: var(--font-family);
+	font-size: 18px;
+	color: var(--foreground-color);
+	background-color: var(--background-color);
+	margin: 0;
+}
+
+body,
+a,
+input,
+button,
+.modal,
+.modal header,
+.hoverable,
+footer {
+	transition:
+		background 0.5s ease-in-out,
+		border 0.2s ease-in-out;
+}
+
+button {
+	cursor: pointer;
+}
+
+input,
+button {
+	background-color: transparent;
+	border: none;
+	font: inherit;
+	padding: 0;
+}
+
+.flex-row {
+	display: flex;
+}
+
+.flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-row-column {
+	display: flex;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: fit-content;
+}
+
+.padded-top-bottom {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.show-whitespace {
+	white-space: pre;
+}
+
+.align-center {
+	align-self: center;
+}
+
+.line--accent {
+	background-color: var(--accent-color);
+	transition: background-color 0.5s ease-in-out;
+	border-radius: var(--border-radius--small);
+}
+
+.line--regular {
+	background-color: var(--foreground-color);
+	transition: background-color 0.5s ease-in-out;
+	border-radius: var(--border-radius--small);
+	width: 100%;
+	height: var(--line-width);
+}
+
+.line--vertical {
+	background-color: var(--foreground-color);
+	transition: background-color 0.5s ease-in-out;
+	border-radius: var(--border-radius--small);
+	height: 100%;
+	width: var(--line-width);
+	max-width: var(--line-width);
+}
+
+.line--success {
+	background-color: var(--accent-green);
+}
+.text--green {
+	color: var(--accent-green);
+}
+
+.line--neutral {
+	background-color: var(--foreground-color);
+}
+
+.line--warning {
+	background-color: var(--accent-yellow);
+}
+.text--yellow {
+	color: var(--accent-yellow);
+}
+
+.line--error {
+	background-color: var(--accent-red);
+}
+.text--red {
+	color: var(--accent-red);
+}
+
+.line--product {
+	background-color: var(--product-color);
+}
+.stroke--product {
+	stroke: var(--product-color);
+}
+
+.product--suburban {
+	--product-color: var(--suburban-color);
+	--product-color--opaque: var(--suburban-color--opaque);
+}
+
+.product--subway {
+	--product-color: var(--subway-color);
+	--product-color--opaque: var(--subway-color--opaque);
+}
+
+.product--tram {
+	--product-color: var(--tram-color);
+	--product-color--opaque: var(--tram-color--opaque);
+}
+
+.product--bus {
+	--product-color: var(--bus-color);
+	--product-color--opaque: var(--bus-color--opaque);
+}
+
+.product--ferry {
+	--product-color: var(--ferry-color);
+	--product-color--opaque: var(--ferry-color--opaque);
+}
+
+.product--taxi {
+	--product-color: var(--taxi-color);
+	--product-color--opaque: var(--taxi-color--opaque);
+}
+
+.product--regional {
+	--product-color: var(--regional-color);
+	--product-color--opaque: var(--regional-color--opaque);
+}
+
+.product--regionalExpress {
+	--product-color: var(--regionalExpress-color);
+	--product-color--opaque: var(--regionalExpress-color--opaque);
+}
+
+.product--national {
+	--product-color: var(--national-color);
+	--product-color--opaque: var(--national-color--opaque);
+}
+
+.product--nationalExpress {
+	--product-color: var(--nationalExpress-color);
+	--product-color--opaque: var(--nationalExpress-color--opaque);
+}
+
+.hoverable {
+	cursor: pointer;
+	border-radius: var(--border-radius--large);
+	border: var(--line-width) solid transparent;
+}
+
+.hoverable:hover {
+	border: var(--line-width) solid var(--foreground-color--opaque);
+	background-color: var(--foreground-color--opaque);
+}
