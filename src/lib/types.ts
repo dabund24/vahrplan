@@ -1,6 +1,7 @@
 import type { Line, Location, Station, Stop } from "hafas-client";
 import type { LineString } from "geojson";
 import type { NumericRange } from "@sveltejs/kit";
+import { L } from "$lib/stores";
 
 export type Fetchable = JourneyNode[] | JourneyBlock[] | ParsedLocation[];
 
@@ -55,8 +56,7 @@ export type ParsedLocation = {
 	name: string;
 	requestParameter: string | Station | Stop | Location;
 	type: "station" | "address" | "poi";
-	longitude: number;
-	latitude: number;
+	position: L.LatLngLiteral;
 };
 
 export type TransitData = {
@@ -86,6 +86,7 @@ export type LegBlock = {
 	type: "leg";
 	departureData: TransitData;
 	arrivalData: TransitData;
+	duration: string;
 	direction: string;
 	line: Line;
 	stopovers: TransitData[];
@@ -114,4 +115,19 @@ export type LocationBlock = {
 
 export type ErrorBlock = {
 	type: "error";
+};
+
+export type PopupData = PopupDataStation | PopupDataLine;
+
+export type PopupDataLine = {
+	type: "line";
+	duration: string;
+	direction: string;
+	line: Line;
+};
+
+export type PopupDataStation = {
+	type: "station";
+	transitData: TransitData;
+	product: string;
 };

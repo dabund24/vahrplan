@@ -8,7 +8,8 @@
 	import { isDefined } from "$lib/util";
 	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
-	import Popup from '$lib/components/leaflet/Popup.svelte';
+	import Marker from "$lib/components/leaflet/Marker.svelte";
+	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
 
 	type keyedArrayItem = { key: number; location?: ParsedLocation };
 
@@ -82,11 +83,18 @@
 				{#each $selectedJourneys as journey (journey.refreshToken)}
 					{#each journey.blocks as block}
 						{#if block.type === "leg"}
-							<Polyline {block}>
-								<Popup>
-									allo
-								</Popup>
-							</Polyline>
+							<Polyline {block} />
+							<Marker data={block.departureData} product={block.line.product ?? ""}>
+								<IconStationLocation color="product" iconType="station" />
+							</Marker>
+							{#each block.stopovers as stopover}
+								<Marker data={stopover} product={block.line.product ?? ""}>
+									<IconStationLocation color="product" iconType="station" smallIcon={true} />
+								</Marker>
+							{/each}
+							<Marker data={block.arrivalData} product={block.line.product ?? ""}>
+								<IconStationLocation color="product" iconType="station" />
+							</Marker>
 						{/if}
 					{/each}
 				{/each}

@@ -20,7 +20,7 @@
 			stroke="var(--{color}-color)"
 			stroke-width="3"
 			fill="var(--background-color)"
-			transition:draw
+			in:draw
 		/>
 		<circle cx="8" cy="8" r="2" fill="var(--{color}-color)" />
 	</svg>
@@ -38,6 +38,7 @@
 			stroke="var(--{color}-color)"
 			stroke-width="3"
 			fill="var(--background-color)"
+			in:draw
 		/>
 	</svg>
 {:else if iconType === "poi"}
@@ -47,12 +48,13 @@
 		xmlns="http://www.w3.org/2000/svg"
 	>
 		<polyline
-			points="1.5,13.5 14.5,13.5 8,2.25 1.5,13.5"
+			points="8,2.25 14.5,13.5 1.5,13.5 8,2.25"
 			stroke="var(--{color}-color)"
 			stroke-width="3"
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			fill="var(--background-color)"
+			in:draw
 		/>
 	</svg>
 {:else}
@@ -62,12 +64,13 @@
 		xmlns="http://www.w3.org/2000/svg"
 	>
 		<polyline
-			points="2,2 2,14 14,14 14,2 2,2"
+			points="2,2 14,2 14,14 2,14 2,2"
 			stroke="var(--{color}-color)"
 			stroke-width="3"
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			fill="var(--background-color)"
+			in:draw
 		/>
 	</svg>
 {/if}

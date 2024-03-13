@@ -1,11 +1,19 @@
 <script lang="ts">
-	import type { LegBlock } from "$lib/types";
+	import type { LegBlock, PopupDataLine } from "$lib/types";
 	import { L } from "$lib/stores";
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
+	import Popup from "$lib/components/leaflet/Popup.svelte";
 
 	export let block: LegBlock;
 	let polyline: L.GeoJSON | undefined;
 	let polylineElement: HTMLElement;
+
+	$: popupData = {
+		type: "line",
+		duration: block.duration,
+		line: block.line,
+		direction: block.direction
+	} as PopupDataLine
 
 	const { getMap }: { getMap: () => L.Map | undefined } = getContext("map");
 	const map = getMap();
@@ -33,6 +41,6 @@
 
 <div bind:this={polylineElement}>
 	{#if polyline !== undefined}
-		<slot />
+		<Popup {popupData} />
 	{/if}
 </div>

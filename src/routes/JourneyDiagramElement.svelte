@@ -2,6 +2,7 @@
 	import type { JourneyBlock, JourneyBlockTimeDefined, LegBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores";
+	import { isTimeDefined } from "$lib/util";
 
 	export let blocks: JourneyBlock[];
 	export let depth: number;
@@ -13,10 +14,6 @@
 	);
 
 	$: isSelected = index === $selectedJourneys[depth].selectedBy;
-
-	function isTimeDefined(block: JourneyBlock): block is JourneyBlockTimeDefined {
-		return block.type === "leg" || block.type === "location";
-	}
 
 	function getTimeFromTimeDefinedBlock(
 		block: JourneyBlockTimeDefined | undefined,

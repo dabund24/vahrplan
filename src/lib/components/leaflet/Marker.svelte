@@ -1,0 +1,48 @@
+<script lang="ts">
+	import type { PopupDataStation, TransitData } from "$lib/types";
+	import { L } from "$lib/stores";
+	import { getContext, onDestroy, onMount, setContext } from "svelte";
+	import Popup from "$lib/components/leaflet/Popup.svelte";
+
+	export let data: TransitData;
+	export let product: string
+	let marker: L.Marker | undefined;
+	let markerElement: HTMLElement;
+
+	$: popupData = {
+		type: "station",
+		transitData: data,
+		product
+	} as PopupDataStation
+
+	const { getMap }: { getMap: () => L.Map | undefined } = getContext("map");
+	const map = getMap();
+
+	setContext("layer", {
+		getLayer: () => marker
+	});
+
+	onMount(() => {
+		if (map !== undefined) {
+			let icon = $L.divIcon({
+				html: markerElement,
+				className: `product--${product}`,
+				iconSize: $L.point(16, 16)
+			})
+			marker = $L.marker(data.location.position, { icon }).addTo(map);
+		}
+	});
+
+	onDestroy(() => {
+		marker?.remove();
+		marker = undefined;
+	});
+</script>
+
+<div bind:this={markerElement}>
+	{#if marker !== undefined}
+		<slot />
+		<Popup {popupData} />
+	{/if}
+</div>
+

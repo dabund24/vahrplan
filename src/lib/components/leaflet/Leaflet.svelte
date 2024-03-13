@@ -2,7 +2,8 @@
 	import "leaflet/dist/leaflet.css";
 	import { L, selectedJourneys } from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
-	import type { JourneyBlock } from "$lib/types";
+	import type { JourneyBlock, JourneyBlockTimeDefined } from "$lib/types";
+	import { isTimeDefined } from "$lib/util";
 
 	let map: L.Map | undefined;
 	let mapElement: HTMLElement;
@@ -16,6 +17,10 @@
 			className: "osm-tiles"
 		});
 		osmLayer.addTo(map);
+		const southWest = $L.latLng(40.712, -74.227),
+			northEast = $L.latLng(40.774, -74.125);
+
+		map.fitBounds($L.latLngBounds(southWest, northEast))
 	});
 
 	onDestroy(() => {
@@ -27,11 +32,22 @@
 		getMap: () => map
 	});
 
+
 	$: if (map !== undefined) {
-		map.fitBounds(getBoundsFromBlocks($selectedJourneys.flatMap((j) => j.blocks)));
+		const coordinates = $selectedJourneys
+			.flatMap((j) => j.blocks)
+			.filter<JourneyBlockTimeDefined>(isTimeDefined)
+			.flatMap((block) =>
+				block.type === "leg" ? [block.departureData.location.position, ...block.stopovers.map(s => s.location.position),block.arrivalData.location.position] : block.location.position
+			);
+		if (coordinates.length > 0)
+			map.fitBounds($L.latLngBounds(coordinates));
 	}
 
-	function getBoundsFromBlocks(blocks: JourneyBlock[]): L.LatLngBounds {
+	function blockIsTimeDefined(block: JourneyBlock) {}
+
+	function getBoundsFromBlocks(/*blocks: JourneyBlock[]*/): L.LatLngBounds {
+		/*
 		const coordinates: [number, number][] = [];
 
 		blocks.forEach((block) => {
@@ -51,6 +67,12 @@
 		});
 
 		return $L.featureGroup(coordinates.map(c => new $L.Layer(c))).getBounds()
+
+		 */
+		const southWest = $L.latLng(40.712, -74.227),
+			northEast = $L.latLng(40.774, -74.125);
+
+		return $L.latLngBounds(southWest, northEast);
 	}
 </script>
 

@@ -41,16 +41,17 @@ function legToBlock(leg: Leg): LegBlock {
 			location: parseStationStopLocation(leg.origin),
 			attribute: leg.stopovers?.at(0)?.cancelled ? "cancelled" : undefined,
 			time: parseSingleTime(leg.departure, leg.plannedDeparture, leg.departureDelay),
-			platform: leg.departurePlatform,
+			platform: leg.departurePlatform ?? undefined,
 			platformChanged: leg.departurePlatform !== leg.plannedDeparturePlatform
 		},
 		arrivalData: {
 			location: parseStationStopLocation(leg.destination),
 			attribute: leg.stopovers?.at(-1)?.cancelled ? "cancelled" : undefined,
 			time: parseSingleTime(leg.arrival, leg.plannedArrival, leg.arrivalDelay),
-			platform: leg.arrivalPlatform,
+			platform: leg.arrivalPlatform ?? undefined,
 			platformChanged: leg.arrivalPlatform !== leg.plannedArrivalPlatform
 		},
+		duration: dateDifferenceString(leg.departure, leg.arrival),
 		direction: leg.direction ?? "undefined",
 		line: leg.line ?? { type: "line" },
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
@@ -134,8 +135,10 @@ export function parseStationStopLocation(
 			name: "undefined",
 			requestParameter: "",
 			type: "station",
-			latitude: 0,
-			longitude: 0
+			position: {
+				lat: 0,
+				lng: 0
+			}
 		};
 	}
 	if (location.type === "station" || location.type === "stop") {
@@ -143,24 +146,30 @@ export function parseStationStopLocation(
 			name: location.name ?? "undefined",
 			requestParameter: location.id ?? location,
 			type: "station",
-			longitude: location.location?.longitude ?? 0,
-			latitude: location.location?.latitude ?? 0
+			position: {
+				lat: location.location?.latitude ?? 0,
+				lng: location.location?.longitude ?? 0
+			}
 		};
 	} else if (location.poi) {
 		return {
 			name: location.name ?? "undefined",
 			requestParameter: location,
 			type: "poi",
-			longitude: location.longitude ?? 0,
-			latitude: location.latitude ?? 0
+			position: {
+				lat: location.latitude ?? 0,
+				lng: location.longitude ?? 0
+			}
 		};
 	} else {
 		return {
 			name: location.address ?? "undefined",
 			requestParameter: location,
 			type: "address",
-			longitude: location.longitude ?? 0,
-			latitude: location.latitude ?? 0
+			position: {
+				lat: location.latitude ?? 0,
+				lng: location.longitude ?? 0
+			}
 		};
 	}
 }
@@ -177,7 +186,7 @@ export function parseStopover(stopover: StopOver): TransitData {
 			stopover.plannedDeparture,
 			stopover.departureDelay
 		),
-		platform: stopover.arrivalPlatform,
+		platform: stopover.arrivalPlatform ?? undefined,
 		platformChanged: stopover.arrivalPlatform !== stopover.plannedArrivalPlatform
 	};
 }

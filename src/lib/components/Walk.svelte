@@ -6,13 +6,13 @@
 	if (block.type === "walk") {
 		osmLink =
 			"https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&from=" +
-			block.originLocation.latitude +
+			block.originLocation.position.lat +
 			"%2C" +
-			block.originLocation.longitude +
+			block.originLocation.position.lng +
 			"&to=" +
-			block.destinationLocation.latitude +
+			block.destinationLocation.position.lat +
 			"%2C" +
-			block.destinationLocation.longitude;
+			block.destinationLocation.position.lng;
 	}
 </script>
 

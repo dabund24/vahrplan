@@ -1,4 +1,12 @@
-import type { Fetchable, ParsedLocation, ZugResponse } from "$lib/types";
+import type {
+	Fetchable,
+	JourneyBlock,
+	JourneyBlockTimeDefined,
+	ParsedLocation,
+	PopupData,
+	TransitData,
+	ZugResponse
+} from "$lib/types";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -16,6 +24,10 @@ export function getTreeUrl(locations: ParsedLocation[]) {
 	);
 	url.searchParams.set("options", JSON.stringify({}));
 	return url;
+}
+
+export function isTimeDefined(block: JourneyBlock): block is JourneyBlockTimeDefined {
+	return block.type === "leg" || block.type === "location";
 }
 
 export function timeToString(time: string | Date | number | undefined) {
