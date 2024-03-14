@@ -3,7 +3,6 @@ import type {
 	JourneyBlock,
 	JourneyBlockTimeDefined,
 	ParsedLocation,
-	PopupData,
 	TransitData,
 	ZugResponse
 } from "$lib/types";
@@ -30,9 +29,28 @@ export function isTimeDefined(block: JourneyBlock): block is JourneyBlockTimeDef
 	return block.type === "leg" || block.type === "location";
 }
 
+export function mergeTransitData(
+	transitData1: TransitData,
+	transitData2: TransitData
+): TransitData {
+	return {
+		location: transitData1.location,
+		time: {
+			a: transitData1.time.a,
+			b: transitData2.time.a
+		},
+		attribute: transitData1.attribute,
+		attribute2: transitData2.attribute,
+		platform: transitData1.platform,
+		platformChanged: transitData1.platformChanged,
+		platform2: transitData2.platform,
+		platform2Changed: transitData2.platform2Changed
+	};
+}
+
 export function timeToString(time: string | Date | number | undefined) {
-	if (time === undefined) {
-		return "n/a";
+	if (time === undefined || time === null) {
+		return "";
 	}
 	const date = new Date(time);
 	return date.toLocaleTimeString("de-DE", {

@@ -62,9 +62,12 @@ export type ParsedLocation = {
 export type TransitData = {
 	location: ParsedLocation;
 	attribute?: "cancelled" | "additional";
+	attribute2?: "cancelled" | "additional";
 	time: ParsedTime;
 	platform?: string;
+	platform2?: string;
 	platformChanged: boolean;
+	platform2Changed?: boolean;
 };
 
 export type JourneyNode = {
@@ -91,6 +94,8 @@ export type LegBlock = {
 	line: Line;
 	stopovers: TransitData[];
 	polyline: LineString;
+	precededByTransferBlock: boolean;
+	succeededByTransferBlock: boolean;
 };
 
 export type WalkingBlock = {
@@ -105,6 +110,9 @@ export type WalkingBlock = {
 export type TransferBlock = {
 	type: "transfer";
 	transferTime: string;
+	transitData: TransitData;
+	arrivalProduct: string;
+	departureProduct: string;
 };
 
 export type LocationBlock = {
@@ -117,7 +125,14 @@ export type ErrorBlock = {
 	type: "error";
 };
 
-export type PopupData = PopupDataStation | PopupDataLine;
+export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk;
+
+export type PopupDataWalk = {
+	type: "walk";
+	duration: string;
+	walkingTime: string;
+	distance: number;
+};
 
 export type PopupDataLine = {
 	type: "line";
@@ -129,5 +144,6 @@ export type PopupDataLine = {
 export type PopupDataStation = {
 	type: "station";
 	transitData: TransitData;
-	product: string;
+	product1?: string;
+	product2?: string;
 };

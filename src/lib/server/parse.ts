@@ -8,7 +8,7 @@ import type {
 	TransitData,
 	WalkingBlock
 } from "$lib/types";
-import { dateDifferenceString, timeToString } from "$lib/util";
+import { dateDifferenceString, mergeTransitData, timeToString } from "$lib/util";
 
 export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBlock[] {
 	const legs = journeys.map((journey) => journey?.legs).flat();
@@ -25,10 +25,20 @@ export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBloc
 			blocks.push(walkToBlock(leg, nextDeparture));
 			continue;
 		}
-		blocks.push(legToBlock(leg));
-		if (nextLeg !== undefined && !nextLeg.walking) {
-			// neither this nor next leg is a walk
-			blocks.push(transferToBlock(leg.arrival, nextLeg.departure));
+		const thisBlock = legToBlock(leg);
+		blocks.push(thisBlock);
+		const lastBlock = blocks.at(-2);
+		if (lastBlock?.type === "leg") {
+			// last two blocks are legs => no walk => transfer needs to be inserted
+			const transferBlock = transferToBlock(
+				lastBlock.arrivalData,
+				lastBlock.line.product ?? "",
+				thisBlock.departureData,
+				thisBlock.line.product ?? ""
+			);
+			blocks.splice(-2, 0, transferBlock);
+			lastBlock.succeededByTransferBlock = true;
+			thisBlock.precededByTransferBlock = true;
 		}
 	}
 	return blocks;
@@ -58,7 +68,9 @@ function legToBlock(leg: Leg): LegBlock {
 		polyline: {
 			type: "LineString",
 			coordinates: leg.polyline?.features.map((feature) => feature.geometry.coordinates) ?? []
-		}
+		},
+		precededByTransferBlock: false,
+		succeededByTransferBlock: false
 	};
 }
 
@@ -74,12 +86,17 @@ function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock
 }
 
 function transferToBlock(
-	arrival: string | undefined,
-	nextDeparture: string | undefined
+	arrivalData: TransitData,
+	arrivalProduct: string,
+	departureData: TransitData,
+	departureProduct: string
 ): TransferBlock {
 	return {
 		type: "transfer",
-		transferTime: dateDifferenceString(arrival, nextDeparture)
+		transferTime: dateDifferenceString(arrivalData.time.a.time, departureData.time.a.time),
+		transitData: mergeTransitData(arrivalData, departureData),
+		arrivalProduct,
+		departureProduct
 	};
 }
 
@@ -186,7 +203,9 @@ export function parseStopover(stopover: StopOver): TransitData {
 			stopover.plannedDeparture,
 			stopover.departureDelay
 		),
-		platform: stopover.arrivalPlatform ?? undefined,
-		platformChanged: stopover.arrivalPlatform !== stopover.plannedArrivalPlatform
+		platform: stopover.arrivalPlatform ?? stopover.departurePlatform ?? undefined,
+		platformChanged:
+			(stopover.arrivalPlatform ?? stopover.departurePlatform) !==
+			(stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform)
 	};
 }

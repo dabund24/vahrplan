@@ -1,35 +1,54 @@
 <script lang="ts">
-	import type { LegBlock, PopupDataLine } from "$lib/types";
+	import type { LegBlock, PopupDataLine, PopupDataWalk, WalkingBlock } from "$lib/types";
 	import { L } from "$lib/stores";
-	import { getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { getContext, onDestroy, onMount, setContext } from "svelte";
 	import Popup from "$lib/components/leaflet/Popup.svelte";
 
-	export let block: LegBlock;
-	let polyline: L.GeoJSON | undefined;
+	export let block: LegBlock | WalkingBlock;
+	let polyline: L.GeoJSON | L.Polyline | undefined;
 	let polylineElement: HTMLElement;
 
-	$: popupData = {
-		type: "line",
-		duration: block.duration,
-		line: block.line,
-		direction: block.direction
-	} as PopupDataLine
+	$: popupData =
+		block.type === "leg"
+			? ({
+					type: "line",
+					duration: block.duration,
+					line: block.line,
+					direction: block.direction
+				} as PopupDataLine)
+			: ({
+					type: "walk",
+					duration: block.transferTime,
+					walkingTime: block.walkingTime,
+					distance: block.distance
+				} as PopupDataWalk);
 
 	const { getMap }: { getMap: () => L.Map | undefined } = getContext("map");
 	const map = getMap();
 
 	setContext("layer", {
 		getLayer: () => polyline
-	})
+	});
 
 	onMount(() => {
 		if (map !== undefined) {
-			polyline = $L.geoJSON(block.polyline, {
-				style: {
-					className: `product--${block.line.product} stroke--product`,
-					weight: 4
-				}
-			}).addTo(map);
+			polyline = (
+				block.type === "leg"
+					? $L.geoJSON(block.polyline, {
+							style: {
+								className: `product--${block.line.product} stroke--product`,
+								weight: 4
+							}
+						})
+					: $L.polyline(
+							[block.originLocation.position, block.destinationLocation.position],
+							{
+								dashArray: "0 8 0",
+								weight: 4,
+								color: "var(--foreground-color)"
+							}
+						)
+			).addTo(map);
 		}
 	});
 

@@ -5,15 +5,17 @@
 	import Popup from "$lib/components/leaflet/Popup.svelte";
 
 	export let data: TransitData;
-	export let product: string
+	export let product1: string | undefined = undefined;
+	export let product2: string | undefined = undefined;
 	let marker: L.Marker | undefined;
 	let markerElement: HTMLElement;
 
 	$: popupData = {
 		type: "station",
 		transitData: data,
-		product
-	} as PopupDataStation
+		product1,
+		product2,
+	} as PopupDataStation;
 
 	const { getMap }: { getMap: () => L.Map | undefined } = getContext("map");
 	const map = getMap();
@@ -26,9 +28,9 @@
 		if (map !== undefined) {
 			let icon = $L.divIcon({
 				html: markerElement,
-				className: `product--${product}`,
+				className: `product--${product1 ?? product2}`,
 				iconSize: $L.point(16, 16)
-			})
+			});
 			marker = $L.marker(data.location.position, { icon }).addTo(map);
 		}
 	});
@@ -42,7 +44,8 @@
 <div bind:this={markerElement}>
 	{#if marker !== undefined}
 		<slot />
-		<Popup {popupData} />
+		<Popup {popupData}>
+			<slot />
+		</Popup>
 	{/if}
 </div>
-

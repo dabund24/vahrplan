@@ -84,17 +84,49 @@
 					{#each journey.blocks as block}
 						{#if block.type === "leg"}
 							<Polyline {block} />
-							<Marker data={block.departureData} product={block.line.product ?? ""}>
-								<IconStationLocation color="product" iconType="station" />
-							</Marker>
+							{#if !block.precededByTransferBlock}
+								<Marker
+									data={block.departureData}
+									product2={block.line.product ?? ""}
+								>
+									<IconStationLocation color="product" iconType="station" />
+								</Marker>
+							{/if}
 							{#each block.stopovers as stopover}
-								<Marker data={stopover} product={block.line.product ?? ""}>
-									<IconStationLocation color="product" iconType="station" smallIcon={true} />
+								<Marker
+									data={stopover}
+									product1={block.line.product ?? ""}
+									product2={block.line.product ?? ""}
+								>
+									<IconStationLocation
+										color="product"
+										iconType="station"
+										smallIcon={true}
+									/>
 								</Marker>
 							{/each}
-							<Marker data={block.arrivalData} product={block.line.product ?? ""}>
-								<IconStationLocation color="product" iconType="station" />
+							{#if !block.succeededByTransferBlock}
+								<Marker
+									data={block.arrivalData}
+									product1={block.line.product ?? ""}
+								>
+									<IconStationLocation color="product" iconType="station" />
+								</Marker>
+							{/if}
+						{:else if block.type === "transfer"}
+							<Marker
+								data={block.transitData}
+								product1={block.arrivalProduct ?? ""}
+								product2={block.departureProduct ?? ""}
+							>
+								<IconStationLocation
+									color="product"
+									iconType="station"
+									secondaryProduct={block.departureProduct}
+								/>
 							</Marker>
+						{:else if block.type === "walk"}
+							<Polyline {block} />
 						{/if}
 					{/each}
 				{/each}
