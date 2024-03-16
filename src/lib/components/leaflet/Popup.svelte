@@ -37,7 +37,7 @@
 		<i>{popupData.duration}</i>
 		<div class="product--{popupData.line.product} line--vertical line--product"></div>
 		<span>{popupData.line.name} &rightarrow; {popupData.direction}</span>
-		{:else if popupData.type === "walk"}
+	{:else if popupData.type === "walk"}
 		<i>{popupData.duration}</i>
 		<div class="line--vertical"></div>
 		<span>{popupData.distance}m Fußweg (ca. <i>{popupData.walkingTime}</i>)</span>
@@ -46,11 +46,6 @@
 		<div class="flex-column middle">
 			<div class="line--vertical product--{popupData.product1} line--product"></div>
 			<div class="icon product--{popupData.product1 ?? popupData.product2}">
-				<!--IconStationLocation
-					color="product"
-					iconType={popupData.transitData.location.type}
-					smallIcon={popupData.smallIcon}
-				/-->
 				<slot />
 			</div>
 			<div class="line--vertical product--{popupData.product2} line--product"></div>
@@ -72,16 +67,16 @@
 	}
 	.icon {
 		margin: -16px 0;
-        display: flex;
+		display: flex;
 		position: relative;
 	}
-    .middle {
+	.middle {
 		justify-content: center;
 		justify-items: center;
 	}
-    .line--vertical {
-        margin: 0 auto;
-        min-height: calc(var(--line-length--vertical));
-        flex-shrink: 0;
-    }
+	.line--vertical {
+		margin: 0 auto;
+		min-height: calc(var(--line-length--vertical));
+		flex-shrink: 0;
+	}
 </style>

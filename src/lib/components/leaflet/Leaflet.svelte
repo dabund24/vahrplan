@@ -20,7 +20,7 @@
 		const southWest = $L.latLng(40.712, -74.227),
 			northEast = $L.latLng(40.774, -74.125);
 
-		map.fitBounds($L.latLngBounds(southWest, northEast))
+		map.fitBounds($L.latLngBounds(southWest, northEast));
 	});
 
 	onDestroy(() => {
@@ -32,18 +32,23 @@
 		getMap: () => map
 	});
 
-
 	$: if (map !== undefined) {
 		const coordinates = $selectedJourneys
 			.flatMap((j) => j.blocks)
 			.filter<JourneyBlockTimeDefined>(isTimeDefined)
 			.flatMap((block) =>
-				block.type === "leg" ? [block.departureData.location.position, ...block.stopovers.map(s => s.location.position),block.arrivalData.location.position] : block.location.position
+				block.type === "leg"
+					? [
+							block.departureData.location.position,
+							...block.stopovers.map((s) => s.location.position),
+							block.arrivalData.location.position
+						]
+					: block.location.position
 			);
-		if (coordinates.length > 0)
+		if (coordinates.length > 0) {
 			map.fitBounds($L.latLngBounds(coordinates));
+		}
 	}
-
 </script>
 
 <div class="map" bind:this={mapElement}>

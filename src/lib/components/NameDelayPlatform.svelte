@@ -60,5 +60,6 @@
 		margin-left: auto;
 		padding-left: 0.5rem;
 		white-space: nowrap;
+		text-align: right;
 	}
 </style>

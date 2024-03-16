@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade, slide } from "svelte/transition";
+	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import StationInput from "./StationInput.svelte";
 	import type { ParsedLocation } from "$lib/types";
@@ -11,21 +11,21 @@
 	import Marker from "$lib/components/leaflet/Marker.svelte";
 	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
 
-	type keyedArrayItem = { key: number; location?: ParsedLocation };
+	type KeyedArrayItem = { key: number; location?: ParsedLocation };
 
-	let from: ParsedLocation;
-	let vias: keyedArrayItem[] = [{ key: Math.random() }, { key: Math.random() }];
-	let to: ParsedLocation;
+	let stops: KeyedArrayItem[] = [{ key: Math.random() }, { key: Math.random() }];
 
 	function removeVia(index: number) {
-		//vias = vias.toSpliced(index, 1);
-		vias = [...vias.slice(0, index), ...vias.slice(index + 1, vias.length)];
+		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
 	}
 	function addVia(index: number) {
-		vias = [...vias.slice(0, index), { key: Math.random() }, ...vias.slice(index, vias.length)];
+		stops = [...stops.slice(0, index), { key: Math.random() }, ...stops.slice(index, stops.length)];
 	}
 	function handleFormSubmit() {
-		setDisplayedLocations([from, ...vias.map((via) => via.location).filter(isDefined), to]);
+		const stopsToBeDisplayed = stops.map((via) => via.location).filter(isDefined)
+		if (stopsToBeDisplayed.length >= 2) {
+			setDisplayedLocations(stopsToBeDisplayed);
+		}
 	}
 </script>
 
@@ -39,23 +39,22 @@
 		<section>
 			<h1>Hallo</h1>
 			<form class="flex-column" on:submit|preventDefault={handleFormSubmit}>
-				<div class="flex-column location-inputs">
-					<div class="flex-row">
-						<StationInput bind:selectedLocation={from} />
-						<button type="button" tabindex="-1" on:click={() => addVia(0)}>Add</button>
-					</div>
-					{#each vias as via, i (via.key)}
-						<div class="flex-row" in:slide out:fade animate:flip={{ duration: 200 }}>
-							<StationInput bind:selectedLocation={via.location} />
-							<button type="button" tabindex="-1" on:click={() => removeVia(i)}
-								>Remove</button
-							>
-							<button type="button" tabindex="-1" on:click={() => addVia(i + 1)}
-								>Add</button
-							>
+				<div class="location-inputs">
+					{#each stops as stop, i (stop.key)}
+						<div class="flex-row" transition:scale animate:flip={{ duration: 200 }}>
+							<StationInput bind:selectedLocation={stop.location} />
+							{#if i !== 0 && i !== stops.length - 1}
+								<button type="button" tabindex="-1" on:click={() => removeVia(i)}
+									>Remove</button
+								>
+							{/if}
+							{#if i !== stops.length - 1}
+								<button type="button" tabindex="-1" on:click={() => addVia(i + 1)}
+									>Add</button
+								>
+							{/if}
 						</div>
 					{/each}
-					<StationInput bind:selectedLocation={to} />
 				</div>
 				<button class="hoverable padded-top-bottom" type="submit">Submit</button>
 			</form>

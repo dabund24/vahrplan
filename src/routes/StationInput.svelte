@@ -2,6 +2,7 @@
 	import type { ParsedLocation } from "$lib/types";
 	import { getApiData } from "$lib/util";
 	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
+	import { onMount } from "svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
 
@@ -11,26 +12,28 @@
 	let focused = 0;
 	const url = new URL("http://localhost:5173/api/locations");
 
-	// onMount(() => (suggestionsTimeoutID = setTimeout(() => fetchLocations(inputText))));
-	$: fetchLocations(inputText);
+	onMount(() => inputElement.setCustomValidity("Keine Station angegeben"))
 
-	async function fetchLocations(text: string) {
+	$: promisedSuggestions = fetchLocations(inputText);
+
+	async function fetchLocations(text: string): Promise<ParsedLocation[]> {
 		if (text.trim() === "") {
-			promisedSuggestions = Promise.resolve([]);
-			return;
+			return Promise.resolve([]);
 		}
 		url.searchParams.set("name", text);
-		promisedSuggestions = getApiData<ParsedLocation[]>(url).then((response) =>
+		return getApiData<ParsedLocation[]>(url).then((response) =>
 			response.isError ? [] : response.content
 		);
 	}
 
-	function handleSuggestionClick(suggestion: ParsedLocation) {
+	function handleSuggestionClick(suggestion: ParsedLocation | undefined) {
+		if (suggestion === undefined) {
+			return;
+		}
 		selectedLocation = suggestion;
 		inputText = suggestion.name;
 		focused = 0;
-		inputElement.focus();
-		inputElement.blur();
+		inputElement.setCustomValidity("")
 	}
 
 	async function handleInputKeydown(ev: KeyboardEvent) {
@@ -47,8 +50,8 @@
 				break;
 			case "Enter":
 			case "Tab":
-				inputElement.blur();
-				focused = 0
+				handleSuggestionClick(suggestions[focused]);
+				focused = 0;
 				break;
 			default:
 				focused = 0;
@@ -57,12 +60,12 @@
 
 	async function handleInputBlur() {
 		const suggestions = await promisedSuggestions;
-		if (focused >= suggestions.length) {
+		if (suggestions.length === 0 || inputText !== suggestions[0].name) {
 			selectedLocation = undefined
-			inputText = ""
-		} else if (selectedLocation?.name !== inputText) {
-			selectedLocation = suggestions[focused];
-			inputText = suggestions[focused].name;
+			inputElement.setCustomValidity("Keine Station angegeben")
+		} else {
+			selectedLocation = suggestions[0];
+			inputElement.setCustomValidity("")
 		}
 	}
 </script>
@@ -83,7 +86,6 @@
 				bind:value={inputText}
 				on:keydown={handleInputKeydown}
 				on:blur={handleInputBlur}
-				required
 			/>
 		</label>
 		<ul>
@@ -99,8 +101,11 @@
 							tabindex="-1"
 							on:click|preventDefault={() => handleSuggestionClick(suggestion)}
 						>
-							<span class="suggestionIcon"	>
-								<IconStationLocation color={focused === i ? "accent" : "foreground"} iconType={suggestion.type} />
+							<span class="suggestionIcon">
+								<IconStationLocation
+									color={focused === i ? "accent" : "foreground"}
+									iconType={suggestion.type}
+								/>
 							</span>
 							{suggestion.name}
 						</button>
@@ -125,7 +130,7 @@
 		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid var(--background-color);
 	}
-	.inner-wrapper:not(:focus-within) ul {
+	.inner-wrapper:not(:focus-within) ul:not(:active) {
 		display: none;
 	}
 	.inner-wrapper:focus-within {

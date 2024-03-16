@@ -16,10 +16,7 @@
 		</div>
 		<div class="middle">
 			<i class="duration"
-				>{dateDifferenceString(
-					block.departureData.time.a.time,
-					block.arrivalData.time.a.time
-				)}</i
+				>{block.duration}</i
 			>
 		</div>
 		<div class="top-or-bottom flex-column">
