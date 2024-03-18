@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	const tokenParam = url.searchParams.get("token")!;
 	let refreshTokens: string[];
 	try {
-		refreshTokens = JSON.parse(atob(tokenParam));
+		refreshTokens = JSON.parse(atob(tokenParam)) as string[];
 	} catch (e) {
 		return new Response(JSON.stringify(getZugError("NOT_FOUND")));
 	}

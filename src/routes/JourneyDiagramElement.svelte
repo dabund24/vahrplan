@@ -43,7 +43,7 @@
 		"arrival"
 	);
 
-	function handleDiagramElementClick() {
+	function handleDiagramElementClick(): void {
 		if (isSelected) {
 			unselectJourneyBlocks(depth);
 		} else {

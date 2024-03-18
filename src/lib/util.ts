@@ -16,7 +16,7 @@ export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResp
 	return fetch(url).then((res) => res.json() as Promise<ZugResponse<T>>);
 }
 
-export function getTreeUrl(locations: ParsedLocation[]) {
+export function getTreeUrl(locations: ParsedLocation[]): URL {
 	const url = new URL("http://localhost:5173/api/journeys");
 	url.searchParams.set(
 		"stops",
@@ -58,7 +58,7 @@ export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
 	};
 }
 
-export function timeToString(time: string | Date | number | undefined) {
+export function timeToString(time: string | Date | number | undefined): string {
 	if (time === undefined || time === null || time === "") {
 		return "";
 	}
@@ -72,7 +72,7 @@ export function timeToString(time: string | Date | number | undefined) {
 export function dateDifference(
 	sooner: string | number | Date | undefined,
 	later: string | number | Date | undefined
-) {
+): { hours: number; minutes: number } {
 	if (sooner === undefined || later === undefined) {
 		return { hours: 0, minutes: 0 };
 	}
@@ -92,7 +92,7 @@ export function dateDifference(
 export function dateDifferenceString(
 	sooner: string | number | Date | undefined,
 	later: string | number | Date | undefined
-) {
+): string {
 	if (sooner === undefined || later === undefined) {
 		return "n/a";
 	}

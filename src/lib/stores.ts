@@ -31,13 +31,13 @@ displayedLocations.subscribe(resetSelectedJourneys);
 
 // this is recalculated when and only when displayedLocations changes
 export const displayedTree = derived(displayedLocations, calculateTree);
-export function setDisplayedLocations(locations: ParsedLocation[]) {
+export function setDisplayedLocations(locations: ParsedLocation[]): void {
 	displayedLocations.set(locations);
 }
-export function addDisplayedLocation(location: ParsedLocation, index: number) {
+export function addDisplayedLocation(location: ParsedLocation, index: number): void {
 	displayedLocations.update((locations) => locations.splice(index, 0, location));
 }
-export function removeDisplayedLocation(index: number) {
+export function removeDisplayedLocation(index: number): void {
 	displayedLocations.update((blocks) => blocks.splice(index, 0));
 }
 
@@ -82,7 +82,7 @@ export function selectJourneyBlocks(
 	selectedBy: number,
 	blocks: JourneyBlock[],
 	refreshToken: string
-) {
+): void {
 	selectedJourneys.update((journeys) => {
 		// transition from previous journey
 		const previousJourney = depth > 0 ? journeys[depth - 1] : undefined;
@@ -107,7 +107,7 @@ export function selectJourneyBlocks(
  * updates the selectedJourneys store
  * @param depth depth in tree
  */
-export function unselectJourneyBlocks(depth: number) {
+export function unselectJourneyBlocks(depth: number): void {
 	selectedJourneys.update((journeys) => {
 		const previousJourney = depth > 0 ? journeys[depth - 1] : undefined;
 		const nextJourney = journeys.at(depth + 1);
@@ -132,7 +132,7 @@ function updateMergingBlocks(
 	endingBlock: JourneyBlock,
 	nextJourney: SelectedJourney | undefined,
 	index: number
-) {
+): void {
 	mergingBlocks.update((mergingBlocks) => {
 		const locations = get(displayedLocations);
 		const mergingBlockPrevious = getMergingBlock(
@@ -154,9 +154,10 @@ function updateMergingBlocks(
 	});
 }
 
-type LeafletType = typeof import("leaflet");
-export const L = writable<LeafletType>();
+export const L = writable<typeof import("leaflet")>();
 if (browser) {
-	const awaitedLeaflet = await import("leaflet").then((l) => l.default);
-	L.set(awaitedLeaflet);
+	void import("leaflet").then((importedLeaflet) => {
+		const l = importedLeaflet.default;
+		L.set(l);
+	});
 }

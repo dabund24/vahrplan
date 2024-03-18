@@ -161,6 +161,6 @@ export function transferToBlock(
 function positionsAreEqual(
 	positionA: ParsedLocation["position"],
 	positionB: ParsedLocation["position"]
-) {
+): boolean {
 	return positionA.lat === positionB.lat && positionA.lng === positionB.lng;
 }

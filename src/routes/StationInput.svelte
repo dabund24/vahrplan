@@ -12,7 +12,7 @@
 	let focused = 0;
 	const url = new URL("http://localhost:5173/api/locations");
 
-	onMount(() => inputElement.setCustomValidity("Keine Station angegeben"))
+	onMount(() => inputElement.setCustomValidity("Keine Station angegeben"));
 
 	$: promisedSuggestions = fetchLocations(inputText);
 
@@ -26,47 +26,48 @@
 		);
 	}
 
-	function handleSuggestionClick(suggestion: ParsedLocation | undefined) {
+	function handleSuggestionClick(suggestion: ParsedLocation | undefined): void {
 		if (suggestion === undefined) {
 			return;
 		}
 		selectedLocation = suggestion;
 		inputText = suggestion.name;
 		focused = 0;
-		inputElement.setCustomValidity("")
+		inputElement.setCustomValidity("");
 	}
 
-	async function handleInputKeydown(ev: KeyboardEvent) {
-		console.log(ev.key);
-		const suggestions = await promisedSuggestions;
-		switch (ev.key) {
-			case "ArrowDown":
-				focused = (focused + 1) % suggestions.length;
-				ev.preventDefault();
-				break;
-			case "ArrowUp":
-				focused = focused === 0 ? suggestions.length - 1 : focused - 1;
-				ev.preventDefault();
-				break;
-			case "Enter":
-			case "Tab":
-				handleSuggestionClick(suggestions[focused]);
-				focused = 0;
-				break;
-			default:
-				focused = 0;
-		}
+	function handleInputKeydown(ev: KeyboardEvent): void {
+		void promisedSuggestions.then((suggestions) => {
+			switch (ev.key) {
+				case "ArrowDown":
+					focused = (focused + 1) % suggestions.length;
+					ev.preventDefault();
+					break;
+				case "ArrowUp":
+					focused = focused === 0 ? suggestions.length - 1 : focused - 1;
+					ev.preventDefault();
+					break;
+				case "Enter":
+				case "Tab":
+					handleSuggestionClick(suggestions[focused]);
+					focused = 0;
+					break;
+				default:
+					focused = 0;
+			}
+		});
 	}
 
-	async function handleInputBlur() {
-		const suggestions = await promisedSuggestions;
-		if (suggestions.length === 0 || inputText !== suggestions[0].name) {
-			selectedLocation = undefined
-			inputElement.setCustomValidity("Keine Station angegeben")
-		} else {
-			selectedLocation = suggestions[0];
-			inputElement.setCustomValidity("")
-		}
+	function handleInputBlur(): void {
+		void promisedSuggestions.then(suggestions => {
+			if (suggestions.length === 0 || inputText !== suggestions[0].name) {
+				selectedLocation = undefined;
+				inputElement.setCustomValidity("Keine Station angegeben");
+			} else {
+				selectedLocation = suggestions[0];
+				inputElement.setCustomValidity("");
+			}
+		});
 	}
 </script>
 
@@ -99,7 +100,7 @@
 							class="flex-row padded-top-bottom suggestion"
 							aria-current={focused === i}
 							tabindex="-1"
-							on:click|preventDefault={() => handleSuggestionClick(suggestion)}
+							on:click|preventDefault={() => void handleSuggestionClick(suggestion)}
 						>
 							<span class="suggestionIcon">
 								<IconStationLocation

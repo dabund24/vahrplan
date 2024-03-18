@@ -1,7 +1,6 @@
 import type { Line, Location, Station, Stop } from "hafas-client";
 import type { LineString } from "geojson";
 import type { NumericRange } from "@sveltejs/kit";
-import { L } from "$lib/stores";
 
 export type Fetchable = JourneyNode[] | JourneyBlock[] | ParsedLocation[];
 
@@ -56,7 +55,7 @@ export type ParsedLocation = {
 	name: string;
 	requestParameter: string | Station | Stop | Location;
 	type: "station" | "address" | "poi";
-	position: L.LatLngLiteral;
+	position: { lat: number; lng: number };
 };
 
 export type TransitData = {

@@ -12,13 +12,13 @@
 
 	let stops: KeyedArrayItem[] = [{ key: Math.random() }, { key: Math.random() }];
 
-	function removeVia(index: number) {
+	function removeVia(index: number): void {
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
 	}
-	function addVia(index: number) {
+	function addVia(index: number): void {
 		stops = [...stops.slice(0, index), { key: Math.random() }, ...stops.slice(index, stops.length)];
 	}
-	function handleFormSubmit() {
+	function handleFormSubmit(): void {
 		const stopsToBeDisplayed = stops.map((via) => via.location).filter(isDefined)
 		if (stopsToBeDisplayed.length >= 2) {
 			setDisplayedLocations(stopsToBeDisplayed);
@@ -41,12 +41,12 @@
 						<div class="flex-row" transition:scale animate:flip={{ duration: 200 }}>
 							<StationInput bind:selectedLocation={stop.location} />
 							{#if i !== 0 && i !== stops.length - 1}
-								<button type="button" tabindex="-1" on:click={() => removeVia(i)}
+								<button type="button" tabindex="-1" on:click={() => void removeVia(i)}
 									>Remove</button
 								>
 							{/if}
 							{#if i !== stops.length - 1}
-								<button type="button" tabindex="-1" on:click={() => addVia(i + 1)}
+								<button type="button" tabindex="-1" on:click={() => void addVia(i + 1)}
 									>Add</button
 								>
 							{/if}

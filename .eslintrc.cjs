@@ -2,17 +2,19 @@
 module.exports = {
 	root: true,
 	extends: [
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:svelte/recommended',
-		'prettier'
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:svelte/recommended",
+		"prettier"
 	],
-	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint'],
+	parser: "@typescript-eslint/parser",
+	plugins: ["@typescript-eslint"],
 	parserOptions: {
-		sourceType: 'module',
+		sourceType: "module",
 		ecmaVersion: 2020,
-		extraFileExtensions: ['.svelte']
+		extraFileExtensions: [".svelte"],
+		project: true
 	},
 	env: {
 		browser: true,
@@ -21,11 +23,25 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: ['*.svelte'],
-			parser: 'svelte-eslint-parser',
+			files: ["*.svelte"],
+			parser: "svelte-eslint-parser",
 			parserOptions: {
-				parser: '@typescript-eslint/parser'
+				parser: "@typescript-eslint/parser"
+			},
+			rules: {
+				"@typescript-eslint/no-unsafe-member-access": "off",
+				"@typescript-eslint/no-unsafe-call": "off"
 			}
 		}
-	]
+	],
+	ignorePatterns: [".eslintrc.cjs", "vite.config.ts", "svelte.config.js"],
+	rules: {
+		"logical-assignment-operators": "error",
+		"@typescript-eslint/explicit-function-return-type": [
+			"error",
+			{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }
+		],
+		"@typescript-eslint/prefer-as-const": "error",
+		"@typescript-eslint/await-thenable": "error"
+	}
 };

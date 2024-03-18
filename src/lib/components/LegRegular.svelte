@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Time from "$lib/components/Time.svelte";
-	import { dateDifferenceString } from "$lib/util";
 	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
 	import NameDelayPlatform from "$lib/components/NameDelayPlatform.svelte";
 	import Stopovers from "./Stopovers.svelte";

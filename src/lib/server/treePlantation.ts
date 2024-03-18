@@ -130,7 +130,7 @@ async function requestMoreJourneys(
 	return journeys;
 }
 
-async function findJourneys(from: string, to: string, opt: JourneysOptions) {
+async function findJourneys(from: string, to: string, opt: JourneysOptions): Promise<Journeys> {
 	return client.journeys(from, to, opt).then((journeys) => {
 		journeys.journeys =
 			journeys.journeys?.filter((journey) =>
@@ -148,17 +148,23 @@ function removeJourneysStartingTooEarly(journeys: readonly Journey[], time: Date
 	return journeys.slice(indexOfFirstValidJourney);
 }
 
-function getLatestArrivalFromJourneys(journeys: readonly Journey[] | Journey[]) {
+function getLatestArrivalFromJourneys(
+	journeys: readonly Journey[] | Journey[]
+): string | undefined {
 	const lastJourney = journeys.at(-1);
 	return lastJourney?.legs.findLast((leg) => leg.cancelled !== true)?.arrival;
 }
 
-function getLatestDepartureFromJourneys(journeys: readonly Journey[] | Journey[]) {
+function getLatestDepartureFromJourneys(
+	journeys: readonly Journey[] | Journey[]
+): string | undefined {
 	const lastJourney = journeys.at(-1);
 	return lastJourney?.legs.find((leg) => leg.cancelled !== true)?.departure;
 }
 
-function getEarliestArrivalFromJourney(journeys: readonly Journey[] | Journey[]) {
+function getEarliestArrivalFromJourney(
+	journeys: readonly Journey[] | Journey[]
+): string | undefined {
 	const firstJourney = journeys[0];
 	return firstJourney.legs.findLast((leg) => leg.cancelled !== true)?.arrival;
 }
@@ -211,7 +217,10 @@ function getNodesFromMatrix(
 	return childNodes;
 }
 
-function getLastMatchingJourneyIndex(nextJourneyDeparture: Date, journeysToCheck: Journey[]) {
+function getLastMatchingJourneyIndex(
+	nextJourneyDeparture: Date,
+	journeysToCheck: Journey[]
+): number {
 	let endIndex = 0;
 	while (
 		endIndex < journeysToCheck.length &&
