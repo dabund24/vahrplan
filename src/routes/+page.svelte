@@ -4,12 +4,9 @@
 	import StationInput from "./StationInput.svelte";
 	import type { ParsedLocation } from "$lib/types";
 	import JourneyDiagram from "./JourneyDiagram.svelte";
-	import { displayedTree, selectedJourneys, setDisplayedLocations } from "$lib/stores";
+	import { displayedTree, setDisplayedLocations } from "$lib/stores";
 	import { isDefined } from "$lib/util";
-	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
-	import Polyline from "$lib/components/leaflet/Polyline.svelte";
-	import Marker from "$lib/components/leaflet/Marker.svelte";
-	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
+	import Journeys from "$lib/components/Journeys.svelte";
 
 	type KeyedArrayItem = { key: number; location?: ParsedLocation };
 
@@ -35,7 +32,7 @@
 </svelte:head>
 
 <div class="grid">
-	<div class="main-application">
+	<div class="main-application flex-column">
 		<section>
 			<h1>Hallo</h1>
 			<form class="flex-column" on:submit|preventDefault={handleFormSubmit}>
@@ -59,7 +56,7 @@
 				<button class="hoverable padded-top-bottom" type="submit">Submit</button>
 			</form>
 		</section>
-		<section>
+		<section class="diagram">
 			{#await $displayedTree}
 				loading...
 			{:then tree}
@@ -70,13 +67,9 @@
 		</section>
 	</div>
 	<div class="journey-preview">
+
+		<Journeys />
 		<!--
-		{#each $selectedJourneys as journey (journey.refreshToken)}
-			<div transition:scale animate:flip={{ duration: (p) => 200 + p / 2 }}>
-				<Journey blocks={journey.blocks} />
-			</div>
-		{/each}
-		-->
 		{#if $selectedJourneys.length !== 0}
 			<Leaflet>
 				{#each $selectedJourneys as journey (journey.refreshToken)}
@@ -131,10 +124,14 @@
 				{/each}
 			</Leaflet>
 		{/if}
+		-->
 	</div>
 </div>
 
 <style>
+	.diagram {
+        margin: 0 auto;
+	}
 	.grid > * {
 		max-height: 100vh;
 		overflow-y: scroll;

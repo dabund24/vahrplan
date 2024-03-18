@@ -1,7 +1,8 @@
 import type {
 	Fetchable,
 	JourneyBlock,
-	JourneyBlockTimeDefined,
+	DefiningBlock,
+	LocationBlock,
 	ParsedLocation,
 	TransitData,
 	ZugResponse
@@ -25,7 +26,7 @@ export function getTreeUrl(locations: ParsedLocation[]) {
 	return url;
 }
 
-export function isTimeDefined(block: JourneyBlock): block is JourneyBlockTimeDefined {
+export function isTimeDefined(block: JourneyBlock): block is DefiningBlock {
 	return block.type === "leg" || block.type === "location";
 }
 
@@ -48,8 +49,17 @@ export function mergeTransitData(
 	};
 }
 
+export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
+	return {
+		type: "location",
+		location,
+		time: {},
+		hidden: false
+	};
+}
+
 export function timeToString(time: string | Date | number | undefined) {
-	if (time === undefined || time === null) {
+	if (time === undefined || time === null || time === "") {
 		return "";
 	}
 	const date = new Date(time);

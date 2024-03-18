@@ -1,15 +1,29 @@
-import { derived, writable } from "svelte/store";
-import type { JourneyBlock, JourneyNode, ParsedLocation } from "$lib/types";
-import { getApiData, getTreeUrl } from "$lib/util";
+import { derived, get, writable } from "svelte/store";
+import type {
+	JourneyBlock,
+	JourneyNode,
+	LocationBlock,
+	ParsedLocation,
+	TransferBlock,
+	WalkingBlock
+} from "$lib/types";
+import { getApiData, getRawLocationBlock, getTreeUrl } from "$lib/util";
 import { browser } from "$app/environment";
+import { getMergingBlock } from "$lib/merge";
 
-type SelectedJourney = {
+export type SelectedJourney = {
 	blocks: JourneyBlock[];
 	selectedBy: number;
 	refreshToken: string;
 };
 
 export const displayedLocations = writable<ParsedLocation[]>([]);
+
+// this is reset to an empty array when displayedLocations changes
+export const mergingBlocks = writable<(WalkingBlock | TransferBlock | LocationBlock | undefined)[]>(
+	[]
+);
+displayedLocations.subscribe(resetMergingBlocks);
 
 // this is reset to an empty array when displayedLocations changes
 export const selectedJourneys = writable<SelectedJourney[]>();
@@ -24,14 +38,14 @@ export function addDisplayedLocation(location: ParsedLocation, index: number) {
 	displayedLocations.update((locations) => locations.splice(index, 0, location));
 }
 export function removeDisplayedLocation(index: number) {
-	displayedLocations.update((locations) => locations.splice(index, 0));
+	displayedLocations.update((blocks) => blocks.splice(index, 0));
 }
 
-function resetSelectedJourneys(locations: ParsedLocation[]) {
+function resetSelectedJourneys(locations: ParsedLocation[]): void {
 	selectedJourneys.set(
 		Array.from({ length: locations.length - 1 }, (_v, i) => {
 			return {
-				blocks: [],
+				blocks: [{ type: "unselected" }],
 				selectedBy: -1,
 				refreshToken: i.toString()
 			};
@@ -39,25 +53,21 @@ function resetSelectedJourneys(locations: ParsedLocation[]) {
 	);
 }
 
-function calculateTree(locations: ParsedLocation[]) {
+function resetMergingBlocks(locations: ParsedLocation[]): void {
+	mergingBlocks.set(
+		Array.from({ length: locations.length }, (_v, i) => getRawLocationBlock(locations[i]))
+	);
+}
+
+async function calculateTree(locations: ParsedLocation[]): Promise<JourneyNode[]> {
 	if (locations.length < 2) {
 		return Promise.all([]);
 	}
 	const url = getTreeUrl(locations);
-	const treePromise = getApiData<JourneyNode[]>(url).then((response) => {
+	return getApiData<JourneyNode[]>(url).then((response) => {
 		console.log(response);
 		return response.isError ? [] : response.content;
 	});
-	selectedJourneys.set(
-		Array.from({ length: locations.length - 1 }, (_v, i) => {
-			return {
-				blocks: [],
-				selectedBy: -1,
-				refreshToken: i.toString()
-			};
-		})
-	);
-	return treePromise;
 }
 
 /**
@@ -74,6 +84,18 @@ export function selectJourneyBlocks(
 	refreshToken: string
 ) {
 	selectedJourneys.update((journeys) => {
+		// transition from previous journey
+		const previousJourney = depth > 0 ? journeys[depth - 1] : undefined;
+		const nextJourney = journeys.at(depth + 1);
+		updateMergingBlocks(
+			previousJourney,
+			blocks.at(0) ?? { type: "unselected" },
+			blocks.at(-1) ?? { type: "unselected" },
+			nextJourney,
+			depth
+		);
+
+		// selected journey
 		journeys[depth].blocks = [...blocks];
 		journeys[depth].selectedBy = selectedBy;
 		journeys[depth].refreshToken = refreshToken;
@@ -87,10 +109,48 @@ export function selectJourneyBlocks(
  */
 export function unselectJourneyBlocks(depth: number) {
 	selectedJourneys.update((journeys) => {
-		journeys[depth].blocks.length = 0;
+		const previousJourney = depth > 0 ? journeys[depth - 1] : undefined;
+		const nextJourney = journeys.at(depth + 1);
+		updateMergingBlocks(
+			previousJourney,
+			{ type: "unselected" },
+			{ type: "unselected" },
+			nextJourney,
+			depth
+		);
+
+		journeys[depth].blocks = [{ type: "unselected" }];
 		journeys[depth].selectedBy = -1;
 		journeys[depth].refreshToken = depth.toString();
 		return journeys;
+	});
+}
+
+function updateMergingBlocks(
+	previousJourney: SelectedJourney | undefined,
+	startingBlock: JourneyBlock,
+	endingBlock: JourneyBlock,
+	nextJourney: SelectedJourney | undefined,
+	index: number
+) {
+	mergingBlocks.update((mergingBlocks) => {
+		const locations = get(displayedLocations);
+		const mergingBlockPrevious = getMergingBlock(
+			previousJourney?.blocks.at(-1) ?? { type: "unselected" },
+			locations[index],
+			startingBlock
+		);
+		const mergingBlockNext = getMergingBlock(
+			endingBlock,
+			locations[index + 1],
+			nextJourney?.blocks[0] ?? { type: "unselected" }
+		);
+		return [
+			...mergingBlocks.slice(0, index),
+			mergingBlockPrevious,
+			mergingBlockNext,
+			...mergingBlocks.slice(index + 2)
+		];
 	});
 }
 

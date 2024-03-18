@@ -2,7 +2,7 @@
 	import "leaflet/dist/leaflet.css";
 	import { L, selectedJourneys } from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
-	import type { JourneyBlockTimeDefined } from "$lib/types";
+	import type { DefiningBlock } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
 
 	let map: L.Map | undefined;
@@ -35,7 +35,7 @@
 	$: if (map !== undefined) {
 		const coordinates = $selectedJourneys
 			.flatMap((j) => j.blocks)
-			.filter<JourneyBlockTimeDefined>(isTimeDefined)
+			.filter<DefiningBlock>(isTimeDefined)
 			.flatMap((block) =>
 				block.type === "leg"
 					? [

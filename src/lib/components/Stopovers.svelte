@@ -13,13 +13,11 @@
 			<div class="time">
 				<Time time={stopover.time} variableWidth={false} />
 			</div>
-			<div class="icon">
-				<IconStationLocation
-					iconType={stopover.location.type}
-					color="product"
-					smallIcon={true}
-				/>
-			</div>
+			<IconStationLocation
+				iconType={stopover.location.type}
+				color="product"
+				smallIcon={true}
+			/>
 			<NameDelayPlatform transitData={stopover} />
 		</li>
 	{/each}
@@ -32,11 +30,9 @@
 	}
 	li {
 		align-items: center;
+		gap: 0.5rem;
 	}
 	.time {
 		text-align: right;
-	}
-	.icon {
-		margin: 0 0.5rem;
 	}
 </style>

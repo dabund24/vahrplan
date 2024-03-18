@@ -38,7 +38,7 @@ export type HafasError = {
 export type ParsedTime = {
 	// for arrival/departure: actual time if realtime data exists, else planned time
 	// for stopovers and waits: arrival time
-	a: {
+	a?: {
 		time: string;
 		color?: "red" | "green";
 		delay?: number;
@@ -78,12 +78,18 @@ export type JourneyNode = {
 	children: JourneyNode[];
 };
 
-export type JourneyBlock = LegBlock | WalkingBlock | TransferBlock | LocationBlock | ErrorBlock;
+export type JourneyBlock =
+	| LegBlock
+	| WalkingBlock
+	| TransferBlock
+	| LocationBlock
+	| ErrorBlock
+	| UnselectedBlock;
 
 // has departureTime and arrivalTime
-export type JourneyBlockTimeDefined = LegBlock | LocationBlock;
+export type DefiningBlock = LegBlock | LocationBlock;
 
-export type JourneyBlockDurationDefined = Exclude<JourneyBlock, JourneyBlockTimeDefined>;
+export type FillerBlock = Exclude<JourneyBlock, DefiningBlock>;
 
 export type LegBlock = {
 	type: "leg";
@@ -119,10 +125,15 @@ export type LocationBlock = {
 	type: "location";
 	time: ParsedTime;
 	location: ParsedLocation;
+	hidden: boolean;
 };
 
 export type ErrorBlock = {
 	type: "error";
+};
+
+export type UnselectedBlock = {
+	type: "unselected";
 };
 
 export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk;

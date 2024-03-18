@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { JourneyBlock, JourneyBlockTimeDefined, LegBlock, ParsedTime } from "$lib/types";
+	import type { JourneyBlock, DefiningBlock, LegBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores";
 	import { isTimeDefined } from "$lib/util";
@@ -13,10 +13,10 @@
 		((block) => block.type === "leg") as (block: JourneyBlock) => block is LegBlock
 	);
 
-	$: isSelected = index === $selectedJourneys[depth].selectedBy;
+	$: isSelected = index === $selectedJourneys.at(depth)?.selectedBy;
 
 	function getTimeFromTimeDefinedBlock(
-		block: JourneyBlockTimeDefined | undefined,
+		block: DefiningBlock | undefined,
 		timeType: "arrival" | "departure"
 	): ParsedTime {
 		if (block === undefined) {
@@ -24,7 +24,7 @@
 		}
 		if (block.type === "leg") {
 			return {
-				a: block[`${timeType}Data`].time.a
+				a: block[`${timeType}Data`].time[timeType === "arrival" ? "a" : "b"]
 			};
 		} else {
 			return {
@@ -34,12 +34,12 @@
 	}
 
 	$: departureTime = getTimeFromTimeDefinedBlock(
-		blocks.find<JourneyBlockTimeDefined>(isTimeDefined),
+		blocks.find<DefiningBlock>(isTimeDefined),
 		"departure"
 	);
 
 	$: arrivalTime = getTimeFromTimeDefinedBlock(
-		blocks.findLast<JourneyBlockTimeDefined>(isTimeDefined),
+		blocks.findLast<DefiningBlock>(isTimeDefined),
 		"arrival"
 	);
 

@@ -11,7 +11,7 @@
 		stationClass = "text--blue";
 	}
 	let delayTextA = "";
-	if (transitData.time.a.delay !== undefined) {
+	if (transitData.time.a?.delay !== undefined) {
 		delayTextA = ` (+${transitData.time.a.delay})`;
 	}
 	let delayTextB = "";
@@ -27,7 +27,7 @@
 		<span class="station {stationClass}">{transitData.location.name}</span>
 	{/if}
 	<div class="flex-column">
-		{#if transitData.time.a.delay !== undefined}
+		{#if transitData.time.a?.delay !== undefined}
 			<span class="delay text--{transitData.time.a.color}">{delayTextA}</span>
 		{/if}
 		{#if transitData.time.b?.delay !== undefined}
