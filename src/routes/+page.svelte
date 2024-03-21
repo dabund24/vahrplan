@@ -4,9 +4,9 @@
 	import StationInput from "./StationInput.svelte";
 	import type { ParsedLocation } from "$lib/types";
 	import JourneyDiagram from "./JourneyDiagram.svelte";
-	import { displayedTree, setDisplayedLocations } from "$lib/stores";
+	import { displayedTree, selectedJourneys, setDisplayedLocations } from "$lib/stores";
 	import { isDefined } from "$lib/util";
-	import Journeys from "$lib/components/Journeys.svelte";
+	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
 
 	type KeyedArrayItem = { key: number; location?: ParsedLocation };
 
@@ -68,63 +68,10 @@
 	</div>
 	<div class="journey-preview">
 
-		<Journeys />
-		<!--
+		<!--Journeys /-->
 		{#if $selectedJourneys.length !== 0}
-			<Leaflet>
-				{#each $selectedJourneys as journey (journey.refreshToken)}
-					{#each journey.blocks as block}
-						{#if block.type === "leg"}
-							<Polyline {block} />
-							{#if !block.precededByTransferBlock}
-								<Marker
-									data={block.departureData}
-									product2={block.line.product ?? ""}
-								>
-									<IconStationLocation color="product" iconType="station" />
-								</Marker>
-							{/if}
-							{#each block.stopovers as stopover}
-								<Marker
-									data={stopover}
-									product1={block.line.product ?? ""}
-									product2={block.line.product ?? ""}
-								>
-									<IconStationLocation
-										color="product"
-										iconType="station"
-										smallIcon={true}
-									/>
-								</Marker>
-							{/each}
-							{#if !block.succeededByTransferBlock}
-								<Marker
-									data={block.arrivalData}
-									product1={block.line.product ?? ""}
-								>
-									<IconStationLocation color="product" iconType="station" />
-								</Marker>
-							{/if}
-						{:else if block.type === "transfer"}
-							<Marker
-								data={block.transitData}
-								product1={block.arrivalProduct ?? ""}
-								product2={block.departureProduct ?? ""}
-							>
-								<IconStationLocation
-									color="product"
-									iconType="station"
-									secondaryProduct={block.departureProduct}
-								/>
-							</Marker>
-						{:else if block.type === "walk"}
-							<Polyline {block} />
-						{/if}
-					{/each}
-				{/each}
-			</Leaflet>
+			<Leaflet />
 		{/if}
-		-->
 	</div>
 </div>
 

@@ -1,4 +1,5 @@
 import type {
+	AdhesiveBlock,
 	JourneyBlock,
 	LocationBlock,
 	ParsedLocation,
@@ -20,7 +21,7 @@ export function getMergingBlock(
 	precedingBlock: JourneyBlock,
 	location: ParsedLocation,
 	succeedingBlock: JourneyBlock
-): LocationBlock | WalkingBlock | TransferBlock | undefined {
+): AdhesiveBlock {
 	if (
 		(precedingBlock.type !== "unselected" &&
 			precedingBlock.type !== "leg" &&
@@ -44,6 +45,11 @@ export function getMergingBlock(
 		} else if (succeedingBlock?.type === "location") {
 			succeedingBlock.hidden = false;
 		}
+		if (precedingBlock?.type === "leg") {
+			precedingBlock.succeededByTransferBlock = false;
+		} else if (succeedingBlock.type === "leg") {
+			succeedingBlock.precededByTransferBlock = false;
+		}
 		return undefined;
 	} else if (precedingBlock.type === "leg" && succeedingBlock.type === "leg") {
 		// either add transfer or walk between legs as merging block
@@ -53,6 +59,8 @@ export function getMergingBlock(
 				succeedingBlock.departureData.location.position
 			)
 		) {
+			precedingBlock.succeededByTransferBlock = true;
+			succeedingBlock.precededByTransferBlock = true;
 			return transferToBlock(
 				precedingBlock.arrivalData,
 				precedingBlock.line.product ?? "",
@@ -60,6 +68,8 @@ export function getMergingBlock(
 				succeedingBlock.line.product ?? ""
 			);
 		} else {
+			precedingBlock.succeededByTransferBlock = false;
+			succeedingBlock.precededByTransferBlock = false;
 			return mergingWalkToBlock(
 				precedingBlock.arrivalData.location,
 				precedingBlock.arrivalData.time,
@@ -76,9 +86,11 @@ export function getMergingBlock(
 				succeedingBlock.location.position
 			)
 		) {
+			precedingBlock.succeededByTransferBlock = false;
 			succeedingBlock.hidden = true;
 			return undefined;
 		} else {
+			precedingBlock.succeededByTransferBlock = false;
 			succeedingBlock.hidden = false;
 			return mergingWalkToBlock(
 				precedingBlock.arrivalData.location,
@@ -96,7 +108,10 @@ export function getMergingBlock(
 			)
 		) {
 			precedingBlock.hidden = true;
+			succeedingBlock.precededByTransferBlock = false;
 		} else {
+			precedingBlock.hidden = false;
+			succeedingBlock.precededByTransferBlock = false;
 			return mergingWalkToBlock(
 				precedingBlock.location,
 				precedingBlock.time,

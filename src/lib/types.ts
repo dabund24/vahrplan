@@ -90,6 +90,8 @@ export type DefiningBlock = LegBlock | LocationBlock;
 
 export type FillerBlock = Exclude<JourneyBlock, DefiningBlock>;
 
+export type AdhesiveBlock = LocationBlock | WalkingBlock | TransferBlock | undefined;
+
 export type LegBlock = {
 	type: "leg";
 	departureData: TransitData;

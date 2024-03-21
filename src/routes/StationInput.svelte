@@ -10,7 +10,7 @@
 	let inputElement: HTMLInputElement;
 	let promisedSuggestions: Promise<ParsedLocation[]> = Promise.resolve([]);
 	let focused = 0;
-	const url = new URL("http://localhost:5173/api/locations");
+	const url = new URL("http://localhost:4173/api/locations");
 
 	onMount(() => inputElement.setCustomValidity("Keine Station angegeben"));
 
@@ -142,6 +142,7 @@
 		backdrop-filter: var(--blur);
 		background-color: var(--background-color--opaque);
 		-webkit-backdrop-filter: var(--blur);
+		flex-direction: column;
 	}
 
 	.input-summary {

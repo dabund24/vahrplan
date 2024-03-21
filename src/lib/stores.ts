@@ -1,12 +1,5 @@
 import { derived, get, writable } from "svelte/store";
-import type {
-	JourneyBlock,
-	JourneyNode,
-	LocationBlock,
-	ParsedLocation,
-	TransferBlock,
-	WalkingBlock
-} from "$lib/types";
+import type { AdhesiveBlock, JourneyBlock, JourneyNode, ParsedLocation } from "$lib/types";
 import { getApiData, getRawLocationBlock, getTreeUrl } from "$lib/util";
 import { browser } from "$app/environment";
 import { getMergingBlock } from "$lib/merge";
@@ -17,17 +10,25 @@ export type SelectedJourney = {
 	refreshToken: string;
 };
 
+export type DisplayedJourney = {
+	blocks: JourneyBlock[];
+	key: string;
+};
+
 export const displayedLocations = writable<ParsedLocation[]>([]);
 
 // this is reset to an empty array when displayedLocations changes
-export const mergingBlocks = writable<(WalkingBlock | TransferBlock | LocationBlock | undefined)[]>(
-	[]
-);
+export const mergingBlocks = writable<AdhesiveBlock[]>([]);
 displayedLocations.subscribe(resetMergingBlocks);
 
 // this is reset to an empty array when displayedLocations changes
 export const selectedJourneys = writable<SelectedJourney[]>();
 displayedLocations.subscribe(resetSelectedJourneys);
+
+export const displayedJourneys = derived(
+	[mergingBlocks, selectedJourneys],
+	calculateDisplayedJourneys
+);
 
 // this is recalculated when and only when displayedLocations changes
 export const displayedTree = derived(displayedLocations, calculateTree);
@@ -57,6 +58,27 @@ function resetMergingBlocks(locations: ParsedLocation[]): void {
 	mergingBlocks.set(
 		Array.from({ length: locations.length }, (_v, i) => getRawLocationBlock(locations[i]))
 	);
+}
+
+function calculateDisplayedJourneys([merging, selected]: [
+	AdhesiveBlock[],
+	SelectedJourney[]
+]): DisplayedJourney[] {
+	return Array.from({ length: 2 * merging.length - 1 }, (_v, i) => {
+		const mergingBlock = merging[i / 2];
+		return i % 2 === 0
+			? {
+					blocks: merging[i / 2] !== undefined ? [merging[i / 2]] : [],
+					key:
+						(i >= 2 ? selected[i / 2 - 1].refreshToken : "") +
+						(mergingBlock?.type === "location" ? mergingBlock.location.name : "-") +
+						(selected.at(i / 2)?.refreshToken ?? "")
+				}
+			: {
+					blocks: selected[~~(i / 2)].blocks,
+					key: selected[~~(i / 2)].refreshToken
+				};
+	}) as DisplayedJourney[];
 }
 
 async function calculateTree(locations: ParsedLocation[]): Promise<JourneyNode[]> {

@@ -43,7 +43,7 @@
 					: $L.polyline(
 							[block.originLocation.position, block.destinationLocation.position],
 							{
-								dashArray: "0 8 0",
+								dashArray: "4 8",
 								weight: 4,
 								color: "var(--foreground-color)"
 							}

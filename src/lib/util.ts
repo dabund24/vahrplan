@@ -17,7 +17,7 @@ export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResp
 }
 
 export function getTreeUrl(locations: ParsedLocation[]): URL {
-	const url = new URL("http://localhost:5173/api/journeys");
+	const url = new URL("http://localhost:4173/api/journeys");
 	url.searchParams.set(
 		"stops",
 		JSON.stringify(locations.map((location) => location.requestParameter))
@@ -38,7 +38,7 @@ export function mergeTransitData(
 		location: transitData1.location,
 		time: {
 			a: transitData1.time.a,
-			b: transitData2.time.a
+			b: transitData2.time.b
 		},
 		attribute: transitData1.attribute,
 		attribute2: transitData2.attribute,
