@@ -12,7 +12,7 @@
 			<li role="tab" aria-selected={activeTab === index}>
 				<button
 					class="hoverable padded-top-bottom"
-					on:click={() => void (activeTab = index)}>{label}</button
+					on:click={() => void (activeTab = index)} type="button">{label}</button
 				>
 			</li>
 		{/each}
@@ -26,7 +26,6 @@
 
 <style>
 	.tabs {
-        border-bottom: var(--border);
         overflow-y: scroll;
         position: sticky;
         top: 0;

@@ -7,10 +7,8 @@
 	$: updatePosition(newPosition)
 	function updatePosition(newPosition: number): void {
 		oldPosition = position
-		setTimeout(() => {
 			position = newPosition
-		}, 10)
-
+		setTimeout(() => oldPosition = newPosition, 500)
 	}
 
 </script>

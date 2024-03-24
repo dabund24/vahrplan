@@ -343,6 +343,11 @@ button {
 	background-color: var(--foreground-color--opaque);
 }
 
+.button--small {
+	display: flex;
+	padding: .5rem;
+}
+
 /*
 MAP
  */
