@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { LocationBlock } from "$lib/types";
-	import Time from "$lib/components/Time.svelte";
-	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
+	import Time from "$lib/components/journeys/Time.svelte";
+	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
 
 	export let block: LocationBlock
 	console.log(block.time);
 </script>
 
-<div class="flex-row padded-top-bottom">
+<div class="flex-row">
 	<div class="time-container">
 		<Time time={block.time} />
 	</div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { JourneyBlock, DefiningBlock, LegBlock, ParsedTime } from "$lib/types";
-	import Time from "$lib/components/Time.svelte";
+	import Time from "$lib/components/journeys/Time.svelte";
 	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores";
 	import { isTimeDefined } from "$lib/util";
 

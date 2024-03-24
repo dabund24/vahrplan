@@ -4,9 +4,11 @@
 	import StationInput from "./StationInput.svelte";
 	import type { ParsedLocation } from "$lib/types";
 	import JourneyDiagram from "./JourneyDiagram.svelte";
-	import { displayedTree, selectedJourneys, setDisplayedLocations } from "$lib/stores";
+	import { displayedTree, setDisplayedLocations } from "$lib/stores";
 	import { isDefined } from "$lib/util";
 	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
+	import Tabs from "$lib/components/Tabs.svelte";
+	import Journeys from "$lib/components/journeys/Journeys.svelte";
 
 	type KeyedArrayItem = { key: number; location?: ParsedLocation };
 
@@ -16,10 +18,14 @@
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
 	}
 	function addVia(index: number): void {
-		stops = [...stops.slice(0, index), { key: Math.random() }, ...stops.slice(index, stops.length)];
+		stops = [
+			...stops.slice(0, index),
+			{ key: Math.random() },
+			...stops.slice(index, stops.length)
+		];
 	}
 	function handleFormSubmit(): void {
-		const stopsToBeDisplayed = stops.map((via) => via.location).filter(isDefined)
+		const stopsToBeDisplayed = stops.map((via) => via.location).filter(isDefined);
 		if (stopsToBeDisplayed.length >= 2) {
 			setDisplayedLocations(stopsToBeDisplayed);
 		}
@@ -41,13 +47,17 @@
 						<div class="flex-row" transition:scale animate:flip={{ duration: 200 }}>
 							<StationInput bind:selectedLocation={stop.location} />
 							{#if i !== 0 && i !== stops.length - 1}
-								<button type="button" tabindex="-1" on:click={() => void removeVia(i)}
-									>Remove</button
+								<button
+									type="button"
+									tabindex="-1"
+									on:click={() => void removeVia(i)}>Remove</button
 								>
 							{/if}
 							{#if i !== stops.length - 1}
-								<button type="button" tabindex="-1" on:click={() => void addVia(i + 1)}
-									>Add</button
+								<button
+									type="button"
+									tabindex="-1"
+									on:click={() => void addVia(i + 1)}>Add</button
 								>
 							{/if}
 						</div>
@@ -67,17 +77,19 @@
 		</section>
 	</div>
 	<div class="journey-preview">
-
-		<!--Journeys /-->
-		{#if $selectedJourneys.length !== 0}
-			<Leaflet />
-		{/if}
+		<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
+			{#if activeTab === 0}
+				<Journeys />
+			{:else if activeTab === 1}
+				<Leaflet />
+			{/if}
+		</Tabs>
 	</div>
 </div>
 
 <style>
 	.diagram {
-        margin: 0 auto;
+		margin: 0 auto;
 	}
 	.grid > * {
 		max-height: 100vh;
@@ -95,11 +107,10 @@
 	.grid {
 		max-height: 100vh;
 		display: grid;
-		grid-template-columns: 1fr 70rem;
+		grid-template-columns: 1fr 50rem;
 		min-height: 100vh;
 	}
-
 	.journey-preview {
-		padding: 1rem;
+		border-left: var(--border);
 	}
 </style>

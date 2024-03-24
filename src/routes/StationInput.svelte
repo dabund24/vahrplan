@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
 	import { getApiData } from "$lib/util";
-	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
+	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
 	import { onMount } from "svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
@@ -10,7 +10,7 @@
 	let inputElement: HTMLInputElement;
 	let promisedSuggestions: Promise<ParsedLocation[]> = Promise.resolve([]);
 	let focused = 0;
-	const url = new URL("http://localhost:4173/api/locations");
+	const url = new URL("http://localhost:5173/api/locations");
 
 	onMount(() => inputElement.setCustomValidity("Keine Station angegeben"));
 

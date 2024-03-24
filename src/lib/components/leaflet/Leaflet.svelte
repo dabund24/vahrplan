@@ -6,7 +6,7 @@
 	import { isTimeDefined } from "$lib/util";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
 	import Marker from "$lib/components/leaflet/Marker.svelte";
-	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
+	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
 
 	let map: L.Map | undefined;
 	let mapElement: HTMLElement;
@@ -36,30 +36,32 @@
 	});
 
 	$: if (map !== undefined) {
-		const coordinates = $selectedJourneys
-			.flatMap((j) => j.blocks)
-			.filter<DefiningBlock>(isTimeDefined)
-			.flatMap((block) =>
-				block.type === "leg"
-					? [
-							block.departureData.location.position,
-							...block.stopovers.map((s) => s.location.position),
-							block.arrivalData.location.position
-						]
-					: block.location.position
-			);
+		console.log("hi");
+		let coordinates: L.LatLngLiteral[];
+		if ($selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
+			console.log($selectedJourneys);
+			coordinates = $selectedJourneys
+				.flatMap((j) => j.blocks)
+				.filter<DefiningBlock>(isTimeDefined)
+				.flatMap((block) =>
+					block.type === "leg"
+						? [
+								block.departureData.location.position,
+								...block.stopovers.map((s) => s.location.position),
+								block.arrivalData.location.position
+							]
+						: block.location.position
+				);
+		} else {
+			coordinates = $displayedLocations.map((location) => location.position);
+		}
 		if (coordinates.length > 0) {
-			map.fitBounds($L.latLngBounds(coordinates));
+			map.fitBounds($L.latLngBounds(coordinates), {
+				paddingTopLeft: [20, 50],
+				paddingBottomRight: [20, 100]
+			});
 		}
 	}
-
-	$: if (map !== undefined) {
-		const coordinates = $displayedLocations.map((location) => location.position);
-		if (coordinates.length > 0) {
-			map.fitBounds($L.latLngBounds(coordinates));
-		}
-	}
-
 </script>
 
 <div class="map" bind:this={mapElement}>
@@ -125,5 +127,7 @@
 	.map {
 		width: 100%;
 		height: 100%;
+		position: relative;
+		bottom: 0;
 	}
 </style>

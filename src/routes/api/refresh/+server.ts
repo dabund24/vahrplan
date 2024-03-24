@@ -1,4 +1,4 @@
-import type { RequestHandler } from "@sveltejs/kit";
+import { json, type RequestHandler } from "@sveltejs/kit";
 import { client } from "$lib/server/setup";
 import { journeysToBlocks } from "$lib/server/parse";
 import { getSuccessResponse, getZugError } from "$lib/server/responses";
@@ -26,5 +26,5 @@ export const GET: RequestHandler = async ({ url }) => {
 		)
 	);
 	const blocks = journeysToBlocks(journeys);
-	return new Response(JSON.stringify(getSuccessResponse(blocks)));
+	return json(getSuccessResponse(blocks));
 };

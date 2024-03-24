@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FillerBlock } from "$lib/types";
-	import IconFiller from "$lib/components/IconFiller.svelte";
+	import IconFiller from "$lib/components/journeys/IconFiller.svelte";
 
 	export let block: FillerBlock;
 	let osmLink: string;
@@ -59,7 +59,6 @@
 		visibility: hidden;
 	}
 	.icon-container {
-		height: 0;
 		align-items: center;
 	}
 </style>

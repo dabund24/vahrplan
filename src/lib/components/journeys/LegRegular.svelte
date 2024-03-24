@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Time from "$lib/components/Time.svelte";
-	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
-	import NameDelayPlatform from "$lib/components/NameDelayPlatform.svelte";
+	import Time from "$lib/components/journeys/Time.svelte";
+	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import Stopovers from "./Stopovers.svelte";
 	import type { LegBlock } from "$lib/types";
 
 	export let block: LegBlock;
 </script>
 
-<div class="flex-row padded-top-bottom leg product--{block.line?.product}">
+<div class="flex-row leg product--{block.line?.product}">
 	<div class="flex-column">
 		<div class="top-or-bottom flex-column">
 			<Time time={block.departureData.time} />

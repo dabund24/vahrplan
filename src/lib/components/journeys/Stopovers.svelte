@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Time from "$lib/components/Time.svelte";
-	import IconStationLocation from "$lib/components/IconStationLocation.svelte";
-	import NameDelayPlatform from "$lib/components/NameDelayPlatform.svelte";
+	import Time from "$lib/components/journeys/Time.svelte";
+	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import type { TransitData } from "$lib/types";
 
 	export let stopovers: TransitData[];

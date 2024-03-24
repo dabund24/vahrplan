@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="flex-row">
+<div class="flex-row name-delay-platform">
 	{#if nameIsStrong}
 		<strong class="station {stationClass}">{transitData.location.name}</strong>
 	{:else}
@@ -35,14 +35,14 @@
 		{/if}
 	</div>
 
-	<div class="flex-column">
+	<div class="platform flex-column">
 		{#if transitData.platform !== undefined}
-			<div class="platform {transitData.platformChanged ? 'text--red' : ''}">
+			<div class="{transitData.platformChanged ? 'text--red' : ''}">
 				Gl. {transitData.platform}
 			</div>
 		{/if}
 		{#if transitData.platform2 !== undefined}
-			<div class="platform {transitData.platform2Changed ? 'text--red' : ''}">
+			<div class="{transitData.platform2Changed ? 'text--red' : ''}">
 				Gl. {transitData.platform2}
 			</div>
 		{/if}
@@ -50,6 +50,9 @@
 </div>
 
 <style>
+	.name-delay-platform {
+        width: 100%;
+	}
 	.delay {
 		padding-left: 4px;
 	}

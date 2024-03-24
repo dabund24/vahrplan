@@ -2,10 +2,10 @@
 	import { L } from "$lib/stores";
 	import { getContext, onDestroy, onMount } from "svelte";
 	import type { PopupData } from "$lib/types";
-	import Time from "$lib/components/Time.svelte";
-	import NameDelayPlatform from "$lib/components/NameDelayPlatform.svelte";
+	import Time from "$lib/components/journeys/Time.svelte";
+	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import "./popup.css";
-	import IconFiller from "$lib/components/IconFiller.svelte";
+	import IconFiller from "$lib/components/journeys/IconFiller.svelte";
 
 	export let popupData: PopupData;
 	let popup: L.Popup | undefined;
