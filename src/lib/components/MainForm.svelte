@@ -1,12 +1,14 @@
 <script lang="ts">
 	import StationInput from "../../routes/StationInput.svelte";
-	import type { ParsedLocation } from "$lib/types.js";
+	import { type ParsedLocation, products } from "$lib/types.js";
 	import { isDefined } from "$lib/util.js";
 	import { setDisplayedLocations } from "$lib/stores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
+	import Setting from "$lib/components/Setting.svelte";
+	import { journeysOptions } from "$lib/settings";
 
 	type KeyedArrayItem = { key: number; location?: ParsedLocation };
 
@@ -54,11 +56,64 @@
 	<Modal title="Filter" bind:showModal>
 		<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
 			{#if activeTab === 0}
-				Allgemein
+				<div class="settings">
+					<Setting
+						settingName="Fahrradmitnahme"
+						bind:setting={$journeysOptions.bike}
+						settingInfo={{ type: "boolean" }}
+					/>
+					<Setting
+						settingName="Barrierefreiheit"
+						bind:setting={$journeysOptions.accessibility}
+						settingInfo={{
+							type: "stringOptions",
+							options: [
+								{ value: "none", name: "ignorieren" },
+								{ value: "partial", name: "bevorzugen" },
+								{ value: "complete", name: "strikt" }
+							]
+						}}
+					/>
+					<Setting
+						settingName="Maximale Umstiegsanzahl"
+						bind:setting={$journeysOptions.transfers}
+						settingInfo={{
+							type: "numberOptions",
+							options: [
+								{ value: 0, name: "0 (nur Direktfahrten)" },
+								{ value: 1, name: "1" },
+								{ value: 2, name: "2" },
+								{ value: 3, name: "3" },
+								{ value: 4, name: "4" },
+								{ value: 5, name: "5" },
+								{ value: -1, name: "beliebig viele" }
+							]
+						}}
+					/>
+					<Setting
+						settingName="Mindestumsteigezeit [min]"
+						bind:setting={$journeysOptions.transferTime}
+						settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
+					/>
+				</div>
 			{:else if activeTab === 1}
-				Verkehrsmittel
+				<div class="settings">
+					{#each Object.entries(products) as [product, productName]}
+						<Setting
+							settingName={productName}
+							bind:setting={$journeysOptions.products[product]}
+							settingInfo={{ type: "boolean" }}
+						/>
+					{/each}
+				</div>
 			{/if}
 		</Tabs>
 	</Modal>
 	<button class="hoverable padded-top-bottom" type="submit">Submit</button>
 </form>
+
+<style>
+	.settings {
+		padding: 0.5rem 1rem;
+	}
+</style>

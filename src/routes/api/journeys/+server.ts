@@ -16,8 +16,6 @@ export const GET: RequestHandler = async ({ url }) => {
 
 	options.departure = new Date(Date.now());
 	options.results = 10;
-	console.log(stops);
 	const result = await getJourneyTree(stops, options);
-	console.log(result);
 	return new Response(JSON.stringify(result));
 };

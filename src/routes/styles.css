@@ -88,6 +88,8 @@
 	--blur: blur(1px);
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--opaque);
+
+	font-size: 18px;
 }
 
 [data-theme="dark"] {
@@ -159,7 +161,6 @@ details[open] summary::after {
 
 body {
 	font-family: var(--font-family);
-	font-size: 18px;
 	color: var(--foreground-color);
 	background-color: var(--background-color);
 	margin: 0;
@@ -188,6 +189,12 @@ button {
 	border: none;
 	font: inherit;
 	padding: 0;
+}
+
+select {
+	border: none;
+	font-size: 1rem;
+	background-color: transparent;
 }
 
 .flex-row {
@@ -348,9 +355,8 @@ button {
 	padding: .5rem;
 }
 
-/*
-MAP
- */
-
-
-
+@media screen and (max-width: 1000px) {
+	:root {
+		font-size: 16px;
+	}
+}
