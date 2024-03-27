@@ -5,8 +5,6 @@
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MainForm from "$lib/components/MainForm.svelte";
-
-
 </script>
 
 <svelte:head>
@@ -65,5 +63,14 @@
 	}
 	.journey-preview {
 		border-left: var(--border);
+	}
+
+	@media screen and (max-width: 1000px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+		.journey-preview {
+			display: none;
+		}
 	}
 </style>

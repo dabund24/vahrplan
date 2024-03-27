@@ -74,7 +74,7 @@
 <div class="outer-wrapper">
 	<div class="inner-wrapper">
 		<label class="flex-row input-summary padded-top-bottom">
-			<span class="flex-row">
+			<span class="flex-row suggestion-icon">
 				<IconStationLocation
 					color={selectedLocation === undefined ? "foreground" : "accent"}
 					iconType={selectedLocation?.type ?? "station"}
@@ -102,7 +102,7 @@
 							tabindex="-1"
 							on:click|preventDefault={() => void handleSuggestionClick(suggestion)}
 						>
-							<span class="suggestionIcon">
+							<span class="suggestion-icon">
 								<IconStationLocation
 									color={focused === i ? "accent" : "foreground"}
 									iconType={suggestion.type}
@@ -121,27 +121,26 @@
 
 <style>
 	.outer-wrapper {
-		height: 3rem;
+        width: 100%;
+		height: 0;
 		overflow-y: visible;
-		width: 25rem;
-		max-width: calc(100vw - 2rem);
 	}
 	.inner-wrapper {
 		position: relative;
 		border-radius: var(--border-radius--large);
-		border: var(--line-width) solid var(--background-color);
-	}
+		border: var(--line-width) solid transparent;
+    }
 	.inner-wrapper:not(:focus-within) ul:not(:active) {
 		display: none;
 	}
 	.inner-wrapper:focus-within {
 		z-index: 50;
 		border: var(--line-width) solid var(--foreground-color--opaque);
-	}
+        backdrop-filter: var(--blur);
+        background-color: var(--background-color--opaque);
+        -webkit-backdrop-filter: var(--blur);
+    }
 	ul {
-		backdrop-filter: var(--blur);
-		background-color: var(--background-color--opaque);
-		-webkit-backdrop-filter: var(--blur);
 		flex-direction: column;
 	}
 
@@ -174,6 +173,11 @@
 		border-radius: var(--border-radius--small);
 		background-color: var(--accent-color);
 		transition: height 0.3s;
+		margin: -1rem 0;
+	}
+
+	.suggestion-icon {
+        display: flex;
 	}
 
 	button {
