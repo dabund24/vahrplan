@@ -54,17 +54,16 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		flex: 0.6;
 	}
 
 	.grid {
-		max-height: 100vh;
 		display: grid;
 		grid-template-columns: 1fr 50rem;
-		min-height: 100vh;
+        height: 100vh;
 	}
 	.journey-preview {
 		border-left: var(--border);
+		position: relative;
 	}
 
 	@media screen and (max-width: 1000px) {

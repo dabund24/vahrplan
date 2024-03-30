@@ -85,10 +85,11 @@ function legToBlock(leg: Leg): LegBlock {
 		direction: leg.direction ?? "undefined",
 		line: leg.line ?? { type: "line" },
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
-		polyline: {
-			type: "LineString",
-			coordinates: leg.polyline?.features.map((feature) => feature.geometry.coordinates) ?? []
-		},
+		polyline:
+			leg.polyline?.features.map((feature) => [
+				feature.geometry.coordinates[1],
+				feature.geometry.coordinates[0]
+			]) ?? [],
 		precededByTransferBlock: false,
 		succeededByTransferBlock: false
 	};

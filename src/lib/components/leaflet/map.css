@@ -1,0 +1,7 @@
+.osm-tiles, .oepnvk-tiles {
+    filter: var(--map-filter)
+}
+
+.leaflet-container {
+    background: var(--background-color);
+}

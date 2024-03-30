@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "leaflet/dist/leaflet.css";
+	import "./map.css"
 	import { displayedJourneys, displayedLocations, L, selectedJourneys } from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
 	import type { DefiningBlock } from "$lib/types";
@@ -127,7 +128,7 @@
 	.map {
 		width: 100%;
 		height: 100%;
-		position: relative;
+		position: absolute;
 		bottom: 0;
 	}
 </style>

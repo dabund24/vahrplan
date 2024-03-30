@@ -101,7 +101,7 @@ export type LegBlock = {
 	direction: string;
 	line: Line;
 	stopovers: TransitData[];
-	polyline: LineString;
+	polyline: [number, number][];
 	precededByTransferBlock: boolean;
 	succeededByTransferBlock: boolean;
 };

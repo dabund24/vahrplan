@@ -27,7 +27,7 @@
 
 
 .map__popup {
-    font-size: 16px;
+    font-size: calc(1rem - 2px);
     font-family: var(--font-family);
     text-align: center;
 }

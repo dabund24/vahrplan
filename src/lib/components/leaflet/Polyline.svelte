@@ -34,12 +34,11 @@
 		if (map !== undefined) {
 			polyline = (
 				block.type === "leg"
-					? $L.geoJSON(block.polyline, {
-							style: {
-								className: `product--${block.line.product} stroke--product`,
-								weight: 4
-							}
-						})
+					? $L.polyline(block.polyline, {
+						className: `product--${block.line.product} stroke--product`,
+						weight: 4,
+					smoothFactor: 2
+					})
 					: $L.polyline(
 							[block.originLocation.position, block.destinationLocation.position],
 							{
