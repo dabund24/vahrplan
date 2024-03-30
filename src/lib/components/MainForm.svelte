@@ -38,7 +38,7 @@
 	<div class="location-inputs--outer flex-row">
 		<div class="location-inputs">
 			{#each stops as stop, i (stop.key)}
-				<div class="flex-row input-container" transition:scale animate:flip={{ duration: 200 }}>
+				<div class="flex-row input-container" transition:scale animate:flip={{ duration: 400 }}>
 					<button
 						class="button--small add-button hoverable"
 						type="button"

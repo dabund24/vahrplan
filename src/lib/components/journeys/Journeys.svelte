@@ -10,7 +10,7 @@
 
 <div class="journeys-container">
 	{#each $displayedJourneys as journey (journey.key)}
-		<div transition:scale animate:flip={{ duration: 200}}>
+		<div transition:scale animate:flip={{ duration: 400}}>
 			{#each journey.blocks as block}
 				{#if block.type === "leg"}
 					<LegRegular {block} />

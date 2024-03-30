@@ -94,6 +94,7 @@ export type AdhesiveBlock = LocationBlock | WalkingBlock | TransferBlock | undef
 
 export type LegBlock = {
 	type: "leg";
+	tripId: string;
 	departureData: TransitData;
 	arrivalData: TransitData;
 	duration: string;
@@ -159,21 +160,6 @@ export type PopupDataStation = {
 	product1?: string;
 	product2?: string;
 };
-
-/**
-export const products = [
-	"nationalExpress",
-	"national",
-	"regionalExpress",
-	"regional",
-	"suburban",
-	"subway",
-	"tram",
-	"bus",
-	"ferry",
-	"taxi"
-] as const;
-	*/
 
 export const products = {
 	nationalExpress: "Intercity-Express",

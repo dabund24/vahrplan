@@ -66,6 +66,7 @@ export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBloc
 function legToBlock(leg: Leg): LegBlock {
 	return {
 		type: "leg",
+		tripId: leg.tripId ?? "",
 		departureData: {
 			location: parseStationStopLocation(leg.origin),
 			attribute: leg.stopovers?.at(0)?.cancelled ? "cancelled" : undefined,

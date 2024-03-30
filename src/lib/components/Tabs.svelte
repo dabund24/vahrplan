@@ -32,7 +32,6 @@
         background-color: var(--background-color--opaque);
         z-index: 500;
         padding: 0 .5rem;
-
     }
 	li {
 		width: 100%;

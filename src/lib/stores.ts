@@ -22,7 +22,7 @@ export const mergingBlocks = writable<AdhesiveBlock[]>([]);
 displayedLocations.subscribe(resetMergingBlocks);
 
 // this is reset to an empty array when displayedLocations changes
-export const selectedJourneys = writable<SelectedJourney[]>();
+export const selectedJourneys = writable<SelectedJourney[]>([]);
 displayedLocations.subscribe(resetSelectedJourneys);
 
 export const displayedJourneys = derived(

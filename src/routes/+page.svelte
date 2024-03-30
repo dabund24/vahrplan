@@ -5,6 +5,7 @@
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MainForm from "$lib/components/MainForm.svelte";
+	import JourneySummary from "./JourneySummary.svelte";
 </script>
 
 <svelte:head>
@@ -18,6 +19,7 @@
 			<MainForm />
 		</section>
 		<section class="diagram">
+			<JourneySummary />
 			{#await $displayedTree}
 				loading...
 			{:then tree}

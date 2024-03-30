@@ -79,7 +79,7 @@
 	}
 
 	.diagram-element {
-		width: 30rem;
+		width: var(--connection-width);
 		height: fit-content;
 		border-radius: 50vh;
 		padding: 4px 0;
