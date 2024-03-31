@@ -6,6 +6,7 @@
 	import type { LegBlock } from "$lib/types";
 
 	export let block: LegBlock;
+	export let compact = false;
 </script>
 
 <div class="flex-row leg product--{block.line?.product}">
@@ -14,9 +15,7 @@
 			<Time time={block.departureData.time} />
 		</div>
 		<div class="middle">
-			<i class="duration"
-				>{block.duration}</i
-			>
+			<i class="duration">{block.duration}</i>
 		</div>
 		<div class="top-or-bottom flex-column">
 			<Time time={block.arrivalData.time} />
@@ -32,14 +31,18 @@
 			<NameDelayPlatform transitData={block.departureData} nameIsStrong={true} />
 		</div>
 		<div class="middle padded-top-bottom flex-column">
-			<details>
-				<summary class="hoverable">
-					{block.line?.name} &rightarrow; {block.direction}
-				</summary>
-				<div>
-					<Stopovers stopovers={block.stopovers} />
-				</div>
-			</details>
+			{#if compact}
+				<Stopovers stopovers={block.stopovers} />
+			{:else}
+				<details>
+					<summary class="hoverable">
+						{block.line?.name} &rightarrow; {block.direction}
+					</summary>
+					<div>
+						<Stopovers stopovers={block.stopovers} />
+					</div>
+				</details>
+			{/if}
 		</div>
 		<div class="flex-row top-or-bottom">
 			<NameDelayPlatform transitData={block.arrivalData} nameIsStrong={true} />
@@ -71,6 +74,7 @@
 		width: 0;
 		display: block;
 		direction: rtl;
+        visibility: hidden;
 	}
 
 	summary {
@@ -78,7 +82,7 @@
 		margin-left: calc(-0.5rem - var(--line-width));
 		width: fit-content;
 	}
-	.leg:has(details[open]) .duration {
+	.leg:has(details:not([open])) .duration {
 		visibility: hidden;
 	}
 </style>

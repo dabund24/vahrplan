@@ -85,11 +85,17 @@
 
 	--height--icon--small: 16px;
 
-	--blur: blur(1px);
+	--blur: none;
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--opaque);
 
 	font-size: 18px;
+}
+
+@media (update: fast) {
+	:root {
+		--blur: blur(3px);
+	}
 }
 
 [data-theme="dark"] {
@@ -197,6 +203,11 @@ select {
 	background-color: transparent;
 }
 
+header {
+	/*noinspection CssInvalidPropertyValue*/
+	text-wrap: balance;
+}
+
 .flex-row {
 	display: flex;
 }
@@ -237,7 +248,6 @@ select {
 
 .line--regular {
 	background-color: var(--foreground-color);
-	transition: background-color 0.5s ease-in-out;
 	border-radius: var(--border-radius--small);
 	width: 100%;
 	height: var(--line-width);
@@ -245,7 +255,6 @@ select {
 
 .line--vertical {
 	background-color: var(--foreground-color);
-	transition: background-color 0.5s ease-in-out;
 	border-radius: var(--border-radius--small);
 	height: 100%;
 	width: var(--line-width);
@@ -337,6 +346,10 @@ select {
 .product--nationalExpress {
 	--product-color: var(--nationalExpress-color);
 	--product-color--opaque: var(--nationalExpress-color--opaque);
+}
+
+.zero-height {
+	line-height: 0;
 }
 
 .hoverable {

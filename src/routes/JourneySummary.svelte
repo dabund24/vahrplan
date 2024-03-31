@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
 	import { displayedLocations, selectedJourneys } from "$lib/stores.js";
 	import type { JourneyBlock, LegBlock } from "$lib/types.js";
 	import Time from "$lib/components/journeys/Time.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
+	import SummaryStationIcon from "./SummaryStationIcon.svelte";
 
 	$: legss = [
 		...$selectedJourneys.map((journeys) => journeys.blocks.filter<LegBlock>(isLeg)),
@@ -13,6 +15,27 @@
 
 	function isLeg(block: JourneyBlock): block is LegBlock {
 		return block.type === "leg";
+	}
+
+	$: locationsActAsStopover = getStopoverActing(legss);
+
+	function getStopoverActing(legss: LegBlock[][]): boolean[] {
+		let actAsStopover: boolean[] = [false];
+		for (let i = 1; i < legss.length; i++) {
+			if (legss[i - 1].length === 0 || legss[i].length === 0) {
+				actAsStopover.push(false);
+				continue;
+			}
+			actAsStopover.push(legss[i - 1].at(-1)?.line.fahrtNr === legss[i][0].line.fahrtNr);
+		}
+		return actAsStopover;
+	}
+
+	let legModal = false;
+	let modalLeg: LegBlock | undefined;
+	function showLegModal(leg: LegBlock): void {
+		modalLeg = leg;
+		legModal = true;
 	}
 </script>
 
@@ -25,33 +48,42 @@
 		>
 			<div class="station-name">{location.name}</div>
 			<div class="visuals-container flex-row">
-				<button class="icon-container hoverable">
-					<IconStationLocation color={"product"} iconType={location.type} />
-				</button>
+				<div class="station-icon-container">
+					<SummaryStationIcon
+						{location}
+						locationIndex={i}
+						actsAsStopover={locationsActAsStopover[i]}
+						isDisplayedLocation={true}
+					/>
+				</div>
 				<div class="visuals--selected">
 					<div class="intermediate-stations flex-row">
 						<!--
 						TODO change transition after https://github.com/sveltejs/svelte/issues/10251 is resolved
 						-->
 						{#each legss[i].slice(1) as leg (leg.departureData.location.requestParameter)}
-							<button
-								class="icon-container hoverable"
+							<div
+								class="station-icon-container"
 								in:scale
-								out:scale
 								animate:flip={{ duration: 400 }}
 							>
-								<IconStationLocation color={"accent"} iconType={"station"} />
-							</button>
+								<SummaryStationIcon
+									location={leg.departureData.location}
+									locationIndex={i}
+									isDisplayedLocation={false}
+								></SummaryStationIcon>
+							</div>
 						{/each}
 					</div>
 					<div class="lines flex-row">
-						{#each legss[i] as leg (leg.tripId)}
-							<div
-								class="line-container tooltip tooltip--attribute"
-								in:scale={{}}
-								animate:flip={{ duration: 400 }}
-							>
-								<div class="line--product product--{leg.line.product}"></div>
+						{#each legss[i] as leg (leg.line.fahrtNr ?? Math.random())}
+							<div in:scale={{}} animate:flip={{ duration: 400 }}>
+								<button
+									class="line-container hoverable"
+									on:click={() => void showLegModal(leg)}
+								>
+									<span class="line--product product--{leg.line.product}"></span>
+								</button>
 							</div>
 						{/each}
 					</div>
@@ -74,13 +106,24 @@
 		</div>
 	{/each}
 </div>
+{#if modalLeg !== undefined}
+	<Modal bind:showModal={legModal}>
+		<strong slot="title">
+			{modalLeg.line.name} <span class="zero-height">&rightarrow;</span>
+			{modalLeg.direction}
+		</strong>
+		<div class="modal-content">
+			<LegRegular block={modalLeg} compact={true} />
+		</div>
+	</Modal>
+{/if}
 
 <style>
 	#journey-summary {
 		position: sticky;
 		top: 0;
 		align-items: end;
-		padding-top: 0.5rem;
+		padding-top: 1rem;
 		background-color: var(--background-color--opaque);
 		backdrop-filter: var(--blur);
 		-webkit-backdrop-filter: var(--blur);
@@ -176,29 +219,33 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
+			& > * {
+				width: 100%;
+			}
 		}
 		& .intermediate-stations {
 			position: absolute;
 			width: 100%;
 			justify-content: space-evenly;
 		}
-
-		& .icon-container {
-			display: flex;
-			margin: 0 -16px;
-			padding: 4px;
-			border-radius: 100%;
-			z-index: 1;
+		& .station-icon-container {
+			z-index: 2;
 			position: relative;
-			cursor: pointer;
+			margin: 0 -16px;
 		}
-
 		& .line-container {
 			align-self: center;
 			height: 100%;
-			width: 100%;
+			width: calc(100% + 32px);
 			display: flex;
 			align-items: center;
+			border-radius: 50vh;
+			margin: 0 -16px;
+			padding: 0 12px;
+			&:hover {
+				position: relative;
+				z-index: 1;
+			}
 			& .line--product {
 				width: 100%;
 				height: var(--line-width);
@@ -257,5 +304,9 @@
 
 	.station--selected .times--journey {
 		visibility: visible;
+	}
+
+	.modal-content {
+		padding: 0.5rem 1rem 0.5rem;
 	}
 </style>

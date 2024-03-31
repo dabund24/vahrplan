@@ -20,6 +20,7 @@ export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResp
 
 export function getTreeUrl(locations: ParsedLocation[]): URL {
 	const url = new URL("http://localhost:5173/api/journeys");
+	//const url = new URL("http://localhost:4173/api/journeys");
 	url.searchParams.set(
 		"stops",
 		JSON.stringify(locations.map((location) => location.requestParameter))

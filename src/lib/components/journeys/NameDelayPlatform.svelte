@@ -4,28 +4,31 @@
 	export let transitData: TransitData;
 	export let nameIsStrong = false;
 
-	let stationClass = "";
-	if (transitData.attribute === "cancelled") {
-		stationClass = "text--red";
-	} else if (transitData.attribute === "additional") {
-		stationClass = "text--blue";
-	}
+	$: stationOuterTag = nameIsStrong ? "strong" : "span";
+
+	$: stationInnerTag = transitData.attribute === "cancelled" ? "s" : "span";
+
 	let delayTextA = "";
-	if (transitData.time.a?.delay !== undefined) {
+	$: if (transitData.time.a?.delay !== undefined) {
 		delayTextA = ` (+${transitData.time.a.delay})`;
 	}
 	let delayTextB = "";
-	if (transitData.time.b?.delay !== undefined) {
+	$: if (transitData.time.b?.delay !== undefined) {
 		delayTextB = ` (+${transitData.time.b.delay})`;
 	}
 </script>
 
 <div class="flex-row name-delay-platform">
-	{#if nameIsStrong}
-		<strong class="station {stationClass}">{transitData.location.name}</strong>
-	{:else}
-		<span class="station {stationClass}">{transitData.location.name}</span>
-	{/if}
+	<svelte:element
+		this={stationOuterTag}
+		class="station"
+		class:text--red={transitData.attribute === "cancelled"}
+		class:text--blue={transitData.attribute === "additional"}
+	>
+		<svelte:element this={stationInnerTag}>
+			{transitData.location.name}
+		</svelte:element>
+	</svelte:element>
 	<div class="flex-column">
 		{#if transitData.time.a?.delay !== undefined}
 			<span class="delay text--{transitData.time.a.color}">{delayTextA}</span>
@@ -37,12 +40,12 @@
 
 	<div class="platform flex-column">
 		{#if transitData.platform !== undefined}
-			<div class="{transitData.platformChanged ? 'text--red' : ''}">
+			<div class:text--red={transitData.platformChanged}>
 				Gl. {transitData.platform}
 			</div>
 		{/if}
 		{#if transitData.platform2 !== undefined}
-			<div class="{transitData.platform2Changed ? 'text--red' : ''}">
+			<div class:text--red={transitData.platform2Changed}>
 				Gl. {transitData.platform2}
 			</div>
 		{/if}
@@ -51,7 +54,11 @@
 
 <style>
 	.name-delay-platform {
-        width: 100%;
+		width: 100%;
+	}
+	.station {
+		text-overflow: ellipsis;
+		overflow-x: hidden;
 	}
 	.delay {
 		padding-left: 4px;

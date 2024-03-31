@@ -6,6 +6,10 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MainForm from "$lib/components/MainForm.svelte";
 	import JourneySummary from "./JourneySummary.svelte";
+	import { browser } from "$app/environment";
+
+	let show = browser && window.innerWidth > 1000
+
 </script>
 
 <svelte:head>
@@ -29,15 +33,17 @@
 			{/await}
 		</section>
 	</div>
-	<div class="journey-preview">
-		<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
-			{#if activeTab === 0}
-				<Journeys />
-			{:else if activeTab === 1}
-				<Leaflet />
-			{/if}
-		</Tabs>
-	</div>
+	{#if show}
+		<div class="journey-preview">
+			<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
+				{#if activeTab === 0}
+					<Journeys />
+				{:else if activeTab === 1}
+					<Leaflet />
+				{/if}
+			</Tabs>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -59,7 +65,7 @@
 	.grid {
 		display: grid;
 		grid-template-columns: 1fr 50rem;
-        height: 100vh;
+		height: 100vh;
 	}
 	.journey-preview {
 		border-left: var(--border);

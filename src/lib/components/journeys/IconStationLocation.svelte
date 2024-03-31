@@ -8,8 +8,7 @@
 	export let secondaryProduct: string | undefined = undefined;
 </script>
 
-<!--{#if iconType === "station" && !smallIcon}-->
-<svg width="16" height="16" viewBox={smallIcon ? "-2 -2 16 16" : ""} xmlns="http://www.w3.org/2000/svg">
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 	{#if iconType === "station" && !smallIcon && secondaryProduct === undefined}
 		<circle
 			cx="8"
@@ -38,8 +37,8 @@
 		/>
 	{:else if iconType === "station" && smallIcon}
 		<circle
-			cx="6"
-			cy="6"
+			cx="8"
+			cy="8"
 			r="4.5"
 			stroke="var(--{color}-color)"
 			stroke-width="3"

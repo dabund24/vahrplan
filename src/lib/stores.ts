@@ -36,10 +36,18 @@ export function setDisplayedLocations(locations: ParsedLocation[]): void {
 	displayedLocations.set(locations);
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
-	displayedLocations.update((locations) => locations.splice(index, 0, location));
+	console.log(index);
+	displayedLocations.update((locations) => [
+		...locations.slice(0, index),
+		location,
+		...locations.slice(index)
+	]);
 }
 export function removeDisplayedLocation(index: number): void {
-	displayedLocations.update((blocks) => blocks.splice(index, 0));
+	displayedLocations.update((locations) => [
+		...locations.slice(0, index),
+		...locations.slice(index + 1)
+	]);
 }
 
 function resetSelectedJourneys(locations: ParsedLocation[]): void {
