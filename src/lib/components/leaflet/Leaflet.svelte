@@ -1,6 +1,6 @@
 <script lang="ts">
 	import "leaflet/dist/leaflet.css";
-	import "./map.css"
+	import "./map.css";
 	import { displayedJourneys, displayedLocations, L, selectedJourneys } from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
 	import type { DefiningBlock } from "$lib/types";
@@ -11,6 +11,10 @@
 
 	let map: L.Map | undefined;
 	let mapElement: HTMLElement;
+
+	const resizeObserver = new ResizeObserver(() => {
+		map?.invalidateSize();
+	});
 
 	onMount(() => {
 		map = $L.map(mapElement, { zoomControl: false });
@@ -25,11 +29,13 @@
 			northEast = $L.latLng(40.774, -74.125);
 
 		map.fitBounds($L.latLngBounds(southWest, northEast));
+		resizeObserver.observe(mapElement);
 	});
 
 	onDestroy(() => {
 		map?.remove();
 		map = undefined;
+		resizeObserver.disconnect()
 	});
 
 	setContext("map", {

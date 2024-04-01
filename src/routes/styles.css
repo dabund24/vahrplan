@@ -96,6 +96,10 @@
 	:root {
 		--blur: blur(3px);
 	}
+	:root[data-theme="dark"] {
+		--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
+		brightness(0.7);
+	}
 }
 
 [data-theme="dark"] {
@@ -131,9 +135,6 @@
 	--regionalExpress-color--opaque: #d77b00;
 	--national-color: #878c96;
 	--national-color--opaque: #3c414b;
-
-	--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
-		brightness(0.7);
 }
 
 ul,
@@ -368,7 +369,7 @@ header {
 	padding: .5rem;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1500px) {
 	:root {
 		font-size: 16px;
 	}
