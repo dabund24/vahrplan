@@ -37,6 +37,14 @@
 		modalLeg = leg;
 		legModal = true;
 	}
+
+	function getLegKey(leg: LegBlock): string {
+		return (
+			(leg.line?.fahrtNr ?? Math.random().toString()) +
+			(leg.line?.operator?.name ?? Math.random()) +
+			(leg.line?.name ?? Math.random())
+		);
+	}
 </script>
 
 <div class="flex-row" id="journey-summary">
@@ -65,6 +73,7 @@
 							<div
 								class="station-icon-container"
 								in:scale
+								out:scale
 								animate:flip={{ duration: 400 }}
 							>
 								<SummaryStationIcon
@@ -76,7 +85,7 @@
 						{/each}
 					</div>
 					<div class="lines flex-row">
-						{#each legss[i] as leg (leg.line.fahrtNr ?? Math.random())}
+						{#each legss[i] as leg (getLegKey(leg))}
 							<div in:scale={{}} animate:flip={{ duration: 400 }}>
 								<button
 									class="line-container hoverable"
@@ -118,9 +127,11 @@
 	</Modal>
 {/if}
 
+<!--suppress CssInvalidPropertyValue -->
 <style>
 	#journey-summary {
 		position: sticky;
+		z-index: 5;
 		top: 0;
 		align-items: end;
 		padding-top: 1rem;
@@ -203,6 +214,8 @@
 		width: 100%;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
+        /*noinspection CssInvalidPropertyValue*/
+        text-wrap: balance;
 	}
 
 	/* rules for everything between name and time data */
@@ -232,6 +245,7 @@
 			z-index: 2;
 			position: relative;
 			margin: 0 -16px;
+			border-radius: 100%;
 		}
 		& .line-container {
 			align-self: center;

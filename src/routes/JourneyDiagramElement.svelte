@@ -59,23 +59,25 @@
 	on:click={handleDiagramElementClick}
 >
 	<span class="time">
-		<Time time={departureTime} variableWidth={false} />
+		<Time time={departureTime} />
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
-			<li class="leg product--{block.line.product}">
-				{displayedBlocks.length > 4 ? block.line.productName : block.line.name}
-			</li>
+			<span class="leg product--{block.line.product}">
+				<span class="leg__name--long">{block.line.name}</span>
+				<span class="leg__name--short">{block.line.productName}</span>
+			</span>
 		{/each}
 	</span>
 	<span class="time">
-		<Time time={arrivalTime} variableWidth={false} />
+		<Time time={arrivalTime} />
 	</span>
 </button>
 
 <style>
 	.time {
 		border: transparent solid 1px;
+		padding: 0 8px;
 	}
 
 	.diagram-element {
@@ -106,6 +108,8 @@
 	}
 
 	.leg {
+		container-type: inline-size;
+		container-name: leg;
 		width: 100%;
 		text-align: center;
 		background-color: var(--product-color--opaque);
@@ -121,6 +125,26 @@
 		&:last-child {
 			border-top-right-radius: 50vh;
 			border-bottom-right-radius: 50vh;
+		}
+	}
+	
+	.leg__name--short {
+        display: none;
+	}
+
+	
+	@container leg (max-width: 4.5rem) {
+		.leg__name--long {
+            display: none;
+		}
+		.leg__name--short {
+            display: block;
+		}
+    }
+	
+	@container leg (max-width: 2.5rem) {
+		.leg__name--short {
+            display: none;
 		}
 	}
 </style>

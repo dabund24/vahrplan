@@ -61,6 +61,7 @@
 	}
 	.icon-container[aria-pressed="true"] {
 		border: var(--border);
+		background-color: var(--background-color);
 	}
 
 	.location-name {

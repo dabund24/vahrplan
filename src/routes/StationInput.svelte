@@ -131,19 +131,21 @@
 		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid transparent;
     }
-	.inner-wrapper:not(:focus-within) ul:not(:active) {
-		display: none;
+
+	ul {
+		flex-direction: column;
+        display: none;
 	}
-	.inner-wrapper:focus-within {
-		z-index: 50;
-		border: var(--line-width) solid var(--foreground-color--opaque);
+    .inner-wrapper:focus-within ul, ul:active {
+        display: block;
+    }
+    .inner-wrapper:focus-within {
+        z-index: 50;
+        border: var(--line-width) solid var(--foreground-color--opaque);
         backdrop-filter: var(--blur);
         background-color: var(--background-color--opaque);
         -webkit-backdrop-filter: var(--blur);
     }
-	ul {
-		flex-direction: column;
-	}
 
 	.input-summary {
 		align-items: center;
@@ -169,6 +171,7 @@
 	.suggestion::before {
 		content: "";
 		display: flex;
+		flex-shrink: 0;
 		height: 0;
 		width: var(--line-width);
 		border-radius: var(--border-radius--small);

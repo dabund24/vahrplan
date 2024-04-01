@@ -1,5 +1,4 @@
 import type { JourneysOptions, Line, Location, Station, Stop } from "hafas-client";
-import type { LineString } from "geojson";
 import type { NumericRange } from "@sveltejs/kit";
 
 export type Fetchable = JourneyNode[] | JourneyBlock[] | ParsedLocation[];

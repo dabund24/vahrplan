@@ -1,6 +1,6 @@
 <script lang="ts">
 	import JourneyDiagram from "./JourneyDiagram.svelte";
-	import { displayedTree } from "$lib/stores";
+	import { displayedLocations, displayedTree } from "$lib/stores";
 	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
@@ -8,8 +8,7 @@
 	import JourneySummary from "./JourneySummary.svelte";
 	import { browser } from "$app/environment";
 
-	let show = browser && window.innerWidth > 1000
-
+	let show = browser && window.innerWidth > 1000;
 </script>
 
 <svelte:head>
@@ -18,8 +17,11 @@
 </svelte:head>
 
 <div class="grid">
-	<div class="main-application flex-column">
-		<section>
+	<div
+		class="main-application flex-column"
+		style:--connection-count={$displayedLocations.length - 1}
+	>
+		<section class="form">
 			<MainForm />
 		</section>
 		<section class="diagram">
@@ -47,6 +49,11 @@
 </div>
 
 <style>
+	.form {
+        position: sticky;
+		left: 0;
+        z-index: 100;
+	}
 	.diagram {
 		margin: 0 auto;
 	}
@@ -70,6 +77,12 @@
 	.journey-preview {
 		border-left: var(--border);
 		position: relative;
+	}
+
+	.main-application {
+		padding: .5rem;
+		container-type: size;
+		--connection-width: clamp(10rem, calc(100cqw / var(--connection-count)), 40rem);
 	}
 
 	@media screen and (max-width: 1000px) {
