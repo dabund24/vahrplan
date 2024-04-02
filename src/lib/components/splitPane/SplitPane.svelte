@@ -105,13 +105,12 @@
 		</div>
 	{/if}
 
-	{#if pos !== "0%" && pos !== "100%" && !disabled}
 		<div
 			class="{type} divider"
 			class:disabled
+			class:dragging
 			use:drag={(e) => void update(e.clientX, e.clientY)}
 		/>
-	{/if}
 </div>
 
 {#if dragging}
@@ -128,7 +127,7 @@
 		transition: .3s;
 	}
 
-	.container:has(.divider:hover, .divider:active) {
+	.container:has(.divider:hover, .divider:active, .divider.dragging) {
 		--sp-thickness: calc(3 * var(--line-width));
 		transition: 0s;
 	}
@@ -167,6 +166,7 @@
 		position: absolute;
 		z-index: 500;
 		touch-action: none !important;
+		transition: left .2s ease-out;
 	}
 
 	.divider::after {
@@ -191,7 +191,7 @@
 		z-index: 700;
 		width: var(--line-width);
 		height: 0;
-		background-color: var(--accent-color);
+		background-color: var(--foreground-color);
 		border-radius: var(--border-radius--small);
 		translate: -50% -50%;
 		top: 50%;
@@ -199,10 +199,16 @@
 	}
 
 	.divider:hover,
-	.divider:active {
+	.divider:active,
+	.divider.dragging {
+		transition: none;
 		&::before {
 			height: var(--line-length);
 		}
+	}
+
+	.divider.dragging::before {
+		background-color: var(--accent-color);
 	}
 
 	.horizontal > .divider {
@@ -213,10 +219,6 @@
 		transform: translate(calc(-50% * var(--sp-thickness)), 0);
 	}
 
-	.horizontal > .divider.disabled {
-		cursor: default;
-	}
-
 	.horizontal > .divider::after {
 		left: 50%;
 		top: 0;
@@ -224,6 +226,16 @@
 		height: 100%;
 		z-index: 100;
 	}
+
+    .divider.disabled {
+        cursor: default;
+        visibility: hidden;
+        width: 0;
+        &::before, &::after {
+            width: 0;
+			border: none;
+        }
+    }
 
 	.vertical > .divider {
 		padding: calc(0.5 * var(--sp-thickness)) 0;
