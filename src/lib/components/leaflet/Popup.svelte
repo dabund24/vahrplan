@@ -45,7 +45,7 @@
 		</div>
 		<span>{popupData.distance}m Fußweg (ca. <i>{popupData.walkingTime}</i>)</span>
 	{:else}
-		{#if popupData.transitData.time.a !== undefined || popupData.transitData.time.b !== undefined}
+		{#if popupData.transitData.time.arrival !== undefined || popupData.transitData.time.departure !== undefined}
 			<Time time={popupData.transitData.time} />
 		{/if}
 		<div class="flex-column middle">

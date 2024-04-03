@@ -38,11 +38,7 @@
         background-color: var(--background-color--opaque);
         padding: 4px .5rem 0;
 	}
-	.transition {
-        height: .5rem;
-        width: 100%;
-		background: linear-gradient(to bottom, var(--background-color--opaque), transparent);
-	}
+
 	li {
 		width: 100%;
 	}

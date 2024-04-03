@@ -1,13 +1,14 @@
 <script lang="ts">
-	import type { JourneyBlock, DefiningBlock, LegBlock, ParsedTime } from "$lib/types";
+	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/journeys/Time.svelte";
 	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores";
-	import { isTimeDefined } from "$lib/util";
 
 	export let blocks: JourneyBlock[];
 	export let depth: number;
 	export let index: number;
 	export let refreshToken: string;
+	export let departure: ParsedTime;
+	export let arrival: ParsedTime;
 
 	$: displayedBlocks = blocks.filter<LegBlock>(
 		((block) => block.type === "leg") as (block: JourneyBlock) => block is LegBlock
@@ -15,39 +16,14 @@
 
 	$: isSelected = index === $selectedJourneys.at(depth)?.selectedBy;
 
-	function getTimeFromTimeDefinedBlock(
-		block: DefiningBlock | undefined,
-		timeType: "arrival" | "departure"
-	): ParsedTime {
-		if (block === undefined) {
-			return { a: { time: "n/a" } };
-		}
-		if (block.type === "leg") {
-			return {
-				a: block[`${timeType}Data`].time[timeType === "arrival" ? "a" : "b"]
-			};
-		} else {
-			return {
-				a: block.time[timeType === "arrival" ? "a" : "b"] ?? { time: "n/a" }
-			};
-		}
-	}
-
-	$: departureTime = getTimeFromTimeDefinedBlock(
-		blocks.find<DefiningBlock>(isTimeDefined),
-		"departure"
-	);
-
-	$: arrivalTime = getTimeFromTimeDefinedBlock(
-		blocks.findLast<DefiningBlock>(isTimeDefined),
-		"arrival"
-	);
-
 	function handleDiagramElementClick(): void {
 		if (isSelected) {
 			unselectJourneyBlocks(depth);
 		} else {
-			selectJourneyBlocks(depth, index, blocks, refreshToken);
+			selectJourneyBlocks(
+				{ selectedBy: index, blocks, arrival, departure, refreshToken },
+				depth
+			);
 		}
 	}
 </script>
@@ -59,7 +35,7 @@
 	on:click={handleDiagramElementClick}
 >
 	<span class="time">
-		<Time time={departureTime} />
+		<Time time={departure} />
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
@@ -70,7 +46,7 @@
 		{/each}
 	</span>
 	<span class="time">
-		<Time time={arrivalTime} />
+		<Time time={arrival} />
 	</span>
 </button>
 
@@ -127,24 +103,23 @@
 			border-bottom-right-radius: 50vh;
 		}
 	}
-	
+
 	.leg__name--short {
-        display: none;
+		display: none;
 	}
 
-	
-	@container leg (max-width: 4.5rem) {
+	@container leg (max-width: 4.5em) {
 		.leg__name--long {
-            display: none;
+			display: none;
 		}
 		.leg__name--short {
-            display: block;
+			display: block;
 		}
-    }
-	
-	@container leg (max-width: 2.5rem) {
+	}
+
+	@container leg (max-width: 2.5em) {
 		.leg__name--short {
-            display: none;
+			display: none;
 		}
 	}
 </style>

@@ -134,8 +134,8 @@ export function mergeLocationBlocks(
 	return {
 		type: "location",
 		time: {
-			a: arrivalBlock.time.a,
-			b: departureBlock.time.b
+			arrival: arrivalBlock.time.arrival,
+			departure: departureBlock.time.departure
 		},
 		location: arrivalBlock.location,
 		hidden: false
@@ -154,7 +154,7 @@ function mergingWalkToBlock(
 		destinationLocation: arrivalLocation,
 		distance: 0,
 		walkingTime: undefined,
-		transferTime: dateDifferenceString(departureTime.a?.time, arrivalTime.b?.time)
+		transferTime: dateDifferenceString(departureTime.arrival?.time, arrivalTime.departure?.time)
 	};
 }
 
@@ -166,7 +166,10 @@ export function transferToBlock(
 ): TransferBlock {
 	return {
 		type: "transfer",
-		transferTime: dateDifferenceString(arrivalData.time.a?.time, departureData.time.b?.time),
+		transferTime: dateDifferenceString(
+			arrivalData.time.arrival?.time,
+			departureData.time.departure?.time
+		),
 		transitData: mergeTransitData(arrivalData, departureData),
 		arrivalProduct,
 		departureProduct

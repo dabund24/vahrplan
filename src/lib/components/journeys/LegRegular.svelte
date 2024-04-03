@@ -83,6 +83,6 @@
 		width: fit-content;
 	}
 	.leg:has(details:not([open])) .duration {
-		visibility: hidden;
+		visibility: visible;
 	}
 </style>

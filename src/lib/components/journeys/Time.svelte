@@ -7,14 +7,14 @@
 </script>
 
 <div class="time flex-column" style="--time-width: {variableWidth ? 'auto' : '4rem'}">
-	{#if time.a !== undefined}
-		<div class="text--{time.a.color}">
-			{timeToString(time.a.time)}
+	{#if time.arrival !== undefined}
+		<div class="text--{time.arrival.color}">
+			{timeToString(time.arrival.time)}
 		</div>
 	{/if}
-	{#if time.b !== undefined}
-		<div class="text--{time.b.color}">
-			{timeToString(time.b.time)}
+	{#if time.departure !== undefined}
+		<div class="text--{time.departure.color}">
+			{timeToString(time.departure.time)}
 		</div>
 	{/if}
 	<div class="width-setter">00:00</div>

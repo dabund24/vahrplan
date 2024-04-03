@@ -1,5 +1,6 @@
 import type { Leg, Station, Stop, Location, StopOver, Journey } from "hafas-client";
 import type {
+	DefiningBlock,
 	JourneyBlock,
 	LegBlock,
 	LocationBlock,
@@ -8,7 +9,7 @@ import type {
 	TransitData,
 	WalkingBlock
 } from "$lib/types";
-import { dateDifferenceString } from "$lib/util";
+import { dateDifferenceString, isTimeDefined } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
 
 export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBlock[] {
@@ -126,14 +127,14 @@ export function parseSingleTime(
 	isArrival: boolean
 ): ParsedTime {
 	const hasRealtime = delay !== null && delay !== undefined;
-	const timeObject: ParsedTime["a"] = {
+	const timeObject: ParsedTime["arrival"] = {
 		time: (hasRealtime ? time : timePlanned) ?? "",
 		delay: hasRealtime ? delay / 60 : undefined,
 		color: hasRealtime ? (delay <= 300 ? "green" : "red") : undefined
 	};
 	if (isArrival) {
 		return {
-			a: timeObject
+			arrival: timeObject
 			/*b: hasRealtime
 				? {
 						time: timePlanned ?? ""
@@ -144,7 +145,7 @@ export function parseSingleTime(
 		};
 	} else {
 		return {
-			b: timeObject
+			departure: timeObject
 		};
 	}
 }
@@ -160,12 +161,12 @@ export function parseTimePair(
 	const aHasRealtime = delayA !== null && delayA !== undefined;
 	const bHasRealtime = delayB !== null && delayB !== undefined;
 	return {
-		a: {
+		arrival: {
 			time: aHasRealtime || timePlannedA === undefined ? timeA ?? "" : timePlannedA,
 			delay: aHasRealtime ? delayA / 60 : undefined,
 			color: aHasRealtime ? (delayA <= 300 ? "green" : "red") : undefined
 		},
-		b: {
+		departure: {
 			time: bHasRealtime || timePlannedB === undefined ? timeB ?? "" : timePlannedB,
 			delay: bHasRealtime ? delayB / 60 : undefined,
 			color: bHasRealtime ? (delayB <= 300 ? "green" : "red") : undefined
@@ -237,4 +238,19 @@ export function parseStopover(stopover: StopOver): TransitData {
 			(stopover.arrivalPlatform ?? stopover.departurePlatform) !==
 			(stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform)
 	};
+}
+
+export function getFirstOrLastTime(
+	blocks: JourneyBlock[],
+	type: "departure" | "arrival"
+): ParsedTime {
+	const findRightBlockFn =
+		// eslint-disable-next-line @typescript-eslint/unbound-method
+		type === "departure" ? blocks.find<DefiningBlock> : blocks.findLast<DefiningBlock>;
+	const block = findRightBlockFn.call(blocks, isTimeDefined);
+	if (block?.type === "leg") {
+		return block[`${type}Data`].time;
+	} else {
+		return { [type]: block?.time[type] };
+	}
 }

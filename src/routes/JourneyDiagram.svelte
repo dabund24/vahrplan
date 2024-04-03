@@ -13,6 +13,8 @@
 				depth={node.depth}
 				index={node.idInDepth}
 				refreshToken={node.refreshToken}
+				departure={node.departure}
+				arrival={node.arrival}
 			/>
 			<svelte:self nodes={node.children} />
 		</div>

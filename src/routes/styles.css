@@ -88,6 +88,7 @@
 	--blur: none;
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--opaque);
+	--cubic-bezier: cubic-bezier(.22,.61,.36,1);
 
 	font-size: 18px;
 }
@@ -362,6 +363,12 @@ header {
 .hoverable:hover {
 	border: var(--line-width) solid var(--foreground-color--opaque);
 	background-color: var(--foreground-color--opaque);
+}
+
+.transition {
+	height: .5rem;
+	width: 100%;
+	background: linear-gradient(to bottom, var(--background-color--opaque), transparent);
 }
 
 .button--small {

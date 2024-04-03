@@ -1,6 +1,11 @@
 import type { JourneysOptions, Line, Location, Station, Stop } from "hafas-client";
 import type { NumericRange } from "@sveltejs/kit";
 
+export type KeyedItem<T, K extends number | string> = {
+	value: T;
+	key: K;
+};
+
 export type Fetchable = JourneyNode[] | JourneyBlock[] | ParsedLocation[];
 
 export type ZugResponse<T extends Fetchable> = ZugSuccess<T> | ZugError;
@@ -36,14 +41,14 @@ export type HafasError = {
 export type ParsedTime = {
 	// for arrival/departure: actual time if realtime data exists, else planned time
 	// for stopovers and waits: arrival time
-	a?: {
+	arrival?: {
 		time: string;
 		color?: "red" | "green";
 		delay?: number;
 	};
 	// for arrival/departure: planned time if realtime data exists, else undefined
 	// for stopovers and waits: departure time
-	b?: {
+	departure?: {
 		time: string;
 		color?: "red" | "green";
 		delay?: number;
@@ -73,6 +78,8 @@ export type JourneyNode = {
 	idInDepth: number;
 	refreshToken: string;
 	blocks: JourneyBlock[];
+	arrival: ParsedTime;
+	departure: ParsedTime;
 	children: JourneyNode[];
 };
 

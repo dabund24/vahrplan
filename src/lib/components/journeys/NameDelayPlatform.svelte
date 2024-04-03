@@ -9,12 +9,12 @@
 	$: stationInnerTag = transitData.attribute === "cancelled" ? "s" : "span";
 
 	let delayTextA = "";
-	$: if (transitData.time.a?.delay !== undefined) {
-		delayTextA = ` (+${transitData.time.a.delay})`;
+	$: if (transitData.time.arrival?.delay !== undefined) {
+		delayTextA = ` (+${transitData.time.arrival.delay})`;
 	}
 	let delayTextB = "";
-	$: if (transitData.time.b?.delay !== undefined) {
-		delayTextB = ` (+${transitData.time.b.delay})`;
+	$: if (transitData.time.departure?.delay !== undefined) {
+		delayTextB = ` (+${transitData.time.departure.delay})`;
 	}
 </script>
 
@@ -30,11 +30,11 @@
 		</svelte:element>
 	</svelte:element>
 	<div class="flex-column">
-		{#if transitData.time.a?.delay !== undefined}
-			<span class="delay text--{transitData.time.a.color}">{delayTextA}</span>
+		{#if transitData.time.arrival?.delay !== undefined}
+			<span class="delay text--{transitData.time.arrival.color}">{delayTextA}</span>
 		{/if}
-		{#if transitData.time.b?.delay !== undefined}
-			<span class="delay text--{transitData.time.b.color}">{delayTextB}</span>
+		{#if transitData.time.departure?.delay !== undefined}
+			<span class="delay text--{transitData.time.departure.color}">{delayTextB}</span>
 		{/if}
 	</div>
 

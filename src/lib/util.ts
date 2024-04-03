@@ -5,13 +5,20 @@ import type {
 	LocationBlock,
 	ParsedLocation,
 	TransitData,
-	ZugResponse
+	ZugResponse,
+	KeyedItem
 } from "$lib/types";
 import { get } from "svelte/store";
 import { journeysOptions } from "$lib/settings";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
+}
+
+export function valueIsDefined<T, K extends number | string>(
+	keyedItem: KeyedItem<T | undefined, K>
+): keyedItem is KeyedItem<T, K> {
+	return keyedItem.value !== undefined;
 }
 
 export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResponse<T>> {
@@ -40,8 +47,8 @@ export function mergeTransitData(
 	return {
 		location: transitData1.location,
 		time: {
-			a: transitData1.time.a,
-			b: transitData2.time.b
+			arrival: transitData1.time.arrival,
+			departure: transitData2.time.departure
 		},
 		attribute: transitData1.attribute,
 		attribute2: transitData2.attribute,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import StationInput from "../../routes/StationInput.svelte";
-	import { type ParsedLocation, products } from "$lib/types.js";
-	import { isDefined } from "$lib/util.js";
+	import { type KeyedItem, type ParsedLocation, products } from "$lib/types.js";
+	import { valueIsDefined } from "$lib/util.js";
 	import { setDisplayedLocations } from "$lib/stores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
@@ -10,9 +10,10 @@
 	import Setting from "$lib/components/Setting.svelte";
 	import { journeysOptions } from "$lib/settings";
 
-	type KeyedArrayItem = { key: number; location?: ParsedLocation };
-
-	let stops: KeyedArrayItem[] = [{ key: Math.random() }, { key: Math.random() }];
+	let stops: KeyedItem<ParsedLocation | undefined, number>[] = [
+		{ value: undefined, key: Math.random() },
+		{ value: undefined, key: Math.random() }
+	];
 
 	function removeVia(index: number): void {
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
@@ -20,12 +21,14 @@
 	function addVia(index: number): void {
 		stops = [
 			...stops.slice(0, index),
-			{ key: Math.random() },
+			{ value: undefined, key: Math.random() },
 			...stops.slice(index, stops.length)
 		];
 	}
 	function handleFormSubmit(): void {
-		const stopsToBeDisplayed = stops.map((via) => via.location).filter(isDefined);
+		const stopsToBeDisplayed = stops.filter<KeyedItem<ParsedLocation, number>>(
+			valueIsDefined<ParsedLocation, number>
+		);
 		if (stopsToBeDisplayed.length >= 2) {
 			setDisplayedLocations(stopsToBeDisplayed);
 		}
@@ -38,34 +41,46 @@
 	<div class="location-inputs--outer flex-row">
 		<div class="location-inputs">
 			{#each stops as stop, i (stop.key)}
-				<div class="flex-row input-container" transition:scale animate:flip={{ duration: 400 }}>
+				<div
+					class="flex-row input-container"
+					transition:scale
+					animate:flip={{ duration: 400 }}
+				>
 					<button
 						class="button--small add-button hoverable"
 						type="button"
 						tabindex="-1"
-						on:click={() => void addVia(i + 1)}>
+						on:click={() => void addVia(i + 1)}
+					>
 						<svg width="16px" height="16px">
-							<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
+							<g
+								stroke="var(--foreground-color)"
+								stroke-width="3"
+								stroke-linecap="round"
+							>
 								<line x1="8" y1="2" x2="8" y2="14" />
 								<line x1="2" y1="8" x2="14" y2="8" />
 							</g>
 						</svg>
-					</button
-					>
-					<StationInput bind:selectedLocation={stop.location} />
+					</button>
+					<StationInput bind:selectedLocation={stop.value} />
 					<button
 						class="button--small remove-button hoverable"
 						type="button"
 						tabindex="-1"
-						on:click={() => void removeVia(i)}>
+						on:click={() => void removeVia(i)}
+					>
 						<svg width="16px" height="16px">
-							<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
+							<g
+								stroke="var(--foreground-color)"
+								stroke-width="3"
+								stroke-linecap="round"
+							>
 								<line x1="3" y1="3" x2="13" y2="13" />
 								<line x1="3" y1="13" x2="13" y2="3" />
 							</g>
 						</svg>
-					</button
-					>
+					</button>
 				</div>
 			{/each}
 		</div>
@@ -137,21 +152,20 @@
 </form>
 
 <style>
-
 	.location-inputs--outer::before {
 		content: "";
 		background-color: var(--foreground-color);
-        width: 4px;
+		width: 4px;
 		margin: calc(1rem) 0;
 		position: relative;
-        left: calc(38px + 1.5rem);
+		left: calc(38px + 1.5rem);
 		flex-shrink: 0;
 	}
 	.location-inputs--outer * {
 		flex-shrink: 0;
 	}
 	.input-container {
-        width: min(100cqw, 30rem);
+		width: min(100cqw, 30rem);
 	}
 	.input-container:last-child .add-button {
 		visibility: hidden;

@@ -9,10 +9,9 @@
 	import { browser } from "$app/environment";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 
-	let windowWidth: number
+	let windowWidth: number;
 
 	$: show = browser && $displayedLocations.length > 0 && windowWidth > 1000;
-
 </script>
 
 <svelte:head>
@@ -21,7 +20,13 @@
 </svelte:head>
 
 <div class="split-container" bind:clientWidth={windowWidth}>
-	<SplitPane type={"horizontal"} min="360px" max="-360px" pos={show ? "-30rem" : "100%"} disabled={!show}>
+	<SplitPane
+		type={"horizontal"}
+		min="360px"
+		max="-360px"
+		pos={show ? "-30rem" : "100%"}
+		disabled={!show}
+	>
 		<div
 			class="main-application flex-column"
 			style:--connection-count={$displayedLocations.length - 1}
@@ -81,12 +86,21 @@
 	}
 
 	.main-application {
-		padding: 1rem;
+		padding: 0 1rem;
 		box-sizing: border-box;
 		container-type: size;
-		--connection-width: clamp(10rem, calc(100cqw / var(--connection-count)), 40rem);
+		--connection-width--min-threshold: 10em;
+		--connection-width--max-threshold: 40em;
+		--connection-width: clamp(
+			var(--connection-width--min-threshold),
+			calc(100cqw / var(--connection-count)),
+			var(--connection-width--max-threshold)
+		);
+		--diagram-width: clamp(
+			calc(var(--connection-width--min-threshold) * (var(--connection-count))),
+			100cqw,
+			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
+		);
 		overflow: scroll;
 	}
-
-
 </style>

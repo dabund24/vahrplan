@@ -60,7 +60,7 @@
 						: block.location.position
 				);
 		} else {
-			coordinates = $displayedLocations.map((location) => location.position);
+			coordinates = $displayedLocations.map((location) => location.value.position);
 		}
 		if (coordinates.length > 0) {
 			map.fitBounds($L.latLngBounds(coordinates), {
@@ -74,7 +74,7 @@
 <div class="map" bind:this={mapElement}>
 	{#if map !== undefined}
 		{#each $displayedJourneys as journey (journey.key)}
-			{#each journey.blocks as block}
+			{#each journey.value as block}
 				{#if block.type === "leg"}
 					<Polyline {block} />
 					{#if !block.precededByTransferBlock}

@@ -2,22 +2,35 @@
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import { displayedLocations, selectedJourneys } from "$lib/stores.js";
-	import type { JourneyBlock, LegBlock } from "$lib/types.js";
+	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
 	import Time from "$lib/components/journeys/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import SummaryStationIcon from "./SummaryStationIcon.svelte";
+	import { dateDifferenceString } from "$lib/util";
 
-	$: legss = [
-		...$selectedJourneys.map((journeys) => journeys.blocks.filter<LegBlock>(isLeg)),
-		[]
-	];
+	type JourneyInfo = {
+		legs: LegBlock[];
+		departure: ParsedTime;
+		arrival: ParsedTime;
+	};
+
+	$: journeyInfo = [
+		...$selectedJourneys.map((selectedJourney) => {
+			return {
+				legs: selectedJourney.blocks.filter<LegBlock>(isLeg),
+				departure: selectedJourney.departure,
+				arrival: selectedJourney.arrival
+			};
+		}),
+		{ legs: [], departure: {}, arrival: {} }
+	] as JourneyInfo[];
 
 	function isLeg(block: JourneyBlock): block is LegBlock {
 		return block.type === "leg";
 	}
 
-	$: locationsActAsStopover = getStopoverActing(legss);
+	$: locationsActAsStopover = getStopoverActing(journeyInfo.map((info) => info.legs));
 
 	function getStopoverActing(legss: LegBlock[][]): boolean[] {
 		let actAsStopover: boolean[] = [false];
@@ -41,79 +54,95 @@
 	function getLegKey(leg: LegBlock): string {
 		return (
 			(leg.line?.fahrtNr ?? Math.random().toString()) +
-			(leg.line?.operator?.name ?? Math.random()) +
-			(leg.line?.name ?? Math.random())
+			(leg.line?.operator?.name ?? "") +
+			(leg.line?.name ?? Math.random()) +
+			leg.departureData.time.departure?.time
 		);
 	}
 </script>
 
-<div class="flex-row" id="journey-summary">
-	{#each $displayedLocations as location, i}
-		<div
-			class="summary-element flex-column"
-			class:station--selected={legss[i].length > 0}
-			transition:scale
-		>
-			<div class="station-name">{location.name}</div>
-			<div class="visuals-container flex-row">
-				<div class="station-icon-container">
-					<SummaryStationIcon
-						{location}
-						locationIndex={i}
-						actsAsStopover={locationsActAsStopover[i]}
-						isDisplayedLocation={true}
-					/>
-				</div>
-				<div class="visuals--selected">
-					<div class="intermediate-stations flex-row">
-						<!--
+<div class="flex-column" id="journey-summary">
+	<div class="flex-row">
+		{#each $displayedLocations as location, i (location.key)}
+			<div
+				class="summary-element flex-column"
+				class:station--selected={journeyInfo[i].legs.length > 0}
+				transition:scale
+				animate:flip={{ duration: 400 }}
+			>
+				<div class="station-name">{location.value.name}</div>
+				<div class="visuals-container flex-row">
+					<div class="station-icon-container">
+						<SummaryStationIcon
+							location={location.value}
+							locationIndex={i}
+							actsAsStopover={locationsActAsStopover[i]}
+							isDisplayedLocation={true}
+						/>
+					</div>
+					<div class="visuals--selected">
+						<div class="intermediate-stations flex-row">
+							<!--
 						TODO change transition after https://github.com/sveltejs/svelte/issues/10251 is resolved
 						-->
-						{#each legss[i].slice(1) as leg (leg.departureData.location.requestParameter)}
-							<div
-								class="station-icon-container"
-								in:scale
-								out:scale
-								animate:flip={{ duration: 400 }}
-							>
-								<SummaryStationIcon
-									location={leg.departureData.location}
-									locationIndex={i}
-									isDisplayedLocation={false}
-								></SummaryStationIcon>
-							</div>
-						{/each}
-					</div>
-					<div class="lines flex-row">
-						{#each legss[i] as leg (getLegKey(leg))}
-							<div in:scale={{}} animate:flip={{ duration: 400 }}>
-								<button
-									class="line-container hoverable"
-									on:click={() => void showLegModal(leg)}
+							{#each journeyInfo[i].legs.slice(1) as leg (leg.departureData.location.requestParameter)}
+								<div
+									class="station-icon-container"
+									in:scale
+									out:scale
+									animate:flip={{ duration: 400 }}
 								>
-									<span class="line--product product--{leg.line.product}"></span>
-								</button>
-							</div>
-						{/each}
+									<SummaryStationIcon
+										location={leg.departureData.location}
+										locationIndex={i}
+										isDisplayedLocation={false}
+									></SummaryStationIcon>
+								</div>
+							{/each}
+						</div>
+						<div class="lines flex-row">
+							{#each journeyInfo[i].legs as leg (getLegKey(leg))}
+								<div in:scale={{}} animate:flip={{ duration: 400 }}>
+									<button
+										class="line-container hoverable"
+										on:click={() => void showLegModal(leg)}
+									>
+										<span class="line--product product--{leg.line.product}"
+										></span>
+									</button>
+								</div>
+							{/each}
+						</div>
+					</div>
+				</div>
+				<div class="times-container flex-row">
+					<div class="times--station flex-row">
+						<span class="arrival-time">
+							<Time time={journeyInfo.at(i - 1)?.arrival ?? {}} />
+						</span>
+						<i class="wait-time">
+							{dateDifferenceString(
+								journeyInfo.at(i - 1)?.arrival.arrival?.time,
+								journeyInfo[i].departure.departure?.time
+							)}
+						</i>
+						<span class="departure-time time">
+							<Time time={journeyInfo[i].departure ?? {}} />
+						</span>
+					</div>
+					<div class="times--journey flex-row">
+						<i class="leg-duration">
+							{dateDifferenceString(
+								journeyInfo[i].departure.departure?.time,
+								journeyInfo[i].arrival.arrival?.time
+							)}
+						</i>
 					</div>
 				</div>
 			</div>
-			<div class="times-container flex-row">
-				<div class="times--station flex-row">
-					<span class="arrival-time">
-						<Time time={legss.at(i - 1)?.at(-1)?.arrivalData.time ?? {}} />
-					</span>
-					<i class="wait-time">30min</i>
-					<span class="departure-time time">
-						<Time time={legss[i].at(0)?.departureData.time ?? {}} />
-					</span>
-				</div>
-				<div class="times--journey flex-row">
-					<i class="leg-duration">0min</i>
-				</div>
-			</div>
-		</div>
-	{/each}
+		{/each}
+	</div>
+	<div class="transition"></div>
 </div>
 {#if modalLeg !== undefined}
 	<Modal bind:showModal={legModal}>
@@ -127,28 +156,35 @@
 	</Modal>
 {/if}
 
-<!--suppress CssInvalidPropertyValue -->
 <style>
 	#journey-summary {
 		position: sticky;
 		z-index: 5;
 		top: 0;
-		align-items: end;
-		padding-top: 1rem;
-		background-color: var(--background-color--opaque);
-		backdrop-filter: var(--blur);
-		-webkit-backdrop-filter: var(--blur);
+		width: var(--diagram-width);
+		transition: width 0.4s var(--cubic-bezier);
+		& > :first-child {
+			padding: 1rem 0 0.5rem;
+			background-color: var(--background-color--opaque);
+			backdrop-filter: var(--blur);
+			-webkit-backdrop-filter: var(--blur);
+		}
+		--beginning-end-offset: 1.5em;
+	}
+
+	:global(.pane:has(~ .dragging)) #journey-summary {
+		transition: none;
 	}
 
 	.summary-element {
-		width: var(--connection-width);
+		width: var(--diagram-width);
 		margin-top: auto;
-		flex-shrink: 0;
+		flex: 2 0;
 		text-align: center;
 		--product-color: var(--foreground-color);
 		&:first-child,
 		&:last-child {
-			width: calc(var(--connection-width) / 2);
+			flex: 1 0;
 		}
 	}
 
@@ -159,52 +195,52 @@
 
 	/* handle special cases */
 
+	.summary-element:nth-last-child(2) .times-container {
+		margin-right: calc(var(--connection-width) / -2 + var(--beginning-end-offset));
+	}
+
 	.summary-element:first-child {
-		width: calc(var(--connection-width) / 2);
 		& .station-name {
 			text-align: left;
 		}
 		& .visuals-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 1.5em;
+			margin: 0 calc(var(--connection-width) / -2) 0 var(--beginning-end-offset);
+			& > .station-icon-container {
+				left: 0;
+			}
+		}
+		& .visuals--selected {
+			margin: 0;
 		}
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 0;
-		}
-		& .times--station {
-			margin-left: 0;
-			width: 3em;
+			margin: 0 calc(var(--connection-width) / -2) 0 var(--beginning-end-offset);
 		}
 	}
 
-	.summary-element:nth-last-child(2) {
-		& .visuals-container {
-			margin: 0 calc(var(--connection-width) / -2 + 1.5em) 0 calc(var(--connection-width) / 2);
-		}
+	.summary-element:nth-last-child(2):not(:first-child) .visuals--selected {
+		margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
+			calc(var(--connection-width) / 2);
 	}
 
-	.summary-element:first-child:nth-last-child(2) .visuals-container {
-		margin: 0 calc(var(--connection-width) / -2 + 1.5em) 0 1.5em;
+	.summary-element:first-child:nth-last-child(2) {
+		& .visuals-container, & .times-container {
+			margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
+				var(--beginning-end-offset);
+		}
 	}
 
 	.summary-element:last-child {
-		width: calc(var(--connection-width) / 2);
 		& .station-name {
 			text-align: right;
 		}
 		& .visuals-container {
-			margin: 0 calc(1.5em) 0 auto;
+			margin: 0 var(--beginning-end-offset) 0 auto;
 		}
 		& .times-container {
-			margin: 0;
-		}
-		& .times--station {
-			margin-left: auto;
-			width: 3em;
+			margin: 0 0 0 calc(var(--connection-width) / 2 - var(--beginning-end-offset));
 		}
 		& .times--journey {
-			margin: 0;
 			width: 0;
-			overflow-x: clip;
 		}
 	}
 
@@ -214,19 +250,19 @@
 		width: 100%;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
-        /*noinspection CssInvalidPropertyValue*/
-        text-wrap: balance;
+		/*noinspection CssInvalidPropertyValue*/
+		text-wrap: balance;
 	}
 
 	/* rules for everything between name and time data */
 
 	.visuals-container {
 		height: calc(24px + 2 * var(--line-width));
-		margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
 		& .visuals--selected {
 			position: relative;
 			width: 100%;
 			height: 100%;
+			margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
 		}
 		& .lines {
 			position: absolute;
@@ -246,6 +282,9 @@
 			position: relative;
 			margin: 0 -16px;
 			border-radius: 100%;
+		}
+		& > .station-icon-container {
+			left: 50%;
 		}
 		& .line-container {
 			align-self: center;
@@ -273,6 +312,8 @@
 	.times-container {
 		margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
 		z-index: 1;
+		white-space: nowrap;
+		position: relative;
 	}
 
 	.times-container i,
@@ -281,16 +322,14 @@
 	}
 
 	.times--station {
-		margin-left: -3em;
-		width: 6em;
-		flex-shrink: 0;
+		position: absolute;
+		translate: -50% 0;
 		& > * {
 			display: none;
 		}
 	}
 
 	.times--journey {
-		margin-right: 3em;
 		width: 100%;
 		visibility: hidden;
 	}
