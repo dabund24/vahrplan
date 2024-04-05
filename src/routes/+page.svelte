@@ -6,12 +6,13 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MainForm from "$lib/components/MainForm.svelte";
 	import JourneySummary from "./JourneySummary.svelte";
-	import { browser } from "$app/environment";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 
 	let windowWidth: number;
 
-	$: show = browser && $displayedLocations.length > 0 && windowWidth > 1000;
+	$: showSplitPane = $displayedLocations.length > 0 && windowWidth > 1000;
+
+	$: treePromise = $displayedTree;
 </script>
 
 <svelte:head>
@@ -23,9 +24,9 @@
 	<SplitPane
 		type={"horizontal"}
 		min="360px"
-		max="-360px"
-		pos={show ? "-30rem" : "100%"}
-		disabled={!show}
+		max={showSplitPane ? "-360px" : "100%"}
+		pos={showSplitPane ? "-30rem" : "100%"}
+		disabled={!showSplitPane}
 	>
 		<div
 			class="main-application flex-column"
@@ -37,7 +38,7 @@
 			</section>
 			<section class="diagram">
 				<JourneySummary />
-				{#await $displayedTree}
+				{#await treePromise}
 					loading...
 				{:then tree}
 					<JourneyDiagram nodes={tree} />
@@ -47,7 +48,7 @@
 			</section>
 		</div>
 		<div slot="b" class="journey-preview">
-			{#if show}
+			{#if showSplitPane}
 				<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
 					{#if activeTab === 0}
 						<Journeys />
@@ -63,14 +64,15 @@
 <style>
 	.form {
 		position: sticky;
-		left: 0;
+		left: 1rem;
 		z-index: 100;
+		max-width: calc(100vw - 2rem);
 	}
 	.diagram {
 		margin: 0 auto;
 	}
 	.split-container {
-		height: 100vh;
+		height: 100%;
 	}
 
 	section {
@@ -86,21 +88,29 @@
 	}
 
 	.main-application {
-		padding: 0 1rem;
+		padding: 1rem;
 		box-sizing: border-box;
-		container-type: size;
 		--connection-width--min-threshold: 10em;
 		--connection-width--max-threshold: 40em;
+		--display-width: calc(100vw - 2rem);
 		--connection-width: clamp(
 			var(--connection-width--min-threshold),
-			calc(100cqw / var(--connection-count)),
+			calc(var(--display-width) / var(--connection-count)),
 			var(--connection-width--max-threshold)
 		);
 		--diagram-width: clamp(
 			calc(var(--connection-width--min-threshold) * (var(--connection-count))),
-			100cqw,
+            var(--display-width),
 			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
 		);
-		overflow: scroll;
+        width: fit-content;
 	}
+
+    @media screen and (min-width: 1000px) {
+		.main-application {
+			container-type: inline-size;
+            --display-width: 100cqw;
+            width: auto;
+		}
+    }
 </style>

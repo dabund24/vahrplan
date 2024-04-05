@@ -4,7 +4,6 @@
 	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
 
 	export let block: LocationBlock
-	console.log(block.time);
 </script>
 
 <div class="flex-row">

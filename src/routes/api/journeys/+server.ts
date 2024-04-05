@@ -10,7 +10,6 @@ export const GET: RequestHandler = async ({ url }) => {
 		stops = JSON.parse(url.searchParams.get("stops") ?? "") as string[];
 		options = JSON.parse(url.searchParams.get("options") ?? "") as JourneysOptions;
 	} catch (e) {
-		console.log(e);
 		return new Response(JSON.stringify(getZugError("HAFAS_INVALID_REQUEST")));
 	}
 

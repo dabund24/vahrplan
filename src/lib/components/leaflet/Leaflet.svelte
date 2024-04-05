@@ -43,10 +43,8 @@
 	});
 
 	$: if (map !== undefined) {
-		console.log("hi");
 		let coordinates: L.LatLngLiteral[];
 		if ($selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
-			console.log($selectedJourneys);
 			coordinates = $selectedJourneys
 				.flatMap((j) => j.blocks)
 				.filter<DefiningBlock>(isTimeDefined)

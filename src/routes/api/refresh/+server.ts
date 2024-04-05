@@ -4,7 +4,6 @@ import { journeysToBlocks } from "$lib/server/parse";
 import { getSuccessResponse, getZugError } from "$lib/server/responses";
 
 export const GET: RequestHandler = async ({ url }) => {
-	console.log(url);
 	const tokenParam = url.searchParams.get("token")!;
 	let refreshTokens: string[];
 	try {

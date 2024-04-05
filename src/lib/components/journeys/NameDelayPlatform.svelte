@@ -59,7 +59,14 @@
 	.station {
 		text-overflow: ellipsis;
 		overflow-x: hidden;
+        /*noinspection CssInvalidPropertyValue*/
+        text-wrap: balance;
 	}
+	:global(.popup__content) .station {
+		text-wrap: unset;
+        word-wrap: normal;
+	}
+
 	.delay {
 		padding-left: 4px;
 	}

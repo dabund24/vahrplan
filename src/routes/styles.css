@@ -82,8 +82,9 @@
 	--line-length: 2rem;
 	--line-length--vertical: 1.5rem;
 	--connection-width: 24em;
-
 	--height--icon--small: 16px;
+
+	--overflow-content: hidden;
 
 	--blur: none;
 	--map-filter: none;
@@ -197,6 +198,10 @@ button {
 	border: none;
 	font: inherit;
 	padding: 0;
+}
+
+a {
+	color: var(--foreground-color);
 }
 
 select {
@@ -379,5 +384,12 @@ header {
 @media screen and (max-width: 1500px) {
 	:root {
 		font-size: 16px;
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	body {
+		overflow-y: hidden;
+		height: 100vh;
 	}
 }

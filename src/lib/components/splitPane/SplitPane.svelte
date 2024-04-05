@@ -1,6 +1,6 @@
 <!-- Stolen and adapted from here: https://github.com/Rich-Harris/svelte-split-pane -->
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher, onMount } from "svelte";
 	import { constrain } from "./utils";
 	import type { Length } from "$lib/components/splitPane/types";
 
@@ -27,12 +27,15 @@
 	let h = 0;
 
 	$: position = pos;
+	let loading = true;
 
 	// constrain position
 	$: if (container) {
 		const size = type === "horizontal" ? w : h;
-		position = disabled ? "100%" : constrain(container, size, min, max, position, priority);
+		position = constrain(container, size, min, max, position, priority);
 	}
+
+	onMount(() => setTimeout(() => loading = false, 500))
 
 	function update(x: number, y: number): void {
 		if (disabled) return;
@@ -90,6 +93,7 @@
 <div
 	data-pane={id}
 	class="container {type}"
+	class:loading
 	bind:this={container}
 	bind:clientWidth={w}
 	bind:clientHeight={h}
@@ -103,14 +107,13 @@
 		<div class="pane">
 			<slot name="b" />
 		</div>
-	{/if}
-
 		<div
 			class="{type} divider"
 			class:disabled
 			class:dragging
 			use:drag={(e) => void update(e.clientX, e.clientY)}
 		/>
+	{/if}
 </div>
 
 {#if dragging}
@@ -124,11 +127,15 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		transition: .3s;
+		transition: 0.3s;
 	}
 
 	.container:has(.divider:hover, .divider:active, .divider.dragging) {
 		--sp-thickness: calc(3 * var(--line-width));
+		transition: 0s;
+	}
+
+	.container.loading {
 		transition: 0s;
 	}
 
@@ -142,6 +149,7 @@
 
 	.pane {
 		width: 100%;
+		max-width: 100vw;
 		height: 100%;
 		overflow: auto;
 	}
@@ -149,7 +157,8 @@
 	.pane > :global(*) {
 		width: 100%;
 		height: 100%;
-		overflow: hidden;
+		overflow: scroll;
+		box-sizing: border-box;
 	}
 
 	.mousecatcher {
@@ -166,7 +175,10 @@
 		position: absolute;
 		z-index: 500;
 		touch-action: none !important;
-		transition: left .2s ease-out;
+		transition: left 0.2s ease-out;
+	}
+	.loading .divider {
+		transition: none;
 	}
 
 	.divider::after {
@@ -227,15 +239,16 @@
 		z-index: 100;
 	}
 
-    .divider.disabled {
-        cursor: default;
-        visibility: hidden;
-        width: 0;
-        &::before, &::after {
-            width: 0;
+	.divider.disabled {
+		cursor: default;
+		visibility: hidden;
+		width: 0;
+		&::before,
+		&::after {
+			width: 0;
 			border: none;
-        }
-    }
+		}
+	}
 
 	.vertical > .divider {
 		padding: calc(0.5 * var(--sp-thickness)) 0;
@@ -256,4 +269,13 @@
 		width: 100%;
 		height: 1px;
 	}
+
+    @media screen and (max-width: 999px) {
+		.pane {
+			overflow: unset;
+		}
+        .pane > :global(*) {
+			overflow: unset;
+        }
+    }
 </style>

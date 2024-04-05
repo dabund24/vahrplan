@@ -21,7 +21,7 @@
 			<Time time={block.arrivalData.time} />
 		</div>
 	</div>
-	<div class="line-container flex-column">
+	<div class="desktop-line-container flex-column">
 		<IconStationLocation color="product" iconType="station" />
 		<div class="line--product line--vertical"></div>
 		<IconStationLocation color="product" iconType="station" />
@@ -58,7 +58,7 @@
 		height: 3rem;
 		align-items: center;
 	}
-	.line-container {
+	.desktop-line-container {
 		padding: calc(1.5rem - var(--height--icon--small) / 2) 0;
 		margin: 0 0.5rem;
 	}

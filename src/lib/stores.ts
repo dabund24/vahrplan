@@ -39,12 +39,15 @@ export const displayedJourneys = derived(
 );
 
 // this is recalculated when and only when displayedLocations changes
-export const displayedTree = derived(displayedLocations, calculateTree);
+// export const displayedTree = derived(displayedLocations, calculateTree);
+
+export const displayedTree = writable<Promise<JourneyNode[]>>(Promise.all([]));
+displayedLocations.subscribe((locations) => displayedTree.set(calculateTree(locations)));
+
 export function setDisplayedLocations(locations: KeyedItem<ParsedLocation, number>[]): void {
 	displayedLocations.set(locations);
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
-	console.log(index);
 	displayedLocations.update((locations) => [
 		...locations.slice(0, index),
 		{ value: location, key: Math.random() },
@@ -107,7 +110,6 @@ async function calculateTree(
 	}
 	const url = getTreeUrl(locations.map((location) => location.value));
 	return getApiData<JourneyNode[]>(url).then((response) => {
-		console.log(response);
 		return response.isError ? [] : response.content;
 	});
 }

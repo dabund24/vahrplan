@@ -70,7 +70,7 @@
 				transition:scale
 				animate:flip={{ duration: 400 }}
 			>
-				<div class="station-name">{location.value.name}</div>
+				<strong class="station-name">{location.value.name}</strong>
 				<div class="visuals-container flex-row">
 					<div class="station-icon-container">
 						<SummaryStationIcon
@@ -104,7 +104,7 @@
 							{#each journeyInfo[i].legs as leg (getLegKey(leg))}
 								<div in:scale={{}} animate:flip={{ duration: 400 }}>
 									<button
-										class="line-container hoverable"
+										class="desktop-line-container hoverable"
 										on:click={() => void showLegModal(leg)}
 									>
 										<span class="line--product product--{leg.line.product}"
@@ -170,9 +170,17 @@
 			-webkit-backdrop-filter: var(--blur);
 		}
 		--beginning-end-offset: 1.5em;
+		word-break: break-word;
 	}
 
-	:global(.pane:has(~ .dragging)) #journey-summary {
+    @media screen and (min-width: 1000px) {
+		#journey-summary {
+            top: -1rem;
+		}
+    }
+
+	:global(.pane:has(~ .dragging)) #journey-summary,
+	:global(.container.loading) #journey-summary {
 		transition: none;
 	}
 
@@ -223,7 +231,8 @@
 	}
 
 	.summary-element:first-child:nth-last-child(2) {
-		& .visuals-container, & .times-container {
+		& .visuals-container,
+		& .times-container {
 			margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
 				var(--beginning-end-offset);
 		}
@@ -286,7 +295,7 @@
 		& > .station-icon-container {
 			left: 50%;
 		}
-		& .line-container {
+		& .desktop-line-container {
 			align-self: center;
 			height: 100%;
 			width: calc(100% + 32px);

@@ -1,44 +1,128 @@
-<script>
+<script lang="ts">
 	import { page } from "$app/stores";
+	import IconLogo from "$lib/components/icons/IconLogo.svelte";
+	import IconMap from "$lib/components/icons/IconMap.svelte";
+	import IconSettings from "$lib/components/icons/IconSettings.svelte";
+	import IconAbout from "$lib/components/icons/IconAbout.svelte";
+	import SlidingLine from "$lib/components/SlidingLine.svelte";
+
+	$: [currentPageMobile, currentPageDesktop] = getCurrentPageIndex($page.url.pathname);
+
+	function getCurrentPageIndex(pathname: string): [number, number] {
+		if (pathname === "/") return [0, 0];
+		if (pathname.startsWith("/journey")) return [1, 1];
+		if (pathname.startsWith("/map")) return [2, 1];
+		if (pathname === "/settings") return [3, 2];
+		else return [4, 3];
+	}
 </script>
 
 <nav>
-	<ul>
-		<li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
-			<a href="/">Suche</a>
-		</li>
-		<li aria-current={$page.url.pathname.startsWith("/blocks") ? "page" : undefined}>
-			<a href="/journey/WyJUJEE9MUBPPUJhaG5ob2YsIEZyZWlzaW5nQEw9NjI1OTk1QGE9MTI4QCRBPTFATz1N%2FG5jaGVuLUZsdWdoYWZlbiBGbHVnaGFmZW4gQmVzdWNoZXJwYXJrLCBGcmVpc2luZ0BMPTYyNTY5NUBhPTEyOEAkMjAyNDAyMjIwNDAyJDIwMjQwMjIyMDQxNSRCdXMgIDYzNSQkMSQkJCQkJKdXJEE9MUBPPU38bmNoZW4tRmx1Z2hhZmVuIEZsdWdoYWZlbiBCZXN1Y2hlcnBhcmssIEZyZWlzaW5nQEw9NjI1Njk1QGE9MTI4QCRBPTFATz1N%2FG5jaGVuIEZsdWdoYWZlbiBCZXN1Y2hlcnBhcmtATD04MDA0MTY3QGE9MTI4QCQyMDI0MDIyMjA0MTUkMjAyNDAyMjIwNDIwJCQkMSQkJCQkJKdUJEE9MUBPPU38bmNoZW4gRmx1Z2hhZmVuIEJlc3VjaGVycGFya0BMPTgwMDQxNjdAYT0xMjhAJEE9MUBPPU38bmNoZW4gSGJmICh0aWVmKUBMPTgwOTgyNjNAYT0xMjhAJDIwMjQwMjIyMDQyNiQyMDI0MDIyMjA1MDMkUyAgICAgIDgkJDEkJCQkJCSnVyRBPTFATz1N%2FG5jaGVuIEhiZiAodGllZilATD04MDk4MjYzQGE9MTI4QCRBPTFATz1N%2FG5jaGVuIEhiZkBMPTgwMDAyNjFAYT0xMjhAJDIwMjQwMjIyMDUwMyQyMDI0MDIyMjA1MTMkJCQxJCQkJCQkp1QkQT0xQE89TfxuY2hlbiBIYmZATD04MDAwMjYxQGE9MTI4QCRBPTFATz1O%2FHJuYmVyZyBIYmZATD04MDAwMjg0QGE9MTI4QCQyMDI0MDIyMjA1MTQkMjAyNDAyMjIwNjI5JElDRSAgNjg0JCQxJCQkJCQkp1QkQT0xQE89TvxybmJlcmcgSGJmQEw9ODAwMDI4NEBhPTEyOEAkQT0xQE89SG9mIEhiZkBMPTgwMDI5MjRAYT0xMjhAJDIwMjQwMjIyMDYzNSQyMDI0MDIyMjA4MTckUkUgIDM0NDMkJDEkJCQkJCSnVCRBPTFATz1Ib2YgSGJmQEw9ODAwMjkyNEBhPTEyOEAkQT0xQE89UmVpY2hlbmJhY2goVm9ndGwpIG9iIEJmQEw9ODAxMjczOUBhPTEyOEAkMjAyNDAyMjIwODI3JDIwMjQwMjIyMDkxNiRSRSA3NDAxMSQkMSQkJCQkJCJd">Details</a>
-		</li>
-		<li aria-current={$page.url.pathname.startsWith("/map") ? "page" : undefined}>
-			<a href="/">Karte</a>
-		</li>
-		<li aria-current={$page.url.pathname === "/settings" ? "page" : undefined}>
-			<a href="/">Einstellungen</a>
-		</li>
-		<li aria-current={$page.url.pathname === "/about" ? "page" : undefined}>
-			<a href="/">Über</a>
-		</li>
-	</ul>
+	<div class="links-container">
+		<ul>
+			<li aria-current={currentPageMobile === 0 ? "page" : undefined}>
+				<a href="/" class="hoverable flex-row">
+					<IconLogo />
+					<span>Verbindungssuche</span>
+				</a>
+			</li>
+			<li aria-current={currentPageMobile === 1 ? "page" : undefined}>
+				<a href="/journey" class="hoverable flex-row">
+					<IconMap />
+					<span>Details/Karte</span>
+				</a>
+			</li>
+			<li aria-current={currentPageMobile === 2 ? "page" : undefined}>
+				<a href="/map" class="hoverable flex-row">
+					<IconMap />
+				</a>
+			</li>
+			<li aria-current={currentPageMobile === 3 ? "page" : undefined}>
+				<a href="/settings" class="hoverable flex-row">
+					<IconSettings />
+					<span>Einstellungen</span>
+				</a>
+			</li>
+			<li aria-current={currentPageMobile === 4 ? "page" : undefined}>
+				<a href="/about" class="hoverable flex-row">
+					<IconAbout />
+					<span>Über</span>
+				</a>
+			</li>
+		</ul>
+		<div class="mobile-line-container">
+			<SlidingLine amountOfPositions={5} newPosition={currentPageMobile} />
+		</div>
+		<div class="desktop-line-container">
+			<SlidingLine amountOfPositions={4} newPosition={currentPageDesktop} />
+		</div>
+	</div>
 </nav>
 
 <style>
 	nav {
-		position: fixed;
-		bottom: 0;
-        width: 100%;
-        backdrop-filter: var(--blur);
-        -webkit-backdrop-filter: var(--blur);
-        background-color: var(--background-color--opaque);
-        border-top: var(--border);
-        z-index: 100;
-    }
-	ul {
-		display: flex;
-		padding: 0;
+		border-bottom: var(--border);
+		padding: 0.5rem;
 	}
-	li {
-        width: 100%;
+	.links-container {
+		width: fit-content;
+		margin: auto;
+	}
+	ul {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+	}
+	a {
+        text-decoration: none;
+		width: 100%;
 		text-align: center;
+		padding: 0.5rem 1rem;
+		box-sizing: border-box;
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+	}
+
+	@media screen and (min-width: 1000px) {
+		li:nth-child(3) {
+            display: none;
+		}
+		.desktop-line-container {
+			translate: calc(100% / -8 + var(--line-width) + 1rem + 13px);
+		}
+		.mobile-line-container {
+            display: none;
+		}
+	}
+
+	@media screen and (max-width: 999px) {
+		nav {
+			order: 1;
+			border-bottom: none;
+			border-top: var(--border);
+			padding: .5rem .5rem max(.5rem, env(safe-area-inset-bottom));
+			text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100vw;
+			box-sizing: border-box;
+            z-index: 550;
+			background-color: var(--background-color--opaque);
+			backdrop-filter: var(--blur);
+			-webkit-backdrop-filter: var(--blur);
+		}
+		.links-container {
+			width: 100%;
+		}
+		a > :global(svg) {
+			margin: auto;
+		}
+		a > span {
+			display: none;
+		}
+		.desktop-line-container {
+            display: none;
+		}
 	}
 </style>

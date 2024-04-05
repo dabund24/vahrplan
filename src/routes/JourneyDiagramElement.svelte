@@ -67,17 +67,15 @@
 		}
 	}
 
-	/*
-	TODO style based on theme
 
-    [data-theme="dark"] .time {
+    :global(:root[data-theme="dark"]) .time {
 		border: transparent solid 2px;
 	}
-    [data-theme="dark"] .leg {
+    :global(:root[data-theme="dark"]) .leg {
 		background-color: var(--background-color);
 		border: var(--border-color) solid 2px;
 	}
-*/
+
 	.legs {
 		width: 100%;
 		gap: var(--line-width);

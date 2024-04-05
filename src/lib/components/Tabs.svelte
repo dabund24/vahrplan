@@ -18,7 +18,7 @@
 				</li>
 			{/each}
 		</ul>
-		<div class="line-container">
+		<div class="desktop-line-container">
 			<SlidingLine amountOfPositions={tabs.length} newPosition={activeTab} />
 		</div>
 	</div>

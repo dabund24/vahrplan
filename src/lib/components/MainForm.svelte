@@ -152,6 +152,14 @@
 </form>
 
 <style>
+	form {
+        width: 100%;
+		align-items: center;
+	}
+	.location-inputs--outer {
+        width: 30rem;
+        max-width: 100%;
+	}
 	.location-inputs--outer::before {
 		content: "";
 		background-color: var(--foreground-color);
@@ -161,11 +169,11 @@
 		left: calc(38px + 1.5rem);
 		flex-shrink: 0;
 	}
-	.location-inputs--outer * {
-		flex-shrink: 0;
+	.location-inputs {
+        width: 100%;
 	}
 	.input-container {
-		width: min(100cqw, 30rem);
+		width: min(100%, 30rem);
 	}
 	.input-container:last-child .add-button {
 		visibility: hidden;

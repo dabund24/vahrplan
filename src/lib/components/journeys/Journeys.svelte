@@ -28,5 +28,6 @@
 		padding: 0.5rem 1rem;
 		max-width: 30rem;
 		margin: auto;
+		box-sizing: border-box;
 	}
 </style>
