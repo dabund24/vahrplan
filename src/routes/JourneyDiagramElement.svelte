@@ -62,6 +62,7 @@
 		border-radius: 50vh;
 		padding: 4px 0;
 		text-align: center;
+		align-items: stretch;
 		&[aria-current="true"] {
 			border-color: var(--accent-color);
 		}
@@ -79,6 +80,7 @@
 	.legs {
 		width: 100%;
 		gap: var(--line-width);
+        margin: 0;
 	}
 
 	.leg {
