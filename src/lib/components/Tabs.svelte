@@ -36,6 +36,8 @@
     }
 	.tabs {
         background-color: var(--background-color--opaque);
+		backdrop-filter: var(--blur);
+		-webkit-backdrop-filter: var(--blur);
         padding: 4px .5rem 0;
 	}
 

@@ -41,6 +41,8 @@
 	}
 	dialog::backdrop {
 		background-color: var(--background-color--opaque);
+		backdrop-filter: var(--blur);
+		-webkit-backdrop-filter: var(--blur);
 	}
 
 	dialog[open] {
