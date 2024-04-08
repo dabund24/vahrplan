@@ -9,7 +9,7 @@ import type {
 	TransitData,
 	WalkingBlock
 } from "$lib/types";
-import { dateDifferenceString, isTimeDefined } from "$lib/util";
+import { dateDifference, isTimeDefined } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
 
 export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBlock[] {
@@ -82,7 +82,7 @@ function legToBlock(leg: Leg): LegBlock {
 			platform: leg.arrivalPlatform ?? undefined,
 			platformChanged: leg.arrivalPlatform !== leg.plannedArrivalPlatform
 		},
-		duration: dateDifferenceString(leg.departure, leg.arrival),
+		duration: dateDifference(leg.departure, leg.arrival),
 		direction: leg.direction ?? "undefined",
 		line: leg.line ?? { type: "line" },
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
@@ -114,8 +114,8 @@ export function walkToBlock(walk: Leg, nextDeparture: string | undefined): Walki
 		type: "walk",
 		originLocation: parseStationStopLocation(walk.origin),
 		destinationLocation: parseStationStopLocation(walk.destination),
-		transferTime: dateDifferenceString(walk.departure, nextDeparture),
-		walkingTime: dateDifferenceString(walk.departure, walk.arrival),
+		transferTime: dateDifference(walk.departure, nextDeparture),
+		walkingTime: dateDifference(walk.departure, walk.arrival),
 		distance: walk.distance ?? 0
 	};
 }

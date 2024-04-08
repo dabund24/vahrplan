@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { FillerBlock } from "$lib/types";
 	import IconFiller from "$lib/components/journeys/IconFiller.svelte";
+	import Duration from "$lib/components/Duration.svelte";
 
 	export let block: FillerBlock;
 	let osmLink: string;
-	if (block.type === "walk") {
+	$: if (block.type === "walk") {
 		osmLink =
 			"https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&from=" +
 			block.originLocation.position.lat +
@@ -15,14 +16,12 @@
 			"%2C" +
 			block.destinationLocation.position.lng;
 	}
+	$: duration = block.type === "walk" || block.type === "transfer" ? block.transferTime : undefined
 </script>
 
 <div class="flex-row">
-	<div>
-		{#if block.type === "walk" || block.type === "transfer"}
-			<i class="duration">{block.transferTime}</i>
-		{/if}
-		<div class="width-setter">00:00</div>
+	<div class="duration-container">
+		<Duration {duration} alignRight={true} />
 	</div>
 	<div class="icon-container flex-row">
 		<IconFiller type={block.type} />
@@ -30,7 +29,7 @@
 	{#if block.type === "walk"}
 		<a href={osmLink} target="_blank">
 			{#if block.distance !== undefined && block.walkingTime !== undefined}
-				{block.distance}m Fußweg (ca. {block.walkingTime})
+				{block.distance}m Fußweg (ca. {block.walkingTime}min)
 			{:else}
 				Fußweg
 			{/if}
@@ -45,19 +44,13 @@
 		gap: 0.5rem;
 		align-items: center;
 	}
-	.duration {
-		margin: auto 0 auto auto;
-		width: 0;
-		display: block;
-		direction: rtl;
-	}
-	.width-setter {
-		visibility: hidden;
-		height: 0;
-	}
 	.height-setter {
 		visibility: hidden;
 	}
+	.duration-container {
+        max-width: min-content;
+        display: inline-block;
+    }
 	.icon-container {
 		align-items: center;
 	}

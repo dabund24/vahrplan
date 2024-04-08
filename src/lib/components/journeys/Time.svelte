@@ -17,7 +17,7 @@
 			{timeToString(time.departure.time)}
 		</div>
 	{/if}
-	<div class="width-setter">00:00</div>
+	<div class="width-setter" aria-hidden="true">00:00</div>
 </div>
 
 <style>

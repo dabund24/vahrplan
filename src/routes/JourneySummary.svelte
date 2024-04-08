@@ -7,7 +7,8 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import SummaryStationIcon from "./SummaryStationIcon.svelte";
-	import { dateDifferenceString } from "$lib/util";
+	import { dateDifference } from "$lib/util";
+	import Duration from "$lib/components/Duration.svelte";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -120,23 +121,25 @@
 						<span class="arrival-time">
 							<Time time={journeyInfo.at(i - 1)?.arrival ?? {}} />
 						</span>
-						<i class="wait-time">
-							{dateDifferenceString(
-								journeyInfo.at(i - 1)?.arrival.arrival?.time,
-								journeyInfo[i].departure.departure?.time
-							)}
-						</i>
+						<span class="wait-time">
+							<Duration
+								duration={dateDifference(
+									journeyInfo.at(i - 1)?.arrival.arrival?.time,
+									journeyInfo[i].departure.departure?.time
+								)}
+							/>
+						</span>
 						<span class="departure-time time">
 							<Time time={journeyInfo[i].departure ?? {}} />
 						</span>
 					</div>
 					<div class="times--journey flex-row">
-						<i class="leg-duration">
-							{dateDifferenceString(
+						<Duration
+							duration={dateDifference(
 								journeyInfo[i].departure.departure?.time,
 								journeyInfo[i].arrival.arrival?.time
 							)}
-						</i>
+						/>
 					</div>
 				</div>
 			</div>
@@ -164,8 +167,8 @@
 		width: var(--diagram-width);
 		transition: width 0.4s var(--cubic-bezier);
 		& > :first-child {
-			padding: 1rem .5rem .5rem;
-			margin: 0 -.5rem;
+			padding: 1rem 0.5rem 0.5rem;
+			margin: 0 -0.5rem;
 			background-color: var(--background-color--opaque);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);
@@ -174,11 +177,11 @@
 		word-break: break-word;
 	}
 
-    @media screen and (min-width: 1000px) {
+	@media screen and (min-width: 1000px) {
 		#journey-summary {
-            top: -1rem;
+			top: -1rem;
 		}
-    }
+	}
 
 	:global(.pane:has(~ .dragging)) #journey-summary,
 	:global(.container.loading) #journey-summary {
@@ -324,11 +327,6 @@
 		z-index: 1;
 		white-space: nowrap;
 		position: relative;
-	}
-
-	.times-container i,
-	.times-container span {
-		margin: auto;
 	}
 
 	.times--station {

@@ -78,17 +78,23 @@ export function timeToString(time: string | Date | number | undefined): string {
 	});
 }
 
+/**
+ * subtract a date from another
+ * @param sooner the first date
+ * @param later the second date
+ * @returns the difference in minutes
+ */
 export function dateDifference(
 	sooner: string | number | Date | undefined,
 	later: string | number | Date | undefined
-): { hours: number; minutes: number } {
+): number {
 	if (sooner === undefined || later === undefined) {
-		return { hours: 0, minutes: 0 };
+		return 0;
 	}
 	const dateA = new Date(sooner).getTime();
 	const dateB = new Date(later).getTime();
 	const differenceMilliseconds = dateB - dateA;
-	const difference = {
+	/*const difference = {
 		minutes: (differenceMilliseconds / 60000) % 60,
 		hours: Math.floor(differenceMilliseconds / 3600000)
 	};
@@ -96,6 +102,8 @@ export function dateDifference(
 		difference.hours++;
 	}
 	return difference;
+	 */
+	return differenceMilliseconds / 60000;
 }
 
 export function dateDifferenceString(

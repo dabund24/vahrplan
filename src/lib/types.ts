@@ -103,7 +103,7 @@ export type LegBlock = {
 	tripId: string;
 	departureData: TransitData;
 	arrivalData: TransitData;
-	duration: string;
+	duration: number;
 	direction: string;
 	line: Line;
 	stopovers: TransitData[];
@@ -116,14 +116,14 @@ export type WalkingBlock = {
 	type: "walk";
 	originLocation: ParsedLocation;
 	destinationLocation: ParsedLocation;
-	transferTime: string;
-	walkingTime?: string;
+	transferTime: number;
+	walkingTime?: number;
 	distance: number;
 };
 
 export type TransferBlock = {
 	type: "transfer";
-	transferTime: string;
+	transferTime: number;
 	transitData: TransitData;
 	arrivalProduct: string;
 	departureProduct: string;
@@ -148,14 +148,14 @@ export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk;
 
 export type PopupDataWalk = {
 	type: "walk";
-	duration: string;
-	walkingTime: string;
-	distance: number;
+	duration: number;
+	walkingTime?: number;
+	distance?: number;
 };
 
 export type PopupDataLine = {
 	type: "line";
-	duration: string;
+	duration: number;
 	direction: string;
 	line: Line;
 };

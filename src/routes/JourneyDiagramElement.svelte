@@ -39,7 +39,7 @@
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
-			<span class="leg product--{block.line.product}">
+			<span class="leg product--{block.line.product}" style="--duration: {(block.duration + 5)}">
 				<span class="leg__name--long">{block.line.name}</span>
 				<span class="leg__name--short">{block.line.productName}</span>
 			</span>
@@ -100,6 +100,7 @@
 		container-type: inline-size;
 		container-name: leg;
 		width: 100%;
+		flex: var(--duration);
 		text-align: center;
 		background-color: var(--product-color--opaque);
 		white-space: nowrap;

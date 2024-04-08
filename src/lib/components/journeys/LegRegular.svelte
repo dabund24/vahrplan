@@ -4,6 +4,7 @@
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import Stopovers from "./Stopovers.svelte";
 	import type { LegBlock } from "$lib/types";
+	import Duration from "$lib/components/Duration.svelte";
 
 	export let block: LegBlock;
 	export let compact = false;
@@ -14,8 +15,8 @@
 		<div class="top-or-bottom flex-column">
 			<Time time={block.departureData.time} />
 		</div>
-		<div class="middle">
-			<i class="duration">{block.duration}</i>
+		<div class="middle duration-container">
+			<Duration duration={block.duration} alignRight={true} />
 		</div>
 		<div class="top-or-bottom flex-column">
 			<Time time={block.arrivalData.time} />
@@ -69,20 +70,17 @@
 		width: 100%;
 	}
 
-	.duration {
-		margin: auto 0 auto auto;
-		width: 0;
-		display: block;
-		direction: rtl;
-        visibility: hidden;
-	}
-
 	summary {
 		padding: 0.5rem;
 		margin-left: calc(-0.5rem - var(--line-width));
 		width: fit-content;
 	}
-	.leg:has(details:not([open])) .duration {
+
+	.duration-container {
+		visibility: hidden;
+	}
+
+	.leg:has(details:not([open])) .duration-container {
 		visibility: visible;
 	}
 </style>
