@@ -177,6 +177,7 @@ body {
 	color: var(--foreground-color);
 	background-color: var(--background-color);
 	margin: 0;
+	hyphens: auto;
 }
 
 body:has(dialog[open]) {
