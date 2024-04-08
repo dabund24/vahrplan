@@ -86,10 +86,10 @@
 
 	--overflow-content: hidden;
 
-	--blur: none;
+	--blur: blur(3px);
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--opaque);
-	--cubic-bezier: cubic-bezier(.22,.61,.36,1);
+	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
 
 	font-size: 18px;
 }
@@ -100,7 +100,7 @@
 	}
 	:root[data-theme="dark"] {
 		--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
-		brightness(0.7);
+			brightness(0.7);
 	}
 }
 
@@ -168,11 +168,19 @@ details[open] summary::after {
 	width: var(--line-length);
 }
 
+html, body {
+	overscroll-behavior: none;
+}
+
 body {
 	font-family: var(--font-family);
 	color: var(--foreground-color);
 	background-color: var(--background-color);
 	margin: 0;
+}
+
+body:has(dialog[open]) {
+	overflow: hidden;
 }
 
 body,
@@ -195,6 +203,7 @@ button {
 input,
 button {
 	background-color: transparent;
+	color: var(--foreground-color);
 	border: none;
 	font: inherit;
 	padding: 0;
@@ -371,14 +380,14 @@ header {
 }
 
 .transition {
-	height: .5rem;
+	height: 0.5rem;
 	width: 100%;
 	background: linear-gradient(to bottom, var(--background-color--opaque), transparent);
 }
 
 .button--small {
 	display: flex;
-	padding: .5rem;
+	padding: 0.5rem;
 }
 
 @media screen and (max-width: 1500px) {
@@ -388,8 +397,8 @@ header {
 }
 
 @media screen and (min-width: 1000px) {
+	html,
 	body {
-		overflow-y: hidden;
-		height: 100vh;
+		margin: 0;
 	}
 }

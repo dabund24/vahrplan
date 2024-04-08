@@ -172,9 +172,7 @@
 	.location-inputs {
         width: 100%;
 	}
-	.input-container {
-		width: min(100%, 30rem);
-	}
+
 	.input-container:last-child .add-button {
 		visibility: hidden;
 	}

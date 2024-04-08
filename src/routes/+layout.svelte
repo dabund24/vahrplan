@@ -12,7 +12,6 @@
 
 <style>
 	.app {
-		min-height: 100vh;
 		display: grid;
 		grid-template-rows: auto 1fr;
         -webkit-overflow-scrolling: touch;
@@ -37,7 +36,11 @@
 
     @media screen and (min-width: 1000px) {
 		.app {
-            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
 		}
     }
 </style>

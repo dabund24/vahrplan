@@ -65,9 +65,6 @@
 		& > i {
 			white-space: nowrap;
 		}
-		& > .line--vertical {
-			flex-shrink: 0;
-		}
 		align-items: center;
 	}
 	.icon {
@@ -76,12 +73,20 @@
 		position: relative;
 	}
 	.middle {
+        display: flex;
+        width: 16px;
 		justify-content: center;
-		justify-items: center;
+		align-items: center;
+		flex-shrink: 0;
+		& > * {
+			flex-shrink: 0;
+            width: 16px;
+		}
 	}
 	.filler-icon {
 		display: flex;
 		margin: auto -6px;
+		flex-shrink: 0;
 	}
 	.line--vertical {
 		margin: 0 auto;

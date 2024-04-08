@@ -5,9 +5,9 @@
 	export let nodes: JourneyNode[];
 </script>
 
-<div class="flex-column">
+<div class="flex-column diagram-column">
 	{#each nodes as node}
-		<div class="flex-row">
+			<div class="flex-row diagram-box">
 			<JourneyDiagramElement
 				blocks={node.blocks}
 				depth={node.depth}
@@ -20,7 +20,3 @@
 		</div>
 	{/each}
 </div>
-
-<style>
-	
-</style>

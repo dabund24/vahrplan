@@ -164,7 +164,8 @@
 		width: var(--diagram-width);
 		transition: width 0.4s var(--cubic-bezier);
 		& > :first-child {
-			padding: 1rem 0 0.5rem;
+			padding: 1rem .5rem .5rem;
+			margin: 0 -.5rem;
 			background-color: var(--background-color--opaque);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);

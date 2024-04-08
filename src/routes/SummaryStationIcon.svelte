@@ -82,6 +82,7 @@
 		border: var(--border);
 		background-color: var(--background-color--opaque);
 		backdrop-filter: var(--blur);
+		-webkit-backdrop-filter: var(--blur);
 		translate: calc(16px - 50%) 0;
 	}
 </style>

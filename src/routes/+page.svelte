@@ -90,7 +90,7 @@
 	.main-application {
 		padding: 1rem;
 		box-sizing: border-box;
-		--connection-width--min-threshold: 10em;
+		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
 		--display-width: calc(100vw - 2rem);
 		--connection-width: clamp(
@@ -104,13 +104,18 @@
 			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
 		);
         width: fit-content;
+		min-width: 100vw;
 	}
 
     @media screen and (min-width: 1000px) {
+		.form {
+			left: 0;
+		}
 		.main-application {
 			container-type: inline-size;
             --display-width: 100cqw;
             width: auto;
+			min-width: 0;
 		}
     }
 </style>

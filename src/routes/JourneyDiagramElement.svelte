@@ -57,17 +57,30 @@
 	}
 
 	.diagram-element {
-		width: var(--connection-width);
+		width: calc(var(--connection-width) + 2 * var(--line-width));
+		margin: 0 calc(-1 * var(--line-width));
 		height: fit-content;
 		border-radius: 50vh;
 		padding: 4px 0;
 		text-align: center;
 		align-items: stretch;
+		transition: border-radius .4s, border .4s, background-color .4s;
 		&[aria-current="true"] {
 			border-color: var(--accent-color);
 		}
 	}
 
+	:global(.diagram-box:has(> .diagram-column > :first-child > .diagram-element[aria-current="true"])) > .diagram-element[aria-current="true"] {
+		border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+		border-right-color: transparent;
+	}
+
+    :global(.diagram-box:has(> .diagram-element[aria-current="true"]) > .diagram-column > :first-child) > .diagram-element[aria-current="true"] {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+		border-left-color: transparent;
+    }
 
     :global(:root[data-theme="dark"]) .time {
 		border: transparent solid 2px;
