@@ -152,9 +152,13 @@ export function unselectJourneyBlocks(depth: number): void {
 			depth
 		);
 
-		journeys[depth].blocks = [{ type: "unselected" }];
-		journeys[depth].selectedBy = -1;
-		journeys[depth].refreshToken = depth.toString();
+		journeys[depth] = {
+			blocks: [{ type: "unselected" }],
+			selectedBy: -1,
+			refreshToken: depth.toString(),
+			arrival: {},
+			departure: {}
+		};
 		return journeys;
 	});
 }

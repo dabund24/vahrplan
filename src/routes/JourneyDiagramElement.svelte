@@ -39,7 +39,7 @@
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
-			<span class="leg product--{block.line.product}" style="--duration: {(block.duration + 5)}">
+			<span class="leg product--{block.line.product}" style="--duration: {Math.log(block.duration + 1)}">
 				<span class="leg__name--long">{block.line.name}</span>
 				<span class="leg__name--short">{block.line.productName}</span>
 			</span>

@@ -9,6 +9,7 @@
 	import SummaryStationIcon from "./SummaryStationIcon.svelte";
 	import { dateDifference } from "$lib/util";
 	import Duration from "$lib/components/Duration.svelte";
+	import DateDuration from "$lib/components/journeys/DateDuration.svelte";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -138,7 +139,7 @@
 							duration={dateDifference(
 								journeyInfo[i].departure.departure?.time,
 								journeyInfo[i].arrival.arrival?.time
-							)}
+							) ?? 0}
 						/>
 					</div>
 				</div>
@@ -154,6 +155,10 @@
 			{modalLeg.direction}
 		</strong>
 		<div class="modal-content">
+			<DateDuration
+				date={modalLeg.departureData.time.departure?.time ?? ""}
+				duration={modalLeg.duration}
+			/>
 			<LegRegular block={modalLeg} compact={true} />
 		</div>
 	</Modal>

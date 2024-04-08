@@ -4,10 +4,21 @@
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import Filler from "$lib/components/journeys/Filler.svelte";
 	import Location from "$lib/components/journeys/Location.svelte";
-	import { displayedJourneys } from "$lib/stores";
+	import { displayedJourneys, selectedJourneys } from "$lib/stores";
+	import DateDuration from "$lib/components/journeys/DateDuration.svelte";
+	import { dateDifference } from "$lib/util";
+
+	$: selectedDeparture = $selectedJourneys.at(0)?.departure.departure?.time;
+	$: selectedArrival = $selectedJourneys.at(-1)?.arrival.arrival?.time;
+
+	$: console.log(selectedArrival);
 </script>
 
 <div class="journeys-container">
+	<DateDuration
+		date={selectedDeparture}
+		duration={dateDifference(selectedDeparture, selectedArrival)}
+	/>
 	{#each $displayedJourneys as journey (journey.key)}
 		<div transition:scale animate:flip={{ duration: 400 }}>
 			{#each journey.value as block}

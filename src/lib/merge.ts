@@ -154,7 +154,7 @@ function mergingWalkToBlock(
 		destinationLocation: arrivalLocation,
 		distance: 0,
 		walkingTime: undefined,
-		transferTime: dateDifference(departureTime.arrival?.time, arrivalTime.departure?.time)
+		transferTime: dateDifference(departureTime.arrival?.time, arrivalTime.departure?.time) ?? 0
 	};
 }
 
@@ -166,10 +166,8 @@ export function transferToBlock(
 ): TransferBlock {
 	return {
 		type: "transfer",
-		transferTime: dateDifference(
-			arrivalData.time.arrival?.time,
-			departureData.time.departure?.time
-		),
+		transferTime:
+			dateDifference(arrivalData.time.arrival?.time, departureData.time.departure?.time) ?? 0,
 		transitData: mergeTransitData(arrivalData, departureData),
 		arrivalProduct,
 		departureProduct

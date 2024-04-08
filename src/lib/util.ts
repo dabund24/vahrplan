@@ -87,36 +87,12 @@ export function timeToString(time: string | Date | number | undefined): string {
 export function dateDifference(
 	sooner: string | number | Date | undefined,
 	later: string | number | Date | undefined
-): number {
+): number | undefined {
 	if (sooner === undefined || later === undefined) {
-		return 0;
+		return undefined;
 	}
 	const dateA = new Date(sooner).getTime();
 	const dateB = new Date(later).getTime();
 	const differenceMilliseconds = dateB - dateA;
-	/*const difference = {
-		minutes: (differenceMilliseconds / 60000) % 60,
-		hours: Math.floor(differenceMilliseconds / 3600000)
-	};
-	if (difference.hours < 0) {
-		difference.hours++;
-	}
-	return difference;
-	 */
 	return differenceMilliseconds / 60000;
-}
-
-export function dateDifferenceString(
-	sooner: string | number | Date | undefined,
-	later: string | number | Date | undefined
-): string {
-	if (sooner === undefined || later === undefined) {
-		return "n/a";
-	}
-	const difference = dateDifference(sooner, later);
-	if (difference.hours === 0) {
-		return `${difference.minutes}min`;
-	} else {
-		return `${difference.hours}h ${difference.minutes < 0 ? -difference.minutes : difference.minutes}min`;
-	}
 }

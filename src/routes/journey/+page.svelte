@@ -16,7 +16,9 @@
 		pos={showSplitPane ? "30rem" : "100%"}
 		disabled={!showSplitPane}
 	>
-		<Journeys slot="a" />
+		<div slot="a">
+			<Journeys />
+		</div>
 		<div slot="b" class="map">
 			{#if showSplitPane}
 				<Leaflet />
