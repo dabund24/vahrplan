@@ -38,21 +38,22 @@ export type HafasError = {
 	hafasCode: string;
 };
 
+/**
+ * each time displayed in this app is either representing departure or arrival.
+ * Usually, both are shown vertically next to each other.
+ * This type represents such a time pair and can be used universally
+ */
 export type ParsedTime = {
-	// for arrival/departure: actual time if realtime data exists, else planned time
-	// for stopovers and waits: arrival time
 	arrival?: {
-		time: string;
+		time: Date;
 		color?: "red" | "green";
 		delay?: number;
-	};
-	// for arrival/departure: planned time if realtime data exists, else undefined
-	// for stopovers and waits: departure time
+	} | null;
 	departure?: {
-		time: string;
+		time: Date;
 		color?: "red" | "green";
 		delay?: number;
-	};
+	} | null;
 };
 
 export type ParsedLocation = {
@@ -62,15 +63,23 @@ export type ParsedLocation = {
 	position: { lat: number; lng: number };
 };
 
+/**
+ * This type is used whenever a journey comes in touch with a station.
+ * In particular, it is used in [transfer blocks]{@linkcode TransferBlock} and for stopovers in [leg blocks]{@linkcode LegBlock}
+ */
 export type TransitData = {
 	location: ParsedLocation;
 	attribute?: "cancelled" | "additional";
 	attribute2?: "cancelled" | "additional";
 	time: ParsedTime;
-	platform?: string;
-	platform2?: string;
-	platformChanged: boolean;
-	platform2Changed?: boolean;
+	platformData: {
+		platform: string;
+		platformChanged: boolean;
+	} | null;
+	platformData2?: {
+		platform: string;
+		platformChanged: boolean;
+	} | null;
 };
 
 export type JourneyNode = {
@@ -91,16 +100,34 @@ export type JourneyBlock =
 	| ErrorBlock
 	| UnselectedBlock;
 
-// has departureTime and arrivalTime
+/**
+ * Every block with an even index in a journey is such a block. (*Exception*: unselected journeys!
+ * Those consist of one {@linkcode UnselectedBlock})
+ *
+ * Because users select journeys only based on those blocks, they define the way a journey looks like.
+ * Important characteristics:
+ * - Selected journeys start and end with a defining block.
+ * - Every defining block has a departure time and arrival time
+ */
 export type DefiningBlock = LegBlock | LocationBlock;
 
+/**
+ * Every block with an odd index in a journey is such a block. (*Exception*: unselected journeys! Those consist of one {@linkcode UnselectedBlock})
+ *
+ * What they look like for a journey depends directly on the preceding and succeeding {@linkcode DefiningBlock}.
+ */
 export type FillerBlock = Exclude<JourneyBlock, DefiningBlock>;
 
+/**
+ * When merging two journeys all possibilities are covered by this type.
+ * Check out the function {@linkcode getMergingBlock} in `$lib/merge.ts` for all merging possibilities
+ */
 export type AdhesiveBlock = LocationBlock | WalkingBlock | TransferBlock | undefined;
 
 export type LegBlock = {
 	type: "leg";
 	tripId: string;
+	blockKey: string;
 	departureData: TransitData;
 	arrivalData: TransitData;
 	duration: number;

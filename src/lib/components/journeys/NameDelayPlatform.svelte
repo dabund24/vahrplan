@@ -16,6 +16,11 @@
 	$: if (transitData.time.departure?.delay !== undefined) {
 		delayTextB = ` (+${transitData.time.departure.delay})`;
 	}
+
+	$: platformData = transitData.platformData;
+	$: platformData2 = transitData.platformData2;
+
+	$: console.log(transitData);
 </script>
 
 <div class="flex-row name-delay-platform">
@@ -39,14 +44,18 @@
 	</div>
 
 	<div class="platform flex-column">
-		{#if transitData.platform !== undefined}
-			<div class:text--red={transitData.platformChanged}>
-				Gl. {transitData.platform}
+		{#if platformData === null}
+			<div>&#8203;</div>
+		{:else}
+			<div class="platform-text" class:text--red={platformData.platformChanged}>
+				Gl. {platformData.platform}
 			</div>
 		{/if}
-		{#if transitData.platform2 !== undefined}
-			<div class:text--red={transitData.platform2Changed}>
-				Gl. {transitData.platform2}
+		{#if platformData2 === null}
+			<div>&#8203;</div>
+		{:else if platformData2 !== undefined}
+			<div class="platform-text" class:text--red={platformData2.platformChanged}>
+				Gl. {platformData2.platform}
 			</div>
 		{/if}
 	</div>
@@ -59,12 +68,12 @@
 	.station {
 		text-overflow: ellipsis;
 		overflow-x: hidden;
-        /*noinspection CssInvalidPropertyValue*/
-        text-wrap: balance;
+		/*noinspection CssInvalidPropertyValue*/
+		text-wrap: balance;
 	}
 	:global(.popup__content) .station {
 		text-wrap: unset;
-        word-wrap: normal;
+		word-wrap: normal;
 	}
 
 	.delay {
@@ -75,8 +84,10 @@
 	}
 	.platform {
 		margin-left: auto;
-		padding-left: 0.5rem;
 		white-space: nowrap;
 		text-align: right;
+	}
+	.platform-text {
+        padding-left: 0.5rem;
 	}
 </style>

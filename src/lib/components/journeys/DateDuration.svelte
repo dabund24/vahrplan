@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Duration from "$lib/components/Duration.svelte";
 
-	export let date: string | undefined;
+	export let date: Date | undefined;
 	export let duration: number | undefined;
 
 	$: dateString =

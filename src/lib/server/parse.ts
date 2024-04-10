@@ -65,22 +65,47 @@ export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBloc
 }
 
 function legToBlock(leg: Leg): LegBlock {
+	const departurePlatform = leg.departurePlatform ?? undefined;
+	const arrivalPlatform = leg.arrivalPlatform ?? undefined;
 	return {
 		type: "leg",
 		tripId: leg.tripId ?? "",
+		blockKey:
+			"" +
+			leg.line?.operator?.name +
+			leg.line?.fahrtNr +
+			leg.line?.name +
+			leg.destination?.name +
+			leg.destination?.id +
+			leg.direction,
 		departureData: {
 			location: parseStationStopLocation(leg.origin),
 			attribute: leg.stopovers?.at(0)?.cancelled ? "cancelled" : undefined,
-			time: parseSingleTime(leg.departure, leg.plannedDeparture, leg.departureDelay, false),
-			platform: leg.departurePlatform ?? undefined,
-			platformChanged: leg.departurePlatform !== leg.plannedDeparturePlatform
+			time: parseSingleTime(
+				leg.departure,
+				leg.plannedDeparture,
+				leg.departureDelay,
+				"departure"
+			),
+			platformData:
+				departurePlatform === undefined
+					? null
+					: {
+							platform: departurePlatform,
+							platformChanged: leg.departurePlatform !== leg.plannedDeparturePlatform
+						}
 		},
 		arrivalData: {
 			location: parseStationStopLocation(leg.destination),
 			attribute: leg.stopovers?.at(-1)?.cancelled ? "cancelled" : undefined,
-			time: parseSingleTime(leg.arrival, leg.plannedArrival, leg.arrivalDelay, true),
-			platform: leg.arrivalPlatform ?? undefined,
-			platformChanged: leg.arrivalPlatform !== leg.plannedArrivalPlatform
+			time: parseSingleTime(leg.arrival, leg.plannedArrival, leg.arrivalDelay, "arrival"),
+			platformData:
+				arrivalPlatform === undefined
+					? null
+					: {
+							platform: arrivalPlatform,
+							platformChanged: leg.arrivalPlatform !== leg.plannedArrivalPlatform
+						}
 		},
 		duration: dateDifference(leg.departure, leg.arrival) ?? 0,
 		direction: leg.direction ?? "undefined",
@@ -124,54 +149,51 @@ export function parseSingleTime(
 	time: Leg["departure"],
 	timePlanned: Leg["plannedDeparture"],
 	delay: Leg["departureDelay"],
-	isArrival: boolean
+	type: "arrival" | "departure"
 ): ParsedTime {
 	const hasRealtime = delay !== null && delay !== undefined;
-	const timeObject: ParsedTime["arrival"] = {
-		time: (hasRealtime ? time : timePlanned) ?? "",
-		delay: hasRealtime ? delay / 60 : undefined,
-		color: hasRealtime ? (delay <= 300 ? "green" : "red") : undefined
-	};
-	if (isArrival) {
-		return {
-			arrival: timeObject
-			/*b: hasRealtime
-				? {
-						time: timePlanned ?? ""
-					}
-				: undefined
-				
-			 */
-		};
-	} else {
-		return {
-			departure: timeObject
-		};
+	if (time === undefined && timePlanned === undefined) {
+		return { [type]: null };
 	}
+	return {
+		[type]: {
+			time: new Date((hasRealtime ? time : timePlanned) ?? ""),
+			delay: hasRealtime ? delay / 60 : undefined,
+			color: hasRealtime ? (delay <= 300 ? "green" : "red") : undefined
+		}
+	};
 }
 
 export function parseTimePair(
-	timeA: Leg["departure"],
-	timePlannedA: Leg["plannedDeparture"],
-	delayA: Leg["departureDelay"],
-	timeB: Leg["departure"],
-	timePlannedB: Leg["plannedDeparture"],
-	delayB: Leg["departureDelay"]
+	arrivalTime: Leg["departure"],
+	arrivalTimePlanned: Leg["plannedDeparture"],
+	arrivalDelay: Leg["departureDelay"],
+	departureTime: Leg["departure"],
+	departureTimePlanned: Leg["plannedDeparture"],
+	departureDelay: Leg["departureDelay"]
 ): ParsedTime {
-	const aHasRealtime = delayA !== null && delayA !== undefined;
-	const bHasRealtime = delayB !== null && delayB !== undefined;
-	return {
-		arrival: {
-			time: aHasRealtime || timePlannedA === undefined ? timeA ?? "" : timePlannedA,
-			delay: aHasRealtime ? delayA / 60 : undefined,
-			color: aHasRealtime ? (delayA <= 300 ? "green" : "red") : undefined
-		},
-		departure: {
-			time: bHasRealtime || timePlannedB === undefined ? timeB ?? "" : timePlannedB,
-			delay: bHasRealtime ? delayB / 60 : undefined,
-			color: bHasRealtime ? (delayB <= 300 ? "green" : "red") : undefined
-		}
-	};
+	const arrivalHasRealtime = arrivalDelay !== null && arrivalDelay !== undefined;
+	const departureHasRealtime = departureDelay !== null && departureDelay !== undefined;
+	const result: ParsedTime = { arrival: null, departure: null };
+	if (!arrivalTime !== undefined || arrivalTimePlanned !== undefined) {
+		result.arrival = {
+			time: new Date(
+				arrivalTimePlanned === undefined ? arrivalTime ?? "" : arrivalTimePlanned
+			),
+			delay: arrivalHasRealtime ? arrivalDelay / 60 : undefined,
+			color: arrivalHasRealtime ? (arrivalDelay <= 300 ? "green" : "red") : undefined
+		};
+	}
+	if (departureTime !== undefined || departureTimePlanned !== undefined) {
+		result.departure = {
+			time: new Date(
+				departureTimePlanned === undefined ? departureTime ?? "" : departureTimePlanned
+			),
+			delay: departureHasRealtime ? departureDelay / 60 : undefined,
+			color: departureHasRealtime ? (departureDelay <= 300 ? "green" : "red") : undefined
+		};
+	}
+	return result;
 }
 
 export function parseStationStopLocation(
@@ -222,6 +244,7 @@ export function parseStationStopLocation(
 }
 
 export function parseStopover(stopover: StopOver): TransitData {
+	const platform = stopover.arrivalPlatform ?? stopover.departurePlatform ?? undefined;
 	return {
 		location: parseStationStopLocation(stopover.stop),
 		attribute: stopover.cancelled ? "cancelled" : undefined, // TODO additional
@@ -233,10 +256,15 @@ export function parseStopover(stopover: StopOver): TransitData {
 			stopover.plannedDeparture,
 			stopover.departureDelay
 		),
-		platform: stopover.arrivalPlatform ?? stopover.departurePlatform ?? undefined,
-		platformChanged:
-			(stopover.arrivalPlatform ?? stopover.departurePlatform) !==
-			(stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform)
+		platformData:
+			platform === undefined
+				? null
+				: {
+						platform: platform,
+						platformChanged:
+							(stopover.arrivalPlatform ?? stopover.departurePlatform) !==
+							(stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform)
+					}
 	};
 }
 

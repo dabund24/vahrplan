@@ -115,7 +115,7 @@
 						data={{
 							location: block.location,
 							time: block.time,
-							platformChanged: false
+							platformData: null
 						}}
 					>
 						<IconStationLocation color="foreground" iconType={block.location.type} />

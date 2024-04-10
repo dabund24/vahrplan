@@ -52,15 +52,6 @@
 		modalLeg = leg;
 		legModal = true;
 	}
-
-	function getLegKey(leg: LegBlock): string {
-		return (
-			(leg.line?.fahrtNr ?? Math.random().toString()) +
-			(leg.line?.operator?.name ?? "") +
-			(leg.line?.name ?? Math.random()) +
-			leg.departureData.time.departure?.time
-		);
-	}
 </script>
 
 <div class="flex-column" id="journey-summary">
@@ -103,7 +94,7 @@
 							{/each}
 						</div>
 						<div class="lines flex-row">
-							{#each journeyInfo[i].legs as leg (getLegKey(leg))}
+							{#each journeyInfo[i].legs as leg (leg.blockKey)}
 								<div in:scale={{}} animate:flip={{ duration: 400 }}>
 									<button
 										class="desktop-line-container hoverable"
@@ -156,7 +147,7 @@
 		</strong>
 		<div class="modal-content">
 			<DateDuration
-				date={modalLeg.departureData.time.departure?.time ?? ""}
+				date={modalLeg.departureData.time.departure?.time}
 				duration={modalLeg.duration}
 			/>
 			<LegRegular block={modalLeg} compact={true} />

@@ -51,10 +51,8 @@ export function mergeTransitData(
 		},
 		attribute: transitData1.attribute,
 		attribute2: transitData2.attribute,
-		platform: transitData1.platform,
-		platformChanged: transitData1.platformChanged,
-		platform2: transitData2.platform,
-		platform2Changed: transitData2.platform2Changed
+		platformData: transitData1.platformData,
+		platformData2: transitData2.platformData
 	};
 }
 
@@ -67,9 +65,9 @@ export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
 	};
 }
 
-export function timeToString(time: string | Date | number | undefined): string {
-	if (time === undefined || time === null || time === "") {
-		return "";
+export function timeToString(time: Date | undefined): string {
+	if (time === undefined || time === null) {
+		return "-";
 	}
 	const date = new Date(time);
 	return date.toLocaleTimeString("de-DE", {

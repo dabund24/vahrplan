@@ -11,11 +11,28 @@ import type {
 import { dateDifference, getRawLocationBlock, mergeTransitData } from "$lib/util";
 
 /**
- * figures out how to merge two journeys by returning a merging block
- * that can later be inserted between both journeys
- * @param precedingBlock - the last block of the journey coming before the merging block
- * @param location - the location where the merge happens
- * @param succeedingBlock - the first block of the journey coming after the merging block
+ * Figures out how to merge two journeys by returning a merging block
+ * that can later be inserted between both journeys.
+ *
+ * If the preceding/succeeding block is a location block,
+ * it also decides whether to hide them by setting their hidden attribute
+ * @param precedingBlock the last block of the journey coming before the merging block.
+ * This should either be a Defining Block or an unselected block
+ * @param location the location where the merge happens
+ * @param succeedingBlock the first block of the journey coming after the merging block
+ * @returns the corresponding merging block based on these rules:
+ * | preceding block      | succeeding block     | locations match | merging block |
+ * | :--------------      | :---------------     | :-------------  | ------------- |
+ * | `unselected`         | `unselected`         | 		           | `location`    |
+ * | `unselected`         | `leg`                |                 | `undefined`   |
+ * | `unselected`         | `location`           |                 | `undefined`   |
+ * | `leg`                | `leg`                | [x]             | `transfer`    |
+ * | `leg`                | `leg`                | [ ]             | `walk`        |
+ * | `leg`                | `location` *[hide!]* | [x]             | `undefined`   |
+ * | `leg`                | `location`           | [ ]             | `undefined`   |
+ * | `location` *[hide!]* | `location` *[hide!]* |                 | `location`    |
+ *
+ * These rules are commutative!
  */
 export function getMergingBlock(
 	precedingBlock: JourneyBlock,
