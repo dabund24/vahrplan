@@ -35,11 +35,11 @@
 		</svelte:element>
 	</svelte:element>
 	<div class="flex-column">
-		{#if transitData.time.arrival?.delay !== undefined}
-			<span class="delay text--{transitData.time.arrival.color}">{delayTextA}</span>
+		{#if transitData.time.arrival !== undefined}
+			<span class="delay text--{transitData.time.arrival?.color}">&#8203;{delayTextA}</span>
 		{/if}
-		{#if transitData.time.departure?.delay !== undefined}
-			<span class="delay text--{transitData.time.departure.color}">{delayTextB}</span>
+		{#if transitData.time.departure !== undefined}
+			<span class="delay text--{transitData.time.departure?.color}">&#8203;{delayTextB}</span>
 		{/if}
 	</div>
 
@@ -78,6 +78,7 @@
 
 	.delay {
 		padding-left: 4px;
+		white-space: nowrap;
 	}
 	.flex-row {
 		align-items: center;
@@ -88,6 +89,6 @@
 		text-align: right;
 	}
 	.platform-text {
-        padding-left: 0.5rem;
+		padding-left: 0.5rem;
 	}
 </style>
