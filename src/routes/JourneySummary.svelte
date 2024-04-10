@@ -49,7 +49,7 @@
 	let legModal = false;
 	let modalLeg: LegBlock | undefined;
 	function showLegModal(leg: LegBlock): void {
-		modalLeg = leg;
+		modalLeg = { ...leg };
 		legModal = true;
 	}
 </script>

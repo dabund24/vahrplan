@@ -10,17 +10,15 @@
 
 	let delayTextA = "";
 	$: if (transitData.time.arrival?.delay !== undefined) {
-		delayTextA = ` (+${transitData.time.arrival.delay})`;
+		delayTextA = `(+${transitData.time.arrival.delay})`;
 	}
 	let delayTextB = "";
 	$: if (transitData.time.departure?.delay !== undefined) {
-		delayTextB = ` (+${transitData.time.departure.delay})`;
+		delayTextB = `(+${transitData.time.departure.delay})`;
 	}
 
 	$: platformData = transitData.platformData;
 	$: platformData2 = transitData.platformData2;
-
-	$: console.log(transitData);
 </script>
 
 <div class="flex-row name-delay-platform">

@@ -25,8 +25,12 @@
 </div>
 
 <style>
+	i {
+		white-space: nowrap;
+	}
 	.align-right {
 		display: flex;
+        white-space: unset;
 		margin: auto 0 auto auto;
 		direction: rtl;
 		width: 0;

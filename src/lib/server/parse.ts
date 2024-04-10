@@ -30,17 +30,17 @@ export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBloc
 			if (i === 0) {
 				// journey starts with walk => location at beginning
 				const locationBlock = locationToBlock(
-					undefined,
 					leg.departure,
-					thisBlock.originLocation
+					thisBlock.originLocation,
+					"departure"
 				);
 				blocks.splice(0, 0, locationBlock);
 			} else if (nextLeg === undefined) {
 				// journey ends with walk => location at end
 				const locationBlock = locationToBlock(
 					leg.arrival,
-					undefined,
-					thisBlock.destinationLocation
+					thisBlock.destinationLocation,
+					"arrival"
 				);
 				blocks.push(locationBlock);
 			}
@@ -122,14 +122,14 @@ function legToBlock(leg: Leg): LegBlock {
 }
 
 function locationToBlock(
-	arrivalTime: string | undefined,
-	departureTime: string | undefined,
-	location: ParsedLocation
+	time: string | undefined,
+	location: ParsedLocation,
+	type: "arrival" | "departure"
 ): LocationBlock {
 	return {
 		type: "location",
 		location,
-		time: parseTimePair(arrivalTime, undefined, undefined, departureTime, undefined, undefined),
+		time: parseSingleTime(time, time, undefined, type),
 		hidden: false
 	};
 }
@@ -175,7 +175,7 @@ export function parseTimePair(
 	const arrivalHasRealtime = arrivalDelay !== null && arrivalDelay !== undefined;
 	const departureHasRealtime = departureDelay !== null && departureDelay !== undefined;
 	const result: ParsedTime = { arrival: null, departure: null };
-	if (!arrivalTime !== undefined || arrivalTimePlanned !== undefined) {
+	if ((arrivalTimePlanned ?? undefined) !== undefined) {
 		result.arrival = {
 			time: new Date(
 				arrivalTimePlanned === undefined ? arrivalTime ?? "" : arrivalTimePlanned
@@ -184,7 +184,7 @@ export function parseTimePair(
 			color: arrivalHasRealtime ? (arrivalDelay <= 300 ? "green" : "red") : undefined
 		};
 	}
-	if (departureTime !== undefined || departureTimePlanned !== undefined) {
+	if ((departureTimePlanned ?? undefined) !== undefined) {
 		result.departure = {
 			time: new Date(
 				departureTimePlanned === undefined ? departureTime ?? "" : departureTimePlanned
