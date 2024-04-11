@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	export let showModal: boolean;
+	export let title: string
 
 	let dialog: HTMLDialogElement;
 
@@ -11,7 +12,7 @@
 <dialog bind:this={dialog} on:close={() => void (showModal = false)}>
 	<div>
 		<header class="flex-row">
-			<slot name="title" />
+			<strong>{title}</strong>
 			<div class="buttons flex-row">
 				<button
 					on:click={() => void dialog.close()}

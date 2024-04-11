@@ -140,11 +140,7 @@
 	<div class="transition"></div>
 </div>
 {#if modalLeg !== undefined}
-	<Modal bind:showModal={legModal}>
-		<strong slot="title">
-			{modalLeg.line.name} <span class="zero-height">&rightarrow;</span>
-			{modalLeg.direction}
-		</strong>
+	<Modal bind:showModal={legModal} title={`${modalLeg.line.name} → ${modalLeg.direction}`}>
 		<div class="modal-content">
 			<DateDuration
 				date={modalLeg.departureData.time.departure?.time}
