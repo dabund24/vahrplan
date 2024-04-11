@@ -62,7 +62,7 @@
 <style>
 	nav {
 		border-bottom: var(--border);
-		padding: 0.5rem;
+		padding: max(.5rem, env(safe-area-inset-top)) .5rem .5rem;
 	}
 	.links-container {
 		width: fit-content;

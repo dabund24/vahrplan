@@ -7,6 +7,7 @@
 	import MainForm from "$lib/components/MainForm.svelte";
 	import JourneySummary from "./JourneySummary.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
+	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
 
 	let windowWidth: number;
 
@@ -39,7 +40,7 @@
 			<section class="diagram">
 				<JourneySummary />
 				{#await treePromise}
-					loading...
+					<JourneyDiagramSkeleton depth={$displayedLocations.length - 1} />
 				{:then tree}
 					<JourneyDiagram nodes={tree} />
 				{:catch err}
@@ -84,15 +85,14 @@
 
 	.journey-preview {
 		position: relative;
-		overflow-y: scroll;
 	}
 
 	.main-application {
-		padding: 1rem;
+		padding: 1rem .5rem;
 		box-sizing: border-box;
 		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
-		--display-width: calc(100vw - 2rem);
+		--display-width: calc(100vw - 2rem - 8px);
 		--connection-width: clamp(
 			var(--connection-width--min-threshold),
 			calc(var(--display-width) / var(--connection-count)),
@@ -113,7 +113,7 @@
 		}
 		.main-application {
 			container-type: inline-size;
-            --display-width: 100cqw;
+            --display-width: calc(100cqw - 1.5rem);
             width: auto;
 			min-width: 0;
 		}

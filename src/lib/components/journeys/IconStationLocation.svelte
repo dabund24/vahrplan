@@ -8,7 +8,7 @@
 	export let secondaryProduct: string | undefined = undefined;
 </script>
 
-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" class="skeleton-text">
 	{#if iconType === "station" && !smallIcon && secondaryProduct === undefined}
 		<circle
 			cx="8"
@@ -71,5 +71,10 @@
 	svg {
 		flex-shrink: 0;
 		z-index: 1;
+	}
+	:global(.skeleton) svg {
+		--background-color: transparent;
+		--foreground-color: transparent;
+		--accent-color: transparent;
 	}
 </style>

@@ -391,6 +391,26 @@ header {
 	padding: 0.5rem;
 }
 
+.skeleton {
+	& .skeleton-text {
+		border-radius: 50vh;
+		animation: skeleton-loading .5s linear infinite alternate;
+		background-color: var(--foreground-color--opaque);
+		color: transparent;
+		user-select: none;
+		-webkit-user-select: none;
+	}
+}
+
+@keyframes skeleton-loading {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: .5;
+	}
+}
+
 @media screen and (max-width: 1500px) {
 	:root {
 		font-size: 16px;

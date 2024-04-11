@@ -40,5 +40,9 @@
 		height: 0;
 		visibility: hidden;
 		width: auto;
+        display: none;
+	}
+	.align-right + .width-setter {
+        display: block;
 	}
 </style>

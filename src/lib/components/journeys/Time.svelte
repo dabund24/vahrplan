@@ -8,12 +8,12 @@
 
 <div class="time flex-column" style="--time-width: {variableWidth ? 'auto' : '4rem'}">
 	{#if time.arrival !== undefined}
-		<div class="text--{time.arrival?.color}">
+		<div class="text--{time.arrival?.color} skeleton-text">
 			{time.arrival === null ? "−−:−−" : timeToString(time.arrival?.time)}
 		</div>
 	{/if}
 	{#if time.departure !== undefined}
-		<div class="text--{time.departure?.color}">
+		<div class="text--{time.departure?.color} skeleton-text">
 			{time.departure === null ? "−−:−−" : timeToString(time.departure.time)}
 		</div>
 	{/if}

@@ -59,7 +59,7 @@
 	}
 
 	function handleInputBlur(): void {
-		void promisedSuggestions.then(suggestions => {
+		void promisedSuggestions.then((suggestions) => {
 			if (suggestions.length === 0 || inputText !== suggestions[0].name) {
 				selectedLocation = undefined;
 				inputElement.setCustomValidity("Keine Station angegeben");
@@ -91,7 +91,19 @@
 		</label>
 		<ul>
 			{#await promisedSuggestions}
-				lol
+				{#each { length: 10 } as _}
+					<li class="skeleton">
+						<span class="flex-row padded-top-bottom suggestion">
+							<span class="suggestion-icon">
+								<IconStationLocation
+									color={"foreground"}
+									iconType={"station"}
+								/>
+							</span>
+							<span>&#8203;</span>
+						</span>
+					</li>
+				{/each}
 			{:then suggestions}
 				{#each suggestions as suggestion, i}
 					<li>
@@ -112,6 +124,21 @@
 						</button>
 					</li>
 				{/each}
+				<!--
+				{#each Array.from({ length: 10 }) as _}
+					<li class="skeleton">
+						<span class="flex-row padded-top-bottom suggestion">
+							<span class="suggestion-icon">
+								<IconStationLocation
+									color={"foreground"}
+									iconType={"station"}
+								/>
+							</span>
+							<span class="skeleton-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, recusandae.</span>
+						</span>
+					</li>
+				{/each}
+				-->
 			{:catch e}
 				Fehler {e}
 			{/await}
@@ -121,7 +148,7 @@
 
 <style>
 	.outer-wrapper {
-        width: 100%;
+		width: 100%;
 		height: 0;
 		overflow-y: visible;
 	}
@@ -129,22 +156,23 @@
 		position: relative;
 		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid transparent;
-    }
+	}
 
 	ul {
 		flex-direction: column;
-        display: none;
+		display: none;
 	}
-    .inner-wrapper:focus-within ul, ul:active {
-        display: block;
-    }
-    .inner-wrapper:focus-within {
-        z-index: 50;
-        border: var(--line-width) solid var(--foreground-color--opaque);
-        backdrop-filter: var(--blur);
-        background-color: var(--background-color--opaque);
-        -webkit-backdrop-filter: var(--blur);
-    }
+	.inner-wrapper:focus-within ul,
+	ul:active {
+		display: block;
+	}
+	.inner-wrapper:focus-within {
+		z-index: 50;
+		border: var(--line-width) solid var(--foreground-color--opaque);
+		backdrop-filter: var(--blur);
+		background-color: var(--background-color--opaque);
+		-webkit-backdrop-filter: var(--blur);
+	}
 
 	.input-summary {
 		align-items: center;
@@ -159,8 +187,9 @@
 	.suggestion {
 		align-items: center;
 		gap: 0.5rem;
-		margin-left: calc(var(--line-width) * -1);
+		margin: 0 0 0 calc(var(--line-width) * -1);
 		text-align: left;
+		width: 100%;
 
 		&[aria-current="true"]::before,
 		&:hover::before {
@@ -180,11 +209,6 @@
 	}
 
 	.suggestion-icon {
-        display: flex;
-	}
-
-	button {
-		width: 100%;
-		margin: 0;
+		display: flex;
 	}
 </style>

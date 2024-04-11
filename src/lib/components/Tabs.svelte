@@ -29,7 +29,7 @@
 
 <style>
 	.tabs-container {
-        overflow-y: scroll;
+        overflow-y: auto;
         position: sticky;
         top: 0;
         z-index: 500;
