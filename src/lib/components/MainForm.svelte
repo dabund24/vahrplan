@@ -42,8 +42,18 @@
 		<div class="location-inputs">
 			{#each stops as stop, i (stop.key)}
 				<div
-					class="flex-row input-container"
+					class="flex-row input-container input-container--transitioning"
 					transition:scale
+					on:introend={(e) =>
+						void (
+							e.target instanceof Element &&
+							e.target.classList.remove("input-container--transitioning")
+						)}
+					on:outrostart={(e) =>
+						void (
+							e.target instanceof Element &&
+							e.target.classList.add("input-container--transitioning")
+						)}
 					animate:flip={{ duration: 400 }}
 				>
 					<button
@@ -63,7 +73,14 @@
 							</g>
 						</svg>
 					</button>
-					<StationInput bind:selectedLocation={stop.value} />
+					<StationInput
+						bind:selectedLocation={stop.value}
+						inputPlaceholder={i === 0
+							? "Start"
+							: i < stops.length - 1
+								? "Zwischenstation"
+								: "Ziel"}
+					/>
 					<button
 						class="button--small remove-button hoverable"
 						type="button"
@@ -153,14 +170,14 @@
 
 <style>
 	form {
-        width: 100%;
+		width: 100%;
 		align-items: center;
 	}
 	.location-inputs--outer {
-        width: 30rem;
-        max-width: 100%;
+		width: 30rem;
+		max-width: 100%;
 	}
-	.location-inputs--outer::before {
+	/*.location-inputs--outer::before {
 		content: "";
 		background-color: var(--foreground-color);
 		width: 4px;
@@ -169,8 +186,10 @@
 		left: calc(38px + 1.5rem);
 		flex-shrink: 0;
 	}
+
+	 */
 	.location-inputs {
-        width: 100%;
+		width: 100%;
 	}
 
 	.input-container:last-child .add-button {

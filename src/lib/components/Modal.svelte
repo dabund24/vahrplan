@@ -39,6 +39,7 @@
 		border: var(--border);
 		background-color: var(--background-color);
 		padding: 0;
+		scrollbar-width: thin;
 	}
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);

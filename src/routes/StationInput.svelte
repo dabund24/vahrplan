@@ -5,6 +5,7 @@
 	import { onMount } from "svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
+	export let inputPlaceholder: string;
 
 	let inputText = "";
 	let inputElement: HTMLInputElement;
@@ -74,7 +75,7 @@
 <div class="outer-wrapper">
 	<div class="inner-wrapper">
 		<label class="flex-row input-summary padded-top-bottom">
-			<span class="flex-row suggestion-icon">
+			<span class="flex-column suggestion-icon suggestion-icon--input">
 				<IconStationLocation
 					color={selectedLocation === undefined ? "foreground" : "accent"}
 					iconType={selectedLocation?.type ?? "station"}
@@ -82,7 +83,7 @@
 			</span>
 			<input
 				type="text"
-				placeholder="Station"
+				placeholder={inputPlaceholder}
 				bind:this={inputElement}
 				bind:value={inputText}
 				on:keydown={handleInputKeydown}
@@ -95,10 +96,7 @@
 					<li class="skeleton">
 						<span class="flex-row padded-top-bottom suggestion">
 							<span class="suggestion-icon">
-								<IconStationLocation
-									color={"foreground"}
-									iconType={"station"}
-								/>
+								<IconStationLocation color={"foreground"} iconType={"station"} />
 							</span>
 							<span>&#8203;</span>
 						</span>
@@ -124,21 +122,6 @@
 						</button>
 					</li>
 				{/each}
-				<!--
-				{#each Array.from({ length: 10 }) as _}
-					<li class="skeleton">
-						<span class="flex-row padded-top-bottom suggestion">
-							<span class="suggestion-icon">
-								<IconStationLocation
-									color={"foreground"}
-									iconType={"station"}
-								/>
-							</span>
-							<span class="skeleton-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, recusandae.</span>
-						</span>
-					</li>
-				{/each}
-				-->
 			{:catch e}
 				Fehler {e}
 			{/await}
@@ -210,5 +193,34 @@
 
 	.suggestion-icon {
 		display: flex;
+	}
+
+	.suggestion-icon--input::before,
+	.suggestion-icon--input::after {
+		content: "";
+		width: 4px;
+		height: 2rem;
+		background-color: var(--foreground-color);
+		margin: -1rem auto;
+	}
+
+	.suggestion-icon--input::after {
+		margin: -8px auto -2rem;
+	}
+
+	.suggestion-icon--input::before {
+		margin: -2rem auto -8px;
+	}
+
+	:global(.input-container:first-child) .suggestion-icon::before,
+	:global(.input-container:last-child) .suggestion-icon::after {
+		background-color: transparent;
+	}
+	:global(.input-container--transitioning:not(:first-child):not(:last-child)) .suggestion-icon,
+	.inner-wrapper:focus-within .suggestion-icon--input {
+		&::before,
+		&::after {
+            display: none;
+		}
 	}
 </style>

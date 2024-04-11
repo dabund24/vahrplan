@@ -41,7 +41,7 @@
 				actAsStopover.push(false);
 				continue;
 			}
-			actAsStopover.push(legss[i - 1].at(-1)?.line.fahrtNr === legss[i][0].line.fahrtNr);
+			actAsStopover.push(legss[i - 1].at(-1)?.blockKey === legss[i][0].blockKey);
 		}
 		return actAsStopover;
 	}
