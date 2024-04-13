@@ -1,4 +1,4 @@
-import type { JourneysOptions, Line, Location, Station, Stop } from "hafas-client";
+import type { Line, Location, Station, Stop } from "hafas-client";
 import type { NumericRange } from "@sveltejs/kit";
 
 export type KeyedItem<T, K extends number | string> = {
@@ -192,31 +192,4 @@ export type PopupDataStation = {
 	transitData: TransitData;
 	product1?: string;
 	product2?: string;
-};
-
-export const products = {
-	nationalExpress: "Intercity-Express",
-	national: "Intercity/Eurocity",
-	regionalExpress: "sonst. Fernzug",
-	regional: "Regionalexpress/-bahn",
-	suburban: "S-Bahn",
-	subway: "U-Bahn",
-	tram: "Straßenbahn",
-	bus: "Bus",
-	ferry: "Fähre",
-	taxi: "Ruftaxi"
-} as const;
-export type Product = keyof typeof products;
-
-/**
- * fie
- */
-export type JourneysSettings = JourneysOptions & {
-	accessibility: "none" | "partial" | "complete";
-	bike: boolean;
-	products: {
-		[product in Product]: boolean;
-	};
-	transfers: -1 | 0 | 1 | 2 | 3 | 4 | 5;
-	transferTime: number;
 };

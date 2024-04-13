@@ -111,9 +111,13 @@
 			background-color: var(--background-color--opaque);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);
+			transition: background 0.4s var(--cubic-bezier);
 		}
 		.links-container {
 			width: 100%;
+		}
+		a {
+            padding: .5rem 0;
 		}
 		a > :global(svg) {
 			margin: auto;

@@ -29,16 +29,21 @@
 
 <style>
 	.tabs-container {
-        overflow-y: auto;
-        position: sticky;
-        top: 0;
-        z-index: 500;
-    }
+		overflow-y: auto;
+		position: sticky;
+		top: 0;
+		z-index: 500;
+	}
 	.tabs {
-        background-color: var(--background-color--opaque);
+		background-color: var(--background-color--opaque);
 		backdrop-filter: var(--blur);
 		-webkit-backdrop-filter: var(--blur);
-        padding: 4px .5rem 0;
+		padding: 4px .5rem 0;
+		transition: background .4s var(--cubic-bezier);
+	}
+
+	ul {
+		align-items: baseline;
 	}
 
 	li {
@@ -46,6 +51,6 @@
 	}
 
 	button {
-        width: 100%;
+		width: 100%;
 	}
 </style>

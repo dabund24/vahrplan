@@ -1,7 +1,43 @@
-.osm-tiles, .oepnvk-tiles {
-    filter: var(--map-filter)
+@media (update: fast) {
+	[data-theme="dark"] {
+		[data-map-filter="default"] .osm-tiles,
+		[data-map-filter="default"] .oepnvk-tiles {
+			filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
+				brightness(0.7);
+		}
+		[data-map-filter="alternative"] .osm-tiles,
+		[data-map-filter="alternative"] .orm-tiles,
+		[data-map-filter="alternative"] .oepnvk-tiles {
+			filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+		}
+	}
+}
+
+.orm-tiles {
+	opacity: 0.7 !important;
 }
 
 .leaflet-container {
-    background: var(--background-color);
+	background: var(--background-color);
+	font-family: var(--font-family);
+}
+
+.leaflet-container .leaflet-control-attribution {
+	background: var(--background-color--opaque);
+	color: var(--foreground-color);
+	> a {
+		color: var(--foreground-color);
+		text-decoration: underline;
+	}
+}
+
+@media screen and (max-width: 999px) {
+	.leaflet-bottom.leaflet-right {
+		transform: rotate(-90deg);
+		text-align: center;
+		transform-origin: bottom right;
+		top: -1rem;
+		bottom: unset;
+		width: 100vh;
+	}
 }

@@ -54,6 +54,7 @@
 <style>
 	.flex-row {
 		align-items: center;
+		gap: 2rem;
 	}
 	.name {
 		margin-right: auto;

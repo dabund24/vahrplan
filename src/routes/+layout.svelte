@@ -1,9 +1,13 @@
-<script>
-	import './styles.css';
+<script lang="ts">
+	import "./styles.css";
 	import Navbar from "./Navbar.svelte";
+	import { settings } from "$lib/settings";
 </script>
 
-<div class="app">
+<div
+	class="app"
+	data-blur={$settings.view.general.blur ? "true" : ""}
+>
 	<Navbar />
 	<main>
 		<slot />
@@ -25,22 +29,22 @@
 
 	@media screen and (max-width: 999px) {
 		.app {
-            grid-template-rows: 100% auto;
+			grid-template-rows: 100% auto;
 		}
 
 		main {
-			padding-bottom: calc(1.5rem + max(.5rem, env(safe-area-inset-bottom)) + 38px);
+			padding-bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
 			overflow: unset;
 		}
-    }
+	}
 
-    @media screen and (min-width: 1000px) {
+	@media screen and (min-width: 1000px) {
 		.app {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
 		}
-    }
+	}
 </style>

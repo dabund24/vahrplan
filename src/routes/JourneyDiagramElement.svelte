@@ -2,6 +2,7 @@
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/journeys/Time.svelte";
 	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores";
+	import { settings } from "$lib/settings";
 
 	export let blocks: JourneyBlock[];
 	export let depth: number;
@@ -26,6 +27,14 @@
 			);
 		}
 	}
+
+	function getLegWidth(duration: number): number {
+		switch ($settings.view.diagram.legWidth) {
+			case "linear": return duration
+			case "logarithmic": return  Math.log2(duration + 2)
+			case "equal": return 1
+		}
+	}
 </script>
 
 <button
@@ -39,7 +48,7 @@
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
-			<span class="leg product--{block.line.product}" style="--duration: {Math.log2(block.duration + 2)}">
+			<span class="leg product--{block.line.product}" style="--duration: {getLegWidth(block.duration)}">
 				<span class="leg__name--long">{block.line.name}</span>
 				<span class="leg__name--short">{block.line.productName}</span>
 			</span>

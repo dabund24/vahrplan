@@ -87,8 +87,12 @@
 		position: relative;
 	}
 
+	/*
+		TODO automatic font sizing: font-size: min(1rem, .09 * var(--display-width) / var(--connection-count));
+	*/
+
 	.main-application {
-		padding: 1rem .5rem;
+		padding: 1rem 0.5rem;
 		box-sizing: border-box;
 		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
@@ -100,22 +104,22 @@
 		);
 		--diagram-width: clamp(
 			calc(var(--connection-width--min-threshold) * (var(--connection-count))),
-            var(--display-width),
+			var(--display-width),
 			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
 		);
-        width: fit-content;
+		width: fit-content;
 		min-width: 100vw;
 	}
 
-    @media screen and (min-width: 1000px) {
+	@media screen and (min-width: 1000px) {
 		.form {
 			left: 0;
 		}
 		.main-application {
 			container-type: inline-size;
-            --display-width: calc(100cqw - 1.5rem);
-            width: auto;
+			--display-width: calc(100cqw - 1.5rem);
+			width: auto;
 			min-width: 0;
 		}
-    }
+	}
 </style>

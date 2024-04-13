@@ -25,6 +25,7 @@
 		margin: auto 0;
 		width: var(--time-width);
 		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
 	}
     .width-setter {
         visibility: hidden;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import StationInput from "../../routes/StationInput.svelte";
-	import { type KeyedItem, type ParsedLocation, products } from "$lib/types.js";
+	import { type KeyedItem, type ParsedLocation } from "$lib/types.js";
 	import { valueIsDefined } from "$lib/util.js";
 	import { setDisplayedLocations } from "$lib/stores.js";
 	import { scale } from "svelte/transition";
@@ -8,7 +8,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
-	import { journeysOptions } from "$lib/settings";
+	import { products, settings } from "$lib/settings";
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] = [
 		{ value: undefined, key: Math.random() },
@@ -114,12 +114,12 @@
 					<div class="settings">
 						<Setting
 							settingName="Fahrradmitnahme"
-							bind:setting={$journeysOptions.bike}
+							bind:setting={$settings.journeysOptions.bike}
 							settingInfo={{ type: "boolean" }}
 						/>
 						<Setting
 							settingName="Barrierefreiheit"
-							bind:setting={$journeysOptions.accessibility}
+							bind:setting={$settings.journeysOptions.accessibility}
 							settingInfo={{
 								type: "stringOptions",
 								options: [
@@ -131,23 +131,23 @@
 						/>
 						<Setting
 							settingName="Maximale Umstiegsanzahl"
-							bind:setting={$journeysOptions.transfers}
+							bind:setting={$settings.journeysOptions.transfers}
 							settingInfo={{
 								type: "numberOptions",
 								options: [
-									{ value: 0, name: "0 (nur Direktfahrten)" },
+									{ value: 0, name: "0" },
 									{ value: 1, name: "1" },
 									{ value: 2, name: "2" },
 									{ value: 3, name: "3" },
 									{ value: 4, name: "4" },
 									{ value: 5, name: "5" },
-									{ value: -1, name: "beliebig viele" }
+									{ value: -1, name: "beliebig" }
 								]
 							}}
 						/>
 						<Setting
 							settingName="Mindestumsteigezeit [min]"
-							bind:setting={$journeysOptions.transferTime}
+							bind:setting={$settings.journeysOptions.transferTime}
 							settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
 						/>
 					</div>
@@ -156,7 +156,7 @@
 						{#each Object.entries(products) as [product, productName]}
 							<Setting
 								settingName={productName}
-								bind:setting={$journeysOptions.products[product]}
+								bind:setting={$settings.journeysOptions.products[product]}
 								settingInfo={{ type: "boolean" }}
 							/>
 						{/each}
@@ -177,17 +177,7 @@
 		width: 30rem;
 		max-width: 100%;
 	}
-	/*.location-inputs--outer::before {
-		content: "";
-		background-color: var(--foreground-color);
-		width: 4px;
-		margin: calc(1rem) 0;
-		position: relative;
-		left: calc(38px + 1.5rem);
-		flex-shrink: 0;
-	}
 
-	 */
 	.location-inputs {
 		width: 100%;
 	}

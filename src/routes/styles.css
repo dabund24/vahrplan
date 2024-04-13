@@ -38,8 +38,41 @@
 
 :root {
 	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI Variable Text",
-		"Segoe UI", "Oxygen", "Ubuntu", "Noto Sans", "Roboto", "Helvetica Neue", Arial, sans-serif,
-		"Apple Color Emoji", "Segoe UI Symbol", "Symbola";
+	"Segoe UI", "Oxygen", "Ubuntu", "Noto Sans", "Roboto", "Helvetica Neue", Arial, sans-serif,
+	"Apple Color Emoji", "Segoe UI Symbol", "Symbola";
+
+	--border-radius--large: 0.5rem;
+	--border-radius--small: calc(var(--line-width) / 2);
+	--line-width: 4px;
+	--line-width--small: 3px;
+	--line-length: 2rem;
+	--line-length--vertical: 1.5rem;
+	--connection-width: 24em;
+	--height--icon--small: 16px;
+
+	--overflow-content: hidden;
+
+	--map-filter: none;
+	--border: var(--line-width) solid var(--foreground-color--opaque);
+	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+	font-size: 18px;
+
+	--nationalExpress-color: var(--foreground-color);
+	--nationalExpress-color--opaque: var(--background-color);
+}
+
+@media (update: fast) {
+	[data-blur="true"] {
+		--blur: blur(3px);
+	}
+	:root[data-theme="dark"] {
+		--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
+		brightness(0.7);
+	}
+}
+
+[data-theme="light"] {
 	--background-color: #ffffff;
 	--foreground-color: #000000;
 	--background-color--opaque: #ffffffe0;
@@ -72,36 +105,6 @@
 	--regionalExpress-color--opaque: #faca7f;
 	--national-color: #646973;
 	--national-color--opaque: #afb4bb;
-	--nationalExpress-color: var(--foreground-color);
-	--nationalExpress-color--opaque: var(--background-color);
-
-	--border-radius--large: 0.5rem;
-	--border-radius--small: calc(var(--line-width) / 2);
-	--line-width: 4px;
-	--line-width--small: 3px;
-	--line-length: 2rem;
-	--line-length--vertical: 1.5rem;
-	--connection-width: 24em;
-	--height--icon--small: 16px;
-
-	--overflow-content: hidden;
-
-	--blur: blur(3px);
-	--map-filter: none;
-	--border: var(--line-width) solid var(--foreground-color--opaque);
-	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
-
-	font-size: 18px;
-}
-
-@media (update: fast) {
-	:root {
-		--blur: blur(3px);
-	}
-	:root[data-theme="dark"] {
-		--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
-			brightness(0.7);
-	}
 }
 
 [data-theme="dark"] {
@@ -193,7 +196,7 @@ button,
 .hoverable,
 footer {
 	transition:
-		background 0.5s ease-in-out,
+		background 0.4s var(--cubic-bezier),
 		border 0.2s ease-in-out;
 }
 

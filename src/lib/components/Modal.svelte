@@ -43,8 +43,6 @@
 	}
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);
-		backdrop-filter: var(--blur, blur(3px));
-		-webkit-backdrop-filter: var(--blur, blur(3px));
 	}
 	:global([data-theme="dark"]) dialog::backdrop {
         background: var(--background-color--opaque, #121212e0);

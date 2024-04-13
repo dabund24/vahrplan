@@ -9,7 +9,7 @@ import type {
 	KeyedItem
 } from "$lib/types";
 import { get } from "svelte/store";
-import { journeysOptions } from "$lib/settings";
+import { settings } from "$lib/settings";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -31,7 +31,7 @@ export function getTreeUrl(locations: ParsedLocation[]): URL {
 		"stops",
 		JSON.stringify(locations.map((location) => location.requestParameter))
 	);
-	url.searchParams.set("options", JSON.stringify(get(journeysOptions)));
+	url.searchParams.set("options", JSON.stringify(get(settings).journeysOptions));
 	return url;
 }
 
