@@ -42,7 +42,7 @@
 		background-color: var(--background-color);
 		padding: 0;
 		scrollbar-width: thin;
-		max-height: calc(100vh - 5rem);
+		max-height: calc(100% - 5rem);
 	}
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);
