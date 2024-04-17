@@ -10,6 +10,8 @@
 	import Setting from "$lib/components/Setting.svelte";
 	import { products, settings } from "$lib/settings";
 	import { onMount } from "svelte";
+	import IconFilter from "$lib/components/icons/IconFilter.svelte";
+	import IconSearch from "$lib/components/icons/IconSearch.svelte";
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] =
 		$displayedLocations.locations.length === 0
@@ -136,7 +138,9 @@
 			<button
 				class="hoverable padded-top-bottom"
 				on:click={() => void (showModal = true)}
-				type="button">Filter</button
+				type="button">
+				<IconFilter />
+			</button
 			>
 			<Modal title="Filter" height={"30rem"} bind:showModal>
 				<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
@@ -194,7 +198,7 @@
 					{/if}
 				</Tabs>
 			</Modal>
-			<button class="hoverable padded-top-bottom" type="submit">Suche</button>
+			<button class="hoverable padded-top-bottom" type="submit"><IconSearch /></button>
 		</div>
 	</div>
 </form>
@@ -249,6 +253,12 @@
 		white-space: nowrap;
 		padding: .5rem;
 		justify-content: center;
+		align-items: center;
+		gap: .5rem;
+		& > input {
+			outline: none;
+			border: none;
+		}
 	}
 
 	.settings {

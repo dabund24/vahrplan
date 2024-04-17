@@ -17,8 +17,8 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Start</title>
+	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
 </svelte:head>
 
 <div class="split-container" bind:clientWidth={windowWidth}>
