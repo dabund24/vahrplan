@@ -1,6 +1,8 @@
 <!-- shamelessly stolen from https://svelte.dev/examples/modal -->
 
 <script lang="ts">
+	import Header from "$lib/components/Header.svelte";
+
 	export let showModal: boolean;
 	export let title: string;
 	export let height: string = "fit-content"
@@ -13,23 +15,20 @@
 
 <dialog bind:this={dialog} on:close={() => void (showModal = false)} style:height={height}>
 	<div>
-		<header class="flex-row">
-			<strong>{title}</strong>
-			<div class="buttons flex-row">
-				<button
-					on:click={() => void dialog.close()}
-					class="button--small hoverable"
-					type="button"
-				>
-					<svg width="16px" height="16px">
-						<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
-							<line x1="3" y1="3" x2="13" y2="13" />
-							<line x1="3" y1="13" x2="13" y2="3" />
-						</g>
-					</svg>
-				</button>
-			</div>
-		</header>
+		<Header {title}>
+			<button
+				on:click={() => void dialog.close()}
+				class="button--small hoverable"
+				type="button"
+			>
+				<svg width="16px" height="16px">
+					<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
+						<line x1="3" y1="3" x2="13" y2="13" />
+						<line x1="3" y1="13" x2="13" y2="3" />
+					</g>
+				</svg>
+			</button>
+		</Header>
 		<slot />
 	</div>
 </dialog>
@@ -72,19 +71,5 @@
 		to {
 			opacity: 1;
 		}
-	}
-	header {
-		align-items: center;
-		padding: .5rem .5rem .5rem 1rem;
-		background-color: var(--background-color--opaque);
-		backdrop-filter: var(--blur);
-		-webkit-backdrop-filter: var(--blur);
-		border-bottom: var(--border);
-		position: sticky;
-        top: 0;
-        z-index: 500;
-	}
-	.buttons {
-		margin-left: auto;
 	}
 </style>

@@ -2,8 +2,10 @@
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import { settings } from "$lib/settings";
+	import Header from "$lib/components/Header.svelte";
 </script>
 
+<Header title={"Einstellungen"} mobileOnly={true} />
 <div id="settings">
 	<Tabs tabs={["Darstellung", "Speicher"]} let:activeTab>
 		<div class="tab-content">

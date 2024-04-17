@@ -1,3 +1,8 @@
+<script>
+import Header from "$lib/components/Header.svelte";
+</script>
+
+<Header title={"Über diese Seite"} mobileOnly={true} />
 <div id="about">
 	Daniel Bund, 2023 - 2024
 </div>

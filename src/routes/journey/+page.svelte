@@ -2,10 +2,12 @@
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { browser } from "$app/environment";
+	import Header from "$lib/components/Header.svelte";
+	import { displayedLocations } from "$lib/stores";
 
 	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
 	if (browser) {
-		import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
+		void import("$lib/components/leaflet/Leaflet.svelte").then((l) => (Leaflet = l.default));
 	}
 
 	let windowWidth: number;
@@ -22,6 +24,12 @@
 		disabled={!showSplitPane}
 	>
 		<div slot="a">
+			<Header
+					title={$displayedLocations.locations.length > 1
+					? `${$displayedLocations.locations[0].value.name} ⇝ ${$displayedLocations.locations.at(-1)?.value.name}`
+					: ""}
+					mobileOnly={true}
+			/>
 			<Journeys />
 		</div>
 		<div slot="b" class="map">
