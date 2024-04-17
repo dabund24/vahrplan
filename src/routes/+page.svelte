@@ -11,7 +11,7 @@
 
 	let windowWidth: number;
 
-	$: showSplitPane = $displayedLocations.length > 0 && windowWidth > 1000;
+	$: showSplitPane = $displayedLocations.locations.length > 0 && windowWidth > 1000;
 
 	$: treePromise = $displayedTree;
 </script>
@@ -31,7 +31,7 @@
 	>
 		<div
 			class="main-application flex-column"
-			style:--connection-count={$displayedLocations.length - 1}
+			style:--connection-count={$displayedLocations.locations.length - 1}
 			slot="a"
 		>
 			<section class="form">
@@ -40,7 +40,7 @@
 			<section class="diagram">
 				<JourneySummary />
 				{#await treePromise}
-					<JourneyDiagramSkeleton depth={$displayedLocations.length - 1} />
+					<JourneyDiagramSkeleton depth={$displayedLocations.locations.length - 1} />
 				{:then tree}
 					<JourneyDiagram nodes={tree} />
 				{:catch err}

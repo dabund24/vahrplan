@@ -2,17 +2,16 @@
 	import type { ParsedLocation } from "$lib/types";
 	import { getApiData } from "$lib/util";
 	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
-	import { onMount } from "svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
 	export let inputPlaceholder: string;
 
-	let inputText = "";
+	let inputText = (selectedLocation?.name ?? "") as string;
 	let inputElement: HTMLInputElement;
 	let promisedSuggestions: Promise<ParsedLocation[]> = Promise.resolve([]);
 	let focused = 0;
 
-	onMount(() => inputElement.setCustomValidity("Keine Station angegeben"));
+	//onMount(() => inputElement.setCustomValidity("Keine Station angegeben"));
 
 	$: promisedSuggestions = fetchLocations(inputText);
 

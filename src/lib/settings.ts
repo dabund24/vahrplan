@@ -43,15 +43,6 @@ export type Settings = {
 	storage: { [Key in Exclude<keyof Settings, "storage">]: boolean };
 };
 
-type ViewSettingsSearch = {
-	poi: boolean;
-	addresses: boolean;
-};
-export const viewSearchSettings = writable<ViewSettingsSearch>({
-	poi: true,
-	addresses: true
-});
-
 export const settings = writable<Settings>({
 	journeysOptions: {
 		accessibility: "none",
@@ -93,7 +84,6 @@ export const settings = writable<Settings>({
 
 if (browser) {
 	settings.update((settings) => {
-		console.log("AAAA");
 		let k: keyof Settings;
 		for (k in settings) {
 			if (k === "storage") continue;
@@ -126,6 +116,11 @@ if (browser) {
 				window.localStorage.removeItem(k);
 			}
 		}
+		document.documentElement.setAttribute(
+			"data-theme",
+			settings.view.general.darkTheme ? "dark" : "light"
+		);
+		document.documentElement.setAttribute("data-color", settings.view.general.color);
 		return settings;
 	});
 }

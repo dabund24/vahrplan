@@ -2,18 +2,38 @@
 	import StationInput from "../../routes/StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation } from "$lib/types.js";
 	import { valueIsDefined } from "$lib/util.js";
-	import { setDisplayedLocations } from "$lib/stores.js";
+	import { displayedLocations, setDisplayedLocations } from "$lib/stores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import { products, settings } from "$lib/settings";
+	import { onMount } from "svelte";
 
-	let stops: KeyedItem<ParsedLocation | undefined, number>[] = [
-		{ value: undefined, key: Math.random() },
-		{ value: undefined, key: Math.random() }
-	];
+	let stops: KeyedItem<ParsedLocation | undefined, number>[] =
+		$displayedLocations.locations.length === 0
+			? [
+					{ value: undefined, key: Math.random() },
+					{ value: undefined, key: Math.random() }
+				]
+			: $displayedLocations.locations;
+
+	let time: string;
+	let timeRole: "departure" = "departure" as const;
+
+	onMount(() => {
+		let timeToBeDisplayed =
+			$displayedLocations.time.getTime() === 0
+				? new Date()
+				: $displayedLocations.time;
+
+		// Adjust for local time zone offset
+		const timezoneOffset = timeToBeDisplayed.getTimezoneOffset() * 60000;
+		const timeIsoString = new Date(timeToBeDisplayed.getTime() - timezoneOffset).toISOString();
+
+		time = timeIsoString.substring(0, timeIsoString.indexOf("T") + 6);
+	});
 
 	function removeVia(index: number): void {
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
@@ -30,7 +50,7 @@
 			valueIsDefined<ParsedLocation, number>
 		);
 		if (stopsToBeDisplayed.length >= 2) {
-			setDisplayedLocations(stopsToBeDisplayed);
+			setDisplayedLocations(stopsToBeDisplayed, new Date(time), timeRole);
 		}
 	}
 
@@ -42,8 +62,13 @@
 		<div class="location-inputs">
 			{#each stops as stop, i (stop.key)}
 				<div
-					class="flex-row input-container input-container--transitioning"
+					class="flex-row input-container"
 					transition:scale
+					on:introstart={(e) =>
+						void (
+							e.target instanceof Element &&
+							e.target.classList.add("input-container--transitioning")
+						)}
 					on:introend={(e) =>
 						void (
 							e.target instanceof Element &&
@@ -102,25 +127,30 @@
 			{/each}
 		</div>
 	</div>
-	<div class="flex-row">
-		<button
-			class="hoverable padded-top-bottom"
-			on:click={() => void (showModal = true)}
-			type="button">Filter</button
-		>
-		<Modal title="Filter" bind:showModal>
-			<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
-				{#if activeTab === 0}
-					<div class="settings">
-						<Setting
-							settingName="Fahrradmitnahme"
-							bind:setting={$settings.journeysOptions.bike}
-							settingInfo={{ type: "boolean" }}
-						/>
-						<Setting
-							settingName="Barrierefreiheit"
-							bind:setting={$settings.journeysOptions.accessibility}
-							settingInfo={{
+	<div class="flex-row time-filter-submit">
+		<label class="time hoverable">
+			<span>Abfahrt:</span>
+			<input type="datetime-local" bind:value={time} />
+		</label>
+		<div>
+			<button
+				class="hoverable padded-top-bottom"
+				on:click={() => void (showModal = true)}
+				type="button">Filter</button
+			>
+			<Modal title="Filter" bind:showModal>
+				<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
+					{#if activeTab === 0}
+						<div class="settings">
+							<Setting
+								settingName="Fahrradmitnahme"
+								bind:setting={$settings.journeysOptions.bike}
+								settingInfo={{ type: "boolean" }}
+							/>
+							<Setting
+								settingName="Barrierefreiheit"
+								bind:setting={$settings.journeysOptions.accessibility}
+								settingInfo={{
 								type: "stringOptions",
 								options: [
 									{ value: "none", name: "ignorieren" },
@@ -128,11 +158,11 @@
 									{ value: "complete", name: "strikt" }
 								]
 							}}
-						/>
-						<Setting
-							settingName="Maximale Umstiegsanzahl"
-							bind:setting={$settings.journeysOptions.transfers}
-							settingInfo={{
+							/>
+							<Setting
+								settingName="Maximale Umstiegsanzahl"
+								bind:setting={$settings.journeysOptions.transfers}
+								settingInfo={{
 								type: "numberOptions",
 								options: [
 									{ value: 0, name: "0" },
@@ -144,27 +174,28 @@
 									{ value: -1, name: "beliebig" }
 								]
 							}}
-						/>
-						<Setting
-							settingName="Mindestumsteigezeit [min]"
-							bind:setting={$settings.journeysOptions.transferTime}
-							settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
-						/>
-					</div>
-				{:else if activeTab === 1}
-					<div class="settings">
-						{#each Object.entries(products) as [product, productName]}
-							<Setting
-								settingName={productName}
-								bind:setting={$settings.journeysOptions.products[product]}
-								settingInfo={{ type: "boolean" }}
 							/>
-						{/each}
-					</div>
-				{/if}
-			</Tabs>
-		</Modal>
-		<button class="hoverable padded-top-bottom" type="submit">Submit</button>
+							<Setting
+								settingName="Mindestumsteigezeit [min]"
+								bind:setting={$settings.journeysOptions.transferTime}
+								settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
+							/>
+						</div>
+					{:else if activeTab === 1}
+						<div class="settings">
+							{#each Object.entries(products) as [product, productName]}
+								<Setting
+									settingName={productName}
+									bind:setting={$settings.journeysOptions.products[product]}
+									settingInfo={{ type: "boolean" }}
+								/>
+							{/each}
+						</div>
+					{/if}
+				</Tabs>
+			</Modal>
+			<button class="hoverable padded-top-bottom" type="submit">Suche</button>
+		</div>
 	</div>
 </form>
 
@@ -196,6 +227,28 @@
 	}
 	.remove-button {
 		align-self: center;
+	}
+
+	.time-filter-submit {
+		flex-wrap: wrap;
+		width: 100%;
+		max-width: 30rem;
+		& > * {
+			width: 100%;
+			white-space: nowrap;
+			flex: 1 0;
+            display: flex;
+		}
+		& button {
+            width: 100%;
+            padding: .5rem;
+		}
+	}
+
+	.time {
+		white-space: nowrap;
+		padding: .5rem;
+		justify-content: center;
 	}
 
 	.settings {

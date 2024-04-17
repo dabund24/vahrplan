@@ -13,7 +13,6 @@ export const GET: RequestHandler = async ({ url }) => {
 		return new Response(JSON.stringify(getZugError("HAFAS_INVALID_REQUEST")));
 	}
 
-	options.departure = new Date(Date.now());
 	options.results = 10;
 	const result = await getJourneyTree(stops, options);
 	return new Response(JSON.stringify(result));

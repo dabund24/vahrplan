@@ -10,6 +10,8 @@ import type {
 } from "$lib/types";
 import { get } from "svelte/store";
 import { settings } from "$lib/settings";
+import type { DisplayedLocations } from "$lib/stores";
+import type { JourneysOptions } from "hafas-client";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -25,13 +27,21 @@ export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResp
 	return fetch(url).then((res) => res.json() as Promise<ZugResponse<T>>);
 }
 
-export function getTreeUrl(locations: ParsedLocation[]): URL {
+export function getTreeUrl(dLocations: DisplayedLocations): URL {
 	const url = new URL("/api/journeys", location.origin);
 	url.searchParams.set(
 		"stops",
-		JSON.stringify(locations.map((location) => location.requestParameter))
+		JSON.stringify(
+			dLocations.locations.map((keyedLocation) => keyedLocation.value.requestParameter)
+		)
 	);
-	url.searchParams.set("options", JSON.stringify(get(settings).journeysOptions));
+	url.searchParams.set(
+		"options",
+		JSON.stringify({
+			...get(settings).journeysOptions,
+			[dLocations.timeRole]: dLocations.time
+		} as JourneysOptions)
+	);
 	return url;
 }
 

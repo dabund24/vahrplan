@@ -56,7 +56,7 @@
 
 <div class="flex-column" id="journey-summary">
 	<div class="flex-row">
-		{#each $displayedLocations as location, i (location.key)}
+		{#each $displayedLocations.locations as location, i (location.key)}
 			<div
 				class="summary-element flex-column"
 				class:station--selected={journeyInfo[i].legs.length > 0}

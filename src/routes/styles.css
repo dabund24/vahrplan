@@ -197,7 +197,7 @@ button,
 footer {
 	transition:
 		background 0.4s var(--cubic-bezier),
-		border 0.2s ease-in-out;
+		border-color 0.2s ease-in-out;
 }
 
 button {

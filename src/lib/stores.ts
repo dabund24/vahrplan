@@ -11,6 +11,12 @@ import { getApiData, getRawLocationBlock, getTreeUrl } from "$lib/util";
 import { browser } from "$app/environment";
 import { getMergingBlock } from "$lib/merge";
 
+export type DisplayedLocations = {
+	locations: KeyedItem<ParsedLocation, number>[];
+	time: Date;
+	timeRole: "departure";
+};
+
 export type SelectedJourney = {
 	blocks: JourneyBlock[];
 	selectedBy: number;
@@ -19,10 +25,15 @@ export type SelectedJourney = {
 	departure: ParsedTime;
 };
 
-export const displayedLocations = writable<KeyedItem<ParsedLocation, number>[]>([]);
+export const displayedLocations = writable<DisplayedLocations>({
+	locations: [],
+	time: new Date(0),
+	timeRole: "departure"
+});
 let locations: ParsedLocation[] = [];
 displayedLocations.subscribe(
-	(keyedLocations) => (locations = keyedLocations.map((keyedLocation) => keyedLocation.value))
+	(displayedLocations) =>
+		(locations = displayedLocations.locations.map((keyedLocation) => keyedLocation.value))
 );
 
 // this is reset to an empty array when displayedLocations changes
@@ -40,30 +51,45 @@ export const displayedJourneys = derived(
 
 // this is recalculated when and only when displayedLocations changes
 // export const displayedTree = derived(displayedLocations, calculateTree);
-
 export const displayedTree = writable<Promise<JourneyNode[]>>(Promise.resolve([]));
-displayedLocations.subscribe((locations) => displayedTree.set(calculateTree(locations)));
+displayedLocations.subscribe((dLocations) => displayedTree.set(calculateTree(dLocations)));
 
-export function setDisplayedLocations(locations: KeyedItem<ParsedLocation, number>[]): void {
-	displayedLocations.set(locations);
+export function setDisplayedLocations(
+	locations: KeyedItem<ParsedLocation, number>[],
+	time: Date,
+	timeRole: "departure"
+): void {
+	displayedLocations.set({ locations, time, timeRole });
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
-	displayedLocations.update((locations) => [
-		...locations.slice(0, index),
-		{ value: location, key: Math.random() },
-		...locations.slice(index)
-	]);
+	displayedLocations.update((dLocations) => {
+		return {
+			locations: [
+				...dLocations.locations.slice(0, index),
+				{ value: location, key: Math.random() },
+				...dLocations.locations.slice(index)
+			],
+			time: dLocations.time,
+			timeRole: dLocations.timeRole
+		};
+	});
 }
 export function removeDisplayedLocation(index: number): void {
-	displayedLocations.update((locations) => [
-		...locations.slice(0, index),
-		...locations.slice(index + 1)
-	]);
+	displayedLocations.update((locations) => {
+		return {
+			locations: [
+				...locations.locations.slice(0, index),
+				...locations.locations.slice(index + 1)
+			],
+			time: locations.time,
+			timeRole: locations.timeRole
+		};
+	});
 }
 
-function resetSelectedJourneys(locations: KeyedItem<ParsedLocation, number>[]): void {
+function resetSelectedJourneys(dLocations: DisplayedLocations): void {
 	selectedJourneys.set(
-		Array.from({ length: locations.length - 1 }, (_v, i) => {
+		Array.from({ length: dLocations.locations.length - 1 }, (_v, i) => {
 			return {
 				blocks: [{ type: "unselected" }],
 				selectedBy: -1,
@@ -75,9 +101,11 @@ function resetSelectedJourneys(locations: KeyedItem<ParsedLocation, number>[]): 
 	);
 }
 
-function resetMergingBlocks(locations: KeyedItem<ParsedLocation, number>[]): void {
+function resetMergingBlocks(locations: DisplayedLocations): void {
 	mergingBlocks.set(
-		Array.from({ length: locations.length }, (_v, i) => getRawLocationBlock(locations[i].value))
+		Array.from({ length: locations.locations.length }, (_v, i) =>
+			getRawLocationBlock(locations.locations[i].value)
+		)
 	);
 }
 
@@ -102,13 +130,11 @@ function calculateDisplayedJourneys([merging, selected]: [
 	}) as KeyedItem<JourneyBlock[], string>[];
 }
 
-async function calculateTree(
-	locations: KeyedItem<ParsedLocation, number>[]
-): Promise<JourneyNode[]> {
-	if (locations.length < 2) {
+async function calculateTree(dLocations: DisplayedLocations): Promise<JourneyNode[]> {
+	if (dLocations.locations.length < 2) {
 		return Promise.resolve([]);
 	}
-	const url = getTreeUrl(locations.map((location) => location.value));
+	const url = getTreeUrl(dLocations);
 	return getApiData<JourneyNode[]>(url).then((response) => {
 		return response.isError ? [] : response.content;
 	});

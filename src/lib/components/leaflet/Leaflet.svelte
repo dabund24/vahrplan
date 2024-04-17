@@ -81,7 +81,7 @@
 						: block.location.position
 				);
 		} else {
-			coordinates = $displayedLocations.map((location) => location.value.position);
+			coordinates = $displayedLocations.locations.map((location) => location.value.position);
 		}
 		if (coordinates.length > 0) {
 			map.fitBounds($L.latLngBounds(coordinates), {
