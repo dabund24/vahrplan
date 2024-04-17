@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LegBlock, PopupDataLine, PopupDataWalk, WalkingBlock } from "$lib/types";
-	import { L } from "$lib/stores";
+	import L from "leaflet";
 	import { getContext, onDestroy, onMount, setContext } from "svelte";
 	import Popup from "$lib/components/leaflet/Popup.svelte";
 
@@ -34,12 +34,12 @@
 		if (map !== undefined) {
 			polyline = (
 				block.type === "leg"
-					? $L.polyline(block.polyline, {
+					? L.polyline(block.polyline, {
 						className: `product--${block.line.product} stroke--product`,
 						weight: 4,
 					smoothFactor: 2
 					})
-					: $L.polyline(
+					: L.polyline(
 							[block.originLocation.position, block.destinationLocation.position],
 							{
 								dashArray: "4 8",

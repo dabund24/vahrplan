@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "leaflet/dist/leaflet.css";
 	import "./map.css";
-	import { displayedJourneys, displayedLocations, L, selectedJourneys } from "$lib/stores";
+	import { displayedJourneys, displayedLocations, selectedJourneys } from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
 	import type { DefiningBlock } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
@@ -9,6 +9,7 @@
 	import Marker from "$lib/components/leaflet/Marker.svelte";
 	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
 	import { settings } from "$lib/settings";
+	import L from "leaflet";
 
 	let map: L.Map | undefined;
 	let mapElement: HTMLElement;
@@ -20,11 +21,7 @@
 	$: if (map !== undefined) addLayersToMap(map, $settings.view.map.layers);
 
 	onMount(() => {
-		map = $L.map(mapElement, { zoomControl: false });
-		const southWest = $L.latLng(40.712, -74.227),
-			northEast = $L.latLng(40.774, -74.125);
-
-		map.fitBounds($L.latLngBounds(southWest, northEast));
+		map = L.map(mapElement, { zoomControl: false });
 		resizeObserver.observe(mapElement);
 	});
 
@@ -40,7 +37,7 @@
 
 	function addLayersToMap(map: L.Map, layer: typeof $settings.view.map.layers): void {
 		if (layer === "osm" || layer === "orm") {
-			$L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+			L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 				maxZoom: 19,
 				attribution:
 					'&copy; <a href="https:///www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -48,7 +45,7 @@
 			}).addTo(map);
 		}
 		if (layer === "orm") {
-			$L.tileLayer("https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png", {
+			L.tileLayer("https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png", {
 				maxZoom: 19,
 				attribution:
 					'<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>, Style: <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA 2.0</a> <a href="http://www.openrailwaymap.org/">OpenRailwayMap</a> and OpenStreetMap',
@@ -56,7 +53,7 @@
 			}).addTo(map);
 		}
 		if (layer === "oepnvk") {
-			$L.tileLayer("https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png", {
+			L.tileLayer("https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png", {
 				maxZoom: 17,
 				attribution:
 					'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/"> CC-BY-SA</a>, map data <a href="http://openstreetmap.org/"> Openstreetmap</a> <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a>',
@@ -80,15 +77,19 @@
 							]
 						: block.location.position
 				);
-		} else {
+		} else if ($displayedLocations.locations.length !== 0) {
 			coordinates = $displayedLocations.locations.map((location) => location.value.position);
+		} else {
+			// fit germany
+			coordinates = [
+				{ lat: 55.0, lng: 6.332 },
+				{ lat: 47.5, lng: 14.635 }
+			];
 		}
-		if (coordinates.length > 0) {
-			map.fitBounds($L.latLngBounds(coordinates), {
-				paddingTopLeft: [20, 50],
-				paddingBottomRight: [20, 100]
-			});
-		}
+		map.fitBounds(L.latLngBounds(coordinates), {
+			paddingTopLeft: [20, 50],
+			paddingBottomRight: [20, 100]
+		});
 	}
 </script>
 

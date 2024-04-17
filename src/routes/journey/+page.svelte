@@ -1,7 +1,12 @@
 <script lang="ts">
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
-	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
+	import { browser } from "$app/environment";
+
+	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
+	if (browser) {
+		import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
+	}
 
 	let windowWidth: number;
 
@@ -20,7 +25,7 @@
 			<Journeys />
 		</div>
 		<div slot="b" class="map">
-			{#if showSplitPane}
+			{#if showSplitPane && Leaflet}
 				<Leaflet />
 			{/if}
 		</div>
