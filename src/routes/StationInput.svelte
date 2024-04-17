@@ -11,8 +11,6 @@
 	let promisedSuggestions: Promise<ParsedLocation[]> = Promise.resolve([]);
 	let focused = 0;
 
-	//onMount(() => inputElement.setCustomValidity("Keine Station angegeben"));
-
 	$: promisedSuggestions = fetchLocations(inputText);
 
 	async function fetchLocations(text: string): Promise<ParsedLocation[]> {
@@ -33,7 +31,6 @@
 		selectedLocation = suggestion;
 		inputText = suggestion.name;
 		focused = 0;
-		inputElement.setCustomValidity("");
 	}
 
 	function handleInputKeydown(ev: KeyboardEvent): void {
@@ -48,24 +45,16 @@
 					ev.preventDefault();
 					break;
 				case "Enter":
+					handleSuggestionClick(suggestions[focused]);
+					inputElement.blur()
+					focused = 0;
+					break;
 				case "Tab":
 					handleSuggestionClick(suggestions[focused]);
 					focused = 0;
 					break;
 				default:
 					focused = 0;
-			}
-		});
-	}
-
-	function handleInputBlur(): void {
-		void promisedSuggestions.then((suggestions) => {
-			if (suggestions.length === 0 || inputText !== suggestions[0].name) {
-				selectedLocation = undefined;
-				inputElement.setCustomValidity("Keine Station angegeben");
-			} else {
-				selectedLocation = suggestions[0];
-				inputElement.setCustomValidity("");
 			}
 		});
 	}
@@ -86,7 +75,6 @@
 				bind:this={inputElement}
 				bind:value={inputText}
 				on:keydown={handleInputKeydown}
-				on:blur={handleInputBlur}
 			/>
 		</label>
 		<ul>
@@ -144,11 +132,11 @@
 		flex-direction: column;
 		display: none;
 	}
-	.inner-wrapper:focus-within ul,
+	.inner-wrapper:has(input:focus) ul,
 	ul:active {
 		display: block;
 	}
-	.inner-wrapper:focus-within {
+	.inner-wrapper:has(input:focus, ul:active) {
 		z-index: 50;
 		border: var(--line-width) solid var(--foreground-color--opaque);
 		backdrop-filter: var(--blur);
