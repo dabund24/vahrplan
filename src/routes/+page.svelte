@@ -1,13 +1,18 @@
 <script lang="ts">
 	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import { displayedLocations, displayedTree } from "$lib/stores";
-	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MainForm from "$lib/components/MainForm.svelte";
 	import JourneySummary from "./JourneySummary.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
+	import { browser } from "$app/environment";
+
+	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
+	if (browser) {
+		import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
+	}
 
 	let windowWidth: number;
 
@@ -53,7 +58,7 @@
 				<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
 					{#if activeTab === 0}
 						<Journeys />
-					{:else if activeTab === 1}
+					{:else if activeTab === 1 && Leaflet}
 						<Leaflet />
 					{/if}
 				</Tabs>

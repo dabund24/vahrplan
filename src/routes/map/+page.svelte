@@ -1,16 +1,22 @@
-<script>
-	import Leaflet from "$lib/components/leaflet/Leaflet.svelte";
+<script lang="ts">
+	import { browser } from "$app/environment";
+
+	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
+	if (browser) {
+		import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
+	}
 </script>
 
 <div>
-	<Leaflet />
+	{#if Leaflet}
+		<Leaflet />
+	{/if}
 </div>
-
 
 <style>
 	div {
 		position: absolute;
-        height: 100vh;
-        width: 100vw;
+		height: 100%;
+		width: 100vw;
 	}
 </style>

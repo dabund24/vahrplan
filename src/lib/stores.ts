@@ -215,11 +215,3 @@ function updateMergingBlocks(
 		];
 	});
 }
-
-export const L = writable<typeof import("leaflet")>();
-if (browser) {
-	void import("leaflet").then((importedLeaflet) => {
-		const l = importedLeaflet.default;
-		L.set(l);
-	});
-}
