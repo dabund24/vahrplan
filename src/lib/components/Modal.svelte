@@ -2,14 +2,16 @@
 
 <script lang="ts">
 	export let showModal: boolean;
-	export let title: string
+	export let title: string;
+	export let height: string = "fit-content"
+
 
 	let dialog: HTMLDialogElement;
 
 	$: if (dialog && showModal) dialog.showModal();
 </script>
 
-<dialog bind:this={dialog} on:close={() => void (showModal = false)}>
+<dialog bind:this={dialog} on:close={() => void (showModal = false)} style:height={height}>
 	<div>
 		<header class="flex-row">
 			<strong>{title}</strong>
@@ -40,6 +42,7 @@
 		background-color: var(--background-color);
 		padding: 0;
 		scrollbar-width: thin;
+		max-height: calc(100vh - 5rem);
 	}
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);

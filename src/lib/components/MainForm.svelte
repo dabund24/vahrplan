@@ -138,7 +138,7 @@
 				on:click={() => void (showModal = true)}
 				type="button">Filter</button
 			>
-			<Modal title="Filter" bind:showModal>
+			<Modal title="Filter" height={"30rem"} bind:showModal>
 				<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
 					{#if activeTab === 0}
 						<div class="settings">
