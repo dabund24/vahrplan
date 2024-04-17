@@ -31,7 +31,10 @@
 <label class="flex-row">
 	<span class="padded-top-bottom name">{settingName}</span>
 	{#if settingInfo.type === "boolean" && typeof setting === "boolean"}
-		<input type="checkbox" bind:checked={setting} />
+		<span class="flex-row">
+			<input type="checkbox" role="switch" tabindex="0" bind:checked={setting} />
+			<span class="toggle hoverable"></span>
+		</span>
 	{:else if settingInfo.type === "stringOptions" || settingInfo.type === "numberOptions"}
 		<select class="padded-top-bottom hoverable" bind:value={setting}>
 			{#each settingInfo.options as option}
@@ -58,5 +61,56 @@
 	}
 	.name {
 		margin-right: auto;
+	}
+	/*
+		switch css is inspired from here: https://codepen.io/mburnette/pen/LxNxNg
+	 */
+
+	input[type="checkbox"] {
+		height: 0;
+		width: 0;
+		visibility: hidden;
+        margin: 0;
+	}
+
+	.toggle {
+		cursor: pointer;
+		width: 2rem;
+		height: 1rem;
+		background: transparent;
+		display: block;
+		border-radius: 100px;
+		position: relative;
+		border: 4px solid var(--foreground-color);
+	}
+
+	.toggle:hover {
+		background-color: var(--foreground-color--opaque);
+	}
+
+	.toggle:after {
+		content: "";
+		display: flex;
+		margin: 4px calc(100% - 1rem + 4px) 4px 4px;
+		height: calc(1rem - 8px);
+		background: var(--foreground-color);
+		border-radius: 90px;
+		transition:
+			margin-left 0.4s var(--cubic-bezier),
+			margin-right 0.4s var(--cubic-bezier) 0.1s,
+			background-color .4s var(--cubic-bezier);
+	}
+
+	input:checked + .toggle {
+		border-color: var(--accent-color);
+	}
+
+	input:checked + .toggle:after {
+		margin: 4px 4px 4px calc(100% - 1rem + 4px);
+		background-color: var(--accent-color);
+		transition:
+			margin-left 0.4s var(--cubic-bezier) 0.1s,
+			margin-right 0.4s var(--cubic-bezier),
+            background-color .4s var(--cubic-bezier);
 	}
 </style>
