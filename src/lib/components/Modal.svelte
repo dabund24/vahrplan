@@ -20,6 +20,7 @@
 				on:click={() => void dialog.close()}
 				class="button--small hoverable"
 				type="button"
+				title="Dialog schließen"
 			>
 				<svg width="16px" height="16px">
 					<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">

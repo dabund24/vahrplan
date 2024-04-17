@@ -1,4 +1,5 @@
 <svg width="26px" height="26px" xmlns="http://www.w3.org/2000/svg">
+	<title>Verbindungsdetails</title>
 	<g stroke-width="4" stroke="var(--accent-color)" stroke-linecap="round">
 		<line x1="5" y1="5" x2="5" y2="21"/>
 	</g>

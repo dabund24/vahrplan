@@ -2,17 +2,9 @@
 	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import { displayedLocations, displayedTree } from "$lib/stores";
 	import Tabs from "$lib/components/Tabs.svelte";
-	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MainForm from "$lib/components/MainForm.svelte";
-	import JourneySummary from "./JourneySummary.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
-	import { browser } from "$app/environment";
-
-	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
-	if (browser) {
-		import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
-	}
 
 	let windowWidth: number;
 
@@ -43,7 +35,11 @@
 				<MainForm />
 			</section>
 			<section class="diagram">
-				<JourneySummary />
+				{#if $displayedLocations.locations.length > 1}
+					{#await import("./JourneySummary.svelte") then JourneySummary}
+						<JourneySummary.default />
+					{/await}
+				{/if}
 				{#await treePromise}
 					<JourneyDiagramSkeleton depth={$displayedLocations.locations.length - 1} />
 				{:then tree}
@@ -57,9 +53,13 @@
 			{#if showSplitPane}
 				<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
 					{#if activeTab === 0}
-						<Journeys />
-					{:else if activeTab === 1 && Leaflet}
-						<Leaflet />
+						{#await import("$lib/components/journeys/Journeys.svelte") then Journeys}
+							<Journeys.default />
+						{/await}
+					{:else if activeTab === 1}
+						{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
+							<Leaflet.default />
+						{/await}
 					{/if}
 				</Tabs>
 			{/if}

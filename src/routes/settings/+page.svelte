@@ -5,6 +5,11 @@
 	import Header from "$lib/components/Header.svelte";
 </script>
 
+<svelte:head>
+	<title>Einstellungen</title>
+	<meta name="description" content="Einstellungen" />
+</svelte:head>
+
 <Header title={"Einstellungen"} mobileOnly={true} />
 <div id="settings">
 	<Tabs tabs={["Darstellung", "Speicher"]} let:activeTab>

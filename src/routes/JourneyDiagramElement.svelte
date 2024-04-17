@@ -42,6 +42,7 @@
 	class="flex-row diagram-element hoverable"
 	aria-current={isSelected}
 	on:click={handleDiagramElementClick}
+	title="Verbindung aus-/abwählen"
 >
 	<span class="time">
 		<Time time={departure} />

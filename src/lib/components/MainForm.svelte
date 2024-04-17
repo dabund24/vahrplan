@@ -26,9 +26,7 @@
 
 	onMount(() => {
 		let timeToBeDisplayed =
-			$displayedLocations.time.getTime() === 0
-				? new Date()
-				: $displayedLocations.time;
+			$displayedLocations.time.getTime() === 0 ? new Date() : $displayedLocations.time;
 
 		// Adjust for local time zone offset
 		const timezoneOffset = timeToBeDisplayed.getTimezoneOffset() * 60000;
@@ -88,6 +86,7 @@
 						type="button"
 						tabindex="-1"
 						on:click={() => void addVia(i + 1)}
+						title="Station hinzufügen"
 					>
 						<svg width="16px" height="16px">
 							<g
@@ -113,6 +112,7 @@
 						type="button"
 						tabindex="-1"
 						on:click={() => void removeVia(i)}
+						title="Station entfernen"
 					>
 						<svg width="16px" height="16px">
 							<g
@@ -138,10 +138,11 @@
 			<button
 				class="hoverable padded-top-bottom"
 				on:click={() => void (showModal = true)}
-				type="button">
-				<IconFilter />
-			</button
+				type="button"
+				title="Verbindungen filtern"
 			>
+				<IconFilter />
+			</button>
 			<Modal title="Filter" height={"30rem"} bind:showModal>
 				<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
 					{#if activeTab === 0}
@@ -155,29 +156,29 @@
 								settingName="Barrierefreiheit"
 								bind:setting={$settings.journeysOptions.accessibility}
 								settingInfo={{
-								type: "stringOptions",
-								options: [
-									{ value: "none", name: "ignorieren" },
-									{ value: "partial", name: "bevorzugen" },
-									{ value: "complete", name: "strikt" }
-								]
-							}}
+									type: "stringOptions",
+									options: [
+										{ value: "none", name: "ignorieren" },
+										{ value: "partial", name: "bevorzugen" },
+										{ value: "complete", name: "strikt" }
+									]
+								}}
 							/>
 							<Setting
 								settingName="Maximale Umstiegsanzahl"
 								bind:setting={$settings.journeysOptions.transfers}
 								settingInfo={{
-								type: "numberOptions",
-								options: [
-									{ value: 0, name: "0" },
-									{ value: 1, name: "1" },
-									{ value: 2, name: "2" },
-									{ value: 3, name: "3" },
-									{ value: 4, name: "4" },
-									{ value: 5, name: "5" },
-									{ value: -1, name: "beliebig" }
-								]
-							}}
+									type: "numberOptions",
+									options: [
+										{ value: 0, name: "0" },
+										{ value: 1, name: "1" },
+										{ value: 2, name: "2" },
+										{ value: 3, name: "3" },
+										{ value: 4, name: "4" },
+										{ value: 5, name: "5" },
+										{ value: -1, name: "beliebig" }
+									]
+								}}
 							/>
 							<Setting
 								settingName="Mindestumsteigezeit [min]"
@@ -198,7 +199,9 @@
 					{/if}
 				</Tabs>
 			</Modal>
-			<button class="hoverable padded-top-bottom" type="submit"><IconSearch /></button>
+			<button class="hoverable padded-top-bottom" type="submit" title="Verbindungen suchen">
+				<IconSearch />
+			</button>
 		</div>
 	</div>
 </form>
@@ -241,20 +244,20 @@
 			width: 100%;
 			white-space: nowrap;
 			flex: 1 0;
-            display: flex;
+			display: flex;
 		}
 		& button {
-            width: 100%;
-            padding: .5rem;
+			width: 100%;
+			padding: 0.5rem;
 		}
 	}
 
 	.time {
 		white-space: nowrap;
-		padding: .5rem;
+		padding: 0.5rem;
 		justify-content: center;
 		align-items: center;
-		gap: .5rem;
+		gap: 0.5rem;
 		& > input {
 			outline: none;
 			border: none;

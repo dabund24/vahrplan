@@ -1,4 +1,5 @@
 <svg width="26px" height="26px">
+	<title>Einstellungen</title>
 	<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round" fill="none">
 		<path d="M 13,24 C 13,21 19,19 21,21" />
 		<path d="M 21,21 C 19,19 21,13 24,13" />

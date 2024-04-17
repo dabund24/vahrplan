@@ -3,9 +3,14 @@
 
 	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
 	if (browser) {
-		import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
+		void import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
 	}
 </script>
+
+<svelte:head>
+	<title>Karte</title>
+	<meta name="description" content="Karte" />
+</svelte:head>
 
 <div>
 	{#if Leaflet}

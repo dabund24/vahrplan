@@ -1,4 +1,5 @@
 <svg width="26px" height="26px" xmlns="http://www.w3.org/2000/svg">
+	<title>Startseite</title>
 	<mask id="line-mask">
 		<g stroke="white" stroke-width="4" stroke-linecap="round">
 			<line x1="2" y1="6" x2="24" y2="6" />

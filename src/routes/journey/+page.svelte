@@ -15,6 +15,11 @@
 	$: showSplitPane = windowWidth > 1000;
 </script>
 
+<svelte:head>
+	<title>Verbindungsdetails</title>
+	<meta name="description" content="Verbindungsdetails" />
+</svelte:head>
+
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
 		type={"horizontal"}
