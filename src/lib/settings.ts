@@ -102,7 +102,6 @@ if (browser) {
 			settings.view.general.darkTheme ? "dark" : "light"
 		);
 		document.documentElement.setAttribute("data-color", settings.view.general.color);
-
 		return settings;
 	});
 
@@ -121,6 +120,10 @@ if (browser) {
 			settings.view.general.darkTheme ? "dark" : "light"
 		);
 		document.documentElement.setAttribute("data-color", settings.view.general.color);
+		document
+			.getElementById("theme-color")!
+			.setAttribute("content", settings.view.general.darkTheme ? "#121212" : "#ffffff");
+
 		return settings;
 	});
 }

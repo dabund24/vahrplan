@@ -189,6 +189,7 @@
 		height: 2rem;
 		background-color: var(--foreground-color);
 		margin: -1rem auto;
+		border-radius: 2px;
 	}
 
 	.suggestion-icon--input::after {

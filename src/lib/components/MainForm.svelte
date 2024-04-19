@@ -12,6 +12,8 @@
 	import { onMount } from "svelte";
 	import IconFilter from "$lib/components/icons/IconFilter.svelte";
 	import IconSearch from "$lib/components/icons/IconSearch.svelte";
+	import { pushState } from "$app/navigation";
+	import { page } from "$app/stores";
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] =
 		$displayedLocations.locations.length === 0
@@ -54,7 +56,11 @@
 		}
 	}
 
-	let showModal = false;
+	function showFilterModal(): void {
+		pushState("", {
+			showFilterModal: true
+		});
+	}
 </script>
 
 <form class="flex-column" on:submit|preventDefault={handleFormSubmit}>
@@ -137,68 +143,70 @@
 		<div>
 			<button
 				class="hoverable padded-top-bottom"
-				on:click={() => void (showModal = true)}
+				on:click={showFilterModal}
 				type="button"
 				title="Verbindungen filtern"
 			>
 				<IconFilter />
 			</button>
-			<Modal title="Filter" height={"30rem"} bind:showModal>
-				<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
-					{#if activeTab === 0}
-						<div class="settings">
-							<Setting
-								settingName="Fahrradmitnahme"
-								bind:setting={$settings.journeysOptions.bike}
-								settingInfo={{ type: "boolean" }}
-							/>
-							<Setting
-								settingName="Barrierefreiheit"
-								bind:setting={$settings.journeysOptions.accessibility}
-								settingInfo={{
-									type: "stringOptions",
-									options: [
-										{ value: "none", name: "ignorieren" },
-										{ value: "partial", name: "bevorzugen" },
-										{ value: "complete", name: "strikt" }
-									]
-								}}
-							/>
-							<Setting
-								settingName="Maximale Umstiegsanzahl"
-								bind:setting={$settings.journeysOptions.transfers}
-								settingInfo={{
-									type: "numberOptions",
-									options: [
-										{ value: 0, name: "0" },
-										{ value: 1, name: "1" },
-										{ value: 2, name: "2" },
-										{ value: 3, name: "3" },
-										{ value: 4, name: "4" },
-										{ value: 5, name: "5" },
-										{ value: -1, name: "beliebig" }
-									]
-								}}
-							/>
-							<Setting
-								settingName="Mindestumsteigezeit [min]"
-								bind:setting={$settings.journeysOptions.transferTime}
-								settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
-							/>
-						</div>
-					{:else if activeTab === 1}
-						<div class="settings">
-							{#each Object.entries(products) as [product, productName]}
+			{#if $page.state.showFilterModal}
+				<Modal title="Filter" height={"30rem"} bind:showModal={$page.state.showFilterModal}>
+					<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
+						{#if activeTab === 0}
+							<div class="settings">
 								<Setting
-									settingName={productName}
-									bind:setting={$settings.journeysOptions.products[product]}
+									settingName="Fahrradmitnahme"
+									bind:setting={$settings.journeysOptions.bike}
 									settingInfo={{ type: "boolean" }}
 								/>
-							{/each}
-						</div>
-					{/if}
-				</Tabs>
-			</Modal>
+								<Setting
+									settingName="Barrierefreiheit"
+									bind:setting={$settings.journeysOptions.accessibility}
+									settingInfo={{
+										type: "stringOptions",
+										options: [
+											{ value: "none", name: "ignorieren" },
+											{ value: "partial", name: "bevorzugen" },
+											{ value: "complete", name: "strikt" }
+										]
+									}}
+								/>
+								<Setting
+									settingName="Maximale Umstiegsanzahl"
+									bind:setting={$settings.journeysOptions.transfers}
+									settingInfo={{
+										type: "numberOptions",
+										options: [
+											{ value: 0, name: "0" },
+											{ value: 1, name: "1" },
+											{ value: 2, name: "2" },
+											{ value: 3, name: "3" },
+											{ value: 4, name: "4" },
+											{ value: 5, name: "5" },
+											{ value: -1, name: "beliebig" }
+										]
+									}}
+								/>
+								<Setting
+									settingName="Mindestumsteigezeit [min]"
+									bind:setting={$settings.journeysOptions.transferTime}
+									settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
+								/>
+							</div>
+						{:else if activeTab === 1}
+							<div class="settings">
+								{#each Object.entries(products) as [product, productName]}
+									<Setting
+										settingName={productName}
+										bind:setting={$settings.journeysOptions.products[product]}
+										settingInfo={{ type: "boolean" }}
+									/>
+								{/each}
+							</div>
+						{/if}
+					</Tabs>
+				</Modal>
+			{/if}
 			<button class="hoverable padded-top-bottom" type="submit" title="Verbindungen suchen">
 				<IconSearch />
 			</button>

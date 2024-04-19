@@ -10,6 +10,8 @@
 	import { dateDifference } from "$lib/util";
 	import Duration from "$lib/components/Duration.svelte";
 	import DateDuration from "$lib/components/journeys/DateDuration.svelte";
+	import { page } from "$app/stores";
+	import { pushState } from "$app/navigation";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -46,11 +48,12 @@
 		return actAsStopover;
 	}
 
-	let legModal = false;
 	let modalLeg: LegBlock | undefined;
 	function showLegModal(leg: LegBlock): void {
 		modalLeg = { ...leg };
-		legModal = true;
+		pushState("", {
+			showLegModal: true
+		});
 	}
 </script>
 
@@ -99,6 +102,7 @@
 									<button
 										class="desktop-line-container hoverable"
 										on:click={() => void showLegModal(leg)}
+										title={leg.line.name}
 									>
 										<span class="line--product product--{leg.line.product}"
 										></span>
@@ -139,8 +143,11 @@
 	</div>
 	<div class="transition"></div>
 </div>
-{#if modalLeg !== undefined}
-	<Modal bind:showModal={legModal} title={`${modalLeg.line.name} → ${modalLeg.direction}`}>
+{#if $page.state.showLegModal && modalLeg}
+	<Modal
+		bind:showModal={$page.state.showLegModal}
+		title={`${modalLeg.line.name} → ${modalLeg.direction}`}
+	>
 		<div class="modal-content">
 			<DateDuration
 				date={modalLeg.departureData.time.departure?.time}
@@ -165,7 +172,7 @@
 			-webkit-backdrop-filter: var(--blur);
 		}
 		& > * {
-            margin: 0 -0.5rem;
+			margin: 0 -0.5rem;
 		}
 		--beginning-end-offset: 1.5em;
 		word-break: break-word;

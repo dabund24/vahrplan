@@ -5,6 +5,7 @@
 	import MainForm from "$lib/components/MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
+	import JourneySummary from "./JourneySummary.svelte";
 
 	let windowWidth: number;
 
@@ -36,9 +37,7 @@
 			</section>
 			<section class="diagram">
 				{#if $displayedLocations.locations.length > 1}
-					{#await import("./JourneySummary.svelte") then JourneySummary}
-						<JourneySummary.default />
-					{/await}
+					<JourneySummary />
 				{/if}
 				{#await treePromise}
 					<JourneyDiagramSkeleton depth={$displayedLocations.locations.length - 1} />

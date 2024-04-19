@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 
-	let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
-	if (browser) {
-		void import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
-	}
+	//let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
+	//if (browser) {
+	//	void import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
+	//}
 </script>
 
 <svelte:head>
@@ -13,8 +13,10 @@
 </svelte:head>
 
 <div>
-	{#if Leaflet}
-		<Leaflet />
+	{#if browser}
+		{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
+			<Leaflet />
+		{/await}
 	{/if}
 </div>
 

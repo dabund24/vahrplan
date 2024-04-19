@@ -19,6 +19,7 @@
 	class="icon-container hoverable"
 	aria-pressed={isPressed}
 	on:click={() => void (isPressed = !isPressed)}
+	title={location.name}
 >
 	<IconStationLocation color={"product"} iconType={location.type} smallIcon={actsAsStopover} />
 </button>
@@ -27,6 +28,7 @@
 		class="icon-neighbor action-button"
 		on:click={() => void removeDisplayedLocation(locationIndex)}
 		transition:fly={{ y: -36 }}
+		title="Station als Zwischenstation entfernen"
 	>
 		<svg width="16px" height="16px">
 			<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
@@ -40,6 +42,7 @@
 		class="icon-neighbor action-button"
 		transition:fly={{ y: -36 }}
 		on:click={() => void addDisplayedLocation(location, locationIndex + 1)}
+		title="Station als Zwischenstation hinzufügen"
 	>
 		<svg width="16px" height="16px">
 			<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">

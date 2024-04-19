@@ -13,11 +13,11 @@
 	$: if (dialog && showModal) dialog.showModal();
 </script>
 
-<dialog bind:this={dialog} on:close={() => void (showModal = false)} style:height={height}>
+<dialog bind:this={dialog} style:height={height}>
 	<div>
 		<Header {title}>
 			<button
-				on:click={() => void dialog.close()}
+				on:click={() => void history.back()}
 				class="button--small hoverable"
 				type="button"
 				title="Dialog schließen"

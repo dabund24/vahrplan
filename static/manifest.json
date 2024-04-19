@@ -1,0 +1,46 @@
+{
+  "name": "Zug",
+  "icons": [
+    {
+      "src": "pwa/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "pwa/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "start_url": ".",
+  "shortcuts": [
+    {
+      "name": "Settings",
+      "description": "modify app appearance and change search preferences",
+      "url": "/settings",
+      "icons": [
+        {
+          "src": "favicon.svg"
+        }
+      ]
+    }
+  ],
+  "display": "standalone",
+  "orientation": "portrait"
+}

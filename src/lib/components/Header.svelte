@@ -22,6 +22,7 @@
         top: 0;
         z-index: 500;
 		min-height: 2.5rem;
+		transition: background-color .4s var(--cubic-bezier);
     }
     .buttons {
         margin-left: auto;

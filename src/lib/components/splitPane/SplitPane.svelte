@@ -278,4 +278,10 @@
 			overflow: unset;
         }
     }
+
+    @media screen and (pointer: fine) {
+        .divider:not(:hover)::after {
+			border-width: 0;
+		}
+    }
 </style>
