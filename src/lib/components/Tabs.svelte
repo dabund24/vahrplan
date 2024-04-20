@@ -13,7 +13,8 @@
 				<li role="tab" aria-selected={activeTab === index}>
 					<button
 						class="hoverable padded-top-bottom"
-						on:click={() => void (activeTab = index)} type="button">{label}</button
+						on:click={() => void (activeTab = index)}
+						type="button">{label}</button
 					>
 				</li>
 			{/each}
@@ -38,8 +39,8 @@
 		background-color: var(--background-color--opaque);
 		backdrop-filter: var(--blur);
 		-webkit-backdrop-filter: var(--blur);
-		padding: 4px .5rem 0;
-		transition: background .4s var(--cubic-bezier);
+		padding: 4px 0.5rem 0;
+		transition: background 0.4s var(--cubic-bezier);
 	}
 
 	ul {
@@ -52,5 +53,20 @@
 
 	button {
 		width: 100%;
+	}
+
+	.transition {
+		background: linear-gradient(
+			to bottom,
+			var(--background-color--opaque--transitionable),
+			transparent
+		);
+		transition: --background-color--opaque--transitionable 0.4s var(--cubic-bezier);
+	}
+
+	@property --background-color--opaque--transitionable {
+		syntax: "<color>";
+		initial-value: var(--background-color--opaque);
+		inherits: false;
 	}
 </style>
