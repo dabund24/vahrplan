@@ -38,7 +38,7 @@
 					}}
 				/>
 				<Setting
-					settingName={"Verwischungseffekte (deaktivieren falls Programm ruckelt)"}
+					settingName={"Verwischungseffekte"}
 					bind:setting={$settings.view.general.blur}
 					settingInfo={{
 						type: "boolean"
@@ -71,16 +71,9 @@
 					}}
 				/>
 				<Setting
-					settingName={"Kartenfilter im Dunkelmodus"}
+					settingName={"Dunkelmodus auf Karte übertragen"}
 					bind:setting={$settings.view.map.darkFilter}
-					settingInfo={{
-						type: "options",
-						options: [
-							{ value: "default", name: "Blass" },
-							{ value: "alternative", name: "Farbig" },
-							{ value: "none", name: "Keiner" }
-						]
-					}}
+					settingInfo={{ type: "boolean" }}
 				/>
 			{:else if activeTab === 1}
 				<h1>Persistentes Speichern von Einstellungen</h1>

@@ -1,15 +1,15 @@
 @media (update: fast) {
-	[data-theme="dark"] {
-		[data-map-filter="default"] .osm-tiles,
-		[data-map-filter="default"] .oepnvk-tiles {
+	.map[data-theme="dark"] {
+		.osm-tiles {
 			filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
 				brightness(0.7);
 		}
-		[data-map-filter="alternative"] .osm-tiles,
-		[data-map-filter="alternative"] .orm-tiles,
-		[data-map-filter="alternative"] .oepnvk-tiles {
+		.orm-tiles, .oepnvk-tiles {
 			filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 		}
+	}
+	.map[data-theme="light"] .product--nationalExpress {
+		--product-color: #000000;
 	}
 }
 
@@ -19,7 +19,7 @@
 
 .leaflet-container {
 	background: var(--background-color);
-	font-family: var(--font-family);
+	font-family: var(--font-family), sans-serif;
 }
 
 .leaflet-container .leaflet-control-attribution {

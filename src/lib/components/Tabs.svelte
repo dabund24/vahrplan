@@ -58,7 +58,7 @@
 	.transition {
 		background: linear-gradient(
 			to bottom,
-			var(--background-color--opaque--transitionable),
+			var(--background-color--opaque),
 			transparent
 		);
 		transition: --background-color--opaque--transitionable 0.4s var(--cubic-bezier);

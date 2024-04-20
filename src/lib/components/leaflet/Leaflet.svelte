@@ -96,8 +96,7 @@
 <div
 	class="map"
 	bind:this={mapElement}
-	data-map-filter={$settings.view.map.darkFilter}
-	data-theme={$settings.view.map.darkFilter !== "none" && $settings.view.general.darkTheme
+	data-theme={$settings.view.map.darkFilter && $settings.view.general.darkTheme
 		? "dark"
 		: "light"}
 >

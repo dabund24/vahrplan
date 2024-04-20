@@ -37,7 +37,7 @@ export type Settings = {
 		};
 		map: {
 			layers: "osm" | "orm" | "oepnvk";
-			darkFilter: "default" | "alternative" | "none";
+			darkFilter: boolean;
 		};
 	};
 	storage: { [Key in Exclude<keyof Settings, "storage">]: boolean };
@@ -73,7 +73,7 @@ export const settings = writable<Settings>({
 		},
 		map: {
 			layers: "osm",
-			darkFilter: "default"
+			darkFilter: true
 		}
 	},
 	storage: {
