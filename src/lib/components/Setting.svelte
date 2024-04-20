@@ -1,30 +1,18 @@
 <script lang="ts" generics="T extends string | boolean | number">
 	export let settingName: string;
 	export let setting: T;
-	type SettingInfo = T extends string
+	type SettingInfo = T extends string | number
 		? {
-				type: "stringOptions";
+				type: "options";
 				options: { value: T; name: string }[];
 			}
 		: T extends boolean
 			? {
 					type: "boolean";
 				}
-			: T extends number
-				?
-						| {
-								type: "numberRange";
-								min: T;
-								max: T;
-								step: number;
-						  }
-						| {
-								type: "numberOptions";
-								options: { value: T; name: string }[];
-						  }
-				: {
-						type: "never";
-					};
+			: {
+					type: "never";
+				};
 	export let settingInfo: SettingInfo;
 </script>
 
@@ -32,7 +20,7 @@
 	<span class="padded-top-bottom name">{settingName}</span>
 	{#if settingInfo.type === "boolean" && typeof setting === "boolean"}
 		<input type="checkbox" role="switch" tabindex="0" bind:checked={setting} />
-	{:else if settingInfo.type === "stringOptions" || settingInfo.type === "numberOptions"}
+	{:else if settingInfo.type === "options"}
 		<select class="hoverable" bind:value={setting}>
 			{#each settingInfo.options as option}
 				<option value={option.value}>
@@ -40,14 +28,6 @@
 				</option>
 			{/each}
 		</select>
-	{:else if settingInfo.type === "numberRange"}
-		<input
-			type="number"
-			min={settingInfo.min}
-			max={settingInfo.max}
-			step={settingInfo.step}
-			bind:value={setting}
-		/>
 	{/if}
 </label>
 
@@ -73,7 +53,7 @@
 		position: relative;
 		border: 4px solid var(--foreground-color);
 		box-sizing: content-box;
-        flex-shrink: 0;
+		flex-shrink: 0;
 	}
 
 	input[type="checkbox"]:hover {

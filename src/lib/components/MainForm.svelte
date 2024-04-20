@@ -163,7 +163,7 @@
 									settingName="Barrierefreiheit"
 									bind:setting={$settings.journeysOptions.accessibility}
 									settingInfo={{
-										type: "stringOptions",
+										type: "options",
 										options: [
 											{ value: "none", name: "ignorieren" },
 											{ value: "partial", name: "bevorzugen" },
@@ -175,7 +175,7 @@
 									settingName="Maximale Umstiegsanzahl"
 									bind:setting={$settings.journeysOptions.transfers}
 									settingInfo={{
-										type: "numberOptions",
+										type: "options",
 										options: [
 											{ value: 0, name: "0" },
 											{ value: 1, name: "1" },
@@ -188,9 +188,23 @@
 									}}
 								/>
 								<Setting
-									settingName="Mindestumsteigezeit [min]"
+									settingName="Mindestumsteigezeit"
 									bind:setting={$settings.journeysOptions.transferTime}
-									settingInfo={{ type: "numberRange", min: 0, max: 60, step: 5 }}
+									settingInfo={{
+										type: "options",
+										options: [
+											{ value: 0, name: "0min" },
+											{ value: 2, name: "2min" },
+											{ value: 5, name: "5min" },
+											{ value: 10, name: "10min" },
+											{ value: 15, name: "15min" },
+											{ value: 20, name: "20min" },
+											{ value: 30, name: "30min" },
+											{ value: 40, name: "40min" },
+											{ value: 50, name: "50min" },
+											{ value: 60, name: "1h" }
+										]
+									}}
 								/>
 							</div>
 						{:else if activeTab === 1}

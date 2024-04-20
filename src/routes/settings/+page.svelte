@@ -27,7 +27,7 @@
 					settingName={"Akzentfarbe"}
 					bind:setting={$settings.view.general.color}
 					settingInfo={{
-						type: "stringOptions",
+						type: "options",
 						options: [
 							{ value: "red", name: "Rot" },
 							{ value: "yellow", name: "Gelb" },
@@ -49,7 +49,7 @@
 					settingName={"Verhältnis Breite Verbindungsabschnitt zu Reisedauer"}
 					bind:setting={$settings.view.diagram.legWidth}
 					settingInfo={{
-						type: "stringOptions",
+						type: "options",
 						options: [
 							{ value: "linear", name: "Linear" },
 							{ value: "logarithmic", name: "Logarithmisch" },
@@ -62,7 +62,7 @@
 					settingName={"Kartenebene"}
 					bind:setting={$settings.view.map.layers}
 					settingInfo={{
-						type: "stringOptions",
+						type: "options",
 						options: [
 							{ value: "osm", name: "OpenStreetMap" },
 							{ value: "orm", name: "OpenRailwayMap" },
@@ -74,7 +74,7 @@
 					settingName={"Kartenfilter im Dunkelmodus"}
 					bind:setting={$settings.view.map.darkFilter}
 					settingInfo={{
-						type: "stringOptions",
+						type: "options",
 						options: [
 							{ value: "default", name: "Blass" },
 							{ value: "alternative", name: "Farbig" },
