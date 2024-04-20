@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
+	import Header from "$lib/components/Header.svelte";
 
 	//let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
 	//if (browser) {
@@ -13,6 +14,7 @@
 </svelte:head>
 
 <div>
+	<Header title={"Karte"} fullScreen={true} />
 	{#if browser}
 		{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
 			<Leaflet />
