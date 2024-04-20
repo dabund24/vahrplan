@@ -176,7 +176,7 @@ html, body {
 }
 
 body {
-	font-family: var(--font-family);
+	font-family: var(--font-family), sans-serif;
 	color: var(--foreground-color);
 	background-color: var(--background-color);
 	margin: 0;
@@ -221,6 +221,7 @@ select {
 	border: none;
 	font-size: 1rem;
 	background-color: transparent;
+	color: var(--foreground-color);
 }
 
 header {

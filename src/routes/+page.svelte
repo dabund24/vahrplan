@@ -112,7 +112,7 @@
 			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
 		);
 		width: fit-content;
-		min-width: 100vw;
+		min-width: fit-content;
 	}
 
 	@media screen and (min-width: 1000px) {
