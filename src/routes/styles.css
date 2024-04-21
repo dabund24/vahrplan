@@ -38,8 +38,8 @@
 
 :root {
 	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI Variable Text",
-	"Segoe UI", "Oxygen", "Ubuntu", "Noto Sans", "Roboto", "Helvetica Neue", Arial, sans-serif,
-	"Apple Color Emoji", "Segoe UI Symbol", "Symbola";
+		"Segoe UI", "Oxygen", "Ubuntu", "Noto Sans", "Roboto", "Helvetica Neue", Arial, sans-serif,
+		"Apple Color Emoji", "Segoe UI Symbol", "Symbola";
 
 	--border-radius--large: 0.5rem;
 	--border-radius--small: calc(var(--line-width) / 2);
@@ -68,7 +68,7 @@
 	}
 	:root[data-theme="dark"] {
 		--map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
-		brightness(0.7);
+			brightness(0.7);
 	}
 }
 
@@ -154,24 +154,16 @@ summary {
 	cursor: pointer;
 }
 
-summary::after {
-	height: var(--line-width);
-	width: 0;
-	transition: width 0.2s ease-in-out;
-	background-color: var(--accent-color);
-	display: flex;
-	margin: calc(var(--line-width) / -2) auto;
-	position: relative;
-	top: calc(0.5rem + var(--line-width) / 2);
-	content: "";
-	border-radius: var(--border-radius--small);
+summary::-webkit-details-marker {
+	display:none;
 }
 
 details[open] summary::after {
 	width: var(--line-length);
 }
 
-html, body {
+html,
+body {
 	overscroll-behavior: none;
 }
 
@@ -398,7 +390,7 @@ header {
 .skeleton {
 	& .skeleton-text {
 		border-radius: 50vh;
-		animation: skeleton-loading .5s linear infinite alternate;
+		animation: skeleton-loading 0.5s linear infinite alternate;
 		background-color: var(--foreground-color--opaque);
 		color: transparent;
 		user-select: none;
@@ -411,7 +403,7 @@ header {
 		opacity: 1;
 	}
 	100% {
-		opacity: .5;
+		opacity: 0.5;
 	}
 }
 

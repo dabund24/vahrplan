@@ -35,10 +35,9 @@
 	.flex-row {
 		align-items: center;
 		gap: 2rem;
+		justify-content: space-between;
 	}
-	.name {
-		margin-right: auto;
-	}
+
 	/*
 		switch css is inspired from here: https://codepen.io/mburnette/pen/LxNxNg
 	 */

@@ -36,8 +36,19 @@
 				<Stopovers stopovers={block.stopovers} />
 			{:else}
 				<details>
-					<summary class="hoverable">
-						{block.line?.name} &rightarrow; {block.direction}
+					<summary class="hoverable flex-row">
+						<span>{block.line?.name} &rightarrow; {block.direction}</span>
+						<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+							<g
+								stroke="var(--foreground-color)"
+								stroke-width="3"
+								fill="none"
+								stroke-linecap="round"
+							>
+								<line class="expand-line--left" x1="8" y1="11" x2="4" y2="7" />
+								<line class="expand-line--right" x1="8" y1="11" x2="12" y2="7" />
+							</g>
+						</svg>
 					</summary>
 					<div>
 						<Stopovers stopovers={block.stopovers} />
@@ -71,9 +82,20 @@
 	}
 
 	summary {
-		padding: 0.5rem;
 		margin-left: calc(-0.5rem - var(--line-width));
 		width: fit-content;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	svg {
+		transition: transform 0.4s var(--cubic-bezier);
+		perspective: 3rem;
+		flex-shrink: 0;
+	}
+
+	details[open] svg {
+		transform: scaleY(-1);
 	}
 
 	.duration-container {
