@@ -142,7 +142,7 @@
 		</label>
 		<div>
 			<button
-				class="hoverable padded-top-bottom"
+				class="hoverable padded-top-bottom button--small"
 				on:click={showFilterModal}
 				type="button"
 				title="Verbindungen filtern"
@@ -221,7 +221,7 @@
 					</Tabs>
 				</Modal>
 			{/if}
-			<button class="hoverable padded-top-bottom" type="submit" title="Verbindungen suchen">
+			<button class="hoverable padded-top-bottom button--small" type="submit" title="Verbindungen suchen">
 				<IconSearch />
 			</button>
 		</div>
@@ -270,7 +270,7 @@
 		}
 		& button {
 			width: 100%;
-			padding: 0.5rem;
+			justify-content: center;
 		}
 	}
 

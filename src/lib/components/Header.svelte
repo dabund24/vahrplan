@@ -23,7 +23,9 @@
 		top: 0;
 		z-index: 500;
 		min-height: 2.5rem;
-		transition: background-color 0.4s var(--cubic-bezier);
+		transition:
+			background-color 0.4s var(--cubic-bezier),
+			border-bottom-color 0.4s var(--cubic-bezier);
 	}
 
 	header.full-screen {

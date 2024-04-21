@@ -84,6 +84,12 @@ export const settings = writable<Settings>({
 
 if (browser) {
 	settings.update((settings) => {
+		const systemDarkTheme =
+			window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+		if (systemDarkTheme) {
+			settings.view.general.darkTheme = true;
+		}
+
 		let k: keyof Settings;
 		for (k in settings) {
 			if (k === "storage") continue;

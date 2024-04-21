@@ -72,7 +72,33 @@
 	}
 }
 
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme]) {
+		color-scheme: light;
+		--background-color: #ffffff;
+		--foreground-color: #000000;
+		--background-color--opaque: #ffffffe0;
+		--foreground-color--opaque: #00000020;
+		--product-color: var(--foreground-color);
+		--accent-color: var(--accent-light);
+		--accent-inverted: var(--accent-dark);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		color-scheme: dark;
+		--background-color: #121212;
+		--foreground-color: #ffffff;
+		--background-color--opaque: #121212e0;
+		--foreground-color--opaque: #ffffff14;
+		--accent-color: var(--accent-dark);
+		--accent-inverted: var(--accent-light);
+	}
+}
+
 [data-theme="light"] {
+	color-scheme: light;
 	--background-color: #ffffff;
 	--foreground-color: #000000;
 	--background-color--opaque: #ffffffe0;
@@ -155,7 +181,7 @@ summary {
 }
 
 summary::-webkit-details-marker {
-	display:none;
+	display: none;
 }
 
 details[open] summary::after {
@@ -183,13 +209,20 @@ body,
 a,
 input,
 button,
-.modal,
-.modal header,
-.hoverable,
-footer {
+.hoverable {
 	transition:
+		color 0.4s var(--cubic-bezier),
 		background 0.4s var(--cubic-bezier),
-		border-color 0.2s ease-in-out;
+		border-color 0.4s var(--cubic-bezier);
+}
+
+svg polyline,
+svg line,
+svg path,
+svg circle {
+	transition:
+		stroke 0.4s var(--cubic-bezier),
+		fill 0.4s var(--cubic-bezier);
 }
 
 button {
@@ -255,7 +288,7 @@ header {
 
 .line--accent {
 	background-color: var(--accent-color);
-	transition: background-color 0.5s ease-in-out;
+	transition: background-color 0.4s var(--cubic-bezier);
 	border-radius: var(--border-radius--small);
 }
 
@@ -359,10 +392,6 @@ header {
 .product--nationalExpress {
 	--product-color: var(--nationalExpress-color);
 	--product-color--opaque: var(--nationalExpress-color--opaque);
-}
-
-.zero-height {
-	line-height: 0;
 }
 
 .hoverable {

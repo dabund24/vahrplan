@@ -113,6 +113,7 @@
 		);
 		width: fit-content;
 		min-width: fit-content;
+		margin: auto;
 	}
 
 	@media screen and (min-width: 1000px) {
