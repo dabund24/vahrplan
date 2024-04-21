@@ -5,7 +5,7 @@
 </script>
 
 <header class="flex-row" class:mobile-only={mobileOnly} class:full-screen={fullScreen}>
-	<strong>{title}</strong>
+	<strong class="limit-lines">{title}</strong>
 	<div class="buttons flex-row">
 		<slot />
 	</div>
@@ -26,6 +26,9 @@
 		transition:
 			background-color 0.4s var(--cubic-bezier),
 			border-bottom-color 0.4s var(--cubic-bezier);
+		& > strong {
+            -webkit-line-clamp: 2;
+		}
 	}
 
 	header.full-screen {

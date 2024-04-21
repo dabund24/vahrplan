@@ -28,7 +28,7 @@
 		class:text--red={transitData.attribute === "cancelled"}
 		class:text--blue={transitData.attribute === "additional"}
 	>
-		<svelte:element this={stationInnerTag}>
+		<svelte:element this={stationInnerTag} class:limit-lines={nameIsStrong}>
 			{transitData.location.name}
 		</svelte:element>
 	</svelte:element>
@@ -69,6 +69,11 @@
 		/*noinspection CssInvalidPropertyValue*/
 		text-wrap: balance;
 	}
+
+	.limit-lines {
+		-webkit-line-clamp: 2;
+	}
+
 	:global(.popup__content) .station {
 		text-wrap: unset;
 		word-wrap: normal;
