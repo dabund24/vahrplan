@@ -24,7 +24,7 @@
         width: 100vw;
 		margin: 0 auto;
 		box-sizing: border-box;
-		overflow-y: hidden;
+		overflow-y: auto;
 	}
 
 	@media screen and (max-width: 999px) {

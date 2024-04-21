@@ -58,15 +58,16 @@
 	.transition {
 		background: linear-gradient(
 			to bottom,
-			var(--background-color--opaque),
+			var(--background-color--opaque--transitionable),
 			transparent
 		);
+		--background-color--opaque--transitionable: var(--background-color--opaque);
 		transition: --background-color--opaque--transitionable 0.4s var(--cubic-bezier);
 	}
 
 	@property --background-color--opaque--transitionable {
 		syntax: "<color>";
-		initial-value: var(--background-color--opaque);
+		initial-value: #ffffffe0;
 		inherits: false;
 	}
 </style>

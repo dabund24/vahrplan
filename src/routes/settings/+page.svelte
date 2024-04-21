@@ -106,4 +106,10 @@
 	h1 {
 		font-size: 1.2rem;
 	}
+
+    @media screen and (min-width: 1000px) {
+		:global(main) {
+			overflow-y: auto;
+		}
+    }
 </style>
