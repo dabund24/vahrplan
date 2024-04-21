@@ -31,8 +31,8 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-	// ignore POST requests etc
-	if (event.request.method !== "GET") return;
+	// ignore api calls and POST requests etc
+	if (event.request.method !== "GET" || event.request.url.includes("/api/")) return;
 
 	async function respond() {
 		const url = new URL(event.request.url);
