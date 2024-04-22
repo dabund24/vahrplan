@@ -46,7 +46,7 @@
 					break;
 				case "Enter":
 					handleSuggestionClick(suggestions[focused]);
-					inputElement.blur()
+					inputElement.blur();
 					focused = 0;
 					break;
 				case "Tab":
@@ -136,7 +136,7 @@
 	ul:active {
 		display: block;
 	}
-	.inner-wrapper:has(input:focus, ul:active) {
+	.inner-wrapper:has(input:focus), .inner-wrapper:active {
 		z-index: 50;
 		border: var(--line-width) solid var(--foreground-color--opaque);
 		backdrop-filter: var(--blur);
@@ -153,6 +153,7 @@
 		padding: 0.5rem 0;
 		width: 100%;
 		outline: none;
+		text-overflow: ellipsis;
 	}
 	.suggestion {
 		align-items: center;
@@ -190,6 +191,7 @@
 		background-color: var(--foreground-color);
 		margin: -1rem auto;
 		border-radius: 2px;
+		transition: background-color 0.4s var(--cubic-bezier);
 	}
 
 	.suggestion-icon--input::after {
@@ -204,11 +206,11 @@
 	:global(.input-container:last-child) .suggestion-icon::after {
 		background-color: transparent;
 	}
-	:global(.input-container--transitioning:not(:first-child):not(:last-child)) .suggestion-icon,
-	.inner-wrapper:focus-within .suggestion-icon--input {
-		&::before,
-		&::after {
-            display: none;
+	:global(.input-container--transitioning:not(:first-child):not(:last-child)) ,
+	.input-summary:focus-within, .inner-wrapper:active {
+		& .suggestion-icon--input::before,
+		& .suggestion-icon--input::after {
+			display: none;
 		}
 	}
 </style>
