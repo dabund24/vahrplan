@@ -20,8 +20,6 @@ This app can...
 
 - show journeys on a map
 
-- create links for journeys so they can be shared
-
 ## Usage
 
 Prerequisite: `node.js`
@@ -44,7 +42,8 @@ Then, open [`http://localhost:4173`](http://localhost:4173) in your browser.
 
 ## Tech Stack
 
-- Framework: Svelte with SvelteKit
+- Meta-Framework: SvelteKit
+- UI-Framework: Svelte
 - Build Tool: Vite
 
 ## Great projects this app relies on
