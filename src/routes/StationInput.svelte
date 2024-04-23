@@ -101,7 +101,7 @@
 						>
 							<span class="suggestion-icon">
 								<IconStationLocation
-									color={focused === i ? "accent" : "foreground"}
+									color={"foreground"}
 									iconType={suggestion.type}
 								/>
 							</span>
@@ -136,7 +136,8 @@
 	ul:active {
 		display: block;
 	}
-	.inner-wrapper:has(input:focus), .inner-wrapper:active {
+	.inner-wrapper:has(input:focus),
+	.inner-wrapper:active {
 		z-index: 50;
 		border: var(--line-width) solid var(--foreground-color--opaque);
 		backdrop-filter: var(--blur);
@@ -162,11 +163,22 @@
 		text-align: left;
 		width: 100%;
 
-		&[aria-current="true"]::before,
 		&:hover::before {
 			height: var(--line-length--vertical);
 		}
+		&:hover .suggestion-icon {
+			--foreground-color: var(--accent-color);
+		}
 	}
+	@media screen and (pointer: fine) {
+		.suggestion[aria-current="true"] .suggestion-icon {
+			--foreground-color: var(--accent-color);
+		}
+		.suggestion[aria-current="true"]::before {
+			height: var(--line-length--vertical);
+		}
+	}
+
 	.suggestion::before {
 		content: "";
 		display: flex;
@@ -175,7 +187,7 @@
 		width: var(--line-width);
 		border-radius: var(--border-radius--small);
 		background-color: var(--accent-color);
-		transition: height 0.3s;
+		transition: height 0.4s var(--cubic-bezier);
 		margin: -1rem 0;
 	}
 
@@ -206,8 +218,9 @@
 	:global(.input-container:last-child) .suggestion-icon::after {
 		background-color: transparent;
 	}
-	:global(.input-container--transitioning:not(:first-child):not(:last-child)) ,
-	.input-summary:focus-within, .inner-wrapper:active {
+	:global(.input-container--transitioning:not(:first-child):not(:last-child)),
+	.input-summary:focus-within,
+	.inner-wrapper:active {
 		& .suggestion-icon--input::before,
 		& .suggestion-icon--input::after {
 			display: none;
