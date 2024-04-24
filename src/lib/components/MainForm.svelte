@@ -150,7 +150,7 @@
 				<IconFilter />
 			</button>
 			{#if $page.state.showFilterModal}
-				<Modal title="Filter" height={"31rem"} bind:showModal={$page.state.showFilterModal}>
+				<Modal title="Filter" height={"32rem"} bind:showModal={$page.state.showFilterModal}>
 					<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
 						{#if activeTab === 0}
 							<div class="settings">

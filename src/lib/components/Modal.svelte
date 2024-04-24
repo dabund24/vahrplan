@@ -13,8 +13,10 @@
 	$: if (dialog && showModal) dialog.showModal();
 </script>
 
-<dialog bind:this={dialog} style:height={height}>
-	<div>
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+<dialog bind:this={dialog} on:click|self={() => void history.back()}>
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<div on:click|stopPropagation style:height={height}>
 		<Header {title}>
 			<button
 				on:click={() => void history.back()}
@@ -42,8 +44,10 @@
 		background-color: var(--background-color);
 		padding: 0;
 		scrollbar-width: thin;
-		max-height: calc(100% - 5rem);
 	}
+	dialog > :first-child {
+        max-height: calc(100% - 5rem);
+    }
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);
 	}
