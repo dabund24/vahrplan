@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { fade, fly } from "svelte/transition";
 	import type { ParsedLocation } from "$lib/types";
 	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores";

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { LocationBlock } from "$lib/types";
-	import Time from "$lib/components/journeys/Time.svelte";
-	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import Time from "$lib/components/Time.svelte";
+	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 
 	export let block: LocationBlock
 </script>

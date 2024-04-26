@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Time from "$lib/components/journeys/Time.svelte";
-	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import Time from "$lib/components/Time.svelte";
+	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import Stopovers from "./Stopovers.svelte";
 	import type { LegBlock } from "$lib/types";

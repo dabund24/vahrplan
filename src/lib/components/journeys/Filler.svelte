@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FillerBlock } from "$lib/types";
-	import IconFiller from "$lib/components/journeys/IconFiller.svelte";
+	import IconFiller from "$lib/components/icons/IconFiller.svelte";
 	import Duration from "$lib/components/Duration.svelte";
 
 	export let block: FillerBlock;

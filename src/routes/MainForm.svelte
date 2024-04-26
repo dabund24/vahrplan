@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StationInput from "../../routes/StationInput.svelte";
+	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation } from "$lib/types.js";
 	import { valueIsDefined } from "$lib/util.js";
 	import { displayedLocations, setDisplayedLocations } from "$lib/stores.js";

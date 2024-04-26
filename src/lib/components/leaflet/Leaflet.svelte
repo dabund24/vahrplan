@@ -7,7 +7,7 @@
 	import { isTimeDefined } from "$lib/util";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
 	import Marker from "$lib/components/leaflet/Marker.svelte";
-	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { settings } from "$lib/settings";
 	import L from "leaflet";
 

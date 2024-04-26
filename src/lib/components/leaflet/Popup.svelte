@@ -2,10 +2,10 @@
 	import L from "leaflet";
 	import { getContext, onDestroy, onMount } from "svelte";
 	import type { PopupData } from "$lib/types";
-	import Time from "$lib/components/journeys/Time.svelte";
+	import Time from "$lib/components/Time.svelte";
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import "./popup.css";
-	import IconFiller from "$lib/components/journeys/IconFiller.svelte";
+	import IconFiller from "$lib/components/icons/IconFiller.svelte";
 	import Duration from "$lib/components/Duration.svelte";
 
 	export let popupData: PopupData;

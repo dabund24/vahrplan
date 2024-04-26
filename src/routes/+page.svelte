@@ -2,7 +2,7 @@
 	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import { displayedLocations, displayedTree } from "$lib/stores";
 	import Tabs from "$lib/components/Tabs.svelte";
-	import MainForm from "$lib/components/MainForm.svelte";
+	import MainForm from "./MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
 	import JourneySummary from "./JourneySummary.svelte";

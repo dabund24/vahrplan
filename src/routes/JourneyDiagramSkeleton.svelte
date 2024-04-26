@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Time from "$lib/components/journeys/Time.svelte";
+	import Time from "$lib/components/Time.svelte";
 
 	export let depth: number;
 </script>

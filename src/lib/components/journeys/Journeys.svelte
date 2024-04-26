@@ -5,7 +5,7 @@
 	import Filler from "$lib/components/journeys/Filler.svelte";
 	import Location from "$lib/components/journeys/Location.svelte";
 	import { displayedJourneys, selectedJourneys } from "$lib/stores";
-	import DateDuration from "$lib/components/journeys/DateDuration.svelte";
+	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { dateDifference } from "$lib/util";
 
 	$: selectedDeparture = $selectedJourneys.at(0)?.departure.departure?.time;

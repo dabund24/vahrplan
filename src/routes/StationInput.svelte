@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
 	import { getApiData } from "$lib/util";
-	import IconStationLocation from "$lib/components/journeys/IconStationLocation.svelte";
+	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
 	export let inputPlaceholder: string;

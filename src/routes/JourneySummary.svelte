@@ -3,13 +3,13 @@
 	import { flip } from "svelte/animate";
 	import { displayedLocations, selectedJourneys } from "$lib/stores.js";
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
-	import Time from "$lib/components/journeys/Time.svelte";
+	import Time from "$lib/components/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import SummaryStationIcon from "./SummaryStationIcon.svelte";
 	import { dateDifference } from "$lib/util";
 	import Duration from "$lib/components/Duration.svelte";
-	import DateDuration from "$lib/components/journeys/DateDuration.svelte";
+	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { page } from "$app/stores";
 	import { pushState } from "$app/navigation";
 
