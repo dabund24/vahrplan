@@ -48,6 +48,8 @@
 		return actAsStopover;
 	}
 
+	let pressedStationId = 0
+
 	let modalLeg: LegBlock | undefined;
 	function showLegModal(leg: LegBlock): void {
 		modalLeg = { ...leg };
@@ -74,6 +76,7 @@
 							locationIndex={i}
 							actsAsStopover={locationsActAsStopover[i]}
 							isDisplayedLocation={true}
+							bind:pressedStationId
 						/>
 					</div>
 					<div class="visuals--selected">
@@ -92,6 +95,7 @@
 										location={leg.departureData.location}
 										locationIndex={i}
 										isDisplayedLocation={false}
+										bind:pressedStationId
 									></SummaryStationIcon>
 								</div>
 							{/each}

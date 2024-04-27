@@ -7,7 +7,16 @@
 	export let locationIndex: number;
 	export let actsAsStopover: boolean = false;
 	export let isDisplayedLocation: boolean;
-	let isPressed = false;
+	export let pressedStationId: number;
+	let thisPressedId = -1
+	$: isPressed = thisPressedId === pressedStationId;
+
+	function handleStationPress(): void {
+		if (!isPressed) {
+			thisPressedId = pressedStationId + 1
+		}
+		pressedStationId++
+	}
 </script>
 
 {#if isPressed && !isDisplayedLocation}
@@ -18,7 +27,7 @@
 <button
 	class="icon-container hoverable"
 	aria-pressed={isPressed}
-	on:click={() => void (isPressed = !isPressed)}
+	on:click={handleStationPress}
 	title={location.name}
 >
 	<IconStationLocation color={"product"} iconType={location.type} smallIcon={actsAsStopover} />
