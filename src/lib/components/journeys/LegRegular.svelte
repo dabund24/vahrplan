@@ -12,8 +12,8 @@
 
 <div
 	class="flex-row leg product--{block.line?.product}"
-	class:hide-top={block.precededBy === "stopover"}
-	class:hide-bottom={block.succeededBy === "stopover"}
+	class:hide-top={block.precededBy === "stopover" && !compact}
+	class:hide-bottom={block.succeededBy === "stopover" && !compact}
 >
 	<div class="flex-column">
 		<div class="top-or-bottom flex-column">
