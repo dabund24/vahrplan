@@ -5,8 +5,7 @@
 
 	export let showModal: boolean;
 	export let title: string;
-	export let height: string = "fit-content"
-
+	export let height: string = "fit-content";
 
 	let dialog: HTMLDialogElement;
 
@@ -14,12 +13,16 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog bind:this={dialog} on:click|self={() => void history.back()}>
+<dialog
+	bind:this={dialog}
+	on:click|self={() => void dialog.close()}
+	on:close={() => void history.back()}
+>
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation style:height={height}>
+	<div on:click|stopPropagation style:height>
 		<Header {title}>
 			<button
-				on:click={() => void history.back()}
+				on:click={() => void dialog.close()}
 				class="button--small hoverable"
 				type="button"
 				title="Dialog schließen"
@@ -46,13 +49,13 @@
 		scrollbar-width: thin;
 	}
 	dialog > :first-child {
-        max-height: calc(100% - 5rem);
-    }
+		max-height: calc(100% - 5rem);
+	}
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);
 	}
 	:global([data-theme="dark"]) dialog::backdrop {
-        background: var(--background-color--opaque, #121212e0);
+		background: var(--background-color--opaque, #121212e0);
 	}
 
 	dialog[open] {
