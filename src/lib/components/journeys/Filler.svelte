@@ -2,6 +2,9 @@
 	import type { FillerBlock } from "$lib/types";
 	import IconFiller from "$lib/components/icons/IconFiller.svelte";
 	import Duration from "$lib/components/Duration.svelte";
+	import Time from "$lib/components/Time.svelte";
+	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
+	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 
 	export let block: FillerBlock;
 	let osmLink: string;
@@ -16,15 +19,27 @@
 			"%2C" +
 			block.destinationLocation.position.lng;
 	}
-	$: duration = block.type === "walk" || block.type === "transfer" ? block.transferTime : undefined
+	$: duration =
+		block.type === "walk" || block.type === "transfer" ? block.transferTime : undefined;
 </script>
 
-<div class="flex-row">
+<div
+	class="flex-row product--{block.type === 'transfer' ? block.arrivalProduct : ''}"
+	class:compact={block.type === "transfer" && block.isStopover}
+>
 	<div class="duration-container">
-		<Duration {duration} alignRight={true} />
+		{#if block.type === "transfer" && block.isStopover}
+			<Time time={block.transitData.time} />
+		{:else}
+			<Duration {duration} alignRight={true} />
+		{/if}
 	</div>
 	<div class="icon-container flex-row">
-		<IconFiller type={block.type} />
+		{#if block.type === "transfer" && block.isStopover}
+			<IconStationLocation color={"product"} smallIcon={true} iconType={"station"} />
+		{:else}
+			<IconFiller type={block.type} />
+		{/if}
 	</div>
 	{#if block.type === "walk"}
 		<a href={osmLink} target="_blank">
@@ -34,6 +49,8 @@
 				Fußweg
 			{/if}
 		</a>
+	{:else if block.type === "transfer" && block.isStopover}
+		<NameDelayPlatform transitData={block.transitData} nameIsStrong={true} />
 	{:else}
 		<div class="height-setter">-</div>
 	{/if}
@@ -44,13 +61,19 @@
 		gap: 0.5rem;
 		align-items: center;
 	}
+	.compact {
+		height: 3rem;
+		margin: -3rem 0;
+		position: relative;
+        z-index: 1;
+	}
 	.height-setter {
 		visibility: hidden;
 	}
 	.duration-container {
-        max-width: min-content;
-        display: inline-block;
-    }
+		max-width: min-content;
+		display: inline-block;
+	}
 	.icon-container {
 		align-items: center;
 	}

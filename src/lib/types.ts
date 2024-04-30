@@ -145,8 +145,8 @@ export type LegBlock = {
 	line: Line;
 	stopovers: TransitData[];
 	polyline: [number, number][];
-	precededByTransferBlock: boolean;
-	succeededByTransferBlock: boolean;
+	precededBy?: "transfer" | "stopover";
+	succeededBy?: "transfer" | "stopover";
 };
 
 export type WalkingBlock = {
@@ -164,6 +164,7 @@ export type TransferBlock = {
 	transitData: TransitData;
 	arrivalProduct: string;
 	departureProduct: string;
+	isStopover: boolean;
 };
 
 export type LocationBlock = {

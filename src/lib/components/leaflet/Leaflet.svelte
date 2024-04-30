@@ -122,7 +122,7 @@
 			{#each journey.value as block}
 				{#if block.type === "leg"}
 					<Polyline {block} />
-					{#if !block.precededByTransferBlock}
+					{#if block.precededBy === undefined}
 						<Marker data={block.departureData} product2={block.line.product ?? ""}>
 							<IconStationLocation color="product" iconType="station" />
 						</Marker>
@@ -140,7 +140,7 @@
 							/>
 						</Marker>
 					{/each}
-					{#if !block.succeededByTransferBlock}
+					{#if block.succeededBy === undefined}
 						<Marker data={block.arrivalData} product1={block.line.product ?? ""}>
 							<IconStationLocation color="product" iconType="station" />
 						</Marker>
@@ -155,6 +155,7 @@
 							color="product"
 							iconType="station"
 							secondaryProduct={block.departureProduct}
+							smallIcon={block.isStopover}
 						/>
 					</Marker>
 				{:else if block.type === "location"}

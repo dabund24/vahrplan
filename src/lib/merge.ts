@@ -63,9 +63,9 @@ export function getMergingBlock(
 			succeedingBlock.hidden = false;
 		}
 		if (precedingBlock?.type === "leg") {
-			precedingBlock.succeededByTransferBlock = false;
+			precedingBlock.succeededBy = undefined;
 		} else if (succeedingBlock.type === "leg") {
-			succeedingBlock.precededByTransferBlock = false;
+			succeedingBlock.precededBy = undefined;
 		}
 		return undefined;
 	} else if (precedingBlock.type === "leg" && succeedingBlock.type === "leg") {
@@ -76,17 +76,19 @@ export function getMergingBlock(
 				succeedingBlock.departureData.location.position
 			)
 		) {
-			precedingBlock.succeededByTransferBlock = true;
-			succeedingBlock.precededByTransferBlock = true;
+			const mergeWithStopover = precedingBlock.blockKey === succeedingBlock.blockKey;
+			precedingBlock.succeededBy = mergeWithStopover ? "stopover" : "transfer";
+			succeedingBlock.precededBy = mergeWithStopover ? "stopover" : "transfer";
 			return transferToBlock(
 				precedingBlock.arrivalData,
 				precedingBlock.line.product ?? "",
 				succeedingBlock.departureData,
-				succeedingBlock.line.product ?? ""
+				succeedingBlock.line.product ?? "",
+				mergeWithStopover
 			);
 		} else {
-			precedingBlock.succeededByTransferBlock = false;
-			succeedingBlock.precededByTransferBlock = false;
+			precedingBlock.succeededBy = undefined;
+			succeedingBlock.precededBy = undefined;
 			return mergingWalkToBlock(
 				precedingBlock.arrivalData.location,
 				precedingBlock.arrivalData.time,
@@ -103,11 +105,11 @@ export function getMergingBlock(
 				succeedingBlock.location.position
 			)
 		) {
-			precedingBlock.succeededByTransferBlock = false;
+			precedingBlock.succeededBy = undefined;
 			succeedingBlock.hidden = true;
 			return undefined;
 		} else {
-			precedingBlock.succeededByTransferBlock = false;
+			precedingBlock.succeededBy = undefined;
 			succeedingBlock.hidden = false;
 			return mergingWalkToBlock(
 				precedingBlock.arrivalData.location,
@@ -125,10 +127,10 @@ export function getMergingBlock(
 			)
 		) {
 			precedingBlock.hidden = true;
-			succeedingBlock.precededByTransferBlock = false;
+			succeedingBlock.precededBy = undefined;
 		} else {
 			precedingBlock.hidden = false;
-			succeedingBlock.precededByTransferBlock = false;
+			succeedingBlock.precededBy = undefined;
 			return mergingWalkToBlock(
 				precedingBlock.location,
 				precedingBlock.time,
@@ -179,15 +181,17 @@ export function transferToBlock(
 	arrivalData: TransitData,
 	arrivalProduct: string,
 	departureData: TransitData,
-	departureProduct: string
+	departureProduct: string,
+	isStopover: boolean
 ): TransferBlock {
 	return {
 		type: "transfer",
 		transferTime:
 			dateDifference(arrivalData.time.arrival?.time, departureData.time.departure?.time) ?? 0,
-		transitData: mergeTransitData(arrivalData, departureData),
+		transitData: mergeTransitData(arrivalData, departureData, isStopover),
 		arrivalProduct,
-		departureProduct
+		departureProduct,
+		isStopover
 	};
 }
 

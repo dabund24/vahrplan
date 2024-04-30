@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import { displayedLocations, selectedJourneys } from "$lib/stores.js";
+	import { displayedLocations, mergingBlocks, selectedJourneys } from "$lib/stores.js";
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
 	import Time from "$lib/components/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";
@@ -34,20 +34,6 @@
 		return block.type === "leg";
 	}
 
-	$: locationsActAsStopover = getStopoverActing(journeyInfo.map((info) => info.legs));
-
-	function getStopoverActing(legss: LegBlock[][]): boolean[] {
-		let actAsStopover: boolean[] = [false];
-		for (let i = 1; i < legss.length; i++) {
-			if (legss[i - 1].length === 0 || legss[i].length === 0) {
-				actAsStopover.push(false);
-				continue;
-			}
-			actAsStopover.push(legss[i - 1].at(-1)?.blockKey === legss[i][0].blockKey);
-		}
-		return actAsStopover;
-	}
-
 	let pressedStationId = 0;
 
 	let modalLeg: LegBlock | undefined;
@@ -57,6 +43,8 @@
 			showLegModal: true
 		});
 	}
+
+	$: areStopovers = $mergingBlocks.map(block => block?.type === "transfer" && block.isStopover)
 </script>
 
 <div class="flex-column" id="journey-summary">
@@ -78,7 +66,7 @@
 						<SummaryStationIcon
 							location={location.value}
 							locationIndex={i}
-							actsAsStopover={locationsActAsStopover[i]}
+							actsAsStopover={areStopovers[i]}
 							isDisplayedLocation={true}
 							bind:pressedStationId
 						/>

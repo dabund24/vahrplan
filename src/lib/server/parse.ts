@@ -54,11 +54,12 @@ export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBloc
 				lastBlock.arrivalData,
 				lastBlock.line.product ?? "",
 				thisBlock.departureData,
-				thisBlock.line.product ?? ""
+				thisBlock.line.product ?? "",
+				false
 			);
 			blocks.splice(-1, 0, transferBlock);
-			lastBlock.succeededByTransferBlock = true;
-			thisBlock.precededByTransferBlock = true;
+			lastBlock.succeededBy = "transfer";
+			thisBlock.precededBy = "transfer";
 		}
 	}
 	return blocks;
@@ -109,9 +110,7 @@ function legToBlock(leg: Leg): LegBlock {
 			leg.polyline?.features.map((feature) => [
 				feature.geometry.coordinates[1],
 				feature.geometry.coordinates[0]
-			]) ?? [],
-		precededByTransferBlock: false,
-		succeededByTransferBlock: false
+			]) ?? []
 	};
 }
 

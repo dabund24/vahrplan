@@ -10,7 +10,11 @@
 	export let compact = false;
 </script>
 
-<div class="flex-row leg product--{block.line?.product}">
+<div
+	class="flex-row leg product--{block.line?.product}"
+	class:hide-top={block.precededBy === "stopover"}
+	class:hide-bottom={block.succeededBy === "stopover"}
+>
 	<div class="flex-column">
 		<div class="top-or-bottom flex-column">
 			<Time time={block.departureData.time} />
@@ -106,4 +110,15 @@
 	.leg:has(details:not([open])) .duration-container {
 		visibility: visible;
 	}
+
+	.hide-top {
+		& .top-or-bottom:first-child, & .desktop-line-container > :first-child {
+			opacity: 0;
+		}
+	}
+	.hide-bottom {
+        & .top-or-bottom:last-child, & .desktop-line-container > :last-child {
+            opacity: 0;
+        }
+    }
 </style>

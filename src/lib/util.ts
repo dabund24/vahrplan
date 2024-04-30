@@ -52,7 +52,8 @@ export function isTimeDefined(block: JourneyBlock): block is DefiningBlock {
 
 export function mergeTransitData(
 	transitData1: TransitData,
-	transitData2: TransitData
+	transitData2: TransitData,
+	singlePlatform?: boolean
 ): TransitData {
 	return {
 		location: transitData1.location,
@@ -63,7 +64,7 @@ export function mergeTransitData(
 		attribute: transitData1.attribute,
 		attribute2: transitData2.attribute,
 		platformData: transitData1.platformData,
-		platformData2: transitData2.platformData
+		platformData2: singlePlatform ? undefined : transitData2.platformData
 	};
 }
 
@@ -124,8 +125,7 @@ function relativeDate(date: Date): string {
 
 	let u: keyof typeof units;
 	for (u in units)
-		if (Math.abs(diff) > units[u] ?? u === "minute")
-			return rtf.format(Math.round(diff / units[u]), u);
+		if (Math.abs(diff) > units[u]) return rtf.format(Math.round(diff / units[u]), u);
 	return "";
 }
 
