@@ -59,6 +59,11 @@
 				/>
 				<h1>Karte</h1>
 				<Setting
+					settingName={"Live-Standort auf Karte anzeigen"}
+					bind:setting={$settings.view.map.geolocation}
+					settingInfo={{ type: "boolean" }}
+				/>
+				<Setting
 					settingName={"Kartenebene"}
 					bind:setting={$settings.view.map.layers}
 					settingInfo={{

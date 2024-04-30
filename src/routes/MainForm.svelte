@@ -52,7 +52,7 @@
 			valueIsDefined<ParsedLocation, number>
 		);
 		if (stopsToBeDisplayed.length >= 2) {
-			setDisplayedLocations(stopsToBeDisplayed, new Date(time), timeRole);
+			void setDisplayedLocations(stopsToBeDisplayed, new Date(time), timeRole);
 		}
 	}
 

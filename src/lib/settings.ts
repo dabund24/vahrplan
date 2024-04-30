@@ -36,6 +36,7 @@ export type Settings = {
 			legWidth: "equal" | "logarithmic" | "linear";
 		};
 		map: {
+			geolocation: boolean;
 			layers: "osm" | "orm" | "oepnvk";
 			darkFilter: boolean;
 		};
@@ -72,6 +73,7 @@ export const settings = writable<Settings>({
 			legWidth: "logarithmic"
 		},
 		map: {
+			geolocation: false,
 			layers: "osm",
 			darkFilter: true
 		}

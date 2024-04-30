@@ -6,7 +6,8 @@ import type {
 	ParsedLocation,
 	TransitData,
 	ZugResponse,
-	KeyedItem
+	KeyedItem,
+	ParsedGeolocation
 } from "$lib/types";
 import { get } from "svelte/store";
 import { settings } from "$lib/settings";
@@ -103,4 +104,64 @@ export function dateDifference(
 	const dateB = new Date(later).getTime();
 	const differenceMilliseconds = dateB - dateA;
 	return differenceMilliseconds / 60000;
+}
+
+/**
+ * gives a human-readable relative string for a given date from the past relative to now
+ * stolen from https://stackoverflow.com/a/53800501
+ * @param date the old date
+ */
+function relativeDate(date: Date): string {
+	const diff = Math.round(new Date(date).getTime() - new Date().getTime());
+	const units = {
+		year: 24 * 60 * 60 * 1000 * 365,
+		month: (24 * 60 * 60 * 1000 * 365) / 12,
+		day: 24 * 60 * 60 * 1000,
+		hour: 60 * 60 * 1000,
+		minute: 60 * 1000
+	};
+	const rtf = new Intl.RelativeTimeFormat("de", { numeric: "auto" });
+
+	let u: keyof typeof units;
+	for (u in units)
+		if (Math.abs(diff) > units[u] ?? u === "minute")
+			return rtf.format(Math.round(diff / units[u]), u);
+	return "";
+}
+
+export function getGeolocationString(creationDate: Date): string {
+	return `Standort ${relativeDate(creationDate)}`;
+}
+
+export function getParsedGeolocation(
+	date: Date,
+	position: ParsedLocation["position"]
+): ParsedGeolocation {
+	return {
+		type: "currentLocation",
+		name: "Standort",
+		requestParameter: {
+			type: "location",
+			address: "Standort",
+			latitude: position.lat,
+			longitude: position.lng
+		},
+		position: position,
+		asAt: date
+	};
+}
+
+export async function getCurrentGeolocation(): Promise<ParsedGeolocation> {
+	return new Promise<ParsedGeolocation>((resolve) => {
+		navigator.geolocation.getCurrentPosition((position) => {
+			const currentLocation: ParsedLocation = getParsedGeolocation(
+				new Date(position.timestamp),
+				{
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				}
+			);
+			resolve(currentLocation);
+		});
+	});
 }

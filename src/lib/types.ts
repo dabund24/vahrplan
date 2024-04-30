@@ -56,10 +56,20 @@ export type ParsedTime = {
 	} | null;
 };
 
-export type ParsedLocation = {
+export type ParsedLocation =
+	| {
+			name: string;
+			requestParameter: string | Station | Stop | Location;
+			readonly type: "station" | "address" | "poi";
+			position: { lat: number; lng: number };
+	  }
+	| ParsedGeolocation;
+
+export type ParsedGeolocation = {
 	name: string;
-	requestParameter: string | Station | Stop | Location;
-	type: "station" | "address" | "poi";
+	requestParameter: Location;
+	readonly type: "currentLocation";
+	asAt: Date;
 	position: { lat: number; lng: number };
 };
 

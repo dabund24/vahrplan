@@ -7,7 +7,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import SummaryStationIcon from "./SummaryStationIcon.svelte";
-	import { dateDifference } from "$lib/util";
+	import { dateDifference, getGeolocationString } from "$lib/util";
 	import Duration from "$lib/components/Duration.svelte";
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { page } from "$app/stores";
@@ -48,7 +48,7 @@
 		return actAsStopover;
 	}
 
-	let pressedStationId = 0
+	let pressedStationId = 0;
 
 	let modalLeg: LegBlock | undefined;
 	function showLegModal(leg: LegBlock): void {
@@ -68,7 +68,11 @@
 				transition:scale
 				animate:flip={{ duration: 400 }}
 			>
-				<strong class="station-name">{location.value.name}</strong>
+				<strong class="station-name"
+					>{location.value.type === "currentLocation"
+						? getGeolocationString(location.value.asAt)
+						: location.value.name}</strong
+				>
 				<div class="visuals-container flex-row">
 					<div class="station-icon-container">
 						<SummaryStationIcon
@@ -171,13 +175,13 @@
 		transition: width 0.4s var(--cubic-bezier);
 		& > :first-child {
 			padding: 1rem 0.5rem 0.5rem;
-            margin: 0 -0.5rem;
+			margin: 0 -0.5rem;
 			background-color: var(--background-color--opaque);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);
 		}
 		& > :last-child {
-            padding: 0 .5rem;
+			padding: 0 0.5rem;
 			margin: 0 -0.5rem;
 		}
 		--beginning-end-offset: 1.5em;

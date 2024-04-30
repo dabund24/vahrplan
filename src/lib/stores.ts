@@ -7,14 +7,14 @@ import type {
 	ParsedLocation,
 	ParsedTime
 } from "$lib/types";
-import { getApiData, getRawLocationBlock, getTreeUrl } from "$lib/util";
-import { browser } from "$app/environment";
+import { getApiData, getCurrentGeolocation, getRawLocationBlock, getTreeUrl } from "$lib/util";
 import { getMergingBlock } from "$lib/merge";
 
 export type DisplayedLocations = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	time: Date;
 	timeRole: "departure";
+	geolocationDate: Date;
 };
 
 export type SelectedJourney = {
@@ -27,8 +27,9 @@ export type SelectedJourney = {
 
 export const displayedLocations = writable<DisplayedLocations>({
 	locations: [],
-	time: new Date(0),
-	timeRole: "departure"
+	time: new Date(),
+	timeRole: "departure",
+	geolocationDate: new Date()
 });
 let locations: ParsedLocation[] = [];
 displayedLocations.subscribe(
@@ -54,12 +55,25 @@ export const displayedJourneys = derived(
 export const displayedTree = writable<Promise<JourneyNode[]>>(Promise.resolve([]));
 displayedLocations.subscribe((dLocations) => displayedTree.set(calculateTree(dLocations)));
 
-export function setDisplayedLocations(
+export async function setDisplayedLocations(
 	locations: KeyedItem<ParsedLocation, number>[],
 	time: Date,
 	timeRole: "departure"
-): void {
-	displayedLocations.set({ locations, time, timeRole });
+): Promise<void> {
+	// handle current position
+	let geolocationDate = new Date();
+	if (locations.some((l) => l.value.type === "currentLocation")) {
+		const currentLocation = await getCurrentGeolocation();
+		geolocationDate = currentLocation.asAt;
+		locations = locations.map((l) => {
+			if (l.value.type === "currentLocation") {
+				return { key: l.key, value: currentLocation };
+			}
+			return l;
+		});
+	}
+
+	displayedLocations.set({ locations, time, timeRole, geolocationDate });
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
 	displayedLocations.update((dLocations) => {
@@ -70,7 +84,8 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 				...dLocations.locations.slice(index)
 			],
 			time: dLocations.time,
-			timeRole: dLocations.timeRole
+			timeRole: dLocations.timeRole,
+			geolocationDate: dLocations.geolocationDate
 		};
 	});
 }
@@ -82,7 +97,8 @@ export function removeDisplayedLocation(index: number): void {
 				...locations.locations.slice(index + 1)
 			],
 			time: locations.time,
-			timeRole: locations.timeRole
+			timeRole: locations.timeRole,
+			geolocationDate: locations.geolocationDate
 		};
 	});
 }
@@ -136,6 +152,7 @@ async function calculateTree(dLocations: DisplayedLocations): Promise<JourneyNod
 	}
 	const url = getTreeUrl(dLocations);
 	return getApiData<JourneyNode[]>(url).then((response) => {
+		console.log(response);
 		return response.isError ? [] : response.content;
 	});
 }

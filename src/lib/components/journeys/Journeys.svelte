@@ -10,8 +10,6 @@
 
 	$: selectedDeparture = $selectedJourneys.at(0)?.departure.departure?.time;
 	$: selectedArrival = $selectedJourneys.at(-1)?.arrival.arrival?.time;
-
-	$: console.log(selectedArrival);
 </script>
 
 <div class="journeys-container">

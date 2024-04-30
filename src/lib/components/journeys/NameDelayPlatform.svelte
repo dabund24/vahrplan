@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { TransitData } from "$lib/types";
+	import { getGeolocationString } from "$lib/util";
+	import { displayedLocations } from "$lib/stores";
 
 	export let transitData: TransitData;
 	export let nameIsStrong = false;
@@ -7,6 +9,14 @@
 	$: stationOuterTag = nameIsStrong ? "strong" : "span";
 
 	$: stationInnerTag = transitData.attribute === "cancelled" ? "s" : "span";
+
+	let locationName = transitData.location.name
+
+	$: console.log(transitData.location);
+
+	$: if (transitData.location.type === "currentLocation" || locationName === "Standort") {
+		locationName = getGeolocationString($displayedLocations.geolocationDate)
+	}
 
 	let delayTextA = "";
 	$: if (transitData.time.arrival?.delay !== undefined) {
@@ -29,7 +39,7 @@
 		class:text--blue={transitData.attribute === "additional"}
 	>
 		<svelte:element this={stationInnerTag} class:limit-lines={nameIsStrong}>
-			{transitData.location.name}
+			{locationName}
 		</svelte:element>
 	</svelte:element>
 	<div class="flex-column">

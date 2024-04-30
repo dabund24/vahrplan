@@ -3,7 +3,7 @@
 	import "./map.css";
 	import { displayedJourneys, displayedLocations, selectedJourneys } from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
-	import type { DefiningBlock } from "$lib/types";
+	import type { DefiningBlock, ParsedLocation } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
 	import Marker from "$lib/components/leaflet/Marker.svelte";
@@ -13,6 +13,20 @@
 
 	let map: L.Map | undefined;
 	let mapElement: HTMLElement;
+
+	let currentPosition: ParsedLocation["position"] | undefined;
+	let geolocationWatcher: number | undefined = undefined;
+
+	if ($settings.view.map.geolocation) {
+		navigator.geolocation.watchPosition(
+			(position) => {
+				currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
+			},
+			() => {
+				currentPosition = undefined;
+			}
+		);
+	}
 
 	const resizeObserver = new ResizeObserver(() => {
 		map?.invalidateSize();
@@ -29,6 +43,9 @@
 		map?.remove();
 		map = undefined;
 		resizeObserver.disconnect();
+		if (geolocationWatcher !== undefined) {
+			navigator.geolocation.clearWatch(geolocationWatcher);
+		}
 	});
 
 	setContext("map", {
@@ -148,13 +165,34 @@
 							platformData: null
 						}}
 					>
-						<IconStationLocation color="foreground" iconType={block.location.type} />
+						<IconStationLocation
+							color="foreground"
+							iconType={block.location.name === "Standort"
+								? "currentLocation"
+								: block.location.type}
+						/>
 					</Marker>
 				{:else if block.type === "walk"}
 					<Polyline {block} />
 				{/if}
 			{/each}
 		{/each}
+		{#if currentPosition !== undefined}
+			<Marker
+				data={{
+					location: {
+						position: currentPosition,
+						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
+						name: "Live-Standort",
+						requestParameter: { type: "location" }
+					},
+					time: {},
+					platformData: null
+				}}
+			>
+				<IconStationLocation iconType={"currentLocation"} color={"accent"} />
+			</Marker>
+		{/if}
 	{/if}
 </div>
 

@@ -55,13 +55,27 @@
 			fill="var(--background-color)"
 			in:draw
 		/>
-	{:else}
+	{:else if iconType === "address"}
 		<polyline
 			points="2,2 14,2 14,14 2,14 2,2"
 			stroke="var(--{color}-color)"
 			stroke-width="3"
 			stroke-linecap="round"
 			stroke-linejoin="round"
+			fill="var(--background-color)"
+			in:draw
+		/>
+	{:else}
+		<g stroke="var(--{color}-color)" stroke-width="4" stroke-linecap="round">
+			<line x1="2" y1="2" x2="14" y2="14" />
+			<line x1="2" y1="14" x2="14" y2="2" />
+		</g>
+		<circle
+			r="4"
+			cx="8"
+			cy="8"
+			stroke="var(--{color}-color)"
+			stroke-width="3"
 			fill="var(--background-color)"
 			in:draw
 		/>

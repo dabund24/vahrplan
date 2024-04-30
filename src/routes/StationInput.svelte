@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
-	import { getApiData } from "$lib/util";
+	import { getApiData, getParsedGeolocation } from "$lib/util";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
@@ -16,12 +16,19 @@
 	async function fetchLocations(text: string): Promise<ParsedLocation[]> {
 		const url = new URL("/api/locations", location.origin);
 		if (text.trim() === "") {
-			return Promise.resolve([]);
+			return Promise.resolve([getParsedGeolocation(new Date(), { lat: 0, lng: 0 })]);
 		}
 		url.searchParams.set("name", text);
-		return getApiData<ParsedLocation[]>(url).then((response) =>
-			response.isError ? [] : response.content
-		);
+		return getApiData<ParsedLocation[]>(url).then((response) => {
+			let suggestions: ParsedLocation[] = [];
+			if ("standort".startsWith(text.toLowerCase())) {
+				suggestions.push(getParsedGeolocation(new Date(), { lat: 0, lng: 0 }));
+			}
+			if (!response.isError) {
+				suggestions.push(...response.content);
+			}
+			return suggestions;
+		});
 	}
 
 	function handleSuggestionClick(suggestion: ParsedLocation | undefined): void {
