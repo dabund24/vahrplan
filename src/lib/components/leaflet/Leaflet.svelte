@@ -158,7 +158,7 @@
 							smallIcon={block.isStopover}
 						/>
 					</Marker>
-				{:else if block.type === "location"}
+				{:else if block.type === "location" && !block.hidden}
 					<Marker
 						data={{
 							location: block.location,
