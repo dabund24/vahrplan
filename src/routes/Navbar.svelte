@@ -5,6 +5,7 @@
 	import IconSettings from "$lib/components/icons/IconSettings.svelte";
 	import IconAbout from "$lib/components/icons/IconAbout.svelte";
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
+	import IconDetails from "$lib/components/icons/IconDetails.svelte";
 
 	$: [currentPageMobile, currentPageDesktop] = getCurrentPageIndex($page.url.pathname);
 
@@ -27,8 +28,9 @@
 				</a>
 			</li>
 			<li aria-current={currentPageMobile === 1 ? "page" : undefined}>
-				<a href="/journey" class="hoverable flex-row">
+				<a href="/journey" class="hoverable flex-row journey-link">
 					<IconMap />
+					<IconDetails />
 					<span>Details/Karte</span>
 				</a>
 			</li>
@@ -94,6 +96,9 @@
 		.mobile-line-container {
 			display: none;
 		}
+		.journey-link > :global(:nth-child(2)) {
+            display: none;
+		}
 	}
 
 	@media screen and (max-width: 999px) {
@@ -130,5 +135,8 @@
 		.desktop-line-container {
 			display: none;
 		}
+        .journey-link > :global(:first-child) {
+            display: none;
+        }
 	}
 </style>
