@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import Header from "$lib/components/Header.svelte";
-
-	//let Leaflet: typeof import("$lib/components/leaflet/Leaflet.svelte").default;
-	//if (browser) {
-	//	void import("$lib/components/leaflet/Leaflet.svelte").then(l => Leaflet = l.default)
-	//}
+	import { displayedLocations } from "$lib/stores";
 </script>
 
 <svelte:head>
@@ -14,7 +10,12 @@
 </svelte:head>
 
 <div>
-	<Header title={"Karte"} fullScreen={true} />
+	<Header
+		title={$displayedLocations.locations.length > 1
+			? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
+			: "Karte"}
+		fullScreen={true}
+	/>
 	{#if browser}
 		{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
 			<Leaflet />

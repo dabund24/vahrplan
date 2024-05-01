@@ -25,8 +25,8 @@
 		<div slot="a">
 			<Header
 					title={$displayedLocations.locations.length > 1
-					? `${$displayedLocations.locations[0].value.name} ⇝ ${$displayedLocations.locations.at(-1)?.value.name}`
-					: ""}
+					? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
+					: "Verbindungsdetails"}
 					mobileOnly={true}
 			/>
 			<Journeys />
