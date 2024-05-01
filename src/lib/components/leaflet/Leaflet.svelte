@@ -145,6 +145,31 @@
 							<IconStationLocation color="product" iconType="station" />
 						</Marker>
 					{/if}
+					{#if block.currentLocation !== undefined}
+						<Marker
+							data={{
+								location: block.currentLocation,
+								time: {},
+								platformData: null
+							}}
+						>
+							<svg
+								width="12px"
+								height="12px"
+								xmlns="http://www.w3.org/2000/svg"
+								class="product--{block.line.product}"
+							>
+								<circle
+									cx="6"
+									cy="6"
+									r="5.5"
+									fill="var(--background-color)"
+									stroke="var(--foreground-color)"
+								/>
+								<circle cx="6" cy="6" r="3" fill="var(--product-color)" />
+							</svg>
+						</Marker>
+					{/if}
 				{:else if block.type === "transfer"}
 					<Marker
 						data={block.transitData}

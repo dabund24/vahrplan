@@ -105,6 +105,19 @@ function legToBlock(leg: Leg): LegBlock {
 		duration: dateDifference(leg.departure, leg.arrival) ?? 0,
 		direction: leg.direction ?? "undefined",
 		line: leg.line ?? { type: "line" },
+		currentLocation:
+			leg.currentLocation !== undefined
+				? {
+						type: "currentLocation",
+						name: `${leg.line?.name} → ${leg.direction}`,
+						requestParameter: { type: "location" },
+						position: {
+							lat: leg.currentLocation.latitude ?? 0,
+							lng: leg.currentLocation.longitude ?? 0
+						},
+						asAt: new Date()
+					}
+				: undefined,
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
 		polyline:
 			leg.polyline?.features.map((feature) => [

@@ -15,7 +15,7 @@
 	$: console.log(transitData.location);
 
 	$: if (transitData.location.type === "currentLocation" || locationName === "Standort") {
-		locationName = getGeolocationString($displayedLocations.geolocationDate)
+		locationName = getGeolocationString($displayedLocations.geolocationDate, locationName)
 	}
 
 	let delayTextA = "";
@@ -73,7 +73,7 @@
 	.name-delay-platform {
 		width: 100%;
 	}
-	.station {
+.station {
 		text-overflow: ellipsis;
 		overflow-x: hidden;
 		/*noinspection CssInvalidPropertyValue*/

@@ -325,11 +325,6 @@ header {
 	stroke: var(--product-color);
 }
 
-.product--undefined {
-	--product-color: transparent;
-	--product-color--opaque: transparent;
-}
-
 .product--suburban {
 	--product-color: var(--suburban-color);
 	--product-color--opaque: var(--suburban-color--opaque);

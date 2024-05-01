@@ -143,6 +143,7 @@ export type LegBlock = {
 	duration: number;
 	direction: string;
 	line: Line;
+	currentLocation?: ParsedGeolocation;
 	stopovers: TransitData[];
 	polyline: [number, number][];
 	precededBy?: "transfer" | "stopover";

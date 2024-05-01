@@ -125,12 +125,14 @@ function relativeDate(date: Date): string {
 
 	let u: keyof typeof units;
 	for (u in units)
-		if (Math.abs(diff) > units[u]) return rtf.format(Math.round(diff / units[u]), u);
+		if (Math.abs(diff) > units[u]) {
+			return rtf.format(Math.round(diff / units[u]), u);
+		}
 	return "";
 }
 
-export function getGeolocationString(creationDate: Date): string {
-	return `Standort ${relativeDate(creationDate)}`;
+export function getGeolocationString(creationDate: Date, prefix = "Standort"): string {
+	return `${prefix} ${relativeDate(creationDate)}`;
 }
 
 export function getParsedGeolocation(
