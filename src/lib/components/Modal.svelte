@@ -47,9 +47,7 @@
 		background-color: var(--background-color);
 		padding: 0;
 		scrollbar-width: thin;
-	}
-	dialog > :first-child {
-		max-height: calc(100% - 5rem);
+        max-height: calc(100% - 5rem);
 	}
 	dialog::backdrop {
 		background: var(--background-color--opaque, #ffffffe0);
