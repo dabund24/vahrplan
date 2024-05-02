@@ -36,7 +36,7 @@
 		transform: rotate(-90deg);
 		text-align: center;
 		transform-origin: bottom right;
-		top: -1rem;
+		top: calc(-1rem + env(safe-area-inset-top));
 		bottom: unset;
 		width: 100vh;
 	}

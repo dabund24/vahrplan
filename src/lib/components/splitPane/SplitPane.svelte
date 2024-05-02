@@ -127,7 +127,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		transition: 0.3s;
+		transition: 0.4s var(--cubic-bezier);
 	}
 
 	.container:has(.divider:hover, .divider:active, .divider.dragging) {
@@ -175,7 +175,7 @@
 		position: absolute;
 		z-index: 500;
 		touch-action: none !important;
-		transition: left 0.2s ease-out;
+		transition: left 0.4s var(--cubic-bezier);
 	}
 	.loading .divider {
 		transition: none;

@@ -27,8 +27,13 @@
 			background-color 0.4s var(--cubic-bezier),
 			border-bottom-color 0.4s var(--cubic-bezier);
 		& > strong {
-            -webkit-line-clamp: 2;
+			-webkit-line-clamp: 2;
 		}
+	}
+
+	header.mobile-only {
+		padding-top: calc(0.5rem + env(safe-area-inset-top));
+		margin-top: calc(-1 * env(safe-area-inset-top));;
 	}
 
 	header.full-screen {
@@ -37,14 +42,16 @@
 		border: none;
 		backdrop-filter: none;
 		-webkit-backdrop-filter: none;
-
+		top: env(safe-area-inset-top);
 		& > strong {
 			margin: -4px auto -4px calc(-4px - 0.5rem);
 		}
 
 		& > strong,
 		& button {
-			background-color: var(--background-color);
+			background-color: var(--background-color--opaque);
+			backdrop-filter: var(--blur);
+			-webkit-backdrop-filter: var(--blur);
 			border: var(--border);
 			border-radius: var(--border-radius--large);
 			padding: 0.5rem;

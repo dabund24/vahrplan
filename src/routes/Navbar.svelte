@@ -64,7 +64,7 @@
 <style>
 	nav {
 		border-bottom: var(--border);
-		padding: max(0.5rem, env(safe-area-inset-top)) 0.5rem 0.5rem;
+		padding: max(0.5rem, env(safe-area-inset-top) + 0.2rem) 0.5rem 0.5rem;
 	}
 	.links-container {
 		width: fit-content;
@@ -106,7 +106,7 @@
 			order: 1;
 			border-bottom: none;
 			border-top: var(--border);
-			padding: 0.5rem 0.5rem max(0.5rem, env(safe-area-inset-bottom));
+			padding: 0.5rem 0.5rem max(0.5rem, env(safe-area-inset-bottom) + 0.2rem);
 			text-align: center;
 			position: fixed;
 			bottom: 0;

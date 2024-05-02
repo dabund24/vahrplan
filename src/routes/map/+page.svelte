@@ -26,7 +26,18 @@
 <style>
 	div {
 		position: absolute;
-		height: 100%;
 		width: 100vw;
+		height: 100vh;
+	}
+	@media (display-mode: browser) {
+		div {
+			height: 100%;
+		}
+	}
+
+	@media screen and (max-width: 999px) {
+		div {
+			top: 0;
+		}
 	}
 </style>
