@@ -23,8 +23,8 @@
 		...$selectedJourneys.map((selectedJourney) => {
 			return {
 				legs: selectedJourney.blocks.filter<LegBlock>(isLeg),
-				departure: selectedJourney.departure,
-				arrival: selectedJourney.arrival
+				departure: { departure: { time: selectedJourney.departure.departure?.time } },
+				arrival: { arrival: {time: selectedJourney.arrival.arrival?.time} }
 			};
 		}),
 		{ legs: [], departure: {}, arrival: {} }
@@ -44,7 +44,7 @@
 		});
 	}
 
-	$: areStopovers = $mergingBlocks.map(block => block?.type === "transfer" && block.isStopover)
+	$: areStopovers = $mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover);
 </script>
 
 <div class="flex-column" id="journey-summary">
