@@ -183,18 +183,14 @@ export function parseTimePair(
 	const result: ParsedTime = { arrival: null, departure: null };
 	if ((arrivalTimePlanned ?? undefined) !== undefined) {
 		result.arrival = {
-			time: new Date(
-				arrivalTimePlanned === undefined ? arrivalTime ?? "" : arrivalTimePlanned
-			),
+			time: new Date((arrivalHasRealtime ? arrivalTime : arrivalTimePlanned) ?? ""),
 			delay: arrivalHasRealtime ? arrivalDelay / 60 : undefined,
 			color: arrivalHasRealtime ? (arrivalDelay <= 300 ? "green" : "red") : undefined
 		};
 	}
 	if ((departureTimePlanned ?? undefined) !== undefined) {
 		result.departure = {
-			time: new Date(
-				departureTimePlanned === undefined ? departureTime ?? "" : departureTimePlanned
-			),
+			time: new Date((departureHasRealtime ? departureTime : departureTimePlanned) ?? ""),
 			delay: departureHasRealtime ? departureDelay / 60 : undefined,
 			color: departureHasRealtime ? (departureDelay <= 300 ? "green" : "red") : undefined
 		};
