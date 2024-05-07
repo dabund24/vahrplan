@@ -1,29 +1,33 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
 import { client } from "$lib/server/setup";
-import { journeysToBlocks } from "$lib/server/parse";
+import { journeyToBlocks } from "$lib/server/parse";
 import { getSuccessResponse, getZugError } from "$lib/server/responses";
+import type { JourneyBlock, UnselectedBlock } from "$lib/types";
 
 export const GET: RequestHandler = async ({ url }) => {
-	const tokenParam = url.searchParams.get("token")!;
-	let refreshTokens: string[];
+	const tokenParam = url.searchParams.get("tokens")!;
+	let refreshTokens: (string | undefined)[];
 	try {
-		refreshTokens = JSON.parse(atob(tokenParam)) as string[];
+		refreshTokens = JSON.parse(atob(tokenParam)) as (string | undefined)[];
 	} catch (e) {
 		return new Response(JSON.stringify(getZugError("NOT_FOUND")));
 	}
-	const lang = url.searchParams.get("lang")!;
 	const journeys = await Promise.all(
-		refreshTokens.map(async (token) =>
-			client
-				.refreshJourney?.(token, {
-					stopovers: true,
-					language: lang,
-					polylines: true
-				})
-				.then((journeyWRD) => journeyWRD.journey)
-				.catch(() => undefined)
-		)
+		refreshTokens.map(async (token): Promise<JourneyBlock[]> => {
+			if (token === undefined) {
+				return [{ type: "unselected" }] as UnselectedBlock[];
+			}
+			return (
+				client
+					.refreshJourney?.(token, {
+						stopovers: true,
+						language: "de",
+						polylines: true
+					})
+					.then((journeyWRD) => journeyToBlocks(journeyWRD.journey))
+					.catch(() => [{ type: "error" }]) ?? [{ type: "error" }]
+			);
+		})
 	);
-	const blocks = journeysToBlocks(journeys);
-	return json(getSuccessResponse(blocks));
+	return json(getSuccessResponse(journeys));
 };

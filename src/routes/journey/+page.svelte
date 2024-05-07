@@ -2,7 +2,8 @@
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedLocations } from "$lib/stores";
+	import { displayedLocations, refreshJourney } from "$lib/stores";
+	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 
 	let windowWidth: number;
 
@@ -24,11 +25,15 @@
 	>
 		<div slot="a">
 			<Header
-					title={$displayedLocations.locations.length > 1
+				title={$displayedLocations.locations.length > 1
 					? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
 					: "Verbindungsdetails"}
-					mobileOnly={true}
-			/>
+				mobileOnly={true}
+			>
+				<button class="button--small hoverable" on:click={() => void refreshJourney()}>
+					<IconRefresh />
+				</button>
+			</Header>
 			<Journeys />
 		</div>
 		<div slot="b" class="map">

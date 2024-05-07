@@ -1,4 +1,4 @@
-import { derived, writable } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 import type {
 	AdhesiveBlock,
 	JourneyBlock,
@@ -7,8 +7,14 @@ import type {
 	ParsedLocation,
 	ParsedTime
 } from "$lib/types";
-import { getApiData, getCurrentGeolocation, getRawLocationBlock, getTreeUrl } from "$lib/util";
+import {
+	getApiData,
+	getFirstAndLastTime,
+	getCurrentGeolocation,
+	getRawLocationBlock
+} from "$lib/util";
 import { getMergingBlock } from "$lib/merge";
+import { getRefreshUrl, getTreeUrl } from "$lib/urls";
 
 export type DisplayedLocations = {
 	locations: KeyedItem<ParsedLocation, number>[];
@@ -231,4 +237,53 @@ function updateMergingBlocks(
 			...mergingBlocks.slice(index + 2)
 		];
 	});
+}
+
+export async function refreshJourney(): Promise<void> {
+	let idsInDepth: number[];
+	const tokens = get(selectedJourneys).map((journey) => journey.refreshToken);
+	const url = getRefreshUrl(tokens);
+	const response = await getApiData<JourneyBlock[][]>(url);
+	if (response.isError) {
+		return;
+	}
+	const refreshedJourneys = response.content;
+
+	selectedJourneys.update((selectedJourneys) => {
+		idsInDepth = selectedJourneys.map((journey) => journey.selectedBy);
+		for (let i = 0; i < selectedJourneys.length; i++) {
+			selectedJourneys[i].blocks = refreshedJourneys[i];
+		}
+		return selectedJourneys;
+	});
+	displayedTree.update(async (tree) => {
+		return replaceJourneysInTree(await tree, refreshedJourneys, idsInDepth);
+	});
+}
+
+/**
+ * traverses current journey tree and replaces passed journeys in tree
+ * @param tree journey tree where journeys should be replaced
+ * @param journeys new journeys, journey at index i lands in depth i
+ * @param idsInDepth id at index i stands for id in depth i
+ */
+function replaceJourneysInTree(
+	tree: JourneyNode[],
+	journeys: JourneyBlock[][],
+	idsInDepth: number[]
+): JourneyNode[] {
+	for (const node of tree) {
+		if (node.idInDepth === idsInDepth[0]) {
+			node.blocks = journeys[0];
+			const firstAndLastTime = getFirstAndLastTime(journeys[0]);
+			node.arrival = firstAndLastTime.arrival;
+			node.departure = firstAndLastTime.departure;
+		}
+		node.children = replaceJourneysInTree(
+			node.children,
+			journeys.slice(1),
+			idsInDepth.slice(1)
+		);
+	}
+	return tree;
 }

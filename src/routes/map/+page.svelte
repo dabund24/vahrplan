@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedLocations } from "$lib/stores";
+	import { displayedLocations, refreshJourney } from "$lib/stores";
+	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 </script>
 
 <svelte:head>
@@ -15,7 +16,11 @@
 			? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
 			: "Karte"}
 		fullScreen={true}
-	/>
+	>
+		<button class="button--small" on:click={() => void refreshJourney()}>
+			<IconRefresh />
+		</button>
+	</Header>
 	{#if browser}
 		{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
 			<Leaflet />

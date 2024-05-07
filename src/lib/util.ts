@@ -7,12 +7,10 @@ import type {
 	TransitData,
 	ZugResponse,
 	KeyedItem,
-	ParsedGeolocation
+	ParsedGeolocation,
+	TransitType,
+	ParsedTime
 } from "$lib/types";
-import { get } from "svelte/store";
-import { settings } from "$lib/settings";
-import type { DisplayedLocations } from "$lib/stores";
-import type { JourneysOptions } from "hafas-client";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -28,26 +26,25 @@ export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResp
 	return fetch(url).then((res) => res.json() as Promise<ZugResponse<T>>);
 }
 
-export function getTreeUrl(dLocations: DisplayedLocations): URL {
-	const url = new URL("/api/journeys", location.origin);
-	url.searchParams.set(
-		"stops",
-		JSON.stringify(
-			dLocations.locations.map((keyedLocation) => keyedLocation.value.requestParameter)
-		)
-	);
-	url.searchParams.set(
-		"options",
-		JSON.stringify({
-			...get(settings).journeysOptions,
-			[dLocations.timeRole]: dLocations.time
-		} as JourneysOptions)
-	);
-	return url;
-}
-
 export function isTimeDefined(block: JourneyBlock): block is DefiningBlock {
 	return block.type === "leg" || block.type === "location";
+}
+
+export function getFirstAndLastTime(blocks: JourneyBlock[]): { [K in TransitType]: ParsedTime } {
+	const departureBlock = blocks.find<DefiningBlock>(isTimeDefined);
+	const arrivalBlock = blocks.findLast<DefiningBlock>(isTimeDefined);
+	return {
+		departure: getTimeFromBlock(departureBlock, "departure"),
+		arrival: getTimeFromBlock(arrivalBlock, "arrival")
+	};
+}
+
+function getTimeFromBlock(block: DefiningBlock | undefined, type: TransitType): ParsedTime {
+	if (block?.type === "leg") {
+		return block[`${type}Data`].time;
+	} else {
+		return { [type]: block?.time[type] };
+	}
 }
 
 export function mergeTransitData(

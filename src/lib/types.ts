@@ -6,7 +6,7 @@ export type KeyedItem<T, K extends number | string> = {
 	key: K;
 };
 
-export type Fetchable = JourneyNode[] | JourneyBlock[] | ParsedLocation[];
+export type Fetchable = JourneyNode[] | JourneyBlock[][] | ParsedLocation[];
 
 export type ZugResponse<T extends Fetchable> = ZugSuccess<T> | ZugError;
 
@@ -38,18 +38,15 @@ export type HafasError = {
 	hafasCode: string;
 };
 
+export type TransitType = "arrival" | "departure";
+
 /**
  * each time displayed in this app is either representing departure or arrival.
  * Usually, both are shown vertically next to each other.
  * This type represents such a time pair and can be used universally
  */
 export type ParsedTime = {
-	arrival?: {
-		time: Date;
-		color?: "red" | "green";
-		delay?: number;
-	} | null;
-	departure?: {
+	[K in TransitType]?: {
 		time: Date;
 		color?: "red" | "green";
 		delay?: number;
@@ -97,10 +94,8 @@ export type JourneyNode = {
 	idInDepth: number;
 	refreshToken: string;
 	blocks: JourneyBlock[];
-	arrival: ParsedTime;
-	departure: ParsedTime;
 	children: JourneyNode[];
-};
+} & { [K in TransitType]: ParsedTime };
 
 export type JourneyBlock =
 	| LegBlock
@@ -138,8 +133,6 @@ export type LegBlock = {
 	type: "leg";
 	tripId: string;
 	blockKey: string;
-	departureData: TransitData;
-	arrivalData: TransitData;
 	duration: number;
 	direction: string;
 	line: Line;
@@ -148,7 +141,7 @@ export type LegBlock = {
 	polyline: [number, number][];
 	precededBy?: "transfer" | "stopover";
 	succeededBy?: "transfer" | "stopover";
-};
+} & { [K in TransitType as `${K}Data`]: TransitData };
 
 export type WalkingBlock = {
 	type: "walk";
@@ -166,7 +159,7 @@ export type TransferBlock = {
 	arrivalProduct: string;
 	departureProduct: string;
 	isStopover: boolean;
-};
+} & { [K in TransitType as `${K}Product`]: string };
 
 export type LocationBlock = {
 	type: "location";

@@ -10,12 +10,15 @@
 
 	$: stationInnerTag = transitData.attribute === "cancelled" ? "s" : "span";
 
-	let locationName = transitData.location.name
+	$: asAt =
+		transitData.location.type === "currentLocation"
+			? transitData.location.asAt
+			: $displayedLocations.geolocationDate;
 
-	$: console.log(transitData.location);
+	let locationName = transitData.location.name;
 
 	$: if (transitData.location.type === "currentLocation" || locationName === "Standort") {
-		locationName = getGeolocationString($displayedLocations.geolocationDate, locationName)
+		locationName = getGeolocationString(asAt, locationName);
 	}
 
 	let delayTextA = "";
@@ -73,7 +76,7 @@
 	.name-delay-platform {
 		width: 100%;
 	}
-.station {
+	.station {
 		text-overflow: ellipsis;
 		overflow-x: hidden;
 		/*noinspection CssInvalidPropertyValue*/

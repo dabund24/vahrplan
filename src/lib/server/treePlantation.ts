@@ -2,7 +2,8 @@ import { client } from "$lib/server/setup";
 import type { Journey, Journeys, JourneysOptions } from "hafas-client";
 import type { JourneyNode, ZugResponse } from "$lib/types";
 import { getSuccessResponse, getZugError, getZugErrorFromHafasError } from "$lib/server/responses";
-import { getFirstOrLastTime, journeysToBlocks } from "$lib/server/parse";
+import { journeyToBlocks } from "$lib/server/parse";
+import { getFirstAndLastTime } from "$lib/util";
 
 const MAX_DATE = 8640000000000000;
 
@@ -204,14 +205,13 @@ function getNodesFromMatrix(
 		} else {
 			nextArrival = new Date(nextChild.legs.at(-1)?.arrival ?? MAX_DATE);
 		}
-		const blocks = journeysToBlocks([children[i]]);
+		const blocks = journeyToBlocks(children[i]);
 		const childNode: JourneyNode = {
 			depth: depth,
 			idInDepth: idInDepthCounters[depth],
 			refreshToken: children[i].refreshToken ?? "",
 			blocks,
-			departure: getFirstOrLastTime(blocks, "departure"),
-			arrival: getFirstOrLastTime(blocks, "arrival"),
+			...getFirstAndLastTime(blocks),
 			children: getNodesFromMatrix(matrix, nextArrival, depth + 1)
 		};
 		childNodes.push(childNode);

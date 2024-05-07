@@ -1,7 +1,13 @@
 <script lang="ts">
 	import "leaflet/dist/leaflet.css";
 	import "./map.css";
-	import { displayedJourneys, displayedLocations, selectedJourneys } from "$lib/stores";
+	import {
+		displayedJourneys,
+		type DisplayedLocations,
+		displayedLocations,
+		type SelectedJourney,
+		selectedJourneys
+	} from "$lib/stores";
 	import { onDestroy, onMount, setContext } from "svelte";
 	import type { DefiningBlock, ParsedLocation } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
@@ -79,10 +85,17 @@
 		}
 	}
 
-	$: if (map !== undefined) {
+	$: setMapContent(map, $selectedJourneys, $displayedLocations);
+
+	function setMapContent(
+		map: L.Map | undefined,
+		selectedJourneys: SelectedJourney[],
+		displayedLocations: DisplayedLocations
+	): void {
+		if (map === undefined) return
 		let coordinates: L.LatLngLiteral[];
-		if ($selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
-			coordinates = $selectedJourneys
+		if (selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
+			coordinates = selectedJourneys
 				.flatMap((j) => j.blocks)
 				.filter<DefiningBlock>(isTimeDefined)
 				.flatMap((block) =>
@@ -94,8 +107,8 @@
 							]
 						: block.location.position
 				);
-		} else if ($displayedLocations.locations.length !== 0) {
-			coordinates = $displayedLocations.locations.map((location) => location.value.position);
+		} else if (displayedLocations.locations.length !== 0) {
+			coordinates = displayedLocations.locations.map((location) => location.value.position);
 		} else {
 			// fit germany
 			coordinates = [

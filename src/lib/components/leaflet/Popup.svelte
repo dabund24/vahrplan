@@ -23,6 +23,8 @@
 		}
 	});
 
+	$: popup?.setContent(popupElement)
+
 	onDestroy(() => {
 		layer?.unbindPopup();
 		popup?.remove();

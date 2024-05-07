@@ -35,6 +35,8 @@
 		}
 	});
 
+	$: marker?.setLatLng(data.location.position)
+
 	onDestroy(() => {
 		marker?.remove();
 		marker = undefined;

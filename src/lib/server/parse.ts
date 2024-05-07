@@ -1,24 +1,27 @@
 import type { Leg, Station, Stop, Location, StopOver, Journey } from "hafas-client";
 import type {
-	DefiningBlock,
 	JourneyBlock,
 	LegBlock,
 	LocationBlock,
 	ParsedLocation,
 	ParsedTime,
 	TransitData,
+	TransitType,
 	WalkingBlock
 } from "$lib/types";
-import { dateDifference, isTimeDefined } from "$lib/util";
+import { dateDifference } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
 
-export function journeysToBlocks(journeys: (Journey | undefined)[]): JourneyBlock[] {
-	const legs = journeys.map((journey) => journey?.legs).flat();
+export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
+	if (journey?.legs === undefined) {
+		return [{ type: "error" }];
+	}
+	const legs = journey.legs;
 	const blocks: JourneyBlock[] = [];
 	for (let i = 0; i < legs.length; i++) {
 		const leg = legs[i];
 		if (leg === undefined) {
-			blocks.push({ type: "error" });
+			blocks.push({ type: "unselected" });
 			continue;
 		}
 		const nextLeg = i < legs.length - 1 ? legs[i + 1] : undefined;
@@ -130,7 +133,7 @@ function legToBlock(leg: Leg): LegBlock {
 function locationToBlock(
 	time: string | undefined,
 	location: ParsedLocation,
-	type: "arrival" | "departure"
+	type: TransitType
 ): LocationBlock {
 	return {
 		type: "location",
@@ -152,10 +155,10 @@ export function walkToBlock(walk: Leg, nextDeparture: string | undefined): Walki
 }
 
 export function parseSingleTime(
-	time: Leg["departure"],
-	timePlanned: Leg["plannedDeparture"],
-	delay: Leg["departureDelay"],
-	type: "arrival" | "departure"
+	time: Leg[`${TransitType}`],
+	timePlanned: Leg[`${TransitType}`],
+	delay: Leg[`${TransitType}Delay`],
+	type: TransitType
 ): ParsedTime {
 	const hasRealtime = delay !== null && delay !== undefined;
 	if (time === undefined && timePlanned === undefined) {
@@ -171,12 +174,12 @@ export function parseSingleTime(
 }
 
 export function parseTimePair(
-	arrivalTime: Leg["departure"],
-	arrivalTimePlanned: Leg["plannedDeparture"],
-	arrivalDelay: Leg["departureDelay"],
-	departureTime: Leg["departure"],
-	departureTimePlanned: Leg["plannedDeparture"],
-	departureDelay: Leg["departureDelay"]
+	arrivalTime: Leg[`${TransitType}`],
+	arrivalTimePlanned: Leg[`${TransitType}`],
+	arrivalDelay: Leg[`${TransitType}Delay`],
+	departureTime: Leg[`${TransitType}`],
+	departureTimePlanned: Leg[`${TransitType}`],
+	departureDelay: Leg[`${TransitType}Delay`]
 ): ParsedTime {
 	const arrivalHasRealtime = arrivalDelay !== null && arrivalDelay !== undefined;
 	const departureHasRealtime = departureDelay !== null && departureDelay !== undefined;
@@ -268,19 +271,4 @@ export function parseStopover(stopover: StopOver): TransitData {
 							(stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform)
 					}
 	};
-}
-
-export function getFirstOrLastTime(
-	blocks: JourneyBlock[],
-	type: "departure" | "arrival"
-): ParsedTime {
-	const findRightBlockFn =
-		// eslint-disable-next-line @typescript-eslint/unbound-method
-		type === "departure" ? blocks.find<DefiningBlock> : blocks.findLast<DefiningBlock>;
-	const block = findRightBlockFn.call(blocks, isTimeDefined);
-	if (block?.type === "leg") {
-		return block[`${type}Data`].time;
-	} else {
-		return { [type]: block?.time[type] };
-	}
 }
