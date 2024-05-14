@@ -7,14 +7,14 @@
 		displayedLocations,
 		type SelectedJourney,
 		selectedJourneys
-	} from "$lib/stores";
+	} from "$lib/stores/journeyStores";
 	import { onDestroy, onMount, setContext } from "svelte";
 	import type { DefiningBlock, ParsedLocation } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
 	import Marker from "$lib/components/leaflet/Marker.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { settings } from "$lib/settings";
+	import { settings } from "$lib/stores/settingStore";
 	import L from "leaflet";
 
 	let map: L.Map | undefined;

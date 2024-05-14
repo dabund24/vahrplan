@@ -2,7 +2,7 @@
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { fade, fly } from "svelte/transition";
 	import type { ParsedLocation } from "$lib/types";
-	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores";
+	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores/journeyStores";
 	export let location: ParsedLocation;
 	export let locationIndex: number;
 	export let actsAsStopover: boolean = false;

@@ -2,7 +2,7 @@
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedLocations, refreshJourney } from "$lib/stores";
+	import { displayedLocations, refreshJourney } from "$lib/stores/journeyStores";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 
 	let windowWidth: number;

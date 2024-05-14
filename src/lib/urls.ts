@@ -1,6 +1,6 @@
-import type { DisplayedLocations } from "$lib/stores";
+import type { DisplayedLocations } from "$lib/stores/journeyStores";
 import { get } from "svelte/store";
-import { settings } from "$lib/settings";
+import { settings } from "$lib/stores/settingStore";
 import type { JourneysOptions } from "hafas-client";
 
 export function getTreeUrl(dLocations: DisplayedLocations): URL {

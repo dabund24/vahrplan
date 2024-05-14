@@ -4,7 +4,7 @@
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import Filler from "$lib/components/journeys/Filler.svelte";
 	import Location from "$lib/components/journeys/Location.svelte";
-	import { displayedJourneys, selectedJourneys } from "$lib/stores";
+	import { displayedJourneys, selectedJourneys } from "$lib/stores/journeyStores";
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { dateDifference } from "$lib/util";
 

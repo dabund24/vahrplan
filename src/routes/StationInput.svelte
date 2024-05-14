@@ -19,7 +19,7 @@
 			return Promise.resolve([getParsedGeolocation(new Date(), { lat: 0, lng: 0 })]);
 		}
 		url.searchParams.set("name", text);
-		return getApiData<ParsedLocation[]>(url).then((response) => {
+			return getApiData<ParsedLocation[]>(url, undefined).then((response) => {
 			let suggestions: ParsedLocation[] = [];
 			if ("standort".startsWith(text.toLowerCase())) {
 				suggestions.push(getParsedGeolocation(new Date(), { lat: 0, lng: 0 }));

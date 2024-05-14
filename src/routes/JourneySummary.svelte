@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import { displayedLocations, mergingBlocks, selectedJourneys } from "$lib/stores.js";
+	import { displayedLocations, mergingBlocks, selectedJourneys } from "$lib/stores/journeyStores.js";
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
 	import Time from "$lib/components/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";

@@ -157,7 +157,8 @@ async function calculateTree(dLocations: DisplayedLocations): Promise<JourneyNod
 		return Promise.resolve([]);
 	}
 	const url = getTreeUrl(dLocations);
-	return getApiData<JourneyNode[]>(url).then((response) => {
+	const loadingEst = dLocations.locations.length * 3;
+	return getApiData<JourneyNode[]>(url, loadingEst).then((response) => {
 		console.log(response);
 		return response.isError ? [] : response.content;
 	});
@@ -243,7 +244,7 @@ export async function refreshJourney(): Promise<void> {
 	let idsInDepth: number[];
 	const tokens = get(selectedJourneys).map((journey) => journey.refreshToken);
 	const url = getRefreshUrl(tokens);
-	const response = await getApiData<JourneyBlock[][]>(url);
+	const response = await getApiData<JourneyBlock[][]>(url, 3);
 	if (response.isError) {
 		return;
 	}

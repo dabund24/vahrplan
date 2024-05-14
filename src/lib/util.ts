@@ -11,6 +11,7 @@ import type {
 	TransitType,
 	ParsedTime
 } from "$lib/types";
+import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -22,8 +23,31 @@ export function valueIsDefined<T, K extends number | string>(
 	return keyedItem.value !== undefined;
 }
 
-export async function getApiData<T extends Fetchable>(url: URL): Promise<ZugResponse<T>> {
-	return fetch(url).then((res) => res.json() as Promise<ZugResponse<T>>);
+export async function getApiData<T extends Fetchable>(
+	url: URL,
+	loadingEst: number | undefined
+): Promise<ZugResponse<T>> {
+	let loadingId: number | undefined = undefined;
+	if (loadingEst !== undefined) {
+		loadingId = startLoading(loadingEst);
+	}
+
+	const result: ZugResponse<T> = await fetch(url)
+		.then((res: Response) => res.json() as Promise<ZugResponse<T>>)
+		.catch(() => {
+			return {
+				isError: true,
+				type: "ERROR",
+				code: 400,
+				station1: undefined,
+				station2: undefined
+			};
+		});
+
+	if (loadingId !== undefined) {
+		stopLoading(loadingId, result.isError);
+	}
+	return result;
 }
 
 export function isTimeDefined(block: JourneyBlock): block is DefiningBlock {
@@ -151,16 +175,24 @@ export function getParsedGeolocation(
 }
 
 export async function getCurrentGeolocation(): Promise<ParsedGeolocation> {
+	const loadingId = startLoading(5);
 	return new Promise<ParsedGeolocation>((resolve) => {
-		navigator.geolocation.getCurrentPosition((position) => {
-			const currentLocation: ParsedLocation = getParsedGeolocation(
-				new Date(position.timestamp),
-				{
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				}
-			);
-			resolve(currentLocation);
-		});
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				const currentLocation: ParsedLocation = getParsedGeolocation(
+					new Date(position.timestamp),
+					{
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}
+				);
+				stopLoading(loadingId, false);
+				resolve(currentLocation);
+			},
+			() => {
+				stopLoading(loadingId, true);
+				throw new Error();
+			}
+		);
 	});
 }

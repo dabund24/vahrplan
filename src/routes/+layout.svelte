@@ -1,10 +1,12 @@
 <script lang="ts">
 	import "./styles.css";
 	import Navbar from "./Navbar.svelte";
-	import { settings } from "$lib/settings";
+	import { settings } from "$lib/stores/settingStore";
+	import ProgressBar from "$lib/components/ProgressBar.svelte";
 </script>
 
 <div class="app" data-blur={$settings.view.general.blur ? "true" : ""}>
+	<ProgressBar />
 	<Navbar />
 	<main>
 		<slot />

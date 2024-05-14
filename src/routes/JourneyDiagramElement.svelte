@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
-	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores";
-	import { settings } from "$lib/settings";
+	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores/journeyStores";
+	import { settings } from "$lib/stores/settingStore";
 
 	export let blocks: JourneyBlock[];
 	export let depth: number;

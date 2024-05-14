@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TransitData } from "$lib/types";
 	import { getGeolocationString } from "$lib/util";
-	import { displayedLocations } from "$lib/stores";
+	import { displayedLocations } from "$lib/stores/journeyStores";
 
 	export let transitData: TransitData;
 	export let nameIsStrong = false;

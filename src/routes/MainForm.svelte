@@ -2,13 +2,13 @@
 	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation } from "$lib/types.js";
 	import { valueIsDefined } from "$lib/util.js";
-	import { displayedLocations, setDisplayedLocations } from "$lib/stores.js";
+	import { displayedLocations, setDisplayedLocations } from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
-	import { products, settings } from "$lib/settings";
+	import { products, settings } from "$lib/stores/settingStore";
 	import { onMount } from "svelte";
 	import IconFilter from "$lib/components/icons/IconFilter.svelte";
 	import IconSearch from "$lib/components/icons/IconSearch.svelte";

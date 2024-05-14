@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedLocations, refreshJourney } from "$lib/stores";
+	import { displayedLocations, refreshJourney } from "$lib/stores/journeyStores";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 </script>
 

@@ -3,7 +3,7 @@
 	import Time from "$lib/components/Time.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { getGeolocationString } from "$lib/util";
-	import { displayedLocations } from "$lib/stores";
+	import { displayedLocations } from "$lib/stores/journeyStores";
 
 	export let block: LocationBlock
 

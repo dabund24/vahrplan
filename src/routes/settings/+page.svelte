@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
-	import { settings } from "$lib/settings";
+	import { settings } from "$lib/stores/settingStore";
 	import Header from "$lib/components/Header.svelte";
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import JourneyDiagram from "./JourneyDiagram.svelte";
-	import { displayedLocations, displayedTree } from "$lib/stores";
+	import { displayedLocations, displayedTree } from "$lib/stores/journeyStores";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import MainForm from "./MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";

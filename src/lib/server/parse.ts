@@ -155,8 +155,8 @@ export function walkToBlock(walk: Leg, nextDeparture: string | undefined): Walki
 }
 
 export function parseSingleTime(
-	time: Leg[`${TransitType}`],
-	timePlanned: Leg[`${TransitType}`],
+	time: Leg[TransitType],
+	timePlanned: Leg[TransitType],
 	delay: Leg[`${TransitType}Delay`],
 	type: TransitType
 ): ParsedTime {
