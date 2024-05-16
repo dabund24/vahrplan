@@ -23,6 +23,7 @@
 <style>
 	.progress {
 		position: fixed;
+		overflow: hidden;
 		z-index: 10000;
 		top: env(safe-area-inset-top);
 		height: var(--line-width);
@@ -37,11 +38,36 @@
 	.loading {
 		background-color: var(--accent-color);
 		transition: width calc(1s * var(--loading-est)) var(--cubic-bezier);
-		width: 80%;
+		width: 90%;
+	}
+
+	.loading::after {
+		content: "";
+		display: flex;
+		width: 3rem;
+		height: 100%;
+		background: linear-gradient(
+			to right,
+			transparent,
+            var(--background-color--opaque),
+            var(--background-color--opaque),
+			transparent
+		);
+		animation: 2s var(--cubic-bezier) calc(1s * var(--loading-est) - 1s) infinite backwards
+			extend-loading-est;
+	}
+
+	@keyframes extend-loading-est {
+		from {
+			margin-left: -3rem;
+		}
+		to {
+			margin-left: 100%;
+		}
 	}
 
 	.error {
-        width: 0;
+		width: 0;
 	}
 
 	.reset-width {
