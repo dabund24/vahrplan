@@ -1,11 +1,12 @@
 @media (update: fast) {
 	.map[data-theme="dark"] {
 		.osm-tiles {
-			filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
+			filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
 				brightness(0.7);
 		}
-		.orm-tiles, .oepnvk-tiles {
-			filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+		.orm-tiles,
+		.oepnvk-tiles {
+			filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
 		}
 	}
 	.map[data-theme="light"] .product--nationalExpress {
