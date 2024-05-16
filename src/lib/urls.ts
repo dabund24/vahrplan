@@ -21,7 +21,7 @@ export function getTreeUrl(dLocations: DisplayedLocations): URL {
 	return url;
 }
 
-export function getRefreshUrl(tokens: (string | undefined)[]): URL {
+export function getRefreshUrl(tokens: (string | null)[]): URL {
 	const url = new URL("/api/refresh", location.origin);
 	url.searchParams.set("tokens", btoa(JSON.stringify(tokens)));
 	return url;

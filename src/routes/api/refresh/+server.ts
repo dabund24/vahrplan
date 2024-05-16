@@ -6,15 +6,15 @@ import type { JourneyBlock, UnselectedBlock } from "$lib/types";
 
 export const GET: RequestHandler = async ({ url }) => {
 	const tokenParam = url.searchParams.get("tokens")!;
-	let refreshTokens: (string | undefined)[];
+	let refreshTokens: (string | null)[];
 	try {
-		refreshTokens = JSON.parse(atob(tokenParam)) as (string | undefined)[];
+		refreshTokens = JSON.parse(atob(tokenParam)) as (string | null)[];
 	} catch (e) {
 		return new Response(JSON.stringify(getZugError("NOT_FOUND")));
 	}
 	const journeys = await Promise.all(
 		refreshTokens.map(async (token): Promise<JourneyBlock[]> => {
-			if (token === undefined) {
+			if (token === null) {
 				return [{ type: "unselected" }] as UnselectedBlock[];
 			}
 			return (

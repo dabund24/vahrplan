@@ -242,7 +242,9 @@ function updateMergingBlocks(
 
 export async function refreshJourney(): Promise<void> {
 	let idsInDepth: number[];
-	const tokens = get(selectedJourneys).map((journey) => journey.refreshToken);
+	const tokens = get(selectedJourneys).map((journey) =>
+		journey.refreshToken.length > 5 ? journey.refreshToken : null
+	);
 	const url = getRefreshUrl(tokens);
 	const response = await getApiData<JourneyBlock[][]>(url, 3);
 	if (response.isError) {
