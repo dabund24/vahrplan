@@ -18,7 +18,7 @@
 	let locationName = transitData.location.name;
 
 	$: if (transitData.location.type === "currentLocation" || locationName === "Standort") {
-		locationName = getGeolocationString(asAt, locationName);
+		locationName = getGeolocationString(asAt, transitData.location.name);
 	}
 
 	let delayTextA = "";
