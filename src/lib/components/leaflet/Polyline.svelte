@@ -6,6 +6,7 @@
 
 	export let block: LegBlock | WalkingBlock;
 	let polyline: L.GeoJSON | L.Polyline | undefined;
+	let polylinePadding: L.GeoJSON | L.Polyline | undefined; // improves clickability of line
 	let polylineElement: HTMLElement;
 
 	$: popupData =
@@ -27,38 +28,52 @@
 	const map = getMap();
 
 	setContext("layer", {
-		getLayer: () => polyline
+		getLayer: () => polylinePadding
 	});
 
 	onMount(() => {
-		if (map !== undefined) {
-			polyline = (
-				block.type === "leg"
-					? L.polyline(block.polyline, {
-						className: `product--${block.line.product} stroke--product`,
-						weight: 4,
-					smoothFactor: 2
-					})
-					: L.polyline(
-							[block.originLocation.position, block.destinationLocation.position],
-							{
-								dashArray: "4 8",
-								weight: 4,
-								color: "var(--foreground-color)"
-							}
-						)
-			).addTo(map);
+		if (map === undefined) {
+			return;
 		}
+		if (block.type === "leg") {
+			polyline = L.polyline(block.polyline, {
+				className: `product--${block.line.product} stroke--product`,
+				weight: 4,
+				smoothFactor: 2
+			})
+			polylinePadding = L.polyline(block.polyline, {
+				color: "transparent",
+				weight: 16,
+				smoothFactor: 2
+			});
+		} else {
+			polyline = L.polyline([block.originLocation.position, block.destinationLocation.position], {
+				dashArray: "4 8",
+				weight: 4,
+				color: "var(--foreground-color)"
+			})
+			polylinePadding = L.polyline(
+				[block.originLocation.position, block.destinationLocation.position],
+				{
+					color: "transparent",
+					weight: 16
+				}
+			)
+		}
+		polyline.addTo(map);
+		polylinePadding.addTo(map)
 	});
 
 	onDestroy(() => {
 		polyline?.remove();
+		polylinePadding?.remove()
 		polyline = undefined;
+		polylinePadding = undefined
 	});
 </script>
 
 <div bind:this={polylineElement}>
-	{#if polyline !== undefined}
+	{#if polylinePadding !== undefined}
 		<Popup {popupData} />
 	{/if}
 </div>
