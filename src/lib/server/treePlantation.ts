@@ -119,7 +119,6 @@ async function findJourneysUntil(
 	fromToOpt: FromToOpt,
 	limit: TimeLimit
 ): Promise<FetchedJourney[]> {
-	console.log(limit.date);
 	fromToOpt.opt = { ...fromToOpt.opt };
 	const journeys: FetchedJourney[] = [];
 	const timeComparisonPrefix = limit.type === "departure" ? "later" : "earlier";
@@ -145,6 +144,10 @@ async function findJourneysUntil(
 			journeys.unshift(...lastJourneysWithRef.journeys);
 		}
 		remainingSearches--;
+	}
+	if (limit.type === "arrival") {
+		// sorting is necessary because of hybrid routing
+		journeys.sort((a, b) => a.departureTime.time.getTime() - b.departureTime.time.getTime());
 	}
 	return journeys;
 }
