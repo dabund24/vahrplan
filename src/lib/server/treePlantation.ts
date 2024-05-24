@@ -158,8 +158,9 @@ async function findJourneysUntil(
 const journeysExceedLimit: {
 	[K in TransitType]: (journeys: FetchedJourney[], time: Date) => boolean;
 } = {
-	departure: (journeys, time) => journeys[0].departureTime.time.getTime() > time.getTime(),
-	arrival: (journeys, time) => journeys[0].arrivalTime.time.getTime() < time.getTime()
+	departure: (journeys, time) =>
+		(journeys.at(-1)?.departureTime.time.getTime() ?? MAX_DATE) > time.getTime(),
+	arrival: (journeys, time) => (journeys.at(0)?.arrivalTime.time.getTime() ?? 0) < time.getTime()
 };
 
 /**
