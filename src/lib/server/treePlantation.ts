@@ -32,6 +32,11 @@ type JourneyNodesWithRefs = {
 	laterRef: string;
 };
 
+type RecursionInfo = {
+	depth: number;
+	progressInDepths: number[];
+};
+
 export async function getJourneyTree(
 	stops: string[],
 	opt: JourneysOptions,
@@ -46,11 +51,14 @@ export async function getJourneyTree(
 	let journeyArrays = await getJourneyArrays(stops, opt, transitType);
 
 	// remove nodes that would lack a parent in the resulting tree
-	journeyArrays = cleanupNodeArrays(journeyArrays);
+	journeyArrays = cleanupJourneyArrays(journeyArrays);
 
 	progressInDepths = Array.from({ length: stops.length - 1 }, () => 0);
 	// construct the tree
-	const result = getTreeFromNodeArrays(journeyArrays, new Date(MAX_DATE), 0);
+	const result = getTreeFromNodeArrays(journeyArrays, new Date(MAX_DATE), {
+		depth: 0,
+		progressInDepths
+	});
 
 	return getSuccessResponse<JourneyNode[]>(result);
 }
@@ -111,6 +119,7 @@ async function findJourneysUntil(
 	fromToOpt: FromToOpt,
 	limit: TimeLimit
 ): Promise<FetchedJourney[]> {
+	console.log(limit.date);
 	fromToOpt.opt = { ...fromToOpt.opt };
 	const journeys: FetchedJourney[] = [];
 	const timeComparisonPrefix = limit.type === "departure" ? "later" : "earlier";
@@ -183,7 +192,7 @@ async function findJourneys(fromToOpt: FromToOpt): Promise<JourneyNodesWithRefs>
  * removes completely unreachable journeys
  * @param journeyss node arrays for each section of the full journey
  */
-function cleanupNodeArrays(journeyss: FetchedJourney[][]): FetchedJourney[][] {
+function cleanupJourneyArrays(journeyss: FetchedJourney[][]): FetchedJourney[][] {
 	for (let i = 1; i < journeyss.length; i++) {
 		const firstArrivalOfLastNodes = journeyss[i - 1][0].arrivalTime.time.getTime();
 		let indexOfFirstValidNode = 0;
@@ -207,13 +216,14 @@ let progressInDepths: number[];
  * recursively turn array of journeys into a tree fulfilling the constraints described in the readme
  * @param journeyss each element contains the journeys of one subsection of the entire trip
  * @param includeUntil every returned journey starts before this time
- * @param depth recursion depth. only `nodess[depth]` will be considered in this recursion step
+ * @param recursionInfo stores current recursion depth and progress for each depth
  */
 function getTreeFromNodeArrays(
 	journeyss: FetchedJourney[][],
 	includeUntil: Date,
-	depth: number
+	recursionInfo: RecursionInfo
 ): JourneyNode[] {
+	const depth = recursionInfo.depth;
 	if (depth === journeyss.length) {
 		// base case
 		return [];
@@ -228,21 +238,34 @@ function getTreeFromNodeArrays(
 			includeUntil.getTime()
 	) {
 		const nextArrival =
-			journeyss[depth].at(progressInDepths[depth] + 1)?.arrivalTime?.time ??
+			journeyss[depth].at(progressInDepths[depth] + 1)?.arrivalTime.time ??
 			new Date(MAX_DATE);
 
-		const nodeJourneys = journeyss[depth][progressInDepths[depth]];
-		const nodeToBeIncluded: JourneyNode = {
-			blocks: nodeJourneys.blocks,
-			children: getTreeFromNodeArrays(journeyss, nextArrival, depth + 1),
-			refreshToken: nodeJourneys.refreshToken,
-			depth,
-			idInDepth: progressInDepths[depth],
-			arrival: { arrival: nodeJourneys.arrivalTime },
-			departure: { departure: nodeJourneys.departureTime }
-		};
+		const nodeJourney = journeyss[depth][progressInDepths[depth]];
+		const nodeToBeIncluded = fetchedJourneyToNode(nodeJourney, recursionInfo);
+		nodeToBeIncluded.children = getTreeFromNodeArrays(journeyss, nextArrival, {
+			depth: depth + 1,
+			progressInDepths: recursionInfo.progressInDepths
+		});
 		nodesToBeIncluded.push(nodeToBeIncluded);
-		progressInDepths[depth]++;
+		recursionInfo.progressInDepths[depth]++;
 	}
 	return nodesToBeIncluded;
+}
+
+/**
+ * turns a FetchedJourney object into a JourneyNode object
+ * @param journey
+ * @param recursionInfo
+ */
+function fetchedJourneyToNode(journey: FetchedJourney, recursionInfo: RecursionInfo): JourneyNode {
+	return {
+		blocks: journey.blocks,
+		children: [],
+		refreshToken: journey.refreshToken,
+		depth: recursionInfo.depth,
+		idInDepth: recursionInfo.progressInDepths[recursionInfo.depth],
+		arrival: { arrival: journey.arrivalTime },
+		departure: { departure: journey.departureTime }
+	};
 }
