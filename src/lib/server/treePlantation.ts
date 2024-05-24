@@ -53,7 +53,7 @@ export async function getJourneyTree(
 	// remove nodes that would lack a parent in the resulting tree
 	journeyArrays = cleanupJourneyArrays(journeyArrays);
 
-	progressInDepths = Array.from({ length: stops.length - 1 }, () => 0);
+	const progressInDepths = Array.from({ length: stops.length - 1 }, () => 0);
 	// construct the tree
 	const result = getTreeFromNodeArrays(journeyArrays, new Date(MAX_DATE), {
 		depth: 0,
@@ -214,8 +214,6 @@ function cleanupJourneyArrays(journeyss: FetchedJourney[][]): FetchedJourney[][]
 	return journeyss;
 }
 
-let progressInDepths: number[];
-
 /**
  * recursively turn array of journeys into a tree fulfilling the constraints described in the readme
  * @param journeyss each element contains the journeys of one subsection of the entire trip
@@ -228,6 +226,7 @@ function getTreeFromNodeArrays(
 	recursionInfo: RecursionInfo
 ): JourneyNode[] {
 	const depth = recursionInfo.depth;
+	const progressInDepths = recursionInfo.progressInDepths;
 	if (depth === journeyss.length) {
 		// base case
 		return [];
@@ -249,10 +248,10 @@ function getTreeFromNodeArrays(
 		const nodeToBeIncluded = fetchedJourneyToNode(nodeJourney, recursionInfo);
 		nodeToBeIncluded.children = getTreeFromNodeArrays(journeyss, nextArrival, {
 			depth: depth + 1,
-			progressInDepths: recursionInfo.progressInDepths
+			progressInDepths: progressInDepths
 		});
 		nodesToBeIncluded.push(nodeToBeIncluded);
-		recursionInfo.progressInDepths[depth]++;
+		progressInDepths[depth]++;
 	}
 	return nodesToBeIncluded;
 }
