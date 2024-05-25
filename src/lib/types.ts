@@ -6,7 +6,7 @@ export type KeyedItem<T, K extends number | string> = {
 	key: K;
 };
 
-export type Fetchable = JourneyNode[] | JourneyBlock[][] | ParsedLocation[];
+export type Fetchable = TreeNode[] | JourneyBlock[][] | ParsedLocation[];
 
 export type ZugResponse<T extends Fetchable> = ZugSuccess<T> | ZugError;
 
@@ -89,13 +89,21 @@ export type TransitData = {
 	} | null;
 };
 
+export type TreeNode = JourneyNode | EmptyNode;
+
 export type JourneyNode = {
+	type: "journeyNode";
 	depth: number;
 	idInDepth: number;
 	refreshToken: string;
 	blocks: JourneyBlock[];
-	children: JourneyNode[];
+	children: TreeNode[];
 } & { [K in TransitType]: ParsedTime };
+
+export type EmptyNode = {
+	type: "emptyNode";
+	children: TreeNode[];
+};
 
 export type JourneyBlock =
 	| LegBlock

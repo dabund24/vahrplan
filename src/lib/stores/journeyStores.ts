@@ -2,10 +2,10 @@ import { derived, get, writable } from "svelte/store";
 import type {
 	AdhesiveBlock,
 	JourneyBlock,
-	JourneyNode,
 	KeyedItem,
 	ParsedLocation,
-	ParsedTime
+	ParsedTime,
+	TreeNode
 } from "$lib/types";
 import {
 	getApiData,
@@ -58,7 +58,7 @@ export const displayedJourneys = derived(
 
 // this is recalculated when and only when displayedLocations changes
 // export const displayedTree = derived(displayedLocations, calculateTree);
-export const displayedTree = writable<Promise<JourneyNode[]>>(Promise.resolve([]));
+export const displayedTree = writable<Promise<TreeNode[]>>(Promise.resolve([]));
 displayedLocations.subscribe((dLocations) => displayedTree.set(calculateTree(dLocations)));
 
 export async function setDisplayedLocations(
@@ -152,13 +152,13 @@ function calculateDisplayedJourneys([merging, selected]: [
 	}) as KeyedItem<JourneyBlock[], string>[];
 }
 
-async function calculateTree(dLocations: DisplayedLocations): Promise<JourneyNode[]> {
+async function calculateTree(dLocations: DisplayedLocations): Promise<TreeNode[]> {
 	if (dLocations.locations.length < 2) {
 		return Promise.resolve([]);
 	}
 	const url = getTreeUrl(dLocations);
 	const loadingEst = dLocations.locations.length * 3;
-	return getApiData<JourneyNode[]>(url, loadingEst).then((response) => {
+	return getApiData<TreeNode[]>(url, loadingEst).then((response) => {
 		console.log(response);
 		return response.isError ? [] : response.content;
 	});
@@ -271,12 +271,12 @@ export async function refreshJourney(): Promise<void> {
  * @param idsInDepth id at index i stands for id in depth i
  */
 function replaceJourneysInTree(
-	tree: JourneyNode[],
+	tree: TreeNode[],
 	journeys: JourneyBlock[][],
 	idsInDepth: number[]
-): JourneyNode[] {
+): TreeNode[] {
 	for (const node of tree) {
-		if (node.idInDepth === idsInDepth[0]) {
+		if (node.type === "journeyNode" && node.idInDepth === idsInDepth[0]) {
 			node.blocks = journeys[0];
 			const firstAndLastTime = getFirstAndLastTime(journeys[0]);
 			node.arrival = firstAndLastTime.arrival;

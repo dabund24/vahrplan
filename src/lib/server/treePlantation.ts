@@ -1,6 +1,13 @@
 import { client } from "$lib/server/setup";
 import type { JourneysOptions } from "hafas-client";
-import type { JourneyBlock, JourneyNode, ParsedTime, TransitType, ZugResponse } from "$lib/types";
+import type {
+	JourneyBlock,
+	JourneyNode,
+	ParsedTime,
+	TransitType,
+	TreeNode,
+	ZugResponse
+} from "$lib/types";
 import { getSuccessResponse } from "$lib/server/responses";
 import { journeyToBlocks } from "$lib/server/parse";
 import { getFirstAndLastTime } from "$lib/util";
@@ -41,26 +48,23 @@ export async function getJourneyTree(
 	stops: string[],
 	opt: JourneysOptions,
 	transitType: TransitType
-): Promise<ZugResponse<JourneyNode[]>> {
+): Promise<ZugResponse<TreeNode[]>> {
 	opt.routingMode = transitType === "departure" ? "REALTIME" : "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
 	opt.stopovers = true;
 	opt.polylines = true;
 	opt.startWithWalking = true;
 
 	// find all journeys of the tree
-	let journeyArrays = await getJourneyArrays(stops, opt, transitType);
+	const journeyArrays = await getJourneyArrays(stops, opt, transitType);
 
-	// remove nodes that would lack a parent in the resulting tree
-	journeyArrays = cleanupJourneyArrays(journeyArrays);
-
-	const progressInDepths = Array.from({ length: stops.length - 1 }, () => 0);
+	const progressInDepths = Array.from({ length: stops.length - 1 }, () => -1);
 	// construct the tree
 	const result = getTreeFromNodeArrays(journeyArrays, new Date(MAX_DATE), {
 		depth: 0,
 		progressInDepths
 	});
 
-	return getSuccessResponse<JourneyNode[]>(result);
+	return getSuccessResponse<TreeNode[]>(result);
 }
 
 /**
@@ -193,28 +197,6 @@ async function findJourneys(fromToOpt: FromToOpt): Promise<JourneyNodesWithRefs>
 }
 
 /**
- * removes completely unreachable journeys
- * @param journeyss node arrays for each section of the full journey
- */
-function cleanupJourneyArrays(journeyss: FetchedJourney[][]): FetchedJourney[][] {
-	for (let i = 1; i < journeyss.length; i++) {
-		const firstArrivalOfLastNodes = journeyss[i - 1][0].arrivalTime.time.getTime();
-		let indexOfFirstValidNode = 0;
-		// increment this while `nodess[i][indexOfFirstValidNode]` starts before `firstArrivalOfLastNodes`
-		while (
-			indexOfFirstValidNode < journeyss[i].length &&
-			journeyss[i][indexOfFirstValidNode].departureTime.time.getTime() <
-				firstArrivalOfLastNodes
-		) {
-			indexOfFirstValidNode++;
-		}
-		// remove nodes starting to early
-		journeyss[i] = journeyss[i].slice(indexOfFirstValidNode);
-	}
-	return journeyss;
-}
-
-/**
  * recursively turn array of journeys into a tree fulfilling the constraints described in the readme
  * @param journeyss each element contains the journeys of one subsection of the entire trip
  * @param includeUntil every returned journey starts before this time
@@ -224,7 +206,7 @@ function getTreeFromNodeArrays(
 	journeyss: FetchedJourney[][],
 	includeUntil: Date,
 	recursionInfo: RecursionInfo
-): JourneyNode[] {
+): TreeNode[] {
 	const depth = recursionInfo.depth;
 	const progressInDepths = recursionInfo.progressInDepths;
 	if (depth === journeyss.length) {
@@ -232,20 +214,27 @@ function getTreeFromNodeArrays(
 		return [];
 	}
 
-	const nodesToBeIncluded: JourneyNode[] = [];
+	const nodesToBeIncluded: TreeNode[] = [];
 
 	// include nodes until no more nodes are left over or the next journey starts after `includeUntil`
 	while (
-		progressInDepths[depth] < journeyss[depth].length &&
-		journeyss[depth][progressInDepths[depth]].departureTime.time.getTime() <
-			includeUntil.getTime()
+		progressInDepths[depth] < 0 ||
+		(progressInDepths[depth] < journeyss[depth].length &&
+			journeyss[depth][progressInDepths[depth]].departureTime.time.getTime() <
+				includeUntil.getTime())
 	) {
 		const nextArrival =
 			journeyss[depth].at(progressInDepths[depth] + 1)?.arrivalTime.time ??
 			new Date(MAX_DATE);
 
-		const nodeJourney = journeyss[depth][progressInDepths[depth]];
-		const nodeToBeIncluded = fetchedJourneyToNode(nodeJourney, recursionInfo);
+		let nodeToBeIncluded: TreeNode;
+		if (progressInDepths[depth] === -1) {
+			// completely unreachable journeys are put into an empty node
+			nodeToBeIncluded = { type: "emptyNode", children: [] };
+		} else {
+			const nodeJourney = journeyss[depth][progressInDepths[depth]];
+			nodeToBeIncluded = fetchedJourneyToNode(nodeJourney, recursionInfo);
+		}
 		nodeToBeIncluded.children = getTreeFromNodeArrays(journeyss, nextArrival, {
 			depth: depth + 1,
 			progressInDepths: progressInDepths
@@ -263,6 +252,7 @@ function getTreeFromNodeArrays(
  */
 function fetchedJourneyToNode(journey: FetchedJourney, recursionInfo: RecursionInfo): JourneyNode {
 	return {
+		type: "journeyNode",
 		blocks: journey.blocks,
 		children: [],
 		refreshToken: journey.refreshToken,
