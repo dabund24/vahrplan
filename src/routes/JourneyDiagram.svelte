@@ -8,7 +8,7 @@
 <div class="flex-column diagram-column">
 	{#each nodes as node}
 		<div class="flex-row diagram-box">
-			{#if node.type === "treeNode"}
+			{#if node.type === "journeyNode"}
 				<JourneyDiagramElement
 					blocks={node.blocks}
 					depth={node.depth}
