@@ -17,7 +17,7 @@
 			: "Karte"}
 		fullScreen={true}
 	>
-		<button class="button--small" on:click={() => void refreshJourney()}>
+		<button class="button--small hoverable" on:click={() => void refreshJourney()}>
 			<IconRefresh />
 		</button>
 	</Header>

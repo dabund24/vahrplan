@@ -22,39 +22,12 @@
 		position: sticky;
 		top: 0;
 		z-index: 500;
-		min-height: 2.5rem;
+		height: 2.5rem;
 		transition:
 			background-color 0.4s var(--cubic-bezier),
 			border-bottom-color 0.4s var(--cubic-bezier);
 		& > strong {
 			-webkit-line-clamp: 2;
-		}
-	}
-
-	header.mobile-only {
-		padding-top: calc(0.5rem + env(safe-area-inset-top));
-		margin-top: calc(-1 * env(safe-area-inset-top));;
-	}
-
-	header.full-screen {
-		position: fixed;
-		background-color: transparent;
-		border: none;
-		backdrop-filter: none;
-		-webkit-backdrop-filter: none;
-		top: env(safe-area-inset-top);
-		& > strong {
-			margin: -4px auto -4px calc(-4px - 0.5rem);
-		}
-
-		& > strong,
-		& button {
-			background-color: var(--background-color--opaque);
-			backdrop-filter: var(--blur);
-			-webkit-backdrop-filter: var(--blur);
-			border: var(--border);
-			border-radius: var(--border-radius--large);
-			padding: 0.5rem;
 		}
 	}
 
