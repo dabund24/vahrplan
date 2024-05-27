@@ -12,6 +12,7 @@
     margin: .5rem 1rem;
     line-height: normal;
     font-size: unset;
+    pointer-events: none;
 }
 
 .leaflet-popup-tip-container {
