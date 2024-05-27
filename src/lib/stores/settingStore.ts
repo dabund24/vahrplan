@@ -67,7 +67,7 @@ export const settings = writable<Settings>({
 		general: {
 			darkTheme: false,
 			color: "green",
-			blur: true
+			blur: false
 		},
 		diagram: {
 			legWidth: "logarithmic"
