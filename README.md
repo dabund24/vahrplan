@@ -6,6 +6,8 @@ Users can investigate possible transfers in a detailed way in order to prepare f
 
 This app is intended to be some sort of hybrid between [DB Navigator](https://bahn.de) and [Time-Space Train Planner (TSTP)](https://github.com/traines-source/time-space-train-planner).
 
+An earlier version of this project can be found [here](https://github.com/dabund24/Zug).
+
 ## Features
 
 This app can...
