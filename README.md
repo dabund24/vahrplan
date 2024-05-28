@@ -131,6 +131,13 @@ graph TD;
     BC3-->CD3((CD3));
     BC5-->CD4((CD4));
     BC5-->CD5((CD5));
+
+    classDef firstLayer stroke:red;
+    class AB1,AB2,AB3 firstLayer;
+    classDef secondLayer stroke:green;
+    class BC1,BC2,BC3,BC4,BC5,BC6 secondLayer;
+    classDef thirdLayer stroke:blue;
+    class CD1,CD2,CD3,CD4,CD5 thirdLayer;
 ```
 
 ### 3. Reflect tree structure in HTML
