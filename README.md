@@ -116,6 +116,7 @@ This results in this tree:
 
 ```mermaid
 graph TD;
+    graph TD;
     r((root))-->AB1;
     r-->AB2;
     r-->AB3;
