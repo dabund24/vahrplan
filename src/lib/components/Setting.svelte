@@ -34,7 +34,7 @@
 <style>
 	.flex-row {
 		align-items: center;
-		gap: 2rem;
+		gap: 1rem;
 		justify-content: space-between;
 	}
 

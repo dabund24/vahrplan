@@ -109,6 +109,12 @@ export function timeToString(time: Date | undefined): string {
 	});
 }
 
+export function dateToInputDate(dateObject: Date): string {
+	const timezoneOffset = dateObject.getTimezoneOffset() * 60000;
+	const timeIsoString = new Date(dateObject.getTime() - timezoneOffset).toISOString();
+	return timeIsoString.substring(0, timeIsoString.indexOf("T") + 6);
+}
+
 /**
  * subtract a date from another
  * @param sooner the first date

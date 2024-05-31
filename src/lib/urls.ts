@@ -11,7 +11,7 @@ export function getTreeUrl(dLocations: DisplayedLocations): URL {
 		)
 	);
 	url.searchParams.set("time", dLocations.time.toJSON());
-	url.searchParams.set("timeRole", "departure");
+	url.searchParams.set("timeRole", dLocations.timeRole);
 	url.searchParams.set("options", JSON.stringify(get(settings).journeysOptions));
 	return url;
 }

@@ -1,41 +1,46 @@
 <script lang="ts">
 	import StationInput from "./StationInput.svelte";
-	import { type KeyedItem, type ParsedLocation } from "$lib/types.js";
-	import { valueIsDefined } from "$lib/util.js";
-	import { displayedLocations, setDisplayedLocations } from "$lib/stores/journeyStores.js";
+	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
+	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
+	import {
+		type DisplayedLocations,
+		displayedLocations,
+		setDisplayedLocations
+	} from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import { products, settings } from "$lib/stores/settingStore";
-	import { onMount } from "svelte";
 	import IconFilter from "$lib/components/icons/IconFilter.svelte";
 	import IconSearch from "$lib/components/icons/IconSearch.svelte";
 	import { pushState } from "$app/navigation";
 	import { page } from "$app/stores";
+	import SingleSelect from "$lib/components/SingleSelect.svelte";
+
+	let displayedLocationsData = $displayedLocations;
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] =
-		$displayedLocations.locations.length === 0
+		displayedLocationsData.locations.length === 0
 			? [
 					{ value: undefined, key: Math.random() },
 					{ value: undefined, key: Math.random() }
 				]
-			: $displayedLocations.locations;
+			: displayedLocationsData.locations;
 
-	let time: string;
-	let timeRole: "departure" = "departure" as const;
+	let [departureArrivalSelection, timeIsNow, time] = initTimeInputs($displayedLocations);
 
-	onMount(() => {
-		let timeToBeDisplayed =
-			$displayedLocations.time.getTime() === 0 ? new Date() : $displayedLocations.time;
-
-		// Adjust for local time zone offset
-		const timezoneOffset = timeToBeDisplayed.getTimezoneOffset() * 60000;
-		const timeIsoString = new Date(timeToBeDisplayed.getTime() - timezoneOffset).toISOString();
-
-		time = timeIsoString.substring(0, timeIsoString.indexOf("T") + 6);
-	});
+	function initTimeInputs(displayedLocationsData: DisplayedLocations): [0 | 1, boolean, string] {
+		if (displayedLocationsData.time.getTime() === 0) {
+			return [0, true, dateToInputDate(new Date())];
+		}
+		return [
+			displayedLocationsData.timeRole === "arrival" ? 0 : 1,
+			false,
+			dateToInputDate(displayedLocationsData.time)
+		];
+	}
 
 	function removeVia(index: number): void {
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
@@ -51,8 +56,10 @@
 		const stopsToBeDisplayed = stops.filter<KeyedItem<ParsedLocation, number>>(
 			valueIsDefined<ParsedLocation, number>
 		);
+		let journeyTime = timeIsNow ? new Date() : new Date(time);
+		let timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
 		if (stopsToBeDisplayed.length >= 2) {
-			void setDisplayedLocations(stopsToBeDisplayed, new Date(time), timeRole);
+			void setDisplayedLocations(stopsToBeDisplayed, journeyTime, timeRole);
 		}
 	}
 
@@ -135,12 +142,24 @@
 			{/each}
 		</div>
 	</div>
-	<div class="flex-row time-filter-submit">
-		<label class="time hoverable">
-			<span>Abfahrt:</span>
-			<input type="datetime-local" bind:value={time} />
-		</label>
-		<div>
+	<div class="time-filter-submit" class:time-is-now={timeIsNow}>
+		<div class="flex-row">
+			<SingleSelect
+				names={["Abfahrt", "Ankunft"]}
+				bind:selected={departureArrivalSelection}
+			/>
+			<Setting
+				settingName="jetzt"
+				bind:setting={timeIsNow}
+				settingInfo={{ type: "boolean" }}
+			/>
+		</div>
+		<div class="time-input-container">
+			{#if timeIsNow !== undefined && !timeIsNow}
+				<input transition:scale class="hoverable" type="datetime-local" bind:value={time} />
+			{/if}
+		</div>
+		<div class="filter-submit">
 			<button
 				class="hoverable padded-top-bottom button--small"
 				on:click={showFilterModal}
@@ -221,7 +240,11 @@
 					</Tabs>
 				</Modal>
 			{/if}
-			<button class="hoverable padded-top-bottom button--small" type="submit" title="Verbindungen suchen">
+			<button
+				class="hoverable padded-top-bottom button--small"
+				type="submit"
+				title="Verbindungen suchen"
+			>
 				<IconSearch />
 			</button>
 		</div>
@@ -259,31 +282,33 @@
 	}
 
 	.time-filter-submit {
-		flex-wrap: wrap;
 		width: 100%;
 		max-width: 30rem;
+		gap: 4px;
 		& > * {
-			width: 100%;
-			white-space: nowrap;
-			flex: 1 0;
 			display: flex;
+			justify-content: space-between;
 		}
 		& button {
 			width: 100%;
 			justify-content: center;
 		}
+		& .time-input-container {
+			height: 3rem;
+		}
+		& input[type="datetime-local"] {
+			padding: 0.5rem;
+            width: 100%;
+            margin: var(--line-width) 0;
+		}
 	}
 
-	.time {
-		white-space: nowrap;
-		padding: 0.5rem;
-		justify-content: center;
-		align-items: center;
-		gap: 0.5rem;
-		& > input {
-			outline: none;
-			border: none;
-		}
+	.filter-submit {
+		transition: margin-top 0.4s var(--cubic-bezier);
+	}
+
+	.time-is-now .filter-submit {
+		margin-top: calc(-3rem + 2 * var(--line-width));
 	}
 
 	.settings {

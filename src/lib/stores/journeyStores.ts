@@ -5,6 +5,7 @@ import type {
 	KeyedItem,
 	ParsedLocation,
 	ParsedTime,
+	TransitType,
 	TreeNode
 } from "$lib/types";
 import {
@@ -19,7 +20,7 @@ import { getRefreshUrl, getTreeUrl } from "$lib/urls";
 export type DisplayedLocations = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	time: Date;
-	timeRole: "departure";
+	timeRole: TransitType;
 	geolocationDate: Date;
 };
 
@@ -33,7 +34,7 @@ export type SelectedJourney = {
 
 export const displayedLocations = writable<DisplayedLocations>({
 	locations: [],
-	time: new Date(),
+	time: new Date(0),
 	timeRole: "departure",
 	geolocationDate: new Date()
 });
@@ -64,7 +65,7 @@ displayedLocations.subscribe((dLocations) => displayedTree.set(calculateTree(dLo
 export async function setDisplayedLocations(
 	locations: KeyedItem<ParsedLocation, number>[],
 	time: Date,
-	timeRole: "departure"
+	timeRole: TransitType
 ): Promise<void> {
 	// handle current position
 	let geolocationDate = new Date();
