@@ -141,6 +141,7 @@ export type LegBlock = {
 	type: "leg";
 	tripId: string;
 	blockKey: string;
+	attribute?: "cancelled" | "additional";
 	duration: number;
 	direction: string;
 	line: Line;

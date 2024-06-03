@@ -76,6 +76,7 @@ function legToBlock(leg: Leg): LegBlock {
 		tripId: leg.tripId ?? "",
 		blockKey:
 			"" + leg.line?.operator?.name + leg.line?.fahrtNr + leg.line?.name + leg.direction,
+		attribute: leg.cancelled ? "cancelled" : undefined,
 		departureData: {
 			location: parseStationStopLocation(leg.origin),
 			attribute: leg.stopovers?.at(0)?.cancelled ? "cancelled" : undefined,
