@@ -8,7 +8,7 @@ import type {
 	TreeNode,
 	ZugResponse
 } from "$lib/types";
-import { getSuccessResponse } from "$lib/server/responses";
+import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
 import { journeyToBlocks } from "$lib/server/parse";
 import { getFirstAndLastTime } from "$lib/util";
 
@@ -55,11 +55,14 @@ export async function getJourneyTree(
 	opt.startWithWalking = true;
 
 	// find all journeys of the tree
-	const journeyArrays = await getJourneyArrays(stops, opt, transitType);
+	const journeyArraysResult = await getJourneyArrays(stops, opt, transitType);
+	if (journeyArraysResult.isError) {
+		return journeyArraysResult;
+	}
 
 	const progressInDepths = Array.from({ length: stops.length - 1 }, () => -1);
 	// construct the tree
-	const result = getTreeFromNodeArrays(journeyArrays, new Date(MAX_DATE), {
+	const result = getTreeFromNodeArrays(journeyArraysResult.content, new Date(MAX_DATE), {
 		depth: 0,
 		progressInDepths
 	});
@@ -77,7 +80,7 @@ async function getJourneyArrays(
 	stops: string[],
 	opt: JourneysOptions,
 	transitType: TransitType
-): Promise<FetchedJourney[][]> {
+): Promise<ZugResponse<FetchedJourney[][]>> {
 	// if `transitType` is `arrival`, the journeys have to be searched in reverse order
 	const reverseOrder = transitType === "arrival";
 	const complimentaryTransitType = reverseOrder ? "departure" : "arrival";
@@ -100,7 +103,12 @@ async function getJourneyArrays(
 	for (let i = start; reverseOrder ? i >= 0 : i < stops.length - 1; i += step) {
 		fromToOpt.from = stops[i];
 		fromToOpt.to = stops[i + 1];
-		const depthJourneys = await findJourneysUntil({ ...fromToOpt }, timeLimit);
+		let depthJourneys;
+		try {
+			depthJourneys = await findJourneysUntil({ ...fromToOpt }, timeLimit);
+		} catch (e) {
+			return getZugErrorFromHafasError(e, i, i + 1);
+		}
 		fromToOpt.opt[transitType] =
 			depthJourneys.at(reverseOrder ? -1 : 0)?.[`${complimentaryTransitType}Time`]?.time ??
 			fallbackDate;
@@ -111,7 +119,7 @@ async function getJourneyArrays(
 			fallbackDate;
 	}
 
-	return journeyss;
+	return getSuccessResponse<FetchedJourney[][]>(journeyss);
 }
 
 /**
@@ -178,18 +186,16 @@ async function findJourneys(fromToOpt: FromToOpt): Promise<JourneyNodesWithRefs>
 	return client.journeys(fromToOpt.from, fromToOpt.to, fromToOpt.opt).then((journeys) => {
 		return {
 			journeys:
-				journeys.journeys
-					?.filter((journey) => journey.legs.every((leg) => !leg.cancelled))
-					.map((journey): FetchedJourney => {
-						const blocks = journeyToBlocks(journey);
-						const { arrival, departure } = getFirstAndLastTime(blocks);
-						return {
-							refreshToken: journey.refreshToken ?? "",
-							blocks,
-							arrivalTime: arrival.arrival ?? { time: new Date(0) },
-							departureTime: departure.departure ?? { time: new Date(0) }
-						};
-					}) ?? [],
+				journeys.journeys?.map((journey): FetchedJourney => {
+					const blocks = journeyToBlocks(journey);
+					const { arrival, departure } = getFirstAndLastTime(blocks);
+					return {
+						refreshToken: journey.refreshToken ?? "",
+						blocks,
+						arrivalTime: arrival.arrival ?? { time: new Date(0) },
+						departureTime: departure.departure ?? { time: new Date(0) }
+					};
+				}) ?? [],
 			earlierRef: journeys.earlierRef ?? "",
 			laterRef: journeys.laterRef ?? ""
 		};

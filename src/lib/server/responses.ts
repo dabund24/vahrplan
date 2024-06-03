@@ -1,4 +1,4 @@
-import type { Fetchable, HafasError, ZugError, ZugErrorType, ZugSuccess } from "$lib/types";
+import type { HafasError, ZugError, ZugErrorType, ZugSuccess } from "$lib/types";
 
 export function getZugError(type: ZugErrorType, station1?: number, station2?: number): ZugError {
 	return {
@@ -37,7 +37,7 @@ function isHafasError(error: unknown): error is HafasError {
 	);
 }
 
-export function getSuccessResponse<T extends Fetchable>(content: T): ZugSuccess<T> {
+export function getSuccessResponse<T>(content: T): ZugSuccess<T> {
 	return {
 		isError: false,
 		content

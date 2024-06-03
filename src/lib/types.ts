@@ -8,9 +8,9 @@ export type KeyedItem<T, K extends number | string> = {
 
 export type Fetchable = TreeNode[] | JourneyBlock[][] | ParsedLocation[];
 
-export type ZugResponse<T extends Fetchable> = ZugSuccess<T> | ZugError;
+export type ZugResponse<T> = ZugSuccess<T> | ZugError;
 
-export type ZugSuccess<T extends Fetchable> = {
+export type ZugSuccess<T> = {
 	isError: false;
 	content: T;
 };
