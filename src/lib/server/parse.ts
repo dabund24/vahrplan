@@ -27,7 +27,10 @@ export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 		const nextLeg = i < legs.length - 1 ? legs[i + 1] : undefined;
 		const lastBlock = blocks.at(-1);
 		if (leg.walking) {
-			const nextDeparture = nextLeg !== undefined ? nextLeg.departure : leg.arrival;
+			const nextDeparture =
+				nextLeg !== undefined
+					? nextLeg.departure ?? nextLeg.plannedDeparture
+					: leg.arrival ?? leg.plannedArrival;
 			const thisBlock = walkToBlock(leg, nextDeparture);
 			blocks.push(thisBlock);
 			if (i === 0) {
@@ -106,7 +109,11 @@ function legToBlock(leg: Leg): LegBlock {
 							platformChanged: leg.arrivalPlatform !== leg.plannedArrivalPlatform
 						}
 		},
-		duration: dateDifference(leg.departure, leg.arrival) ?? 0,
+		duration:
+			dateDifference(
+				leg.departure ?? leg.plannedDeparture,
+				leg.arrival ?? leg.plannedArrival
+			) ?? 0,
 		direction: leg.direction ?? "undefined",
 		line: leg.line ?? { type: "line" },
 		currentLocation:
@@ -149,7 +156,7 @@ export function walkToBlock(walk: Leg, nextDeparture: string | undefined): Walki
 		type: "walk",
 		originLocation: parseStationStopLocation(walk.origin),
 		destinationLocation: parseStationStopLocation(walk.destination),
-		transferTime: dateDifference(walk.departure, nextDeparture) ?? 0,
+		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
 		walkingTime: dateDifference(walk.departure, walk.arrival),
 		distance: walk.distance ?? 0
 	};
