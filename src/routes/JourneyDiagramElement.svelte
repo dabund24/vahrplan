@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
-	import { selectedJourneys, selectJourneyBlocks, unselectJourneyBlocks } from "$lib/stores/journeyStores";
+	import {
+		selectedJourneys,
+		selectJourneyBlocks,
+		unselectJourneyBlocks
+	} from "$lib/stores/journeyStores";
 	import { settings } from "$lib/stores/settingStore";
 
 	export let blocks: JourneyBlock[];
@@ -30,9 +34,12 @@
 
 	function getLegWidth(duration: number): number {
 		switch ($settings.view.diagram.legWidth) {
-			case "linear": return duration
-			case "logarithmic": return  Math.log2(duration + 2)
-			case "equal": return 1
+			case "linear":
+				return duration;
+			case "logarithmic":
+				return Math.log2(duration + 2);
+			case "equal":
+				return 1;
 		}
 	}
 </script>
@@ -49,10 +56,14 @@
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
-			<span class="leg product--{block.line.product}" style="--duration: {getLegWidth(block.duration)}">
+			<svelte:element this={block.attribute === "cancelled" ? "s" : "span"}
+				class="leg product--{block.line.product}"
+				class:cancelled={block.attribute === "cancelled"}
+				style="--duration: {getLegWidth(block.duration)}"
+			>
 				<span class="leg__name--long">{block.line.name}</span>
 				<span class="leg__name--short">{block.line.productName}</span>
-			</span>
+			</svelte:element>
 		{/each}
 	</span>
 	<span class="time">
@@ -74,7 +85,10 @@
 		padding: 4px 0;
 		text-align: center;
 		align-items: stretch;
-		transition: border-radius .4s, border .4s, background-color .4s;
+		transition:
+			border-radius 0.4s,
+			border 0.4s,
+			background-color 0.4s;
 		&[aria-current="true"] {
 			border-color: var(--accent-color);
 		}
@@ -82,28 +96,28 @@
 
 	:global(.diagram-box:has(> .diagram-column > :first-child > .diagram-element[aria-current="true"])) > .diagram-element[aria-current="true"] {
 		border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+		border-bottom-right-radius: 0;
 		border-right-color: transparent;
 	}
 
-    :global(.diagram-box:has(> .diagram-element[aria-current="true"]) > .diagram-column > :first-child) > .diagram-element[aria-current="true"] {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+	:global(.diagram-box:has(> .diagram-element[aria-current="true"]) > .diagram-column > :first-child) > .diagram-element[aria-current="true"] {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 		border-left-color: transparent;
-    }
-
-    :global(:root[data-theme="dark"]) .time {
-		border: transparent solid 2px;
 	}
-    :global(:root[data-theme="dark"]) .leg {
+
+	:global(:root[data-theme="dark"]) .time {
+		border-width: 2px;
+	}
+	:global(:root[data-theme="dark"]) .leg {
 		background-color: var(--background-color);
-		border: var(--border-color) solid 2px;
+		border-width: 2px;
 	}
 
 	.legs {
 		width: 100%;
 		gap: var(--line-width);
-        margin: 0;
+		margin: 0;
 	}
 
 	.leg {
@@ -125,6 +139,10 @@
 		&:last-child {
 			border-top-right-radius: 50vh;
 			border-bottom-right-radius: 50vh;
+		}
+		&.cancelled {
+			color: var(--accent-red);
+			border-style: dashed;
 		}
 	}
 
