@@ -6,6 +6,7 @@
 	export let iconType: ParsedLocation["type"];
 	export let smallIcon = false;
 	export let secondaryProduct: string | undefined = undefined;
+	export let cancelled: boolean = false;
 </script>
 
 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" class="skeleton-text">
@@ -79,6 +80,12 @@
 			fill="var(--background-color)"
 			in:draw
 		/>
+	{/if}
+	{#if cancelled}
+		<g stroke="var(--accent-red)" stroke-width="3" stroke-linecap="round">
+			<line x1="2" y1="2" x2="14" y2="14" />
+			<line x1="2" y1="14" x2="14" y2="2" />
+		</g>
 	{/if}
 </svg>
 <style>

@@ -92,7 +92,7 @@
 		selectedJourneys: SelectedJourney[],
 		displayedLocations: DisplayedLocations
 	): void {
-		if (map === undefined) return
+		if (map === undefined) return;
 		let coordinates: L.LatLngLiteral[];
 		if (selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
 			coordinates = selectedJourneys
@@ -137,7 +137,11 @@
 					<Polyline {block} />
 					{#if block.precededBy === undefined}
 						<Marker data={block.departureData} product2={block.line.product ?? ""}>
-							<IconStationLocation color="product" iconType="station" />
+							<IconStationLocation
+								color="product"
+								iconType="station"
+								cancelled={block.departureData.attribute === "cancelled"}
+							/>
 						</Marker>
 					{/if}
 					{#each block.stopovers as stopover}
@@ -150,12 +154,17 @@
 								color="product"
 								iconType="station"
 								smallIcon={true}
+								cancelled={stopover.attribute === "cancelled"}
 							/>
 						</Marker>
 					{/each}
 					{#if block.succeededBy === undefined}
 						<Marker data={block.arrivalData} product1={block.line.product ?? ""}>
-							<IconStationLocation color="product" iconType="station" />
+							<IconStationLocation
+								color="product"
+								iconType="station"
+								cancelled={block.arrivalData.attribute === "cancelled"}
+							/>
 						</Marker>
 					{/if}
 					{#if block.currentLocation !== undefined}
@@ -194,6 +203,8 @@
 							iconType="station"
 							secondaryProduct={block.departureProduct}
 							smallIcon={block.isStopover}
+							cancelled={block.transitData.attribute === "cancelled" &&
+								block.transitData.attribute2 === "cancelled"}
 						/>
 					</Marker>
 				{:else if block.type === "location" && !block.hidden}

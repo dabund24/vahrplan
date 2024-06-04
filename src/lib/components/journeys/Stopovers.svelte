@@ -17,6 +17,7 @@
 				iconType={stopover.location.type}
 				color="product"
 				smallIcon={true}
+				cancelled={stopover.attribute === "cancelled"}
 			/>
 			<NameDelayPlatform transitData={stopover} />
 		</li>

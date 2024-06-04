@@ -27,9 +27,9 @@
 		</div>
 	</div>
 	<div class="desktop-line-container flex-column">
-		<IconStationLocation color="product" iconType="station" />
+		<IconStationLocation color="product" iconType="station" cancelled={block.departureData.attribute === "cancelled"}/>
 		<div class="line--product line--vertical"></div>
-		<IconStationLocation color="product" iconType="station" />
+		<IconStationLocation color="product" iconType="station" cancelled={block.arrivalData.attribute === "cancelled"}/>
 	</div>
 	<div class="right-to-line flex-column">
 		<div class="top-or-bottom flex-row">
