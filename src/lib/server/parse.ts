@@ -259,21 +259,28 @@ export function parseStationStopLocation(
 
 export function parseStopover(stopover: StopOver): TransitData {
 	const platform = stopover.arrivalPlatform ?? stopover.departurePlatform ?? undefined;
+	const time = parseTimePair(
+		{
+			time: stopover.arrival,
+			timePlanned: stopover.plannedArrival,
+			delay: stopover.arrivalDelay
+		},
+		{
+			time: stopover.departure,
+			timePlanned: stopover.plannedDeparture,
+			delay: stopover.departureDelay
+		}
+	);
+	let attribute: TransitData["attribute"] = undefined;
+	if (time.arrival?.status === "cancelled" && time.departure?.status === "cancelled") {
+		attribute = "cancelled";
+	} else if (stopover.additional) {
+		attribute = "additional";
+	}
 	return {
 		location: parseStationStopLocation(stopover.stop),
-		attribute: stopover.cancelled ? "cancelled" : undefined, // TODO additional
-		time: parseTimePair(
-			{
-				time: stopover.arrival,
-				timePlanned: stopover.plannedArrival,
-				delay: stopover.arrivalDelay
-			},
-			{
-				time: stopover.departure,
-				timePlanned: stopover.plannedDeparture,
-				delay: stopover.departureDelay
-			}
-		),
+		attribute,
+		time,
 		platformData:
 			platform === undefined
 				? null

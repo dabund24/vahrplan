@@ -318,6 +318,10 @@ header {
 	color: var(--accent-red);
 }
 
+.text--blue {
+	color: var(--accent-blue);
+}
+
 .line--product {
 	background-color: var(--product-color);
 }
