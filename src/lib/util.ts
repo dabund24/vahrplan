@@ -100,7 +100,7 @@ export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
 
 export function timeToString(time: Date | undefined): string {
 	if (time === undefined || time === null) {
-		return "-";
+		return "−−:−−";
 	}
 	const date = new Date(time);
 	return date.toLocaleTimeString("de-DE", {

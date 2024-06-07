@@ -177,7 +177,7 @@ export function parseSingleTime(
 	{ time, timePlanned, delay }: HafasTimeData,
 	type: TransitType
 ): ParsedTime {
-	if (timePlanned === undefined) {
+	if ((timePlanned ?? undefined) === undefined) {
 		return { [type]: null };
 	}
 	const hasRealtime = delay !== null && delay !== undefined;

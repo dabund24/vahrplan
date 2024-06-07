@@ -12,12 +12,12 @@
 <div class="time flex-column" style="--time-width: {variableWidth ? 'auto' : '4rem'}">
 	{#if time.arrival !== undefined}
 		<svelte:element this={arrivalTag} class="text--{time.arrival?.status} skeleton-text">
-			{time.arrival === null ? "−−:−−" : timeToString(time.arrival?.time)}
+			{timeToString(time.arrival?.time)}
 		</svelte:element>
 	{/if}
 	{#if time.departure !== undefined}
 		<svelte:element this={departureTag} class="text--{time.departure?.status} skeleton-text">
-			{time.departure === null ? "−−:−−" : timeToString(time.departure.time)}
+			{timeToString(time.departure?.time)}
 		</svelte:element>
 	{/if}
 	<div class="width-setter" aria-hidden="true">00:00</div>
