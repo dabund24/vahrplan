@@ -84,9 +84,11 @@ function legToBlock(leg: Leg): LegBlock {
 			location: parseStationStopLocation(leg.origin),
 			attribute: leg.stopovers?.at(0)?.cancelled ? "cancelled" : undefined,
 			time: parseSingleTime(
-				leg.departure,
-				leg.plannedDeparture,
-				leg.departureDelay,
+				{
+					time: leg.departure,
+					timePlanned: leg.plannedDeparture,
+					delay: leg.departureDelay
+				},
 				"departure"
 			),
 			platformData:
@@ -100,7 +102,10 @@ function legToBlock(leg: Leg): LegBlock {
 		arrivalData: {
 			location: parseStationStopLocation(leg.destination),
 			attribute: leg.stopovers?.at(-1)?.cancelled ? "cancelled" : undefined,
-			time: parseSingleTime(leg.arrival, leg.plannedArrival, leg.arrivalDelay, "arrival"),
+			time: parseSingleTime(
+				{ time: leg.arrival, timePlanned: leg.plannedArrival, delay: leg.arrivalDelay },
+				"arrival"
+			),
 			platformData:
 				arrivalPlatform === undefined
 					? null
@@ -146,7 +151,7 @@ function locationToBlock(
 	return {
 		type: "location",
 		location,
-		time: parseSingleTime(time, time, undefined, type),
+		time: parseSingleTime({ time, timePlanned: time, delay: undefined }, type),
 		hidden: false
 	};
 }
@@ -162,51 +167,47 @@ export function walkToBlock(walk: Leg, nextDeparture: string | undefined): Walki
 	};
 }
 
+type HafasTimeData = {
+	time: Leg[TransitType];
+	timePlanned: Leg[TransitType];
+	delay: Leg[`${TransitType}Delay`];
+};
+
 export function parseSingleTime(
-	time: Leg[TransitType],
-	timePlanned: Leg[TransitType],
-	delay: Leg[`${TransitType}Delay`],
+	{ time, timePlanned, delay }: HafasTimeData,
 	type: TransitType
 ): ParsedTime {
-	const hasRealtime = delay !== null && delay !== undefined;
-	if (time === undefined && timePlanned === undefined) {
+	if (timePlanned === undefined) {
 		return { [type]: null };
 	}
+	const hasRealtime = delay !== null && delay !== undefined;
+
+	let status: NonNullable<ParsedTime[TransitType]>["status"];
+	if (time === null) {
+		status = "cancelled";
+	} else if (!hasRealtime) {
+		status = undefined;
+	} else {
+		status = delay <= 300 ? "on-time" : "delayed";
+	}
+
 	return {
 		[type]: {
 			time: new Date((hasRealtime ? time : timePlanned) ?? ""),
 			delay: hasRealtime ? delay / 60 : undefined,
-			color: hasRealtime ? (delay <= 300 ? "green" : "red") : undefined
+			status
 		}
 	};
 }
 
 export function parseTimePair(
-	arrivalTime: Leg[`${TransitType}`],
-	arrivalTimePlanned: Leg[`${TransitType}`],
-	arrivalDelay: Leg[`${TransitType}Delay`],
-	departureTime: Leg[`${TransitType}`],
-	departureTimePlanned: Leg[`${TransitType}`],
-	departureDelay: Leg[`${TransitType}Delay`]
+	arrivalTimeData: HafasTimeData,
+	departureTimeData: HafasTimeData
 ): ParsedTime {
-	const arrivalHasRealtime = arrivalDelay !== null && arrivalDelay !== undefined;
-	const departureHasRealtime = departureDelay !== null && departureDelay !== undefined;
-	const result: ParsedTime = { arrival: null, departure: null };
-	if ((arrivalTimePlanned ?? undefined) !== undefined) {
-		result.arrival = {
-			time: new Date((arrivalHasRealtime ? arrivalTime : arrivalTimePlanned) ?? ""),
-			delay: arrivalHasRealtime ? arrivalDelay / 60 : undefined,
-			color: arrivalHasRealtime ? (arrivalDelay <= 300 ? "green" : "red") : undefined
-		};
-	}
-	if ((departureTimePlanned ?? undefined) !== undefined) {
-		result.departure = {
-			time: new Date((departureHasRealtime ? departureTime : departureTimePlanned) ?? ""),
-			delay: departureHasRealtime ? departureDelay / 60 : undefined,
-			color: departureHasRealtime ? (departureDelay <= 300 ? "green" : "red") : undefined
-		};
-	}
-	return result;
+	return {
+		...parseSingleTime(arrivalTimeData, "arrival"),
+		...parseSingleTime(departureTimeData, "departure")
+	};
 }
 
 export function parseStationStopLocation(
@@ -262,12 +263,16 @@ export function parseStopover(stopover: StopOver): TransitData {
 		location: parseStationStopLocation(stopover.stop),
 		attribute: stopover.cancelled ? "cancelled" : undefined, // TODO additional
 		time: parseTimePair(
-			stopover.arrival,
-			stopover.plannedArrival,
-			stopover.arrivalDelay,
-			stopover.departure,
-			stopover.plannedDeparture,
-			stopover.departureDelay
+			{
+				time: stopover.arrival,
+				timePlanned: stopover.plannedArrival,
+				delay: stopover.arrivalDelay
+			},
+			{
+				time: stopover.departure,
+				timePlanned: stopover.plannedDeparture,
+				delay: stopover.departureDelay
+			}
 		),
 		platformData:
 			platform === undefined

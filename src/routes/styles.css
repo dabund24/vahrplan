@@ -296,7 +296,7 @@ header {
 .line--success {
 	background-color: var(--accent-green);
 }
-.text--green {
+.text--green, .text--on-time {
 	color: var(--accent-green);
 }
 
@@ -314,7 +314,7 @@ header {
 .line--error {
 	background-color: var(--accent-red);
 }
-.text--red {
+.text--red, .text--cancelled, .text--delayed {
 	color: var(--accent-red);
 }
 

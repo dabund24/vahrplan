@@ -47,10 +47,10 @@
 	</svelte:element>
 	<div class="flex-column">
 		{#if transitData.time.arrival !== undefined}
-			<span class="delay text--{transitData.time.arrival?.color}">&#8203;{delayTextA}</span>
+			<span class="delay text--{transitData.time.arrival?.status}">&#8203;{delayTextA}</span>
 		{/if}
 		{#if transitData.time.departure !== undefined}
-			<span class="delay text--{transitData.time.departure?.color}">&#8203;{delayTextB}</span>
+			<span class="delay text--{transitData.time.departure?.status}">&#8203;{delayTextB}</span>
 		{/if}
 	</div>
 

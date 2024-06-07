@@ -48,7 +48,7 @@ export type TransitType = "arrival" | "departure";
 export type ParsedTime = {
 	[K in TransitType]?: {
 		time: Date;
-		color?: "red" | "green";
+		status?: "on-time" | "delayed" | "cancelled";
 		delay?: number;
 	} | null;
 };
