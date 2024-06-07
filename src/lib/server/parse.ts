@@ -272,7 +272,10 @@ export function parseStopover(stopover: StopOver): TransitData {
 		}
 	);
 	let attribute: TransitData["attribute"] = undefined;
-	if (time.arrival?.status === "cancelled" && time.departure?.status === "cancelled") {
+	if (
+		(time.arrival === null || time.arrival?.status === "cancelled") &&
+		(time.departure === null || time.departure?.status === "cancelled")
+	) {
 		attribute = "cancelled";
 	} else if (stopover.additional) {
 		attribute = "additional";
