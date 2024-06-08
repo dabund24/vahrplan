@@ -143,6 +143,7 @@
 		&.cancelled {
 			color: var(--accent-red);
 			border-style: dashed;
+			background-color: var(--background-color);
 		}
 	}
 
