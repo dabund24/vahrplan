@@ -36,7 +36,7 @@
 			return [0, true, dateToInputDate(new Date())];
 		}
 		return [
-			displayedLocationsData.timeRole === "arrival" ? 0 : 1,
+			displayedLocationsData.timeRole === "arrival" ? 1 : 0,
 			false,
 			dateToInputDate(displayedLocationsData.time)
 		];
