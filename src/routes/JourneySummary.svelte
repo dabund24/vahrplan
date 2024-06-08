@@ -12,6 +12,7 @@
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { page } from "$app/stores";
 	import { pushState } from "$app/navigation";
+	import Warning from "$lib/components/Warning.svelte";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -145,6 +146,9 @@
 		title={`${modalLeg.line.name} → ${modalLeg.direction}`}
 	>
 		<div class="modal-content">
+			{#if modalLeg.attribute === "cancelled"}
+				<Warning message="Fahrt entfällt" color="red" />
+			{/if}
 			<DateDuration
 				date={modalLeg.departureData.time.departure?.time}
 				duration={modalLeg.duration}
