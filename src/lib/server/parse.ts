@@ -91,13 +91,7 @@ function legToBlock(leg: Leg): LegBlock {
 				},
 				"departure"
 			),
-			platformData:
-				departurePlatform === undefined
-					? null
-					: {
-							platform: departurePlatform,
-							platformChanged: leg.departurePlatform !== leg.plannedDeparturePlatform
-						}
+			platformData: getPlatformData(departurePlatform, leg.plannedDeparturePlatform)
 		},
 		arrivalData: {
 			location: parseStationStopLocation(leg.destination),
@@ -106,13 +100,7 @@ function legToBlock(leg: Leg): LegBlock {
 				{ time: leg.arrival, timePlanned: leg.plannedArrival, delay: leg.arrivalDelay },
 				"arrival"
 			),
-			platformData:
-				arrivalPlatform === undefined
-					? null
-					: {
-							platform: arrivalPlatform,
-							platformChanged: leg.arrivalPlatform !== leg.plannedArrivalPlatform
-						}
+			platformData: getPlatformData(arrivalPlatform, leg.plannedArrivalPlatform)
 		},
 		duration:
 			dateDifference(
@@ -164,49 +152,6 @@ export function walkToBlock(walk: Leg, nextDeparture: string | undefined): Walki
 		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
 		walkingTime: dateDifference(walk.departure, walk.arrival),
 		distance: walk.distance ?? 0
-	};
-}
-
-type HafasTimeData = {
-	time: Leg[TransitType];
-	timePlanned: Leg[TransitType];
-	delay: Leg[`${TransitType}Delay`];
-};
-
-export function parseSingleTime(
-	{ time, timePlanned, delay }: HafasTimeData,
-	type: TransitType
-): ParsedTime {
-	if ((timePlanned ?? undefined) === undefined) {
-		return { [type]: null };
-	}
-	const hasRealtime = delay !== null && delay !== undefined;
-
-	let status: NonNullable<ParsedTime[TransitType]>["status"];
-	if (time === null) {
-		status = "cancelled";
-	} else if (!hasRealtime) {
-		status = undefined;
-	} else {
-		status = delay <= 300 ? "on-time" : "delayed";
-	}
-
-	return {
-		[type]: {
-			time: new Date((hasRealtime ? time : timePlanned) ?? ""),
-			delay: hasRealtime ? delay / 60 : undefined,
-			status
-		}
-	};
-}
-
-export function parseTimePair(
-	arrivalTimeData: HafasTimeData,
-	departureTimeData: HafasTimeData
-): ParsedTime {
-	return {
-		...parseSingleTime(arrivalTimeData, "arrival"),
-		...parseSingleTime(departureTimeData, "departure")
 	};
 }
 
@@ -284,14 +229,65 @@ export function parseStopover(stopover: StopOver): TransitData {
 		location: parseStationStopLocation(stopover.stop),
 		attribute,
 		time,
-		platformData:
-			platform === undefined
-				? null
-				: {
-						platform: platform,
-						platformChanged:
-							(stopover.arrivalPlatform ?? stopover.departurePlatform) !==
-							(stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform)
-					}
+		platformData: getPlatformData(
+			platform,
+			stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform
+		)
+	};
+}
+
+type HafasTimeData = {
+	time: Leg[TransitType];
+	timePlanned: Leg[TransitType];
+	delay: Leg[`${TransitType}Delay`];
+};
+
+export function parseSingleTime(
+	{ time, timePlanned, delay }: HafasTimeData,
+	type: TransitType
+): ParsedTime {
+	if ((timePlanned ?? undefined) === undefined) {
+		return { [type]: null };
+	}
+	const hasRealtime = delay !== null && delay !== undefined;
+
+	let status: NonNullable<ParsedTime[TransitType]>["status"];
+	if (time === null) {
+		status = "cancelled";
+	} else if (!hasRealtime) {
+		status = undefined;
+	} else {
+		status = delay <= 300 ? "on-time" : "delayed";
+	}
+
+	return {
+		[type]: {
+			time: new Date((hasRealtime ? time : timePlanned) ?? ""),
+			delay: hasRealtime ? delay / 60 : undefined,
+			status
+		}
+	};
+}
+
+export function parseTimePair(
+	arrivalTimeData: HafasTimeData,
+	departureTimeData: HafasTimeData
+): ParsedTime {
+	return {
+		...parseSingleTime(arrivalTimeData, "arrival"),
+		...parseSingleTime(departureTimeData, "departure")
+	};
+}
+
+function getPlatformData(
+	platform: Leg[`${TransitType}Platform`],
+	plannedPlatform: Leg[`${TransitType}Platform`]
+): TransitData["platformData"] {
+	if (platform === undefined) {
+		return null;
+	}
+	return {
+		platform,
+		platformChanged: platform !== plannedPlatform
 	};
 }
