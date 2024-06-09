@@ -40,6 +40,8 @@ export type HafasError = {
 
 export type TransitType = "arrival" | "departure";
 
+export type TransitAttribute = "cancelled" | "additional" | undefined;
+
 /**
  * each time displayed in this app is either representing departure or arrival.
  * Usually, both are shown vertically next to each other.
@@ -76,8 +78,8 @@ export type ParsedGeolocation = {
  */
 export type TransitData = {
 	location: ParsedLocation;
-	attribute?: "cancelled" | "additional";
-	attribute2?: "cancelled" | "additional";
+	attribute?: TransitAttribute;
+	attribute2?: TransitAttribute;
 	time: ParsedTime;
 	platformData: {
 		platform: string;
@@ -141,7 +143,7 @@ export type LegBlock = {
 	type: "leg";
 	tripId: string;
 	blockKey: string;
-	attribute?: "cancelled" | "additional";
+	attribute?: TransitAttribute;
 	duration: number;
 	direction: string;
 	line: Line;

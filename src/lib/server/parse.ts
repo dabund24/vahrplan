@@ -3,8 +3,10 @@ import type {
 	JourneyBlock,
 	LegBlock,
 	LocationBlock,
+	ParsedGeolocation,
 	ParsedLocation,
 	ParsedTime,
+	TransitAttribute,
 	TransitData,
 	TransitType,
 	WalkingBlock
@@ -82,7 +84,7 @@ function legToBlock(leg: Leg): LegBlock {
 		attribute: leg.cancelled ? "cancelled" : undefined,
 		departureData: {
 			location: parseStationStopLocation(leg.origin),
-			attribute: leg.stopovers?.at(0)?.cancelled ? "cancelled" : undefined,
+			attribute: getAttributeFromStopover(leg.stopovers?.at(0)),
 			time: parseSingleTime(
 				{
 					time: leg.departure,
@@ -95,7 +97,7 @@ function legToBlock(leg: Leg): LegBlock {
 		},
 		arrivalData: {
 			location: parseStationStopLocation(leg.destination),
-			attribute: leg.stopovers?.at(-1)?.cancelled ? "cancelled" : undefined,
+			attribute: getAttributeFromStopover(leg.stopovers?.at(-1)),
 			time: parseSingleTime(
 				{ time: leg.arrival, timePlanned: leg.plannedArrival, delay: leg.arrivalDelay },
 				"arrival"
@@ -109,25 +111,29 @@ function legToBlock(leg: Leg): LegBlock {
 			) ?? 0,
 		direction: leg.direction ?? "undefined",
 		line: leg.line ?? { type: "line" },
-		currentLocation:
-			leg.currentLocation !== undefined
-				? {
-						type: "currentLocation",
-						name: `${leg.line?.name} → ${leg.direction}`,
-						requestParameter: { type: "location" },
-						position: {
-							lat: leg.currentLocation.latitude ?? 0,
-							lng: leg.currentLocation.longitude ?? 0
-						},
-						asAt: new Date()
-					}
-				: undefined,
+		currentLocation: getLegCurrentLocation(leg),
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
 		polyline:
 			leg.polyline?.features.map((feature) => [
 				feature.geometry.coordinates[1],
 				feature.geometry.coordinates[0]
 			]) ?? []
+	};
+}
+
+function getLegCurrentLocation(leg: Leg): ParsedGeolocation | undefined {
+	if (leg.currentLocation === undefined) {
+		return undefined;
+	}
+	return {
+		type: "currentLocation",
+		name: `${leg.line?.name} → ${leg.direction}`,
+		requestParameter: { type: "location" },
+		position: {
+			lat: leg.currentLocation.latitude ?? 0,
+			lng: leg.currentLocation.longitude ?? 0
+		},
+		asAt: new Date()
 	};
 }
 
@@ -144,7 +150,7 @@ function locationToBlock(
 	};
 }
 
-export function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock {
+function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock {
 	return {
 		type: "walk",
 		originLocation: parseStationStopLocation(walk.origin),
@@ -202,7 +208,7 @@ export function parseStationStopLocation(
 	}
 }
 
-export function parseStopover(stopover: StopOver): TransitData {
+function parseStopover(stopover: StopOver): TransitData {
 	const platform = stopover.arrivalPlatform ?? stopover.departurePlatform ?? undefined;
 	const time = parseTimePair(
 		{
@@ -242,7 +248,7 @@ type HafasTimeData = {
 	delay: Leg[`${TransitType}Delay`];
 };
 
-export function parseSingleTime(
+function parseSingleTime(
 	{ time, timePlanned, delay }: HafasTimeData,
 	type: TransitType
 ): ParsedTime {
@@ -269,7 +275,7 @@ export function parseSingleTime(
 	};
 }
 
-export function parseTimePair(
+function parseTimePair(
 	arrivalTimeData: HafasTimeData,
 	departureTimeData: HafasTimeData
 ): ParsedTime {
@@ -290,4 +296,14 @@ function getPlatformData(
 		platform,
 		platformChanged: platform !== plannedPlatform
 	};
+}
+
+function getAttributeFromStopover(stopover: StopOver | undefined): TransitAttribute {
+	if (stopover?.cancelled) {
+		return "cancelled";
+	}
+	if (stopover?.additional) {
+		return "additional";
+	}
+	return undefined;
 }
