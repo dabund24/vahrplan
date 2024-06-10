@@ -30,6 +30,10 @@ export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 		const nextLeg = i < legs.length - 1 ? legs[i + 1] : undefined;
 		const lastBlock = blocks.at(-1);
 		if (leg.walking) {
+			if (leg.distance === null) {
+				// this leg is a transfer and will be skipped for now, it is handled in the next loop iteration
+				continue;
+			}
 			const nextDeparture =
 				nextLeg !== undefined
 					? nextLeg.departure ?? nextLeg.plannedDeparture
