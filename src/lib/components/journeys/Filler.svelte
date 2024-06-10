@@ -20,7 +20,9 @@
 			block.destinationLocation.position.lng;
 	}
 	$: duration =
-		block.type === "walk" || block.type === "transfer" ? block.transferTime : undefined;
+		block.type === "walk" || block.type === "onward-journey" || block.type === "transfer"
+			? block.transferTime
+			: undefined;
 </script>
 
 <div
@@ -44,11 +46,18 @@
 	{#if block.type === "walk"}
 		<a href={osmLink} target="_blank">
 			{#if block.distance !== undefined && block.walkingTime !== undefined}
-				{block.distance}m Fußweg (ca. {block.walkingTime}min)
+				{block.distance}m Fußweg (ca. <i>{block.walkingTime}min</i>)
 			{:else}
 				Fußweg
 			{/if}
 		</a>
+	{:else if block.type === "onward-journey"}
+		<span>
+			Anreise zur nächsten Station{#if block.recommendedAction !== undefined},
+				{block.recommendedAction}
+			{/if}
+			({(block.distance - (block.distance % 100)) / 1000}km, ca. <i>{block.travelTime}min</i>)
+		</span>
 	{:else if block.type === "transfer" && block.isStopover}
 		<NameDelayPlatform transitData={block.transitData} nameIsStrong={true} />
 	{:else}
@@ -65,7 +74,7 @@
 		height: 3rem;
 		margin: -3rem 0;
 		position: relative;
-        z-index: 1;
+		z-index: 1;
 	}
 	.height-setter {
 		visibility: hidden;

@@ -23,7 +23,7 @@
 		}
 	});
 
-	$: popup?.setContent(popupElement)
+	$: popup?.setContent(popupElement);
 
 	onDestroy(() => {
 		layer?.unbindPopup();
@@ -48,6 +48,18 @@
 			{:else}
 				Fußweg
 			{/if}
+		</span>
+	{:else if popupData.type === "onward-journey"}
+		<Duration duration={popupData.duration} />
+		<div class="filler-icon">
+			<IconFiller type="onward-journey" smallIcon={true} />
+		</div>
+		<span>
+			Anreise zur nächsten Station{#if popupData.recommendedAction !== undefined},
+				{popupData.recommendedAction}
+			{/if}
+			({(popupData.distance - (popupData.distance % 100)) / 1000}km, ca.
+			<i>{popupData.travelTime}min</i>)
 		</span>
 	{:else}
 		{#if popupData.transitData.time.arrival !== undefined || popupData.transitData.time.departure !== undefined}

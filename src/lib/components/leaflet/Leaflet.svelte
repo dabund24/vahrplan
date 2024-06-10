@@ -222,7 +222,7 @@
 								: block.location.type}
 						/>
 					</Marker>
-				{:else if block.type === "walk"}
+				{:else if block.type === "walk" || block.type === "onward-journey"}
 					<Polyline {block} />
 				{/if}
 			{/each}

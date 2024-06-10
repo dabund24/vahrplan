@@ -110,6 +110,7 @@ export type EmptyNode = {
 export type JourneyBlock =
 	| LegBlock
 	| WalkingBlock
+	| OnwardJourneyBlock
 	| TransferBlock
 	| LocationBlock
 	| ErrorBlock
@@ -163,6 +164,16 @@ export type WalkingBlock = {
 	distance: number;
 };
 
+export type OnwardJourneyBlock = {
+	type: "onward-journey";
+	originLocation: ParsedLocation;
+	destinationLocation: ParsedLocation;
+	transferTime: number;
+	travelTime?: number;
+	recommendedAction?: string;
+	distance: number;
+};
+
 export type TransferBlock = {
 	type: "transfer";
 	transferTime: number;
@@ -187,7 +198,7 @@ export type UnselectedBlock = {
 	type: "unselected";
 };
 
-export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk;
+export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk | PopupDataOnwardJourney;
 
 export type PopupDataWalk = {
 	type: "walk";
@@ -208,4 +219,12 @@ export type PopupDataStation = {
 	transitData: TransitData;
 	product1?: string;
 	product2?: string;
+};
+
+export type PopupDataOnwardJourney = {
+	type: "onward-journey";
+	duration: number;
+	travelTime?: number;
+	recommendedAction?: string;
+	distance: number;
 };

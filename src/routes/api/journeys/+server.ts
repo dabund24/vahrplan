@@ -18,6 +18,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	}
 
 	options.results = 10;
+	options.language = "de";
 	const result = await getJourneyTree(stops, options, transitType);
 	return new Response(JSON.stringify(result));
 };

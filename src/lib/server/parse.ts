@@ -3,6 +3,7 @@ import type {
 	JourneyBlock,
 	LegBlock,
 	LocationBlock,
+	OnwardJourneyBlock,
 	ParsedGeolocation,
 	ParsedLocation,
 	ParsedTime,
@@ -33,7 +34,9 @@ export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 				nextLeg !== undefined
 					? nextLeg.departure ?? nextLeg.plannedDeparture
 					: leg.arrival ?? leg.plannedArrival;
-			const thisBlock = walkToBlock(leg, nextDeparture);
+			const thisBlock = leg.transfer
+				? onwardJourneyToBlock(leg, nextDeparture)
+				: walkToBlock(leg, nextDeparture);
 			blocks.push(thisBlock);
 			if (i === 0) {
 				// journey starts with walk => location at beginning
@@ -158,6 +161,21 @@ function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock
 		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
 		walkingTime: dateDifference(walk.departure, walk.arrival),
 		distance: walk.distance ?? 0
+	};
+}
+
+function onwardJourneyToBlock(leg: Leg, nextDeparture: string | undefined): OnwardJourneyBlock {
+	const recommendedAction = leg.remarks?.find(
+		(remark) => remark.type === "hint" && remark.code === "UD"
+	)?.text;
+	return {
+		type: "onward-journey",
+		originLocation: parseStationStopLocation(leg.origin),
+		destinationLocation: parseStationStopLocation(leg.destination),
+		transferTime: dateDifference(leg.departure ?? leg.plannedDeparture, nextDeparture) ?? 0,
+		travelTime: dateDifference(leg.departure, leg.arrival),
+		recommendedAction,
+		distance: leg.distance ?? 0
 	};
 }
 

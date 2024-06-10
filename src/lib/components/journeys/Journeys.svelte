@@ -58,7 +58,7 @@
 			{#each journey.value as block}
 				{#if block.type === "leg"}
 					<LegRegular {block} />
-				{:else if block.type === "walk" || block.type === "transfer" || block.type === "unselected"}
+				{:else if block.type === "walk" || block.type === "onward-journey" || block.type === "transfer" || block.type === "unselected"}
 					<Filler {block} />
 				{:else if block.type === "location" && !block.hidden}
 					<Location {block} />
