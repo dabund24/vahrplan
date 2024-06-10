@@ -52,6 +52,10 @@
 			...stops.slice(index, stops.length)
 		];
 	}
+	function reverseStops(): void {
+		stops = stops.toReversed();
+	}
+
 	function handleFormSubmit(): void {
 		const stopsToBeDisplayed = stops.filter<KeyedItem<ParsedLocation, number>>(
 			valueIsDefined<ParsedLocation, number>
@@ -141,6 +145,25 @@
 				</div>
 			{/each}
 		</div>
+		<button
+			class="button--small hoverable"
+			type="button"
+			on:click={reverseStops}
+			title="Stationsreihenfolge tauschen"
+		>
+			<svg width="16px" height="16px">
+				<g
+					stroke="var(--foreground-color)"
+					stroke-width="3"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					fill="none"
+				>
+					<polyline points="5.5,2 5.5,14 1.5,10" />
+					<polyline points="10.5,14 10.5,2 14.5,6" />
+				</g>
+			</svg>
+		</button>
 	</div>
 	<div class="time-filter-submit" class:time-is-now={timeIsNow}>
 		<div class="flex-row">
@@ -259,6 +282,7 @@
 	.location-inputs--outer {
 		width: 30rem;
 		max-width: 100%;
+		align-items: center;
 	}
 
 	.location-inputs {
@@ -298,8 +322,8 @@
 		}
 		& input[type="datetime-local"] {
 			padding: 0.5rem;
-            width: 100%;
-            margin: var(--line-width) 0;
+			width: 100%;
+			margin: var(--line-width) 0;
 		}
 	}
 

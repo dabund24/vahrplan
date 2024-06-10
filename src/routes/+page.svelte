@@ -69,9 +69,9 @@
 <style>
 	.form {
 		position: sticky;
-		left: 1rem;
+		left: .75rem;
 		z-index: 100;
-		max-width: calc(100vw - 2rem);
+		max-width: calc(100vw - 1.5rem);
 	}
 	.diagram {
 		margin: 0 auto;
