@@ -101,8 +101,7 @@
 					<button
 						class="button--small add-button hoverable"
 						type="button"
-						tabindex="-1"
-						on:click={() => void addVia(i + 1)}
+						on:click={() => void addVia(i)}
 						title="Station hinzufügen"
 					>
 						<svg width="16px" height="16px">
@@ -127,7 +126,6 @@
 					<button
 						class="button--small remove-button hoverable"
 						type="button"
-						tabindex="-1"
 						on:click={() => void removeVia(i)}
 						title="Station entfernen"
 					>
@@ -289,16 +287,16 @@
 		width: 100%;
 	}
 
-	.input-container:last-child .add-button {
+	.input-container:first-child .add-button {
 		visibility: hidden;
 	}
 	.input-container:first-child .remove-button,
 	.input-container:last-child .remove-button {
-		visibility: hidden;
+		display: none;
 	}
 
 	.add-button {
-		translate: 0 50%;
+		translate: 0 -50%;
 		align-self: center;
 	}
 	.remove-button {
