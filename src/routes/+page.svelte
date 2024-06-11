@@ -6,6 +6,7 @@
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
 	import JourneySummary from "./JourneySummary.svelte";
+	import Journeys from "$lib/components/journeys/Journeys.svelte";
 
 	let windowWidth: number;
 
@@ -52,9 +53,7 @@
 			{#if showSplitPane}
 				<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
 					{#if activeTab === 0}
-						{#await import("$lib/components/journeys/Journeys.svelte") then Journeys}
-							<Journeys.default />
-						{/await}
+						<Journeys />
 					{:else if activeTab === 1}
 						{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
 							<Leaflet.default />
