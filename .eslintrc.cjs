@@ -43,6 +43,16 @@ module.exports = {
 			{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }
 		],
 		"@typescript-eslint/prefer-as-const": "error",
-		"@typescript-eslint/await-thenable": "error"
+		"@typescript-eslint/await-thenable": "error",
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": [
+			// stolen from https://stackoverflow.com/a/64067915
+			"error",
+			{
+				argsIgnorePattern: "^_",
+				varsIgnorePattern: "^_",
+				caughtErrorsIgnorePattern: "^_"
+			}
+		]
 	}
 };
