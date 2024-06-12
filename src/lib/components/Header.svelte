@@ -35,6 +35,10 @@
 		margin-left: auto;
 	}
 
+	.mobile-only {
+		padding-top: calc(0.5rem + env(safe-area-inset-top));
+	}
+
 	@media screen and (min-width: 1000px) {
 		.mobile-only {
 			display: none;

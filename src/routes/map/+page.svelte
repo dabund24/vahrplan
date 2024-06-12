@@ -15,7 +15,7 @@
 		title={$displayedLocations.locations.length > 1
 			? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
 			: "Karte"}
-		fullScreen={true}
+		mobileOnly={true}
 	>
 		<button class="button--small hoverable" on:click={() => void refreshJourney()}>
 			<IconRefresh />

@@ -95,7 +95,8 @@
 	*/
 
 	.main-application {
-		padding: 1rem 0.5rem;
+		padding: calc(0.5rem + env(safe-area-inset-top)) 0.5rem;
+		overscroll-behavior-x: none;
 		box-sizing: border-box;
 		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
@@ -120,6 +121,7 @@
 			left: 0;
 		}
 		.main-application {
+			padding: .5rem;
 			container-type: inline-size;
 			--display-width: calc(100cqw - 1.5rem);
 			width: auto;

@@ -40,7 +40,6 @@
 
 		main {
 			padding-bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
-			padding-top: env(safe-area-inset-top);
 			overflow: unset;
 		}
 	}
