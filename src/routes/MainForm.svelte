@@ -321,7 +321,7 @@
 		& input[type="datetime-local"] {
 			padding: 0.5rem;
 			width: 100%;
-			margin: var(--line-width) 0;
+			margin: var(--line-width) auto;
 		}
 	}
 
