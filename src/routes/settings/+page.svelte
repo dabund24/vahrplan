@@ -111,6 +111,9 @@
 	h1 {
 		font-size: 1.2rem;
 	}
+	h1:not(:first-of-type) {
+		padding-top: 0.5rem;
+	}
 
     @media screen and (min-width: 1000px) {
 		:global(main) {
