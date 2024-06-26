@@ -1,4 +1,4 @@
-# Zug_svelte
+# Zug_svelte <img src="static/favicon.svg" align="right" height="100"/>
 
 A web application assisting users of public transport in Germany on planning longer journeys with transfers.
 
