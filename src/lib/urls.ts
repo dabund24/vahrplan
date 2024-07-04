@@ -21,3 +21,10 @@ export function getRefreshUrl(tokens: (string | null)[]): URL {
 	url.searchParams.set("tokens", btoa(JSON.stringify(tokens)));
 	return url;
 }
+
+export function getLocationsUrl(input: string, hafas: boolean): URL {
+	const url = new URL("/api/locations", location.origin);
+	url.searchParams.set("name", input);
+	url.searchParams.set("hafas", String(hafas));
+	return url;
+}

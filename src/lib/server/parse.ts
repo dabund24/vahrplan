@@ -14,6 +14,7 @@ import type {
 } from "$lib/types";
 import { dateDifference } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
+import type { StationFull } from "db-hafas-stations";
 
 export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 	if (journey?.legs === undefined) {
@@ -184,7 +185,7 @@ function onwardJourneyToBlock(leg: Leg, nextDeparture: string | undefined): Onwa
 }
 
 export function parseStationStopLocation(
-	location: Station | Stop | Location | undefined
+	location: Station | Stop | Location | StationFull | undefined
 ): ParsedLocation {
 	if (location === undefined) {
 		return {

@@ -1,5 +1,6 @@
 import type { Line, Location, Station, Stop } from "hafas-client";
 import type { NumericRange } from "@sveltejs/kit";
+import type { StationFull } from "db-hafas-stations";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -58,7 +59,7 @@ export type ParsedTime = {
 export type ParsedLocation =
 	| {
 			name: string;
-			requestParameter: string | Station | Stop | Location;
+			requestParameter: string | Station | Stop | Location | StationFull;
 			readonly type: "station" | "address" | "poi";
 			position: { lat: number; lng: number };
 	  }
