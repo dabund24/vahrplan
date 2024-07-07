@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedLocations, refreshJourney } from "$lib/stores/journeyStores";
+	import { displayedFormData, refreshJourney } from "$lib/stores/journeyStores";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 </script>
 
@@ -12,8 +12,8 @@
 
 <div>
 	<Header
-		title={$displayedLocations.locations.length > 1
-			? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
+		title={$displayedFormData !== undefined
+			? `${$displayedFormData.locations[0].value.name} — ${$displayedFormData.locations.at(-1)?.value.name}`
 			: "Karte"}
 		mobileOnly={true}
 	>

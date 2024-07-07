@@ -2,7 +2,7 @@
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedLocations, refreshJourney } from "$lib/stores/journeyStores";
+	import { displayedFormData, refreshJourney } from "$lib/stores/journeyStores";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 
 	let windowWidth: number;
@@ -25,8 +25,8 @@
 	>
 		<div slot="a">
 			<Header
-				title={$displayedLocations.locations.length > 1
-					? `${$displayedLocations.locations[0].value.name} — ${$displayedLocations.locations.at(-1)?.value.name}`
+				title={$displayedFormData !== undefined
+					? `${$displayedFormData.locations[0].value.name} — ${$displayedFormData.locations.at(-1)?.value.name}`
 					: "Verbindungsdetails"}
 				mobileOnly={true}
 			>

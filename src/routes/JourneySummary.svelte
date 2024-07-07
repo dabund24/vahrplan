@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import { displayedLocations, mergingBlocks, selectedJourneys } from "$lib/stores/journeyStores.js";
+	import { displayedFormData, mergingBlocks, selectedJourneys } from "$lib/stores/journeyStores.js";
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
 	import Time from "$lib/components/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";
@@ -50,7 +50,7 @@
 
 <div class="flex-column" id="journey-summary">
 	<div class="flex-row">
-		{#each $displayedLocations.locations as location, i (location.key)}
+		{#each $displayedFormData?.locations ?? [] as location, i (location.key)}
 			<div
 				class="summary-element flex-column"
 				class:station--selected={journeyInfo[i].legs.length > 0}

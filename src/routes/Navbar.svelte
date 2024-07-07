@@ -6,23 +6,28 @@
 	import IconAbout from "$lib/components/icons/IconAbout.svelte";
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import IconDetails from "$lib/components/icons/IconDetails.svelte";
+	import { browser } from "$app/environment";
+	import { getDiagramUrl } from "$lib/urls";
+	import { displayedFormData } from "$lib/stores/journeyStores";
 
 	$: [currentPageMobile, currentPageDesktop] = getCurrentPageIndex($page.url.pathname);
 
 	function getCurrentPageIndex(pathname: string): [number, number] {
-		if (pathname === "/") return [0, 0];
+		if (pathname === "/" || pathname.startsWith("/diagram")) return [0, 0];
 		if (pathname.startsWith("/journey")) return [1, 1];
 		if (pathname.startsWith("/map")) return [2, 1];
 		if (pathname === "/settings") return [3, 2];
 		else return [4, 3];
 	}
+
+	$: diagramURL = browser && $displayedFormData !== undefined ? getDiagramUrl($displayedFormData).href : "/"
 </script>
 
 <nav>
 	<div class="links-container">
 		<ul>
 			<li aria-current={currentPageMobile === 0 ? "page" : undefined}>
-				<a href="/" class="hoverable flex-row">
+				<a href={diagramURL} class="hoverable flex-row">
 					<IconLogo />
 					<span>Verbindungssuche</span>
 				</a>

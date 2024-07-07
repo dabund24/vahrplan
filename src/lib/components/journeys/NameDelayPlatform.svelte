@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TransitData } from "$lib/types";
 	import { getGeolocationString } from "$lib/util";
-	import { displayedLocations } from "$lib/stores/journeyStores";
+	import { displayedFormData } from "$lib/stores/journeyStores";
 
 	export let transitData: TransitData;
 	export let nameIsStrong = false;
@@ -13,7 +13,7 @@
 	$: asAt =
 		transitData.location.type === "currentLocation"
 			? transitData.location.asAt
-			: $displayedLocations.geolocationDate;
+			: $displayedFormData.geolocationDate;
 
 	let locationName = transitData.location.name;
 

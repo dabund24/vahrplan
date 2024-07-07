@@ -2,7 +2,7 @@
 	import type { ParsedLocation } from "$lib/types";
 	import { getApiData, getParsedGeolocation } from "$lib/util";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { getLocationsUrl } from "$lib/urls";
+	import { getApiLocationsUrl } from "$lib/urls";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
 	export let inputPlaceholder: string;
@@ -19,7 +19,7 @@
 		if (text.trim() === "") {
 			return Promise.resolve([getParsedGeolocation(new Date(), { lat: 0, lng: 0 })]);
 		}
-		const url = getLocationsUrl(text, true)
+		const url = getApiLocationsUrl(text, true)
 		return getApiData<ParsedLocation[]>(url, undefined).then((response) => {
 			let suggestions: ParsedLocation[] = [];
 			if ("standort".startsWith(text.toLowerCase())) {

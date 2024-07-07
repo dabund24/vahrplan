@@ -7,7 +7,7 @@ export type KeyedItem<T, K extends number | string> = {
 	key: K;
 };
 
-export type Fetchable = TreeNode[] | JourneyBlock[][] | ParsedLocation[];
+export type Fetchable = TreeNode[] | JourneyBlock[][] | ParsedLocation[] | ParsedLocation;
 
 export type ZugResponse<T> = ZugSuccess<T> | ZugError;
 

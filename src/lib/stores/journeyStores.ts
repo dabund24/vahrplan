@@ -8,19 +8,17 @@ import type {
 	TransitType,
 	TreeNode
 } from "$lib/types";
-import {
-	getApiData,
-	getFirstAndLastTime,
-	getCurrentGeolocation,
-	getRawLocationBlock
-} from "$lib/util";
+import { getApiData, getFirstAndLastTime, getRawLocationBlock } from "$lib/util";
 import { getMergingBlock } from "$lib/merge";
-import { getRefreshUrl, getTreeUrl } from "$lib/urls";
+import { getApiRefreshUrl, getApiJourneysUrl, getDiagramUrl } from "$lib/urls";
+import type { Settings } from "$lib/stores/settingStore";
+import { pushState } from "$app/navigation";
 
-export type DisplayedLocations = {
+export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	time: Date;
 	timeRole: TransitType;
+	options: Settings["journeysOptions"];
 	geolocationDate: Date;
 };
 
@@ -32,25 +30,23 @@ export type SelectedJourney = {
 	departure: ParsedTime;
 };
 
-export const displayedLocations = writable<DisplayedLocations>({
-	locations: [],
-	time: new Date(0),
-	timeRole: "departure",
-	geolocationDate: new Date()
-});
+export const displayedFormData = writable<DisplayedFormData | undefined>(undefined);
 let locations: ParsedLocation[] = [];
-displayedLocations.subscribe(
-	(displayedLocations) =>
-		(locations = displayedLocations.locations.map((keyedLocation) => keyedLocation.value))
-);
+displayedFormData.subscribe((formData) => {
+	if (formData === undefined) {
+		locations = [];
+		return;
+	}
+	locations = formData.locations.map((keyedLocation) => keyedLocation.value);
+});
 
 // this is reset to an empty array when displayedLocations changes
 export const mergingBlocks = writable<AdhesiveBlock[]>([]);
-displayedLocations.subscribe(resetMergingBlocks);
+displayedFormData.subscribe(resetMergingBlocks);
 
 // this is reset to an empty array when displayedLocations changes
 export const selectedJourneys = writable<SelectedJourney[]>([]);
-displayedLocations.subscribe(resetSelectedJourneys);
+displayedFormData.subscribe(resetSelectedJourneys);
 
 export const displayedJourneys = derived(
 	[mergingBlocks, selectedJourneys],
@@ -60,59 +56,58 @@ export const displayedJourneys = derived(
 // this is recalculated when and only when displayedLocations changes
 // export const displayedTree = derived(displayedLocations, calculateTree);
 export const displayedTree = writable<Promise<TreeNode[]>>(Promise.resolve([]));
-displayedLocations.subscribe((dLocations) => displayedTree.set(calculateTree(dLocations)));
+displayedFormData.subscribe((formData) => displayedTree.set(calculateTree(formData)));
 
-export async function setDisplayedLocations(
-	locations: KeyedItem<ParsedLocation, number>[],
-	time: Date,
-	timeRole: TransitType
-): Promise<void> {
-	// handle current position
-	let geolocationDate = new Date();
-	if (locations.some((l) => l.value.type === "currentLocation")) {
-		const currentLocation = await getCurrentGeolocation();
-		geolocationDate = currentLocation.asAt;
-		locations = locations.map((l) => {
-			if (l.value.type === "currentLocation") {
-				return { key: l.key, value: currentLocation };
-			}
-			return l;
-		});
-	}
-
-	displayedLocations.set({ locations, time, timeRole, geolocationDate });
+export function setDisplayedFormData(formData: DisplayedFormData): void {
+	displayedFormData.set(formData);
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
-	displayedLocations.update((dLocations) => {
-		return {
+	displayedFormData.update((formData) => {
+		if (formData === undefined) {
+			return undefined;
+		}
+		const newFormData: DisplayedFormData = {
 			locations: [
-				...dLocations.locations.slice(0, index),
+				...formData.locations.slice(0, index),
 				{ value: location, key: Math.random() },
-				...dLocations.locations.slice(index)
+				...formData.locations.slice(index)
 			],
-			time: dLocations.time,
-			timeRole: dLocations.timeRole,
-			geolocationDate: dLocations.geolocationDate
+			time: formData.time,
+			timeRole: formData.timeRole,
+			options: formData.options,
+			geolocationDate: formData.geolocationDate
 		};
+		pushState(getDiagramUrl(newFormData), {});
+		return newFormData;
 	});
 }
 export function removeDisplayedLocation(index: number): void {
-	displayedLocations.update((locations) => {
-		return {
+	displayedFormData.update((formData) => {
+		if (formData === undefined) {
+			return undefined;
+		}
+		const newFormData: DisplayedFormData = {
 			locations: [
-				...locations.locations.slice(0, index),
-				...locations.locations.slice(index + 1)
+				...formData.locations.slice(0, index),
+				...formData.locations.slice(index + 1)
 			],
-			time: locations.time,
-			timeRole: locations.timeRole,
-			geolocationDate: locations.geolocationDate
+			time: formData.time,
+			timeRole: formData.timeRole,
+			options: formData.options,
+			geolocationDate: formData.geolocationDate
 		};
+		pushState(getDiagramUrl(newFormData), {});
+		return newFormData;
 	});
 }
 
-function resetSelectedJourneys(dLocations: DisplayedLocations): void {
+function resetSelectedJourneys(formData: DisplayedFormData | undefined): void {
+	if (formData === undefined) {
+		selectedJourneys.set([]);
+		return;
+	}
 	selectedJourneys.set(
-		Array.from({ length: dLocations.locations.length - 1 }, (_v, i) => {
+		Array.from({ length: formData.locations.length - 1 }, (_v, i) => {
 			return {
 				blocks: [{ type: "unselected" }],
 				selectedBy: -1,
@@ -124,10 +119,14 @@ function resetSelectedJourneys(dLocations: DisplayedLocations): void {
 	);
 }
 
-function resetMergingBlocks(locations: DisplayedLocations): void {
+function resetMergingBlocks(formData: DisplayedFormData | undefined): void {
+	if (formData === undefined) {
+		mergingBlocks.set([]);
+		return;
+	}
 	mergingBlocks.set(
-		Array.from({ length: locations.locations.length }, (_v, i) =>
-			getRawLocationBlock(locations.locations[i].value)
+		Array.from({ length: formData.locations.length ?? 0 }, (_v, i) =>
+			getRawLocationBlock(formData.locations[i].value)
 		)
 	);
 }
@@ -153,12 +152,12 @@ function calculateDisplayedJourneys([merging, selected]: [
 	}) as KeyedItem<JourneyBlock[], string>[];
 }
 
-async function calculateTree(dLocations: DisplayedLocations): Promise<TreeNode[]> {
-	if (dLocations.locations.length < 2) {
+async function calculateTree(formData: DisplayedFormData | undefined): Promise<TreeNode[]> {
+	if (formData === undefined || formData.locations.length < 2) {
 		return Promise.resolve([]);
 	}
-	const url = getTreeUrl(dLocations);
-	const loadingEst = dLocations.locations.length * 3;
+	const url = getApiJourneysUrl(formData);
+	const loadingEst = formData.locations.length * 3;
 	return getApiData<TreeNode[]>(url, loadingEst).then((response) => {
 		console.log(response);
 		return response.isError ? [] : response.content;
@@ -246,7 +245,7 @@ export async function refreshJourney(): Promise<void> {
 	const tokens = get(selectedJourneys).map((journey) =>
 		journey.refreshToken.length > 5 ? journey.refreshToken : null
 	);
-	const url = getRefreshUrl(tokens);
+	const url = getApiRefreshUrl(tokens);
 	const response = await getApiData<JourneyBlock[][]>(url, 3);
 	if (response.isError) {
 		return;

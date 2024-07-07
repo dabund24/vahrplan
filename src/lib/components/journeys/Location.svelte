@@ -3,7 +3,7 @@
 	import Time from "$lib/components/Time.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { getGeolocationString } from "$lib/util";
-	import { displayedLocations } from "$lib/stores/journeyStores";
+	import { displayedFormData } from "$lib/stores/journeyStores";
 
 	export let block: LocationBlock
 
@@ -13,7 +13,7 @@
 	if (block.location.type === "currentLocation") {
 		locationName = getGeolocationString(block.location.asAt)
 	} else if (block.location.name === "Standort") {
-		locationName = getGeolocationString($displayedLocations.geolocationDate)
+		locationName = getGeolocationString($displayedFormData.geolocationDate)
 		locationType = "currentLocation"
 	}
 </script>

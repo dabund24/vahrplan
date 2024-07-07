@@ -3,8 +3,8 @@
 	import "./map.css";
 	import {
 		displayedJourneys,
-		type DisplayedLocations,
-		displayedLocations,
+		type DisplayedFormData,
+		displayedFormData,
 		type SelectedJourney,
 		selectedJourneys
 	} from "$lib/stores/journeyStores";
@@ -85,12 +85,12 @@
 		}
 	}
 
-	$: setMapContent(map, $selectedJourneys, $displayedLocations);
+	$: setMapContent(map, $selectedJourneys, $displayedFormData);
 
 	function setMapContent(
 		map: L.Map | undefined,
 		selectedJourneys: SelectedJourney[],
-		displayedLocations: DisplayedLocations
+		displayedLocations: DisplayedFormData | undefined
 	): void {
 		if (map === undefined) return;
 		let coordinates: L.LatLngLiteral[];
@@ -107,7 +107,7 @@
 							]
 						: block.location.position
 				);
-		} else if (displayedLocations.locations.length !== 0) {
+		} else if (displayedLocations !== undefined) {
 			coordinates = displayedLocations.locations.map((location) => location.value.position);
 		} else {
 			// fit germany

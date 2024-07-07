@@ -1,11 +1,11 @@
 <script lang="ts">
 	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
-	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
+	import { dateToInputDate, getCurrentGeolocation, valueIsDefined } from "$lib/util.js";
 	import {
-		type DisplayedLocations,
-		displayedLocations,
-		setDisplayedLocations
+		type DisplayedFormData,
+		displayedFormData,
+		setDisplayedFormData
 	} from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
@@ -15,24 +15,28 @@
 	import { products, settings } from "$lib/stores/settingStore";
 	import IconFilter from "$lib/components/icons/IconFilter.svelte";
 	import IconSearch from "$lib/components/icons/IconSearch.svelte";
-	import { pushState } from "$app/navigation";
+	import { goto, pushState } from "$app/navigation";
 	import { page } from "$app/stores";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
+	import { getDiagramUrl } from "$lib/urls";
+	import { get } from "svelte/store";
 
-	let displayedLocationsData = $displayedLocations;
+	export let isLandingPage: boolean = false;
+
+	let displayedLocationsData = $displayedFormData;
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] =
-		displayedLocationsData.locations.length === 0
+		displayedLocationsData === undefined
 			? [
 					{ value: undefined, key: Math.random() },
 					{ value: undefined, key: Math.random() }
 				]
 			: displayedLocationsData.locations;
 
-	let [departureArrivalSelection, timeIsNow, time] = initTimeInputs($displayedLocations);
+	let [departureArrivalSelection, timeIsNow, time] = initTimeInputs($displayedFormData);
 
-	function initTimeInputs(displayedLocationsData: DisplayedLocations): [0 | 1, boolean, string] {
-		if (displayedLocationsData.time.getTime() === 0) {
+	function initTimeInputs(displayedLocationsData: DisplayedFormData | undefined): [0 | 1, boolean, string] {
+		if (displayedLocationsData === undefined) {
 			return [0, true, dateToInputDate(new Date())];
 		}
 		return [
@@ -56,14 +60,37 @@
 		stops = stops.toReversed();
 	}
 
-	function handleFormSubmit(): void {
+	async function handleFormSubmit(): Promise<void> {
 		const stopsToBeDisplayed = stops.filter<KeyedItem<ParsedLocation, number>>(
 			valueIsDefined<ParsedLocation, number>
 		);
-		let journeyTime = timeIsNow ? new Date() : new Date(time);
-		let timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
-		if (stopsToBeDisplayed.length >= 2) {
-			void setDisplayedLocations(stopsToBeDisplayed, journeyTime, timeRole);
+		if (stopsToBeDisplayed.length < 2) {
+			return
+		}
+		const journeyTime = timeIsNow ? new Date() : new Date(time);
+		const timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
+		const options = get(settings).journeysOptions
+		const formData: DisplayedFormData = {
+			locations: stopsToBeDisplayed, time: journeyTime, timeRole, options, geolocationDate: new Date()
+		}
+		// handle current position
+		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
+			const currentLocation = await getCurrentGeolocation();
+			formData.geolocationDate = currentLocation.asAt;
+			formData.locations = formData.locations.map((l) => {
+				if (l.value.type === "currentLocation") {
+					return { key: l.key, value: currentLocation };
+				}
+				return l;
+			});
+		}
+
+		setDisplayedFormData(formData)
+
+		if (isLandingPage){
+			void goto(getDiagramUrl(formData));
+		} else {
+			pushState(getDiagramUrl(formData), {})
 		}
 	}
 
