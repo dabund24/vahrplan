@@ -20,7 +20,7 @@
 
 	$: showSplitPane = windowWidth >= 1000;
 
-	$: resetDiagram($page.data.formData as DisplayedFormData | undefined);
+	$: resetDiagram($page.data.formData);
 
 	function resetDiagram(initialFormData: DisplayedFormData | undefined): void {
 		if (
