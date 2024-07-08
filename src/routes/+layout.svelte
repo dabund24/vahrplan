@@ -3,6 +3,17 @@
 	import Navbar from "./Navbar.svelte";
 	import { settings } from "$lib/stores/settingStore";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
+	import { beforeNavigate } from "$app/navigation";
+	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
+
+	beforeNavigate((navigation) => {
+		const loadingID = startLoading(2);
+		navigation.complete.then(
+			() => stopLoading(loadingID, false),
+			() => stopLoading(loadingID, true)
+		);
+	});
+
 </script>
 
 <div class="app" data-blur={$settings.view.general.blur ? "true" : ""}>
