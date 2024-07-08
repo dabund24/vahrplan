@@ -1,5 +1,5 @@
 <script lang="ts">
-	import JourneyDiagram from "../JourneyDiagram.svelte";
+	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import {
 		type DisplayedFormData,
 		displayedFormData,
@@ -9,8 +9,8 @@
 	import Tabs from "$lib/components/Tabs.svelte";
 	import MainForm from "../MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
-	import JourneyDiagramSkeleton from "../JourneyDiagramSkeleton.svelte";
-	import JourneySummary from "../JourneySummary.svelte";
+	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
+	import JourneySummary from "./JourneySummary.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
