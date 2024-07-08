@@ -35,7 +35,7 @@ module.exports = {
 			}
 		}
 	],
-	ignorePatterns: [".eslintrc.cjs", "vite.config.ts", "svelte.config.js"],
+	ignorePatterns: [".eslintrc.cjs", "vite.config.ts", "svelte.config.js", "service-worker.js"],
 	rules: {
 		"logical-assignment-operators": "error",
 		"@typescript-eslint/explicit-function-return-type": [
