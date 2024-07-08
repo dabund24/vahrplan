@@ -9,7 +9,7 @@
 
 <div class="split-container">
 	<section class="form padded-top-bottom">
-		<MainForm isLandingPage={true}/>
+		<MainForm />
 	</section>
 </div>
 

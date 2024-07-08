@@ -2,11 +2,7 @@
 	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
 	import { dateToInputDate, getCurrentGeolocation, valueIsDefined } from "$lib/util.js";
-	import {
-		type DisplayedFormData,
-		displayedFormData,
-		setDisplayedFormData
-	} from "$lib/stores/journeyStores.js";
+	import { type DisplayedFormData, setDisplayedFormData } from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
@@ -21,29 +17,37 @@
 	import { getDiagramUrl } from "$lib/urls";
 	import { get } from "svelte/store";
 
-	export let isLandingPage: boolean = false;
+	export let initialFormData: DisplayedFormData | undefined = undefined;
 
-	let displayedLocationsData = $displayedFormData;
+	let stops: KeyedItem<ParsedLocation | undefined, number>[];
 
-	let stops: KeyedItem<ParsedLocation | undefined, number>[] =
-		displayedLocationsData === undefined
-			? [
-					{ value: undefined, key: Math.random() },
-					{ value: undefined, key: Math.random() }
-				]
-			: displayedLocationsData.locations;
-
-	let [departureArrivalSelection, timeIsNow, time] = initTimeInputs($displayedFormData);
-
-	function initTimeInputs(displayedLocationsData: DisplayedFormData | undefined): [0 | 1, boolean, string] {
-		if (displayedLocationsData === undefined) {
-			return [0, true, dateToInputDate(new Date())];
-		}
-		return [
-			displayedLocationsData.timeRole === "arrival" ? 1 : 0,
-			false,
-			dateToInputDate(displayedLocationsData.time)
+	$: if (initialFormData === undefined) {
+		stops = [
+			{ value: undefined, key: Math.random() },
+			{ value: undefined, key: Math.random() }
 		];
+	} else {
+		stops = initialFormData.locations;
+	}
+
+	let departureArrivalSelection: 0 | 1;
+	let timeIsNow: boolean;
+	let time: string;
+
+	$: initTimeInputs(initialFormData);
+
+	function initTimeInputs(displayedFormData: DisplayedFormData | undefined): void {
+		if (displayedFormData === undefined) {
+			departureArrivalSelection = 0;
+			timeIsNow = true;
+			time = dateToInputDate(new Date());
+			return;
+		}
+
+		departureArrivalSelection = displayedFormData.timeRole === "arrival" ? 1 : 0;
+		timeIsNow =
+			~~(new Date().getTime() / 60000) === ~~(displayedFormData.time.getTime() / 60000);
+		time = dateToInputDate(displayedFormData.time);
 	}
 
 	function removeVia(index: number): void {
@@ -65,14 +69,18 @@
 			valueIsDefined<ParsedLocation, number>
 		);
 		if (stopsToBeDisplayed.length < 2) {
-			return
+			return;
 		}
 		const journeyTime = timeIsNow ? new Date() : new Date(time);
 		const timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
-		const options = get(settings).journeysOptions
+		const options = get(settings).journeysOptions;
 		const formData: DisplayedFormData = {
-			locations: stopsToBeDisplayed, time: journeyTime, timeRole, options, geolocationDate: new Date()
-		}
+			locations: stopsToBeDisplayed,
+			time: journeyTime,
+			timeRole,
+			options,
+			geolocationDate: new Date()
+		};
 		// handle current position
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
 			const currentLocation = await getCurrentGeolocation();
@@ -85,13 +93,9 @@
 			});
 		}
 
-		setDisplayedFormData(formData)
+		setDisplayedFormData(formData);
 
-		if (isLandingPage){
-			void goto(getDiagramUrl(formData));
-		} else {
-			pushState(getDiagramUrl(formData), {})
-		}
+		void goto(getDiagramUrl(formData));
 	}
 
 	function showFilterModal(): void {
