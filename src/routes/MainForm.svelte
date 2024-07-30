@@ -14,7 +14,7 @@
 	import { goto, pushState } from "$app/navigation";
 	import { page } from "$app/stores";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
-	import { getDiagramUrl } from "$lib/urls";
+	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { get } from "svelte/store";
 
 	export let initialFormData: DisplayedFormData | undefined = undefined;
@@ -95,7 +95,7 @@
 
 		setDisplayedFormData(formData);
 
-		void goto(getDiagramUrl(formData));
+		void goto(getDiagramUrlFromFormData(formData));
 	}
 
 	function showFilterModal(): void {

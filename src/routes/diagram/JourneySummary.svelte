@@ -13,6 +13,8 @@
 	import { page } from "$app/stores";
 	import { pushState } from "$app/navigation";
 	import Warning from "$lib/components/Warning.svelte";
+	import { shareDiagram } from "./share";
+	import IconShare from "$lib/components/icons/IconShare.svelte";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -48,8 +50,13 @@
 	$: areStopovers = $mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover);
 </script>
 
+<div class="flex-row actions">
+	<button class="button--small hoverable action--share" on:click={() => void shareDiagram($displayedFormData)}>
+		<IconShare />
+	</button>
+</div>
 <div class="flex-column" id="journey-summary">
-	<div class="flex-row">
+	<div class="flex-row summary-background">
 		{#each $displayedFormData?.locations ?? [] as location, i (location.key)}
 			<div
 				class="summary-element flex-column"
@@ -159,19 +166,20 @@
 {/if}
 
 <style>
+	.actions {
+		width: min(var(--display-width), var(--diagram-width));
+		position: sticky;
+		left: 0;
+		align-self: start;
+		align-items: start;
+	}
+
 	#journey-summary {
 		position: sticky;
 		z-index: 5;
 		top: 0;
 		width: var(--diagram-width);
 		transition: width 0.4s var(--cubic-bezier);
-		& > :first-child {
-			padding: max(env(safe-area-inset-top), 1rem) 0.5rem 0.5rem;
-			margin: 0 -0.5rem;
-			background-color: var(--background-color--opaque);
-			backdrop-filter: var(--blur);
-			-webkit-backdrop-filter: var(--blur);
-		}
 		& > :last-child {
 			padding: 0 0.5rem;
 			margin: 0 -0.5rem;
@@ -179,6 +187,14 @@
 		--beginning-end-offset: 1.5em;
 		word-break: break-word;
 	}
+
+	.summary-background {
+        padding: max(env(safe-area-inset-top), 1rem) 0.5rem 0.5rem;
+        margin: 0 -0.5rem;
+        background-color: var(--background-color--opaque);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+    }
 
 	@media screen and (min-width: 1000px) {
 		#journey-summary {

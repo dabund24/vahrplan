@@ -42,6 +42,7 @@
 		"db-hafas-stations": "^1.0.0",
 		"db-hafas-stations-autocomplete": "^2.0.0",
 		"hafas-client": "^6.3.0",
-		"leaflet": "^1.9.4"
+		"leaflet": "^1.9.4",
+		"redis": "^4.7.0"
 	}
 }

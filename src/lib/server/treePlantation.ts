@@ -1,5 +1,5 @@
-import { client } from "$lib/server/setup";
-import type { JourneysOptions } from "hafas-client";
+import { hafasClient } from "$lib/server/setup";
+import type { JourneysOptions, Location, Station, Stop } from "hafas-client";
 import type {
 	JourneyBlock,
 	JourneyNode,
@@ -16,8 +16,8 @@ const MAX_DATE = 8_640_000_000_000_000;
 const SEARCH_MAX_THRESHOLD = 3;
 
 type FromToOpt = {
-	from: string;
-	to: string;
+	from: string | Station | Stop | Location;
+	to: string | Station | Stop | Location;
 	opt: JourneysOptions;
 };
 
@@ -45,7 +45,7 @@ type RecursionInfo = {
 };
 
 export async function getJourneyTree(
-	stops: string[],
+	stops: (string | Station | Stop | Location)[],
 	opt: JourneysOptions,
 	transitType: TransitType
 ): Promise<ZugResponse<TreeNode[]>> {
@@ -77,7 +77,7 @@ export async function getJourneyTree(
  * @param transitType meaning of the time the user specified
  */
 async function getJourneyArrays(
-	stops: string[],
+	stops: (string | Station | Stop | Location)[],
 	opt: JourneysOptions,
 	transitType: TransitType
 ): Promise<ZugResponse<FetchedJourney[][]>> {
@@ -183,7 +183,7 @@ const journeysExceedLimit: {
  * @param fromToOpt origin, destination and options
  */
 async function findJourneys(fromToOpt: FromToOpt): Promise<JourneyNodesWithRefs> {
-	return client.journeys(fromToOpt.from, fromToOpt.to, fromToOpt.opt).then((journeys) => {
+	return hafasClient.journeys(fromToOpt.from, fromToOpt.to, fromToOpt.opt).then((journeys) => {
 		return {
 			journeys:
 				journeys.journeys?.map((journey): FetchedJourney => {

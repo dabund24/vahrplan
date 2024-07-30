@@ -14,7 +14,7 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
-	import { getDiagramUrl } from "$lib/urls.js";
+	import { getDiagramUrlFromFormData } from "$lib/urls.js";
 
 	let windowWidth: number;
 
@@ -26,7 +26,7 @@
 		if (
 			browser &&
 			initialFormData !== undefined &&
-			location.href !== getDiagramUrl($displayedFormData).href
+			location.href !== getDiagramUrlFromFormData($displayedFormData).href
 		) {
 			// this happens when the user navigates here without the app context
 			setDisplayedFormData(initialFormData);

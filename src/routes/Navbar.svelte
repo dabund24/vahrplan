@@ -7,7 +7,7 @@
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import IconDetails from "$lib/components/icons/IconDetails.svelte";
 	import { browser } from "$app/environment";
-	import { getDiagramUrl } from "$lib/urls";
+	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { displayedFormData } from "$lib/stores/journeyStores";
 
 	$: [currentPageMobile, currentPageDesktop] = getCurrentPageIndex($page.url.pathname);
@@ -20,7 +20,7 @@
 		else return [4, 3];
 	}
 
-	$: diagramURL = browser && $displayedFormData !== undefined ? getDiagramUrl($displayedFormData).href : "/"
+	$: diagramURL = browser && $displayedFormData !== undefined ? getDiagramUrlFromFormData($displayedFormData).href : "/"
 </script>
 
 <nav>

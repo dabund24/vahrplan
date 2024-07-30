@@ -1,6 +1,6 @@
 import type { Line, Location, Station, Stop } from "hafas-client";
 import type { NumericRange } from "@sveltejs/kit";
-import type { StationFull } from "db-hafas-stations";
+import type { Settings } from "$lib/stores/settingStore";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -59,7 +59,7 @@ export type ParsedTime = {
 export type ParsedLocation =
 	| {
 			name: string;
-			requestParameter: string | Station | Stop | Location | StationFull;
+			requestParameter: string | Station | Stop | Location;
 			readonly type: "station" | "address" | "poi";
 			position: { lat: number; lng: number };
 	  }
@@ -228,4 +228,22 @@ export type PopupDataOnwardJourney = {
 	travelTime?: number;
 	recommendedAction?: string;
 	distance: number;
+};
+
+export type DatabaseEntry<T> = {
+	type: DatabaseEntryType;
+	key: string;
+	value: T;
+	expirationTime: number;
+};
+
+export type KeylessDatabaseEntry<T> = Omit<DatabaseEntry<T>, "key">;
+
+export type DatabaseEntryType = "journey" | "journeys";
+
+export type DiagramRequestData = {
+	stops: (string | Station | Stop | Location)[];
+	timeRole: TransitType;
+	options: Settings["journeysOptions"];
+	time: Date;
 };

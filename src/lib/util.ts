@@ -9,7 +9,8 @@ import type {
 	KeyedItem,
 	ParsedGeolocation,
 	TransitType,
-	ParsedTime
+	ParsedTime,
+	KeylessDatabaseEntry
 } from "$lib/types";
 import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 
@@ -33,6 +34,41 @@ export async function getApiData<T extends Fetchable>(
 	}
 
 	const result: ZugResponse<T> = await fetch(url)
+		.then((res: Response) => res.json() as Promise<ZugResponse<T>>)
+		.catch(() => {
+			return {
+				isError: true,
+				type: "ERROR",
+				code: 400,
+				station1: undefined,
+				station2: undefined
+			};
+		});
+
+	if (loadingId !== undefined) {
+		stopLoading(loadingId, result.isError);
+	}
+	return result;
+}
+
+/**
+ * perform a put request to an api endpoint
+ * @param url url of the endpoint
+ * @param body data to be stored
+ * @param loadingEst estimated client waiting time in seconds
+ */
+export async function putApiData<R, T>(
+	url: URL,
+	body: KeylessDatabaseEntry<R>,
+	loadingEst: number | undefined
+): Promise<ZugResponse<T>> {
+	let loadingId: number | undefined = undefined;
+	if (loadingEst !== undefined) {
+		loadingId = startLoading(loadingEst);
+	}
+
+	const stringifiedBody = JSON.stringify(body);
+	const result: ZugResponse<T> = await fetch(url, { method: "PUT", body: stringifiedBody })
 		.then((res: Response) => res.json() as Promise<ZugResponse<T>>)
 		.catch(() => {
 			return {

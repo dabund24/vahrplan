@@ -10,7 +10,7 @@ import type {
 } from "$lib/types";
 import { getApiData, getFirstAndLastTime, getRawLocationBlock } from "$lib/util";
 import { getMergingBlock } from "$lib/merge";
-import { getApiRefreshUrl, getApiJourneysUrl, getDiagramUrl } from "$lib/urls";
+import { getApiRefreshUrl, getApiJourneysUrl, getDiagramUrlFromFormData } from "$lib/urls";
 import type { Settings } from "$lib/stores/settingStore";
 import { goto } from "$app/navigation";
 
@@ -77,7 +77,7 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 			options: formData.options,
 			geolocationDate: formData.geolocationDate
 		};
-		void goto(getDiagramUrl(newFormData), { state: { showFilterModal: false } });
+		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
 		return newFormData;
 	});
 }
@@ -96,7 +96,7 @@ export function removeDisplayedLocation(index: number): void {
 			options: formData.options,
 			geolocationDate: formData.geolocationDate
 		};
-		void goto(getDiagramUrl(newFormData), { state: { showFilterModal: false } });
+		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
 		return newFormData;
 	});
 }
