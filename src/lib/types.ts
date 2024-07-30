@@ -234,7 +234,7 @@ export type DatabaseEntry<T> = {
 	type: DatabaseEntryType;
 	key: string;
 	value: T;
-	expirationTime: number;
+	expirationDate: number;
 };
 
 export type KeylessDatabaseEntry<T> = Omit<DatabaseEntry<T>, "key">;

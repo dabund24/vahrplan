@@ -9,7 +9,7 @@ import { hash } from "node:crypto";
 export async function setDatabaseEntry<T>(entry: DatabaseEntry<T>): Promise<void> {
 	const key = `${entry.type}:${entry.key}`;
 	const value = JSON.stringify(entry.value);
-	await valkeyClient.set(key, value, { EX: entry.expirationTime });
+	await valkeyClient.set(key, value, { PXAT: entry.expirationDate });
 }
 
 /**

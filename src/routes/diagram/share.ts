@@ -16,7 +16,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 	const keylessDatabaseEntry: KeylessDatabaseEntry<DiagramRequestData> = {
 		type: "journeys",
 		value: diagramRequestData,
-		expirationTime: ~~((formData.time.getTime() + 604_800_000 - new Date().getTime()) / 1000) // 7 days
+		expirationDate: formData.time.getTime() + 604_800_000 // 7 days
 	};
 
 	const requestUrl = new URL("/api/diagram/shorturl", location.origin);
