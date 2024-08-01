@@ -2,6 +2,7 @@ import { derived, get, writable } from "svelte/store";
 import type {
 	AdhesiveBlock,
 	JourneyBlock,
+	JourneyNode,
 	KeyedItem,
 	ParsedLocation,
 	ParsedTime,
@@ -40,6 +41,43 @@ displayedFormData.subscribe((formData) => {
 	locations = formData.locations.map((keyedLocation) => keyedLocation.value);
 });
 
+/**
+ * initializes the application state to a shared journey
+ * @param formData everything the main form should display
+ * @param journeyNodes all sub-journeys as tree nodes. They should not be connected to a tre yet!
+ */
+export function initializeSharedData(
+	formData: DisplayedFormData,
+	journeyNodes: JourneyNode[]
+): void {
+	formData.time = new Date(formData.time);
+	displayedFormData.set(formData);
+	displayedTree.set(Promise.resolve(journeyNodesToPathGraph(journeyNodes)));
+	journeyNodes.forEach((node) => {
+		const selectedJourney: SelectedJourney = {
+			blocks: node.blocks,
+			refreshToken: node.refreshToken,
+			arrival: node.arrival,
+			departure: node.departure,
+			selectedBy: 0
+		};
+		selectJourneyBlocks(selectedJourney, node.depth);
+	});
+}
+
+/**
+ * Arranges journey nodes to a path graph such that the i-th node points to the (i+1)-th node
+ * @param nodes an array of journey nodes. They should not be connected to a tre yet!
+ * @returns the resulting path graph
+ */
+function journeyNodesToPathGraph(nodes: JourneyNode[]): TreeNode[] {
+	if (nodes.length === 0) {
+		return [];
+	}
+	nodes[0].children = journeyNodesToPathGraph(nodes.slice(1));
+	return [nodes[0]];
+}
+
 // this is reset to an empty array when displayedLocations changes
 export const mergingBlocks = writable<AdhesiveBlock[]>([]);
 displayedFormData.subscribe(resetMergingBlocks);
@@ -56,10 +94,11 @@ export const displayedJourneys = derived(
 // this is recalculated when and only when displayedLocations changes
 // export const displayedTree = derived(displayedLocations, calculateTree);
 export const displayedTree = writable<Promise<TreeNode[]>>(Promise.resolve([]));
-displayedFormData.subscribe((formData) => displayedTree.set(calculateTree(formData)));
+//displayedFormData.subscribe((formData) => displayedTree.set(calculateTree(formData)));
 
-export function setDisplayedFormData(formData: DisplayedFormData): void {
+export function setDisplayedFormDataAndTree(formData: DisplayedFormData): void {
 	displayedFormData.set(formData);
+	displayedTree.set(calculateTree(formData));
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
 	displayedFormData.update((formData) => {
@@ -78,6 +117,7 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 			geolocationDate: formData.geolocationDate
 		};
 		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
+		displayedTree.set(calculateTree(newFormData));
 		return newFormData;
 	});
 }
@@ -97,6 +137,7 @@ export function removeDisplayedLocation(index: number): void {
 			geolocationDate: formData.geolocationDate
 		};
 		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
+		displayedTree.set(calculateTree(newFormData));
 		return newFormData;
 	});
 }

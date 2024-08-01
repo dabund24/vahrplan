@@ -107,6 +107,42 @@ function getTimeFromBlock(block: DefiningBlock | undefined, type: TransitType): 
 	}
 }
 
+/**
+ * returns the start location of a block or `undefined` if it cannot be determined
+ * @param block
+ */
+export function getBlockStart(block: JourneyBlock | undefined): ParsedLocation | undefined {
+	switch (block?.type) {
+		case "location":
+			return block.location;
+		case "transfer":
+			return block.transitData.location;
+		case "onward-journey":
+		case "walk":
+			return block.originLocation;
+		case "leg":
+			return block.departureData.location;
+	}
+}
+
+/**
+ * returns the end location of a block or `undefined` if it cannot be determined
+ * @param block
+ */
+export function getBlockEnd(block: JourneyBlock | undefined): ParsedLocation | undefined {
+	switch (block?.type) {
+		case "location":
+			return block.location;
+		case "transfer":
+			return block.transitData.location;
+		case "onward-journey":
+		case "walk":
+			return block.destinationLocation;
+		case "leg":
+			return block.arrivalData.location;
+	}
+}
+
 export function mergeTransitData(
 	transitData1: TransitData,
 	transitData2: TransitData,

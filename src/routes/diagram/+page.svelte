@@ -4,7 +4,7 @@
 		type DisplayedFormData,
 		displayedFormData,
 		displayedTree,
-		setDisplayedFormData
+		setDisplayedFormDataAndTree
 	} from "$lib/stores/journeyStores";
 	import Tabs from "$lib/components/Tabs.svelte";
 	import MainForm from "../MainForm.svelte";
@@ -29,7 +29,7 @@
 			location.href !== getDiagramUrlFromFormData($displayedFormData).href
 		) {
 			// this happens when the user navigates here without the app context
-			setDisplayedFormData(initialFormData);
+			setDisplayedFormDataAndTree(initialFormData);
 		}
 	}
 </script>

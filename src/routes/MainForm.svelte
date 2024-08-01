@@ -2,7 +2,7 @@
 	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
 	import { dateToInputDate, getCurrentGeolocation, valueIsDefined } from "$lib/util.js";
-	import { type DisplayedFormData, setDisplayedFormData } from "$lib/stores/journeyStores.js";
+	import { type DisplayedFormData, setDisplayedFormDataAndTree } from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
@@ -93,7 +93,7 @@
 			});
 		}
 
-		setDisplayedFormData(formData);
+		setDisplayedFormDataAndTree(formData);
 
 		void goto(getDiagramUrlFromFormData(formData));
 	}

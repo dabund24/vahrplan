@@ -2,8 +2,32 @@
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { displayedFormData, refreshJourney } from "$lib/stores/journeyStores";
+	import {
+		displayedFormData,
+		initializeSharedData,
+		refreshJourney,
+		selectedJourneys,
+	} from "$lib/stores/journeyStores";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
+	import { page } from "$app/stores";
+	import { browser } from "$app/environment";
+	import { shareJourney } from "./share";
+	import { getFirstAndLastTime } from "$lib/util";
+	import type { ParsedTime } from "$lib/types";
+	import IconShare from "$lib/components/icons/IconShare.svelte";
+
+	const { formData, treeNodes } = $page.data;
+
+	if (browser && formData !== undefined && treeNodes !== undefined) {
+		initializeSharedData(formData, treeNodes)
+	}
+
+	$: tokens = $selectedJourneys.map((journey) => journey.refreshToken);
+
+	let departure: ParsedTime;
+	$: if ($selectedJourneys.length > 0) {
+		({ departure } = getFirstAndLastTime($selectedJourneys[0].blocks));
+	}
 
 	let windowWidth: number;
 
@@ -30,6 +54,12 @@
 					: "Verbindungsdetails"}
 				mobileOnly={true}
 			>
+				<button
+					class="button--small hoverable"
+					on:click={() => void shareJourney(tokens, departure)}
+				>
+					<IconShare />
+				</button>
 				<button class="button--small hoverable" on:click={() => void refreshJourney()}>
 					<IconRefresh />
 				</button>
