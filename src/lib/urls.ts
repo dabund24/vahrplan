@@ -58,7 +58,7 @@ export function parseApiJourneysUrl(url: URL): DiagramRequestData | undefined {
 	}
 }
 
-export function getApiRefreshUrl(tokens: string[]): URL {
+export function getApiRefreshUrl(tokens: (string | null)[]): URL {
 	const url = new URL("/api/journey", location.origin);
 	url.searchParams.set("tokens", btoa(JSON.stringify(tokens)));
 	return url;
