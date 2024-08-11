@@ -20,7 +20,7 @@ export const GET: RequestHandler = async function ({ url }) {
 function getHafasTokensFromUrl(url: URL): (string | null)[] | undefined {
 	const tokenParam = url.searchParams.get("tokens") ?? "";
 	try {
-		return JSON.parse(atob(tokenParam)) as (string | null)[];
+		return JSON.parse(tokenParam) as (string | null)[];
 	} catch {
 		return undefined;
 	}

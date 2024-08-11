@@ -24,7 +24,7 @@ export const load: PageServerLoad = async function ({ url, fetch }) {
 
 	// get journey from refresh tokens
 	const subjourneysResponse = (await fetch(
-		`/api/journey?tokens=${btoa(JSON.stringify(tokens))}`
+		`/api/journey?tokens=${encodeURIComponent(JSON.stringify(tokens))}`
 	).then((res) => res.json())) as ZugResponse<JourneyBlock[][]>;
 	if (subjourneysResponse.isError) {
 		error(404, "Laden der Verbindung fehlgeschlagen");
