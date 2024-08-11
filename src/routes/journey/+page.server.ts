@@ -17,7 +17,6 @@ export const load: PageServerLoad = async function ({ url, fetch }) {
 
 	// figure out refresh tokens
 	if (longJourneyParam !== null) {
-		console.log(decodeURIComponent(longJourneyParam));
 		tokens = JSON.parse(decodeURIComponent(longJourneyParam)) as string[];
 	} else {
 		// get refresh tokens from short url

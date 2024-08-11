@@ -33,8 +33,7 @@
 				</a>
 			</li>
 			<li aria-current={currentPageMobile === 1 ? "page" : undefined}>
-				<a href="/journey" class="hoverable flex-row journey-link">
-					<IconMap />
+				<a href="/journey" class="hoverable flex-row">
 					<IconDetails />
 					<span>Details/Karte</span>
 				</a>
@@ -101,9 +100,6 @@
 		.mobile-line-container {
 			display: none;
 		}
-		.journey-link > :global(:nth-child(2)) {
-            display: none;
-		}
 	}
 
 	@media screen and (max-width: 999px) {
@@ -140,8 +136,5 @@
 		.desktop-line-container {
 			display: none;
 		}
-        .journey-link > :global(:first-child) {
-            display: none;
-        }
 	}
 </style>
