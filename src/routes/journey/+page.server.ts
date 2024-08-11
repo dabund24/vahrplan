@@ -4,23 +4,31 @@ import { getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
 import { error } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async function ({ url, fetch }) {
-	const journeyParam = url.searchParams.get("j");
-	if (journeyParam === null) {
+	const shortJourneyParam = url.searchParams.get("j");
+	const longJourneyParam = url.searchParams.get("journey");
+	if (shortJourneyParam === null && longJourneyParam === null) {
 		// use selected journey
 		return {
 			journey: undefined
 		};
 	}
-	// use shared journey
+	// use journey params
+	let tokens: string[];
 
-	// get refresh tokens from short url
-	const tokensResponse = (await fetch(`/api/journey/shorturl?token=${journeyParam}`).then((res) =>
-		res.json()
-	)) as ZugResponse<string[]>;
-	if (tokensResponse.isError) {
-		error(404, "Token existiert nicht");
+	// figure out refresh tokens
+	if (longJourneyParam !== null) {
+		console.log(decodeURIComponent(longJourneyParam));
+		tokens = JSON.parse(decodeURIComponent(longJourneyParam)) as string[];
+	} else {
+		// get refresh tokens from short url
+		const tokensResponse = (await fetch(
+			`/api/journey/shorturl?token=${shortJourneyParam}`
+		).then((res) => res.json())) as ZugResponse<string[]>;
+		if (tokensResponse.isError) {
+			error(404, "Token existiert nicht");
+		}
+		tokens = tokensResponse.content;
 	}
-	const tokens = tokensResponse.content;
 
 	// get journey from refresh tokens
 	const subjourneysResponse = (await fetch(
