@@ -10,14 +10,14 @@
 	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { displayedFormData } from "$lib/stores/journeyStores";
 
-	$: [currentPageMobile, currentPageDesktop] = getCurrentPageIndex($page.url.pathname);
+	$: currentPage = getCurrentPageIndex($page.url.pathname);
 
-	function getCurrentPageIndex(pathname: string): [number, number] {
-		if (pathname === "/" || pathname.startsWith("/diagram")) return [0, 0];
-		if (pathname.startsWith("/journey")) return [1, 1];
-		if (pathname.startsWith("/map")) return [2, 1];
-		if (pathname === "/settings") return [3, 2];
-		else return [4, 3];
+	function getCurrentPageIndex(pathname: string): number {
+		if (pathname === "/" || pathname.startsWith("/diagram")) return 0;
+		if (pathname.startsWith("/journey")) return 1;
+		if (pathname.startsWith("/bookmarks")) return 2;
+		if (pathname === "/settings") return 3;
+		else return 4;
 	}
 
 	$: diagramURL = browser && $displayedFormData !== undefined ? getDiagramUrlFromFormData($displayedFormData).href : "/"
@@ -26,41 +26,38 @@
 <nav>
 	<div class="links-container">
 		<ul>
-			<li aria-current={currentPageMobile === 0 ? "page" : undefined}>
+			<li aria-current={currentPage === 0 ? "page" : undefined}>
 				<a href={diagramURL} class="hoverable flex-row">
 					<IconLogo />
 					<span>Verbindungssuche</span>
 				</a>
 			</li>
-			<li aria-current={currentPageMobile === 1 ? "page" : undefined}>
+			<li aria-current={currentPage === 1 ? "page" : undefined}>
 				<a href="/journey" class="hoverable flex-row">
 					<IconDetails />
 					<span>Details/Karte</span>
 				</a>
 			</li>
-			<li aria-current={currentPageMobile === 2 ? "page" : undefined}>
-				<a href="/map" class="hoverable flex-row">
+			<li aria-current={currentPage === 2 ? "page" : undefined}>
+				<a href="/bookmarks" class="hoverable flex-row">
 					<IconMap />
 				</a>
 			</li>
-			<li aria-current={currentPageMobile === 3 ? "page" : undefined}>
+			<li aria-current={currentPage === 3 ? "page" : undefined}>
 				<a href="/settings" class="hoverable flex-row">
 					<IconSettings />
 					<span>Einstellungen</span>
 				</a>
 			</li>
-			<li aria-current={currentPageMobile === 4 ? "page" : undefined}>
+			<li aria-current={currentPage === 4 ? "page" : undefined}>
 				<a href="/about" class="hoverable flex-row">
 					<IconAbout />
 					<span>Über</span>
 				</a>
 			</li>
 		</ul>
-		<div class="mobile-line-container">
-			<SlidingLine amountOfPositions={5} newPosition={currentPageMobile} />
-		</div>
-		<div class="desktop-line-container">
-			<SlidingLine amountOfPositions={4} newPosition={currentPageDesktop} />
+		<div class="line-container">
+			<SlidingLine amountOfPositions={5} newPosition={currentPage} />
 		</div>
 	</div>
 </nav>
@@ -91,14 +88,8 @@
 	}
 
 	@media screen and (min-width: 1000px) {
-		li:nth-child(3) {
-			display: none;
-		}
-		.desktop-line-container {
-			translate: calc(100% / -8 + var(--line-width) + 1rem + 13px);
-		}
-		.mobile-line-container {
-			display: none;
+		.line-container {
+			translate: calc(100% / -10 + var(--line-width) + 1rem + 13px);
 		}
 	}
 
@@ -131,9 +122,6 @@
 			margin: auto;
 		}
 		a > span {
-			display: none;
-		}
-		.desktop-line-container {
 			display: none;
 		}
 	}
