@@ -15,6 +15,9 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { shareDiagram } from "./share";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
+	import { toggleDiagramBookmark, getBookmarks } from "$lib/bookmarks";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import { onMount } from "svelte";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -48,11 +51,25 @@
 	}
 
 	$: areStopovers = $mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover);
+
+	let isBookmarked = false
+
+	onMount(() => {
+		const bookmarkedDiagrams = getBookmarks("diagram")
+		 isBookmarked = bookmarkedDiagrams.some(bookmark => bookmark.link === location.href)
+	})
+
+	function handleBookmarkClick(): void {
+		isBookmarked = toggleDiagramBookmark($displayedFormData)
+	}
 </script>
 
 <div class="flex-row actions">
-	<button class="button--small hoverable action--share" on:click={() => void shareDiagram($displayedFormData)}>
+	<button class="button--small hoverable" on:click={() => void shareDiagram($displayedFormData)}>
 		<IconShare />
+	</button>
+	<button class="button--small hoverable" on:click={handleBookmarkClick}>
+		<IconBookmark isBookmarked={isBookmarked} />
 	</button>
 </div>
 <div class="flex-column" id="journey-summary">

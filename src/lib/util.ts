@@ -181,6 +181,18 @@ export function timeToString(time: Date | undefined): string {
 	});
 }
 
+export function dateToString(date: Date | undefined): string {
+	if (date === undefined) {
+		return "";
+	}
+	return new Date(date).toLocaleDateString("de-DE", {
+		weekday: "short",
+		day: "numeric",
+		month: "short",
+		year: "numeric"
+	});
+}
+
 export function dateToInputDate(dateObject: Date): string {
 	const timezoneOffset = dateObject.getTimezoneOffset() * 60000;
 	const timeIsoString = new Date(dateObject.getTime() - timezoneOffset).toISOString();
