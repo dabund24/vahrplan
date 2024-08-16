@@ -1,4 +1,4 @@
-import type { DisplayedFormData } from "$lib/stores/journeyStores";
+import type { DisplayedFormData, SelectedJourney } from "$lib/stores/journeyStores";
 import type { DiagramRequestData, TransitType } from "$lib/types";
 import type { Location } from "hafas-client";
 import type { Settings } from "$lib/stores/settingStore";
@@ -61,6 +61,13 @@ export function parseApiJourneysUrl(url: URL): DiagramRequestData | undefined {
 export function getApiRefreshUrl(tokens: (string | null)[]): URL {
 	const url = new URL("/api/journey", location.origin);
 	url.searchParams.set("tokens", encodeURIComponent(JSON.stringify(tokens)));
+	return url;
+}
+
+export function getJourneyUrl(journey: SelectedJourney[]): URL {
+	const tokens = journey.map((subJourney) => subJourney.refreshToken);
+	const url = new URL("/journey", location.origin);
+	url.searchParams.set("journey", encodeURIComponent(JSON.stringify(tokens)));
 	return url;
 }
 

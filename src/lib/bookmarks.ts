@@ -1,6 +1,6 @@
 import type { ParsedLocation, TransitType } from "$lib/types";
-import type { DisplayedFormData } from "$lib/stores/journeyStores";
-import { getDiagramUrlFromFormData } from "$lib/urls";
+import { type DisplayedFormData, type SelectedJourney } from "$lib/stores/journeyStores";
+import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
 
 export type BookmarkType = "diagram" | "journey" | "station";
 
@@ -29,18 +29,14 @@ export type DiagramBookmark = {
 };
 
 export type JourneyBookmark = {
-	start: string;
-	destination: string;
+	start: Pick<ParsedLocation, "name" | "type">;
+	destination: Pick<ParsedLocation, "name" | "type">;
 	arrival: Date;
 	departure: Date;
-	duration: number;
 	link: string;
 };
 
-export type StationBookmark = {
-	type: ParsedLocation["type"];
-	name: string;
-};
+export type StationBookmark = Pick<ParsedLocation, "name" | "type">;
 
 /**
  * read and return all bookmarks of a certain type from localStorage
@@ -77,7 +73,7 @@ export function setBookmarks<T extends BookmarkType>(bookmarks: Bookmarks<T>): v
 		default:
 			sortedBookmarks = bookmarks.bookmarks;
 	}
-	localStorage.setItem("diagramBookmarks", JSON.stringify(sortedBookmarks));
+	localStorage.setItem(`${bookmarks.type}Bookmarks`, JSON.stringify(sortedBookmarks));
 }
 
 /**
@@ -90,9 +86,8 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		return false;
 	}
 	const bookmarks = getBookmarks("diagram");
-	const indexInOldData = bookmarks.findIndex(
-		(bookmark) => bookmark.link === getDiagramUrlFromFormData(formData).href
-	);
+	const diagramUrlHref = getDiagramUrlFromFormData(formData).href;
+	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.link === diagramUrlHref);
 	if (indexInOldData !== -1) {
 		// bookmark already exists => remove it
 		bookmarks.splice(indexInOldData, 1);
@@ -109,9 +104,50 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		}),
 		time: formData.time,
 		transitType: formData.timeRole,
-		link: getDiagramUrlFromFormData(formData).href
+		link: diagramUrlHref
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "diagram", bookmarks });
+	return true;
+}
+
+/**
+ * either removes or adds a diagram bookmark
+ * @param journey all sub-journeys
+ * @param formData displayed form data
+ * @returns `true` if the data is bookmarked now; `false` otherwise
+ */
+export function toggleJourneyBookmark(
+	journey: SelectedJourney[],
+	formData: DisplayedFormData | undefined
+): boolean {
+	if (journey.length === 0 || formData === undefined) {
+		return false;
+	}
+	const journeyUrlHref = getJourneyUrl(journey).href;
+	const bookmarks = getBookmarks("journey");
+	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.link === journeyUrlHref);
+	if (indexInOldData !== -1) {
+		// bookmark already exists => remove it
+		bookmarks.splice(indexInOldData, 1);
+		setBookmarks({ type: "journey", bookmarks });
+		return false;
+	}
+	// bookmark does not yet exist => add it
+	const bookmark: JourneyBookmark = {
+		start: {
+			type: formData.locations.at(0)?.value.type ?? "station",
+			name: formData.locations.at(0)?.value.name ?? ""
+		},
+		destination: {
+			type: formData.locations.at(-1)?.value.type ?? "station",
+			name: formData.locations.at(-1)?.value.name ?? ""
+		},
+		departure: journey.at(0)?.departure.departure?.time ?? new Date(0),
+		arrival: journey.at(-1)?.arrival.arrival?.time ?? new Date(0),
+		link: journeyUrlHref
+	};
+	bookmarks.push(bookmark);
+	setBookmarks({ type: "journey", bookmarks });
 	return true;
 }

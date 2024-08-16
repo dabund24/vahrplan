@@ -35,6 +35,7 @@
 		direction: rtl;
 		width: 0;
 		align-items: end;
+		text-align: right;
 	}
 	.width-setter {
 		height: 0;
