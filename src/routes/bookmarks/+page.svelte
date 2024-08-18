@@ -3,6 +3,7 @@
 	import Header from "$lib/components/Header.svelte";
 	import DiagramBookmarks from "$lib/components/bookmarks/DiagramBookmarks.svelte";
 	import JourneyBookmarks from "$lib/components/bookmarks/JourneyBookmarks.svelte";
+	import StationBookmarks from "$lib/components/bookmarks/StationBookmarks.svelte";
 </script>
 
 <Header title="Favoriten" mobileOnly={true}></Header>
@@ -13,6 +14,8 @@
 				<DiagramBookmarks />
 			{:else if activeTab === 1}
 				<JourneyBookmarks />
+			{:else if activeTab === 2}
+				<StationBookmarks />
 			{/if}
 		</div>
 	</Tabs>

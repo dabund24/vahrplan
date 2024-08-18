@@ -17,7 +17,7 @@ type Bookmarks<T extends BookmarkType> = T extends "diagram"
 		: T extends "station"
 			? {
 					type: T;
-					bookmarks: StationBookmark[];
+					bookmarks: ParsedLocation[];
 				}
 			: never;
 
@@ -35,8 +35,6 @@ export type JourneyBookmark = {
 	departure: Date;
 	link: string;
 };
-
-export type StationBookmark = Pick<ParsedLocation, "name" | "type">;
 
 /**
  * read and return all bookmarks of a certain type from localStorage
@@ -71,7 +69,7 @@ export function setBookmarks<T extends BookmarkType>(bookmarks: Bookmarks<T>): v
 			);
 			break;
 		default:
-			sortedBookmarks = bookmarks.bookmarks;
+			sortedBookmarks = bookmarks.bookmarks.sort((a, b) => a.name.localeCompare(b.name));
 	}
 	localStorage.setItem(`${bookmarks.type}Bookmarks`, JSON.stringify(sortedBookmarks));
 }
