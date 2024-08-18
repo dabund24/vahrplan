@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from "$app/stores";
 	import IconLogo from "$lib/components/icons/IconLogo.svelte";
-	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import IconSettings from "$lib/components/icons/IconSettings.svelte";
 	import IconAbout from "$lib/components/icons/IconAbout.svelte";
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
@@ -9,6 +8,7 @@
 	import { browser } from "$app/environment";
 	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { displayedFormData } from "$lib/stores/journeyStores";
+	import IconBookmarkLarge from "$lib/components/icons/IconBookmarkLarge.svelte";
 
 	$: currentPage = getCurrentPageIndex($page.url.pathname);
 
@@ -40,7 +40,8 @@
 			</li>
 			<li aria-current={currentPage === 2 ? "page" : undefined}>
 				<a href="/bookmarks" class="hoverable flex-row">
-					<IconMap />
+					<IconBookmarkLarge />
+					<span>Lesezeichen</span>
 				</a>
 			</li>
 			<li aria-current={currentPage === 3 ? "page" : undefined}>
