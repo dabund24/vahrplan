@@ -7,7 +7,7 @@
 </script>
 
 <Header title="Favoriten" mobileOnly={true}></Header>
-<div id="bookmarks">
+<div id="bookmarks" data-sveltekit-preload-data="off">
 	<Tabs let:activeTab tabs={["Diagramme", "Reisen", "Stationen"]}>
 		<div class="tab-content">
 			{#if activeTab === 0}
