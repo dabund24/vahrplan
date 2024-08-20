@@ -2,7 +2,10 @@
 	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
 	import { dateToInputDate, getCurrentGeolocation, valueIsDefined } from "$lib/util.js";
-	import { type DisplayedFormData, setDisplayedFormDataAndTree } from "$lib/stores/journeyStores.js";
+	import {
+		type DisplayedFormData,
+		setDisplayedFormDataAndTree
+	} from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Modal from "$lib/components/Modal.svelte";
@@ -171,28 +174,28 @@
 							</g>
 						</svg>
 					</button>
+					<button
+						class="button--small hoverable switch-button"
+						type="button"
+						on:click={reverseStops}
+						title="Stationsreihenfolge tauschen"
+					>
+						<svg width="16px" height="16px">
+							<g
+								stroke="var(--foreground-color)"
+								stroke-width="3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								fill="none"
+							>
+								<polyline points="5.5,2 5.5,14 1.5,10" />
+								<polyline points="10.5,14 10.5,2 14.5,6" />
+							</g>
+						</svg>
+					</button>
 				</div>
 			{/each}
 		</div>
-		<button
-			class="button--small hoverable"
-			type="button"
-			on:click={reverseStops}
-			title="Stationsreihenfolge tauschen"
-		>
-			<svg width="16px" height="16px">
-				<g
-					stroke="var(--foreground-color)"
-					stroke-width="3"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					fill="none"
-				>
-					<polyline points="5.5,2 5.5,14 1.5,10" />
-					<polyline points="10.5,14 10.5,2 14.5,6" />
-				</g>
-			</svg>
-		</button>
 	</div>
 	<div class="time-filter-submit" class:time-is-now={timeIsNow}>
 		<div class="flex-row">
@@ -318,19 +321,23 @@
 		width: 100%;
 	}
 
-	.input-container:first-child .add-button {
+	.input-container:first-child .add-button,
+	.input-container:first-child .remove-button {
 		visibility: hidden;
 	}
-	.input-container:first-child .remove-button,
-	.input-container:last-child .remove-button {
+	.input-container:last-child .remove-button,
+	.input-container:not(:last-child) .switch-button {
 		display: none;
 	}
 
-	.add-button {
+	.add-button,
+	.input-container:last-child:nth-child(2) .switch-button {
 		translate: 0 -50%;
-		align-self: center;
+		transition: translate 0.4s var(--cubic-bezier);
 	}
-	.remove-button {
+	.remove-button,
+	.add-button,
+	.switch-button {
 		align-self: center;
 	}
 

@@ -5,6 +5,7 @@
 	import { getApiLocationsUrl } from "$lib/urls";
 	import { getBookmarks } from "$lib/bookmarks";
 	import { onMount } from "svelte";
+	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
 
 	export let selectedLocation: ParsedLocation | undefined = undefined;
 	export let inputPlaceholder: string;
@@ -16,7 +17,7 @@
 	 */
 	export let simpleInput = false;
 
-	let staticSuggestions: ParsedLocation[] = []
+	let staticSuggestions: ParsedLocation[] = [];
 
 	let inputText = (selectedLocation?.name ?? "") as string;
 	let inputElement: HTMLInputElement;
@@ -27,10 +28,13 @@
 
 	onMount(() => {
 		if (!simpleInput) {
-			staticSuggestions = [getParsedGeolocation(new Date(), { lat: 0, lng: 0 }), ...getBookmarks("station")]
-			promisedSuggestions = Promise.resolve(staticSuggestions)
+			staticSuggestions = [
+				getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
+				...getBookmarks("station")
+			];
+			promisedSuggestions = Promise.resolve(staticSuggestions);
 		}
-	})
+	});
 
 	/**
 	 * return station autocomplete suggestions for some user input
@@ -49,8 +53,8 @@
 			if (!response.isError) {
 				// add suggestions from hafas and remove duplicates
 				suggestions.push(
-					...response.content.filter(
-						(suggestion) => suggestions.every((s) => s.name !== suggestion.name)
+					...response.content.filter((suggestion) =>
+						suggestions.every((s) => s.name !== suggestion.name)
 					)
 				);
 			}
@@ -92,6 +96,12 @@
 			}
 		});
 	}
+
+	function clearInput(): void {
+		inputText = "";
+		inputElement.focus();
+		selectedLocation = undefined;
+	}
 </script>
 
 <div class="outer-wrapper">
@@ -110,6 +120,11 @@
 				bind:value={inputText}
 				on:keydown={handleInputKeydown}
 			/>
+			{#if inputText !== ""}
+				<button class="hoverable flex-row" on:click={clearInput}>
+					<IconClearInput />
+				</button>
+			{/if}
 		</label>
 		<ul>
 			{#await promisedSuggestions}
