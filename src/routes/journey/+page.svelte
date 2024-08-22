@@ -15,10 +15,11 @@
 	import type { ParsedTime } from "$lib/types";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
-	import { onMount } from "svelte";
+	import { type ComponentProps, onMount } from "svelte";
 	import { getBookmarks, toggleJourneyBookmark } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { getJourneyUrl } from "$lib/urls";
+	import Options from "$lib/components/Options.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -26,18 +27,39 @@
 		initializeSharedData(formData, treeNodes);
 	}
 
-	$: tokens = $selectedJourneys.map((journey) => journey.refreshToken);
+	let tokens = $derived($selectedJourneys.map((journey) => journey.refreshToken));
 
-	let departure: ParsedTime;
-	$: if ($selectedJourneys.length > 0) {
-		({ departure } = getFirstAndLastTime($selectedJourneys[0].blocks));
-	}
+	let departure: ParsedTime = $derived.by(() => {
+		if ($selectedJourneys.length === 0) {
+			return { departure: { time: new Date(0) } };
+		}
+		const { departure } = getFirstAndLastTime($selectedJourneys[0].blocks);
+		return departure;
+	});
 
-	let displayedContent: 0 | 1 = 0;
+	let displayedContent: 0 | 1 = $state(0);
 
-	let clientWidth: number;
+	let clientWidth: number = $state(0);
 
-	let isBookmarked: boolean;
+	let isBookmarked = $state(false);
+
+	const options: ComponentProps<Options>["options"] = [
+		{
+			name: "Aktualisieren",
+			icon: iconRefresh,
+			onClick: refreshJourney
+		},
+		{
+			name: "Teilen",
+			icon: iconShare,
+			onClick: () => shareJourney(tokens, departure)
+		},
+		{
+			name: "Merken",
+			icon: iconBookmark,
+			onClick: handleBookmarkClick
+		}
+	];
 
 	onMount(() => {
 		const bookmarkedJourneys = getBookmarks("journey");
@@ -50,6 +72,16 @@
 		isBookmarked = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
 	}
 </script>
+
+{#snippet iconRefresh()}
+	<IconRefresh />
+{/snippet}
+{#snippet iconBookmark()}
+	<IconBookmark {isBookmarked} />
+{/snippet}
+{#snippet iconShare()}
+	<IconShare />
+{/snippet}
 
 <svelte:head>
 	<title>Verbindungsdetails</title>
@@ -66,20 +98,9 @@
 		mobileOnly={true}
 	>
 		<SingleSelect names={["J", "M"]} bind:selected={displayedContent} />
-		{#if tokens.every((token) => token.length > 5)}
-			<button class="button--small hoverable" on:click={handleBookmarkClick}>
-				<IconBookmark {isBookmarked} />
-			</button>
+		{#if tokens.length > 0 && tokens.every((token) => token.length > 5)}
+			<Options id={"journey"} {options} />
 		{/if}
-		<button
-			class="button--small hoverable"
-			on:click={() => void shareJourney(tokens, departure)}
-		>
-			<IconShare />
-		</button>
-		<button class="button--small hoverable" on:click={() => void refreshJourney()}>
-			<IconRefresh />
-		</button>
 	</Header>
 	<div class="columns">
 		<section class="journeys">
