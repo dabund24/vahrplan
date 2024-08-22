@@ -47,22 +47,24 @@
 	</div>
 </div>
 
-<ul>
-	{#each bookmarks as bookmark (bookmark.name)}
-		<div class="flex-row bookmark" transition:scale animate:flip={{ duration: 400 }}>
-			<IconStationLocation color="foreground" iconType={bookmark.type} />
-			<strong class="padded-top-bottom">
-				{bookmark.name}
-			</strong>
-			<button
-				class="button--small hoverable"
-				on:click={() => void removeStationBookmark(bookmark)}
-			>
-				<IconClose />
-			</button>
-		</div>
-	{/each}
-</ul>
+{#if bookmarks.length > 0}
+	<ul>
+		{#each bookmarks as bookmark (bookmark.name)}
+			<div class="flex-row bookmark" transition:scale animate:flip={{ duration: 400 }}>
+				<IconStationLocation color="foreground" iconType={bookmark.type} />
+				<strong class="padded-top-bottom">
+					{bookmark.name}
+				</strong>
+				<button
+					class="button--small hoverable"
+					on:click={() => void removeStationBookmark(bookmark)}
+				>
+					<IconClose />
+				</button>
+			</div>
+		{/each}
+	</ul>
+{/if}
 
 <style>
 	.input-container {
