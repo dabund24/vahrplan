@@ -1,63 +1,108 @@
 <script lang="ts">
 	import { dateDifference, dateToString } from "$lib/util.js";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import type { JourneyBookmark } from "$lib/bookmarks.js";
-	import { onMount } from "svelte";
+	import { type JourneyBookmark, setBookmarks } from "$lib/bookmarks.js";
+	import { type ComponentProps, onMount } from "svelte";
 	import { getBookmarks } from "$lib/bookmarks.js";
 	import Duration from "$lib/components/Duration.svelte";
 	import Time from "$lib/components/Time.svelte";
+	import Options from "$lib/components/Options.svelte";
+	import { goto } from "$app/navigation";
+	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
+	import { scale } from "svelte/transition";
+	import { flip } from "svelte/animate";
 
-	let bookmarks: JourneyBookmark[] = [];
+	let bookmarks: JourneyBookmark[] = $state([]);
 
 	onMount(() => {
 		bookmarks = getBookmarks("journey");
 	});
+
+	function getOptions(bookmarkIndex: number): ComponentProps<Options>["options"] {
+		return [
+			{
+				name: "Verbindung anzeigen",
+				onClick: () => goto(new URL(bookmarks[bookmarkIndex].link)),
+				icon: iconRightArrow
+			},
+			{
+				name: "Lesezeichen löschen",
+				onClick: () => {
+					bookmarks.splice(bookmarkIndex, 1);
+					setBookmarks({ type: "journey", bookmarks });
+				},
+				icon: iconClose
+			}
+		];
+	}
 </script>
 
-<ol>
-	{#each bookmarks as bookmark}
-		<li class="padded-top-bottom">
-			<a href={bookmark.link} class="hoverable button--small flex-column">
-				<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
+{#snippet iconClose()}
+	<IconClose />
+{/snippet}
+{#snippet iconRightArrow()}
+	<IconRightArrow />
+{/snippet}
 
-				<div class="journey-data">
-					<Time time={{ departure: { time: bookmark.departure } }} />
-					<div class="icon">
-						<IconStationLocation color={"foreground"} iconType={bookmark.start.type} />
+{#if bookmarks.length > 0}
+	<ol>
+		{#each bookmarks as bookmark, i (bookmark.link)}
+			<li
+				class="flex-row"
+				transition:scale
+				animate:flip={{ duration: 400 }}
+			>
+				<a href={bookmark.link} class="hoverable button--small flex-column">
+					<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
+
+					<div class="journey-data">
+						<Time time={{ departure: { time: bookmark.departure } }} />
+						<div class="icon">
+							<IconStationLocation
+								color={"foreground"}
+								iconType={bookmark.start.type}
+							/>
+						</div>
+						<div>
+							<strong class="limit-lines">{bookmark.start.name}</strong>
+						</div>
+						<div>
+							<Duration
+								duration={dateDifference(bookmark.departure, bookmark.arrival)}
+								alignRight={true}
+							/>
+						</div>
+						<div>
+							<div class="line--neutral"></div>
+						</div>
+						<div></div>
+						<Time time={{ arrival: { time: bookmark.arrival } }} />
+						<div class="icon">
+							<IconStationLocation
+								color={"foreground"}
+								iconType={bookmark.destination.type}
+							/>
+						</div>
+						<div>
+							<strong class="limit-lines">{bookmark.destination.name}</strong>
+						</div>
 					</div>
-					<div>
-						<strong class="limit-lines">{bookmark.start.name}</strong>
-					</div>
-					<div>
-						<Duration
-							duration={dateDifference(bookmark.departure, bookmark.arrival)}
-							alignRight={true}
-						/>
-					</div>
-					<div>
-						<div class="line--neutral"></div>
-					</div>
-					<div></div>
-					<Time time={{ arrival: { time: bookmark.arrival } }} />
-					<div class="icon">
-						<IconStationLocation
-							color={"foreground"}
-							iconType={bookmark.destination.type}
-						/>
-					</div>
-					<div>
-						<strong class="limit-lines">{bookmark.destination.name}</strong>
-					</div>
+				</a>
+				<div class="options-container">
+					<Options id={`journey-bookmark__${i}`} options={getOptions(i)} />
 				</div>
-			</a>
-		</li>
-	{/each}
-</ol>
+			</li>
+		{/each}
+	</ol>
+{/if}
 
 <style>
 	a {
 		text-decoration: none;
-        padding: .5rem 1rem;
+		padding: 0 1rem;
+		width: 100%;
+		margin-right: calc(-24px - 1rem);
 	}
 	.journey-data {
 		display: grid;
@@ -75,9 +120,9 @@
 		position: relative;
 	}
 	.line--neutral {
-        margin: -1.5rem auto;
+		margin: -1.5rem auto;
 		width: var(--line-width);
-        height: calc(100% + 3rem);
+		height: calc(100% + 3rem);
 	}
 	.limit-lines {
 		-webkit-line-clamp: 2;
