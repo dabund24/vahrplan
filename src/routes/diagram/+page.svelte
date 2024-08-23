@@ -15,12 +15,13 @@
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
 	import { getDiagramUrlFromFormData } from "$lib/urls.js";
+	import type { ComponentProps } from "svelte";
 
-	let windowWidth: number;
+	let windowWidth: number = $state(0);
 
-	$: showSplitPane = windowWidth >= 1000;
+	let showSplitPane = $derived(windowWidth >= 1000);
 
-	$: resetDiagram($page.data.formData);
+	$effect(() => resetDiagram($page.data.formData));
 
 	function resetDiagram(initialFormData: DisplayedFormData | undefined): void {
 		if (
@@ -32,12 +33,32 @@
 			setDisplayedFormDataAndTree(initialFormData);
 		}
 	}
+	
+	const tabContent: ComponentProps<Tabs>["tabs"] = [
+		{
+			title: "Übersicht",
+			content: journeyOverview
+		},
+		{
+			title: "Karte",
+			content: map
+		}
+	]
 </script>
 
 <svelte:head>
 	<title>Start</title>
 	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
 </svelte:head>
+
+{#snippet journeyOverview()}
+	<Journeys />
+{/snippet}
+{#snippet map()}
+	{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
+		<Leaflet.default />
+	{/await}
+{/snippet}
 
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
@@ -70,15 +91,7 @@
 		</div>
 		<div slot="b" class="journey-preview">
 			{#if showSplitPane}
-				<Tabs tabs={["Übersicht", "Karte"]} let:activeTab>
-					{#if activeTab === 0}
-						<Journeys />
-					{:else if activeTab === 1}
-						{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
-							<Leaflet.default />
-						{/await}
-					{/if}
-				</Tabs>
+				<Tabs tabs={tabContent} />
 			{/if}
 		</div>
 	</SplitPane>

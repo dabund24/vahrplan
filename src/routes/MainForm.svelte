@@ -19,25 +19,32 @@
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { get } from "svelte/store";
+	import type { ComponentProps } from "svelte";
+	import IconClose from "$lib/components/icons/IconClose.svelte";
 
-	export let initialFormData: DisplayedFormData | undefined = undefined;
+	type Props = {
+		initialFormData: DisplayedFormData | undefined;
+	};
 
-	let stops: KeyedItem<ParsedLocation | undefined, number>[];
+	let { initialFormData }: Props = $props();
 
-	$: if (initialFormData === undefined) {
-		stops = [
-			{ value: undefined, key: Math.random() },
-			{ value: undefined, key: Math.random() }
-		];
-	} else {
-		stops = initialFormData.locations;
-	}
+	let stops: KeyedItem<ParsedLocation | undefined, number>[] = $state([]);
+	$effect.pre(() => {
+		if (initialFormData === undefined) {
+			stops = [
+				{ value: undefined, key: Math.random() },
+				{ value: undefined, key: Math.random() }
+			];
+		} else {
+			stops = initialFormData.locations;
+		}
+	});
 
-	let departureArrivalSelection: 0 | 1;
-	let timeIsNow: boolean;
-	let time: string;
+	let departureArrivalSelection: 0 | 1 = $state(0);
+	let timeIsNow = $state(true);
+	let time = $state(dateToInputDate(new Date()));
 
-	$: initTimeInputs(initialFormData);
+	$effect.pre(() => initTimeInputs(initialFormData));
 
 	function initTimeInputs(displayedFormData: DisplayedFormData | undefined): void {
 		if (displayedFormData === undefined) {
@@ -67,7 +74,8 @@
 		stops = stops.toReversed();
 	}
 
-	async function handleFormSubmit(): Promise<void> {
+	async function handleFormSubmit(event: SubmitEvent): Promise<void> {
+		event.preventDefault();
 		const stopsToBeDisplayed = stops.filter<KeyedItem<ParsedLocation, number>>(
 			valueIsDefined<ParsedLocation, number>
 		);
@@ -106,26 +114,101 @@
 			showFilterModal: true
 		});
 	}
+
+	const modalTabContent: ComponentProps<Tabs>["tabs"] = [
+		{
+			title: "Allgemein",
+			content: generalFilter
+		},
+		{
+			title: "Verkehrsmittel",
+			content: meansFilter
+		}
+	];
 </script>
 
-<form class="flex-column" on:submit|preventDefault={handleFormSubmit}>
+{#snippet generalFilter()}
+	<Setting
+		settingName="Fahrradmitnahme"
+		bind:setting={$settings.journeysOptions.bike}
+		settingInfo={{ type: "boolean" }}
+	/>
+	<Setting
+		settingName="Barrierefreiheit"
+		bind:setting={$settings.journeysOptions.accessibility}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: "none", name: "ignorieren" },
+				{ value: "partial", name: "bevorzugen" },
+				{ value: "complete", name: "strikt" }
+			]
+		}}
+	/>
+	<Setting
+		settingName="Maximale Umstiegsanzahl"
+		bind:setting={$settings.journeysOptions.transfers}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: 0, name: "0" },
+				{ value: 1, name: "1" },
+				{ value: 2, name: "2" },
+				{ value: 3, name: "3" },
+				{ value: 4, name: "4" },
+				{ value: 5, name: "5" },
+				{ value: -1, name: "beliebig" }
+			]
+		}}
+	/>
+	<Setting
+		settingName="Mindestumsteigezeit"
+		bind:setting={$settings.journeysOptions.transferTime}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: 0, name: "0min" },
+				{ value: 2, name: "2min" },
+				{ value: 5, name: "5min" },
+				{ value: 10, name: "10min" },
+				{ value: 15, name: "15min" },
+				{ value: 20, name: "20min" },
+				{ value: 30, name: "30min" },
+				{ value: 40, name: "40min" },
+				{ value: 50, name: "50min" },
+				{ value: 60, name: "1h" }
+			]
+		}}
+	/>
+{/snippet}
+{#snippet meansFilter()}
+	{#each Object.entries(products) as [product, productName]}
+		<Setting
+			settingName={productName}
+			bind:setting={$settings.journeysOptions.products[product]}
+			settingInfo={{ type: "boolean" }}
+		/>
+	{/each}
+{/snippet}
+
+<form class="flex-column" onsubmit={(e) => handleFormSubmit(e)}>
 	<div class="location-inputs--outer flex-row">
 		<div class="location-inputs">
 			{#each stops as stop, i (stop.key)}
 				<div
 					class="flex-row input-container"
 					transition:scale
-					on:introstart={(e) =>
+					onintrostart={(e) =>
 						void (
 							e.target instanceof Element &&
 							e.target.classList.add("input-container--transitioning")
 						)}
-					on:introend={(e) =>
+					onintroend={(e) =>
 						void (
 							e.target instanceof Element &&
 							e.target.classList.remove("input-container--transitioning")
 						)}
-					on:outrostart={(e) =>
+					onoutrostart={(e) =>
 						void (
 							e.target instanceof Element &&
 							e.target.classList.add("input-container--transitioning")
@@ -135,7 +218,7 @@
 					<button
 						class="button--small add-button hoverable"
 						type="button"
-						on:click={() => void addVia(i)}
+						onclick={() => void addVia(i)}
 						title="Station hinzufügen"
 					>
 						<svg width="16px" height="16px">
@@ -160,24 +243,15 @@
 					<button
 						class="button--small remove-button hoverable"
 						type="button"
-						on:click={() => void removeVia(i)}
+						onclick={() => void removeVia(i)}
 						title="Station entfernen"
 					>
-						<svg width="16px" height="16px">
-							<g
-								stroke="var(--foreground-color)"
-								stroke-width="3"
-								stroke-linecap="round"
-							>
-								<line x1="3" y1="3" x2="13" y2="13" />
-								<line x1="3" y1="13" x2="13" y2="3" />
-							</g>
-						</svg>
+						<IconClose />
 					</button>
 					<button
 						class="button--small hoverable switch-button"
 						type="button"
-						on:click={reverseStops}
+						onclick={reverseStops}
 						title="Stationsreihenfolge tauschen"
 					>
 						<svg width="16px" height="16px">
@@ -217,7 +291,7 @@
 		<div class="filter-submit">
 			<button
 				class="hoverable padded-top-bottom button--small"
-				on:click={showFilterModal}
+				onclick={showFilterModal}
 				type="button"
 				title="Verbindungen filtern"
 			>
@@ -225,74 +299,12 @@
 			</button>
 			{#if $page.state.showFilterModal}
 				<Modal title="Filter" height={"32rem"} bind:showModal={$page.state.showFilterModal}>
-					<Tabs tabs={["Allgemein", "Verkehrsmittel"]} let:activeTab>
-						{#if activeTab === 0}
-							<div class="settings">
-								<Setting
-									settingName="Fahrradmitnahme"
-									bind:setting={$settings.journeysOptions.bike}
-									settingInfo={{ type: "boolean" }}
-								/>
-								<Setting
-									settingName="Barrierefreiheit"
-									bind:setting={$settings.journeysOptions.accessibility}
-									settingInfo={{
-										type: "options",
-										options: [
-											{ value: "none", name: "ignorieren" },
-											{ value: "partial", name: "bevorzugen" },
-											{ value: "complete", name: "strikt" }
-										]
-									}}
-								/>
-								<Setting
-									settingName="Maximale Umstiegsanzahl"
-									bind:setting={$settings.journeysOptions.transfers}
-									settingInfo={{
-										type: "options",
-										options: [
-											{ value: 0, name: "0" },
-											{ value: 1, name: "1" },
-											{ value: 2, name: "2" },
-											{ value: 3, name: "3" },
-											{ value: 4, name: "4" },
-											{ value: 5, name: "5" },
-											{ value: -1, name: "beliebig" }
-										]
-									}}
-								/>
-								<Setting
-									settingName="Mindestumsteigezeit"
-									bind:setting={$settings.journeysOptions.transferTime}
-									settingInfo={{
-										type: "options",
-										options: [
-											{ value: 0, name: "0min" },
-											{ value: 2, name: "2min" },
-											{ value: 5, name: "5min" },
-											{ value: 10, name: "10min" },
-											{ value: 15, name: "15min" },
-											{ value: 20, name: "20min" },
-											{ value: 30, name: "30min" },
-											{ value: 40, name: "40min" },
-											{ value: 50, name: "50min" },
-											{ value: 60, name: "1h" }
-										]
-									}}
-								/>
-							</div>
-						{:else if activeTab === 1}
-							<div class="settings">
-								{#each Object.entries(products) as [product, productName]}
-									<Setting
-										settingName={productName}
-										bind:setting={$settings.journeysOptions.products[product]}
-										settingInfo={{ type: "boolean" }}
-									/>
-								{/each}
-							</div>
-						{/if}
-					</Tabs>
+					<Tabs
+						tabs={modalTabContent}
+						isBelowHeaderMobile={true}
+						isBelowHeaderDesktop={true}
+						padContent={true}
+					/>
 				</Modal>
 			{/if}
 			<button
@@ -369,9 +381,5 @@
 
 	.time-is-now .filter-submit {
 		margin-top: calc(-3rem + 2 * var(--line-width));
-	}
-
-	.settings {
-		padding: 0.5rem 1rem;
 	}
 </style>

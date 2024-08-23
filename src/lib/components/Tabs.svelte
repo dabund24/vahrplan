@@ -1,20 +1,40 @@
 <script lang="ts">
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
+	import type { Snippet } from "svelte";
 
-	export let tabs: string[] = [];
+	type Props = {
+		isBelowHeaderMobile?: boolean;
+		isBelowHeaderDesktop?: boolean;
+		padContent?: boolean;
+		tabs: {
+			title: string;
+			content: Snippet;
+		}[];
+	};
 
-	let activeTab = 0;
+	const {
+		isBelowHeaderMobile = false,
+		isBelowHeaderDesktop = false,
+		padContent = false,
+		tabs
+	}: Props = $props();
+
+	let activeTab = $state(0);
 </script>
 
-<div class="tabs-container">
+<div
+	class="tabs-container"
+	class:below-header--mobile={isBelowHeaderMobile}
+	class:below-header--desktop={isBelowHeaderDesktop}
+>
 	<div class="tabs padded-top-bottom">
 		<ul class="flex-row" role="tablist">
-			{#each tabs as label, index}
-				<li role="tab" aria-selected={activeTab === index}>
+			{#each tabs as tab, i}
+				<li role="tab" aria-selected={activeTab === i}>
 					<button
 						class="hoverable padded-top-bottom"
-						on:click={() => void (activeTab = index)}
-						type="button">{label}</button
+						onclick={() => void (activeTab = i)}
+						type="button">{tab.title}</button
 					>
 				</li>
 			{/each}
@@ -26,7 +46,9 @@
 	<div class="transition"></div>
 </div>
 
-<slot {activeTab} />
+<div class:pad-content={padContent}>
+	{@render tabs[activeTab].content()}
+</div>
 
 <style>
 	.tabs-container {
@@ -35,6 +57,19 @@
 		top: 0;
 		z-index: 500;
 	}
+
+	@media screen and (min-width: 1000px) {
+		.below-header--desktop {
+			top: calc(3.5rem + 4px);
+		}
+	}
+
+	@media screen and (max-width: 999px) {
+		.below-header--mobile {
+			top: calc(3.5rem + 4px);
+		}
+	}
+
 	.tabs {
 		background-color: var(--background-color--opaque);
 		backdrop-filter: var(--blur);
@@ -69,5 +104,9 @@
 		syntax: "<color>";
 		initial-value: #ffffffe0;
 		inherits: false;
+	}
+
+	.pad-content {
+		padding: 0 1rem;
 	}
 </style>
