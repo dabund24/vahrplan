@@ -12,8 +12,6 @@
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import { products, settings } from "$lib/stores/settingStore";
-	import IconFilter from "$lib/components/icons/IconFilter.svelte";
-	import IconSearch from "$lib/components/icons/IconSearch.svelte";
 	import { goto, pushState } from "$app/navigation";
 	import { page } from "$app/stores";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
@@ -191,7 +189,7 @@
 	{/each}
 {/snippet}
 
-<form class="flex-column" onsubmit={(e) => handleFormSubmit(e)}>
+<form class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
 	<div class="location-inputs--outer flex-row">
 		<div class="location-inputs">
 			{#each stops as stop, i (stop.key)}
@@ -216,7 +214,7 @@
 					animate:flip={{ duration: 400 }}
 				>
 					<button
-						class="button--small add-button hoverable"
+						class="add-button hoverable"
 						type="button"
 						onclick={() => void addVia(i)}
 						title="Station hinzufügen"
@@ -241,7 +239,7 @@
 								: "Ziel"}
 					/>
 					<button
-						class="button--small remove-button hoverable"
+						class="remove-button hoverable"
 						type="button"
 						onclick={() => void removeVia(i)}
 						title="Station entfernen"
@@ -249,7 +247,7 @@
 						<IconClose />
 					</button>
 					<button
-						class="button--small hoverable switch-button"
+						class="hoverable switch-button"
 						type="button"
 						onclick={reverseStops}
 						title="Stationsreihenfolge tauschen"
@@ -285,17 +283,17 @@
 		</div>
 		<div class="time-input-container">
 			{#if timeIsNow !== undefined && !timeIsNow}
-				<input transition:scale class="hoverable" type="datetime-local" bind:value={time} />
+				<input transition:scale class="hoverable hoverable--visible" type="datetime-local" bind:value={time} />
 			{/if}
 		</div>
 		<div class="filter-submit">
 			<button
-				class="hoverable padded-top-bottom button--small"
+				class="hoverable hoverable--visible padded-top-bottom"
 				onclick={showFilterModal}
 				type="button"
 				title="Verbindungen filtern"
 			>
-				<IconFilter />
+				Filter
 			</button>
 			{#if $page.state.showFilterModal}
 				<Modal title="Filter" height={"32rem"} bind:showModal={$page.state.showFilterModal}>
@@ -308,11 +306,11 @@
 				</Modal>
 			{/if}
 			<button
-				class="hoverable padded-top-bottom button--small"
+				class="hoverable hoverable--accent padded-top-bottom"
 				type="submit"
 				title="Verbindungen suchen"
 			>
-				<IconSearch />
+				Suchen
 			</button>
 		</div>
 	</div>
@@ -357,6 +355,7 @@
 		width: 100%;
 		max-width: 30rem;
 		gap: 4px;
+		margin: 1rem 0;
 		& > * {
 			display: flex;
 			justify-content: space-between;
@@ -366,9 +365,9 @@
 			justify-content: center;
 		}
 		& .time-input-container {
-			height: 3rem;
+			height: calc(16px + 1rem + 1lh);
 		}
-		& input[type="datetime-local"] {
+		input[type="datetime-local"] {
 			padding: 0.5rem;
 			width: 100%;
 			margin: var(--line-width) auto;
@@ -376,10 +375,17 @@
 	}
 
 	.filter-submit {
+		margin-top: 1rem;
 		transition: margin-top 0.4s var(--cubic-bezier);
+		justify-content: end;
+		gap: .5rem;
+		& > button {
+			width: fit-content;
+			padding: 0.5rem 1rem;
+		}
 	}
 
 	.time-is-now .filter-submit {
-		margin-top: calc(-3rem + 2 * var(--line-width));
+		margin-top: calc(-16px - 1lh);
 	}
 </style>

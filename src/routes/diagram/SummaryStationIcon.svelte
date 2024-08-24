@@ -8,14 +8,14 @@
 	export let actsAsStopover: boolean = false;
 	export let isDisplayedLocation: boolean;
 	export let pressedStationId: number;
-	let thisPressedId = -1
+	let thisPressedId = -1;
 	$: isPressed = thisPressedId === pressedStationId;
 
 	function handleStationPress(): void {
 		if (!isPressed) {
-			thisPressedId = pressedStationId + 1
+			thisPressedId = pressedStationId + 1;
 		}
-		pressedStationId++
+		pressedStationId++;
 	}
 </script>
 
@@ -92,7 +92,7 @@
 	.icon-neighbor {
 		position: absolute;
 		border: var(--border);
-		background-color: var(--background-color--opaque);
+		background-color: var(--background-color--transparent);
 		backdrop-filter: var(--blur);
 		-webkit-backdrop-filter: var(--blur);
 		translate: calc(16px - 50%) 0;

@@ -6,28 +6,33 @@
 </script>
 
 <div class="flex-column">
-	<ul>
+	<ul class="hoverable--visible--group">
 		{#each names as name, i}
 			<li>
-				<button type="button" class="hoverable" on:click={() => void (selected = i)}>
+				<button type="button" on:click={() => void (selected = i)}>
 					{name}
 				</button>
 			</li>
 		{/each}
 	</ul>
-	<SlidingLine amountOfPositions={names.length} bind:newPosition={selected} />
+	<div class="line-container">
+		<SlidingLine amountOfPositions={names.length} bind:newPosition={selected} />
+	</div>
 </div>
 
 <style>
 	ul {
-        display: grid;
-        grid-auto-flow: column;
-        grid-auto-columns: 1fr;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
 	}
 	li {
-        width: 100%;
+		width: 100%;
 	}
-	.hoverable {
-        padding: .5rem;
+	button {
+		width: 100%;
+	}
+	.line-container {
+		margin: 0 0.25rem;
 	}
 </style>

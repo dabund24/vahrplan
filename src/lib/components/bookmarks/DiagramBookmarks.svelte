@@ -25,7 +25,7 @@
 			},
 			{
 				name: "Lesezeichen löschen",
-				onClick: () => {
+				onClick: (): void => {
 					bookmarks.splice(bookmarkIndex, 1);
 					setBookmarks({ type: "diagram", bookmarks });
 				},
@@ -46,7 +46,7 @@
 	<ol class="flex-column bookmarks">
 		{#each bookmarks as bookmark, i (bookmark.link)}
 			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
-				<a href={bookmark.link} class="hoverable button--small flex-column">
+				<a href={bookmark.link} class="hoverable flex-column">
 					<div class="time-data">
 						{bookmark.transitType === "departure" ? "Abfahrt" : "Ankunft"}: {dateToString(
 							bookmark.time

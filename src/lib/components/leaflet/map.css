@@ -24,7 +24,7 @@
 }
 
 .leaflet-container .leaflet-control-attribution {
-	background: var(--background-color--opaque);
+	background: var(--background-color--transparent);
 	color: var(--foreground-color);
 	> a {
 		color: var(--foreground-color);

@@ -15,7 +15,7 @@
 	header {
 		align-items: center;
 		padding: 0.5rem 0.5rem 0.5rem 1rem;
-		background-color: var(--background-color--opaque);
+		background-color: var(--background-color--transparent);
 		backdrop-filter: var(--blur);
 		-webkit-backdrop-filter: var(--blur);
 		border-bottom: var(--border);

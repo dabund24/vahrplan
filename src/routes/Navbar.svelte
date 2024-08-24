@@ -20,7 +20,10 @@
 		else return 4;
 	}
 
-	$: diagramURL = browser && $displayedFormData !== undefined ? getDiagramUrlFromFormData($displayedFormData).href : "/"
+	$: diagramURL =
+		browser && $displayedFormData !== undefined
+			? getDiagramUrlFromFormData($displayedFormData).href
+			: "/";
 </script>
 
 <nav>
@@ -106,7 +109,7 @@
 			width: 100vw;
 			box-sizing: border-box;
 			z-index: 550;
-			background-color: var(--background-color--opaque);
+			background-color: var(--background-color--transparent);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);
 			transition:

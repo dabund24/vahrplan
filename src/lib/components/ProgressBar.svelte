@@ -49,8 +49,8 @@
 		background: linear-gradient(
 			to right,
 			transparent,
-            var(--background-color--opaque),
-            var(--background-color--opaque),
+			var(--background-color--transparent),
+			var(--background-color--transparent),
 			transparent
 		);
 		animation: 2s var(--cubic-bezier) calc(1s * var(--loading-est) - 1s) infinite backwards

@@ -64,7 +64,7 @@
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		--border-color: var(--foreground-color--opaque);
+		--border-color: var(--foreground-color--transparent);
 		border: var(--border-color) solid 1px;
 		&:not(:first-child) {
 			border-top-left-radius: 0;

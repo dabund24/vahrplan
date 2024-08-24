@@ -121,7 +121,7 @@
 				on:keydown={handleInputKeydown}
 			/>
 			{#if inputText !== ""}
-				<button class="hoverable flex-row" on:click={clearInput}>
+				<button class="hoverable clear-input" on:click={clearInput}>
 					<IconClearInput />
 				</button>
 			{/if}
@@ -188,9 +188,9 @@
 	.inner-wrapper:has(input:focus),
 	.inner-wrapper:active {
 		z-index: 50;
-		border: var(--line-width) solid var(--foreground-color--opaque);
+		border: var(--line-width) solid var(--foreground-color--transparent);
 		backdrop-filter: var(--blur);
-		background-color: var(--background-color--opaque);
+		background-color: var(--background-color--transparent);
 		-webkit-backdrop-filter: var(--blur);
 	}
 
@@ -205,6 +205,12 @@
 		outline: none;
 		text-overflow: ellipsis;
 	}
+
+	.clear-input {
+		padding: calc(0.5rem - 4px);
+		margin: 0 -0.5rem;
+	}
+
 	.suggestion {
 		align-items: center;
 		gap: 0.5rem;

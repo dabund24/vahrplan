@@ -35,7 +35,6 @@
 	--accent-light: #586579;
 	--accent-dark: #adbbc5;
 }
-
 :root {
 	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI Variable Text",
 		"Segoe UI", system-ui, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif,
@@ -53,11 +52,22 @@
 	--overflow-content: hidden;
 
 	--map-filter: none;
-	--border: var(--line-width) solid var(--foreground-color--opaque);
+	--border: var(--line-width) solid var(--foreground-color--transparent);
+	--border--very-transparant: var(--line-width) solid var(--foreground-color--very-transparent);
 	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
 
 	font-size: 100%;
 
+	--foreground-color--light: #000000;
+	--background-color--light: #ffffff;
+	--foreground-color--transparent--light: #00000020;
+	--foreground-color--very-transparent--light: #00000010;
+	--background-color--transparent--light: #ffffffe0;
+	--foreground-color--dark: #ffffff;
+	--background-color--dark: #121212;
+	--foreground-color--transparent--dark: #ffffff14;
+	--foreground-color--very-transparent--dark: #ffffff0a;
+	--background-color--transparent--dark: #121212e0;
 	--nationalExpress-color: var(--foreground-color);
 	--nationalExpress-color--opaque: var(--background-color);
 }
@@ -75,10 +85,11 @@
 @media (prefers-color-scheme: light) {
 	:root:not([data-theme]) {
 		color-scheme: light;
-		--background-color: #ffffff;
-		--foreground-color: #000000;
-		--background-color--opaque: #ffffffe0;
-		--foreground-color--opaque: #00000020;
+		--background-color: var(--background-color--light);
+		--foreground-color: var(--foreground-color--light);
+		--background-color--transparent: var(--background-color--transparent--light);
+		--foreground-color--transparent: var(--foreground-color--transparent--light);
+		--foreground-color--very-transparent: var(--foreground-color--very-transparent--light);
 		--product-color: var(--foreground-color);
 		--accent-color: var(--accent-light);
 		--accent-inverted: var(--accent-dark);
@@ -88,10 +99,11 @@
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme]) {
 		color-scheme: dark;
-		--background-color: #121212;
-		--foreground-color: #ffffff;
-		--background-color--opaque: #121212e0;
-		--foreground-color--opaque: #ffffff14;
+		--background-color: var(--background-color--dark);
+		--foreground-color: var(--foreground-color--dark);
+		--background-color--transparent: var(--background-color--transparent--dark);
+		--foreground-color--transparent: var(--foreground-color--transparent--dark);
+		--foreground-color--very-transparent: var(--foreground-color--very-transparent--dark);
 		--accent-color: var(--accent-dark);
 		--accent-inverted: var(--accent-light);
 	}
@@ -99,10 +111,11 @@
 
 [data-theme="light"] {
 	color-scheme: light;
-	--background-color: #ffffff;
-	--foreground-color: #000000;
-	--background-color--opaque: #ffffffe0;
-	--foreground-color--opaque: #00000020;
+	--background-color: var(--background-color--light);
+	--foreground-color: var(--foreground-color--light);
+	--background-color--transparent: var(--background-color--transparent--light);
+	--foreground-color--transparent: var(--foreground-color--transparent--light);
+	--foreground-color--very-transparent: var(--foreground-color--very-transparent--light);
 	--product-color: var(--foreground-color);
 	--accent-color: var(--accent-light);
 	--accent-inverted: var(--accent-dark);
@@ -114,31 +127,32 @@
 	--accent-gray: #586579;
 
 	--suburban-color: #408335;
-	--suburban-color--opaque: #8cbc80;
+	--suburban-color--bright: #8cbc80;
 	--subway-color: #1455c0;
-	--subway-color--opaque: #73aef4;
+	--subway-color--bright: #73aef4;
 	--tram-color: #a9455d;
-	--tram-color--opaque: #da9aa8;
+	--tram-color--bright: #da9aa8;
 	--bus-color: #814997;
-	--bus-color--opaque: #c2a1c7;
+	--bus-color--bright: #c2a1c7;
 	--ferry-color: #309fd1;
-	--ferry-color--opaque: #84cfef;
+	--ferry-color--bright: #84cfef;
 	--taxi-color: #ffd800;
-	--taxi-color--opaque: #fff876;
+	--taxi-color--bright: #fff876;
 	--regional-color: #ec0016;
-	--regional-color--opaque: #fa9090;
+	--regional-color--bright: #fa9090;
 	--regionalExpress-color: #f39200;
-	--regionalExpress-color--opaque: #faca7f;
+	--regionalExpress-color--bright: #faca7f;
 	--national-color: #646973;
-	--national-color--opaque: #afb4bb;
+	--national-color--bright: #afb4bb;
 }
 
 [data-theme="dark"] {
 	color-scheme: dark;
-	--background-color: #121212;
-	--foreground-color: #ffffff;
-	--background-color--opaque: #121212e0;
-	--foreground-color--opaque: #ffffff14;
+	--background-color: var(--background-color--dark);
+	--foreground-color: var(--foreground-color--dark);
+	--background-color--transparent: var(--background-color--transparent--dark);
+	--foreground-color--transparent: var(--foreground-color--transparent--dark);
+	--foreground-color--very-transparent: var(--foreground-color--very-transparent--dark);
 	--accent-color: var(--accent-dark);
 	--accent-inverted: var(--accent-light);
 	--accent-red: #eb6c68;
@@ -149,23 +163,23 @@
 	--accent-gray: #adbbc5;
 
 	--suburban-color: #66a558;
-	--suburban-color--opaque: #2a7230;
+	--suburban-color--bright: #2a7230;
 	--subway-color: #347de0;
-	--subway-color--opaque: #0c3992;
+	--subway-color--bright: #0c3992;
 	--tram-color: #c0687b;
-	--tram-color--opaque: #8c2e46;
+	--tram-color--bright: #8c2e46;
 	--bus-color: #9a6ca6;
-	--bus-color--opaque: #6e368c;
+	--bus-color--bright: #6e368c;
 	--ferry-color: #55b9e6;
-	--ferry-color--opaque: #0087b9;
+	--ferry-color--bright: #0087b9;
 	--taxi-color: #fff000;
-	--taxi-color--opaque: #ffbb00;
+	--taxi-color--bright: #ffbb00;
 	--regional-color: #f75056;
-	--regional-color--opaque: #9b000e;
+	--regional-color--bright: #9b000e;
 	--regionalExpress-color: #f8ab37;
-	--regionalExpress-color--opaque: #d77b00;
+	--regionalExpress-color--bright: #d77b00;
 	--national-color: #878c96;
-	--national-color--opaque: #3c414b;
+	--national-color--bright: #3c414b;
 }
 
 ul,
@@ -208,8 +222,7 @@ body:has(dialog[open]) {
 body,
 a,
 input,
-button,
-.hoverable {
+button {
 	transition:
 		color 0.4s var(--cubic-bezier),
 		background 0.4s var(--cubic-bezier),
@@ -296,7 +309,8 @@ header {
 .line--success {
 	background-color: var(--accent-green);
 }
-.text--green, .text--on-time {
+.text--green,
+.text--on-time {
 	color: var(--accent-green);
 }
 
@@ -314,7 +328,9 @@ header {
 .line--error {
 	background-color: var(--accent-red);
 }
-.text--red, .text--cancelled, .text--delayed {
+.text--red,
+.text--cancelled,
+.text--delayed {
 	color: var(--accent-red);
 }
 
@@ -336,47 +352,47 @@ header {
 
 .product--suburban {
 	--product-color: var(--suburban-color);
-	--product-color--opaque: var(--suburban-color--opaque);
+	--product-color--opaque: var(--suburban-color--bright);
 }
 
 .product--subway {
 	--product-color: var(--subway-color);
-	--product-color--opaque: var(--subway-color--opaque);
+	--product-color--opaque: var(--subway-color--bright);
 }
 
 .product--tram {
 	--product-color: var(--tram-color);
-	--product-color--opaque: var(--tram-color--opaque);
+	--product-color--opaque: var(--tram-color--bright);
 }
 
 .product--bus {
 	--product-color: var(--bus-color);
-	--product-color--opaque: var(--bus-color--opaque);
+	--product-color--opaque: var(--bus-color--bright);
 }
 
 .product--ferry {
 	--product-color: var(--ferry-color);
-	--product-color--opaque: var(--ferry-color--opaque);
+	--product-color--opaque: var(--ferry-color--bright);
 }
 
 .product--taxi {
 	--product-color: var(--taxi-color);
-	--product-color--opaque: var(--taxi-color--opaque);
+	--product-color--opaque: var(--taxi-color--bright);
 }
 
 .product--regional {
 	--product-color: var(--regional-color);
-	--product-color--opaque: var(--regional-color--opaque);
+	--product-color--opaque: var(--regional-color--bright);
 }
 
 .product--regionalExpress {
 	--product-color: var(--regionalExpress-color);
-	--product-color--opaque: var(--regionalExpress-color--opaque);
+	--product-color--opaque: var(--regionalExpress-color--bright);
 }
 
 .product--national {
 	--product-color: var(--national-color);
-	--product-color--opaque: var(--national-color--opaque);
+	--product-color--opaque: var(--national-color--bright);
 }
 
 .product--nationalExpress {
@@ -386,24 +402,76 @@ header {
 
 .hoverable {
 	cursor: pointer;
-	border-radius: var(--border-radius--large);
+	border-radius: 50vh;
 	border: var(--line-width) solid transparent;
+	transition: color 0.4s var(--cubic-bezier);
+	padding: 0.5rem;
+	display: flex;
 }
 
-.hoverable:hover {
-	border: var(--line-width) solid var(--foreground-color--opaque);
-	background-color: var(--foreground-color--opaque);
+.hoverable--visible {
+	background-color: var(--foreground-color--very-transparent);
+	border: var(--line-width) solid var(--foreground-color--very-transparent);
+}
+
+.hoverable--accent {
+	background-color: var(--accent-color);
+	color: var(--background-color);
+	border: var(--border);
+}
+
+.hoverable:hover,
+.hoverable:active {
+	border: var(--line-width) solid var(--foreground-color--transparent);
+	background-color: var(--foreground-color--transparent);
+}
+
+.hoverable--accent:hover,
+.hoverable--accent:active {
+	border-color: var(--foreground-color);
+	background-color: var(--accent-color);
+}
+
+.hoverable--visible--group {
+	align-items: stretch;
+	button {
+		border-top: var(--border--very-transparant);
+		border-bottom: var(--border--very-transparant);
+		background-color: var(--foreground-color--very-transparent);
+		padding: 0.5rem calc(0.5rem + var(--line-width));
+		transition: none;
+		height: 100%;
+	}
+	button:hover,
+	button:active {
+		background-color: var(--foreground-color--transparent);
+		border: var(--border);
+		padding: 0.5rem;
+	}
+	> :first-child button {
+		border-top-left-radius: 50vh;
+		border-bottom-left-radius: 50vh;
+		border-left: var(--border--very-transparant);
+		padding-left: 0.75rem;
+		&:hover {
+			border-left-color: var(--foreground-color--transparent);
+		}
+	}
+	> :last-child button {
+		border-top-right-radius: 50vh;
+		border-bottom-right-radius: 50vh;
+		border-right: var(--border--very-transparant);
+		padding-right: 0.75rem;
+		&:hover {
+			border-right-color: var(--foreground-color--transparent);
+		}
+	}
 }
 
 .transition {
 	height: 0.5rem;
 	width: 100%;
-	background: linear-gradient(to bottom, var(--background-color--opaque), transparent);
-}
-
-.button--small {
-	display: flex;
-	padding: 0.5rem;
+	background: linear-gradient(to bottom, var(--background-color--transparent), transparent);
 }
 
 .limit-lines {
@@ -416,7 +484,7 @@ header {
 	& .skeleton-text {
 		border-radius: 50vh;
 		animation: skeleton-loading 0.5s linear infinite alternate;
-		background-color: var(--foreground-color--opaque);
+		background-color: var(--foreground-color--transparent);
 		color: transparent;
 		user-select: none;
 		-webkit-user-select: none;

@@ -17,11 +17,11 @@
 </script>
 
 <label class="flex-row">
-	<span class="padded-top-bottom name">{settingName}</span>
+	<span class="name">{settingName}</span>
 	{#if settingInfo.type === "boolean" && typeof setting === "boolean"}
 		<input type="checkbox" role="switch" tabindex="0" bind:checked={setting} />
 	{:else if settingInfo.type === "options"}
-		<select class="hoverable" bind:value={setting}>
+		<select class="hoverable hoverable--visible" bind:value={setting}>
 			{#each settingInfo.options as option}
 				<option value={option.value}>
 					{option.name}
@@ -38,6 +38,14 @@
 		justify-content: space-between;
 	}
 
+	.flex-row:not(:last-child) {
+		margin-bottom: var(--line-width);
+	}
+
+	.name {
+		padding: calc(var(--line-width) + 0.5rem) 0;
+	}
+
 	/*
 		switch css is inspired from here: https://codepen.io/mburnette/pen/LxNxNg
 	 */
@@ -47,7 +55,7 @@
 		cursor: pointer;
 		width: 2rem;
 		height: 1rem;
-		background: transparent;
+		background: var(--foreground-color--very-transparent);
 		border-radius: 50vh;
 		position: relative;
 		border: 4px solid var(--foreground-color);
@@ -56,7 +64,7 @@
 	}
 
 	input[type="checkbox"]:hover {
-		background-color: var(--foreground-color--opaque);
+		background-color: var(--foreground-color--transparent);
 	}
 
 	input[type="checkbox"]:after {
@@ -68,8 +76,7 @@
 		border-radius: 90px;
 		transition:
 			margin-left 0.4s var(--cubic-bezier),
-			margin-right 0.4s var(--cubic-bezier) 0.1s,
-			background-color 0.4s var(--cubic-bezier);
+			margin-right 0.4s var(--cubic-bezier) 0.1s;
 	}
 
 	input:checked {
@@ -81,13 +88,12 @@
 		background-color: var(--accent-color);
 		transition:
 			margin-left 0.4s var(--cubic-bezier) 0.1s,
-			margin-right 0.4s var(--cubic-bezier),
-			background-color 0.4s var(--cubic-bezier);
+			margin-right 0.4s var(--cubic-bezier);
 	}
 
 	select {
 		background: url('data:image/svg+xml;charset=UTF-8,<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg"><polyline points="4,7 8,11, 12,7" stroke="black" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>')
-			no-repeat calc(100% - 0.5rem) 50%;
+			var(--foreground-color--very-transparent) no-repeat calc(100% - 0.5rem) 50%;
 		-moz-appearance: none;
 		-webkit-appearance: none;
 		appearance: none;
@@ -97,8 +103,8 @@
 	}
 	select:focus-visible {
 		outline: none;
-		border: var(--line-width) solid var(--foreground-color--opaque);
-		background-color: var(--foreground-color--opaque);
+		border: var(--line-width) solid var(--foreground-color--transparent);
+		background-color: var(--foreground-color--transparent);
 	}
 
 	:global([data-theme="dark"]) select {

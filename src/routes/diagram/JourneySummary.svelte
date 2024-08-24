@@ -65,10 +65,10 @@
 </script>
 
 <div class="flex-row actions">
-	<button class="button--small hoverable" on:click={() => void shareDiagram($displayedFormData)}>
+	<button class="hoverable" on:click={() => void shareDiagram($displayedFormData)}>
 		<IconShare />
 	</button>
-	<button class="button--small hoverable" on:click={handleBookmarkClick}>
+	<button class="hoverable" on:click={handleBookmarkClick}>
 		<IconBookmark isBookmarked={isBookmarked} />
 	</button>
 </div>
@@ -208,7 +208,7 @@
 	.summary-background {
         padding: max(env(safe-area-inset-top), 1rem) 0.5rem 0.5rem;
         margin: 0 -0.5rem;
-        background-color: var(--background-color--opaque);
+        background-color: var(--background-color--transparent);
         backdrop-filter: var(--blur);
         -webkit-backdrop-filter: var(--blur);
     }

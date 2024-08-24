@@ -23,7 +23,7 @@
 		<Header {title}>
 			<button
 				on:click={() => void dialog.close()}
-				class="button--small hoverable"
+				class="hoverable"
 				type="button"
 				title="Dialog schließen"
 			>
@@ -47,13 +47,13 @@
 		background-color: var(--background-color);
 		padding: 0;
 		scrollbar-width: thin;
-        max-height: calc(100% - 5rem);
+		max-height: calc(100% - 5rem);
 	}
 	dialog::backdrop {
-		background: var(--background-color--opaque, #ffffffe0);
+		background: var(--background-color--transparent, #ffffffe0);
 	}
 	:global([data-theme="dark"]) dialog::backdrop {
-		background: var(--background-color--opaque, #121212e0);
+		background: var(--background-color--transparent, #121212e0);
 	}
 
 	dialog[open] {

@@ -1,11 +1,11 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-    background-color: var(--background-color--opaque);
+    background-color: var(--background-color--transparent);
     backdrop-filter: var(--blur);
     -webkit-backdrop-filter: var(--blur);
     color: var(--foreground-color);
     box-shadow: none;
     border-radius: var(--border-radius--large);
-    border: var(--line-width) solid var(--foreground-color--opaque);
+    border: var(--line-width) solid var(--foreground-color--transparent);
 }
 
 .leaflet-popup-content {
@@ -22,8 +22,8 @@
 .leaflet-popup-tip {
     border: none;
     border-radius: 0;
-    background-color: var(--background-color--opaque);
-    background-image: linear-gradient(0deg, var(--foreground-color--opaque), var(--foreground-color--opaque));
+    background-color: var(--background-color--transparent);
+    background-image: linear-gradient(0deg, var(--foreground-color--transparent), var(--foreground-color--transparent));
 }
 
 

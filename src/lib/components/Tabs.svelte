@@ -28,18 +28,18 @@
 	class:below-header--desktop={isBelowHeaderDesktop}
 >
 	<div class="tabs padded-top-bottom">
-		<ul class="flex-row" role="tablist">
+		<ul class="flex-row hoverable--visible--group" role="tablist">
 			{#each tabs as tab, i}
 				<li role="tab" aria-selected={activeTab === i}>
 					<button
-						class="hoverable padded-top-bottom"
+						class="padded-top-bottom"
 						onclick={() => void (activeTab = i)}
 						type="button">{tab.title}</button
 					>
 				</li>
 			{/each}
 		</ul>
-		<div class="desktop-line-container">
+		<div class="line-container">
 			<SlidingLine amountOfPositions={tabs.length} newPosition={activeTab} />
 		</div>
 	</div>
@@ -71,15 +71,11 @@
 	}
 
 	.tabs {
-		background-color: var(--background-color--opaque);
+		background-color: var(--background-color--transparent);
 		backdrop-filter: var(--blur);
 		-webkit-backdrop-filter: var(--blur);
 		padding: 4px 0.5rem 0;
 		transition: background 0.4s var(--cubic-bezier);
-	}
-
-	ul {
-		align-items: baseline;
 	}
 
 	li {
@@ -90,13 +86,18 @@
 		width: 100%;
 	}
 
+	.line-container {
+		position: relative;
+		padding: 0 0.25rem;
+	}
+
 	.transition {
 		background: linear-gradient(
 			to bottom,
 			var(--background-color--opaque--transitionable),
 			transparent
 		);
-		--background-color--opaque--transitionable: var(--background-color--opaque);
+		--background-color--opaque--transitionable: var(--background-color--transparent);
 		transition: --background-color--opaque--transitionable 0.4s var(--cubic-bezier);
 	}
 

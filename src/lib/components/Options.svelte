@@ -25,7 +25,7 @@
 	<button
 		id="{id}-popover-toggle"
 		popovertarget="{id}-popover"
-		class="button--small hoverable"
+		class="hoverable"
 		style="anchor-name: --{id}-popover-anchor;"
 	>
 		<IconOptions />
@@ -34,7 +34,7 @@
 		{#each options as option}
 			<li>
 				<button
-					onclick={() => handleOptionClick(option.onClick)}
+					onclick={() => void handleOptionClick(option.onClick)}
 					class="flex-row padded-top-bottom option-button"
 				>
 					<span>
@@ -53,11 +53,11 @@
 		popover="auto"
 		style="position-anchor: --{id}-popover-anchor"
 		bind:this={popoverElement}
-		onclick={() => popoverElement.hidePopover()}
+		onclick={() => void popoverElement.hidePopover()}
 	>
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div class="options-container" onclick={(e) => e.stopPropagation()}>
+		<div class="options-container" onclick={(e) => void e.stopPropagation()}>
 			<!-- TODO Remove this button once anchor positioning is widely supported! -->
 			<button class="close-button padded-top-bottom" popovertarget="{id}-popover">
 				<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,7 @@
 
 		[popover] {
 			border-radius: var(--border-radius--large);
-			background-color: var(--background-color--opaque);
+			background-color: var(--background-color--transparent);
 			border: var(--border);
 			right: anchor(right);
 			top: calc(anchor(bottom) + 4px);
@@ -103,7 +103,7 @@
 		}
 	}
 
-    /*
+	/*
     	TODO Remove these rules once anchor positioning is widely supported!
      */
 	@supports not (left: anchor(right)) {
@@ -111,7 +111,7 @@
 			width: 100vw;
 			height: 100vh;
 			border: none;
-			background-color: var(--background-color--opaque);
+			background-color: var(--background-color--transparent);
 			animation: fade-in 0.4s var(--cubic-bezier);
 		}
 
@@ -134,7 +134,7 @@
 			position: fixed;
 			bottom: 0;
 			box-sizing: border-box;
-            width: 100%;
+			width: 100%;
 		}
 
 		.options {
@@ -142,16 +142,15 @@
 		}
 
 		@media screen and (min-width: 500px) {
-			.options-container{
-                border-left: var(--border);
-                border-right: var(--border);
-                border-top-left-radius: var(--border-radius--large);
-                border-top-right-radius: var(--border-radius--large);
-                width: 20rem;
-                left: calc(50vw - 10rem);
-
-            }
-        }
+			.options-container {
+				border-left: var(--border);
+				border-right: var(--border);
+				border-top-left-radius: var(--border-radius--large);
+				border-top-right-radius: var(--border-radius--large);
+				width: 20rem;
+				left: calc(50vw - 10rem);
+			}
+		}
 	}
 
 	.option-button {

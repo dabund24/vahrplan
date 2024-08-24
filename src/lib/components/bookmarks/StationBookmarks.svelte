@@ -55,10 +55,7 @@
 				<strong class="padded-top-bottom">
 					{bookmark.name}
 				</strong>
-				<button
-					class="button--small hoverable"
-					on:click={() => void removeStationBookmark(bookmark)}
-				>
+				<button class="hoverable" on:click={() => void removeStationBookmark(bookmark)}>
 					<IconClose />
 				</button>
 			</div>

@@ -28,7 +28,7 @@
 			},
 			{
 				name: "Lesezeichen löschen",
-				onClick: () => {
+				onClick: (): void => {
 					bookmarks.splice(bookmarkIndex, 1);
 					setBookmarks({ type: "journey", bookmarks });
 				},
@@ -53,7 +53,7 @@
 				transition:scale
 				animate:flip={{ duration: 400 }}
 			>
-				<a href={bookmark.link} class="hoverable button--small flex-column">
+				<a href={bookmark.link} class="hoverable flex-column">
 					<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
 
 					<div class="journey-data">
