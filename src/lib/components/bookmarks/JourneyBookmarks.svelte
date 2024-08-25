@@ -46,14 +46,14 @@
 {/snippet}
 
 {#if bookmarks.length > 0}
-	<ol>
+	<ol class="flex-column">
 		{#each bookmarks as bookmark, i (bookmark.link)}
 			<li
 				class="flex-row"
 				transition:scale
 				animate:flip={{ duration: 400 }}
 			>
-				<a href={bookmark.link} class="hoverable flex-column">
+				<a href={bookmark.link} class="hoverable hoverable--visible flex-column">
 					<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
 
 					<div class="journey-data">
@@ -98,11 +98,15 @@
 {/if}
 
 <style>
+	ol {
+		gap: .5rem;
+	}
 	a {
 		text-decoration: none;
 		padding: 0 1rem;
 		width: 100%;
 		margin-right: calc(-24px - 1rem);
+		border-radius: var(--border-radius--large);
 	}
 	.journey-data {
 		display: grid;
