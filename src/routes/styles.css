@@ -434,12 +434,13 @@ header {
 }
 
 .hoverable--visible--group {
+	--base-padding: .5rem;
 	align-items: stretch;
 	button {
 		border-top: var(--border--very-transparant);
 		border-bottom: var(--border--very-transparant);
 		background-color: var(--foreground-color--very-transparent);
-		padding: 0.5rem calc(0.5rem + var(--line-width));
+		padding: 0.5rem calc(var(--base-padding) + var(--line-width));
 		transition: none;
 		height: 100%;
 	}
@@ -447,13 +448,13 @@ header {
 	button:active {
 		background-color: var(--foreground-color--transparent);
 		border: var(--border);
-		padding: 0.5rem;
+		padding: 0.5rem var(--base-padding);
 	}
 	> :first-child button {
 		border-top-left-radius: 50vh;
 		border-bottom-left-radius: 50vh;
 		border-left: var(--border--very-transparant);
-		padding-left: 0.75rem;
+		padding-left: calc(var(--base-padding) + .25rem);
 		&:hover {
 			border-left-color: var(--foreground-color--transparent);
 		}
@@ -462,11 +463,15 @@ header {
 		border-top-right-radius: 50vh;
 		border-bottom-right-radius: 50vh;
 		border-right: var(--border--very-transparant);
-		padding-right: 0.75rem;
+		padding-right: calc(var(--base-padding) + .25rem);
 		&:hover {
 			border-right-color: var(--foreground-color--transparent);
 		}
 	}
+}
+
+.hoverable--visible--group--no-side-padding {
+	--base-padding: 0rem;
 }
 
 .transition {

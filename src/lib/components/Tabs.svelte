@@ -28,11 +28,10 @@
 	class:below-header--desktop={isBelowHeaderDesktop}
 >
 	<div class="tabs padded-top-bottom">
-		<ul class="flex-row hoverable--visible--group" role="tablist">
+		<ul class="flex-row hoverable--visible--group hoverable--visible--group--no-side-padding" role="tablist">
 			{#each tabs as tab, i}
 				<li role="tab" aria-selected={activeTab === i}>
 					<button
-						class="padded-top-bottom"
 						onclick={() => void (activeTab = i)}
 						type="button">{tab.title}</button
 					>
