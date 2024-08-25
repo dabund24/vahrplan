@@ -105,7 +105,7 @@
 </script>
 
 <div class="outer-wrapper">
-	<div class="inner-wrapper">
+	<div class="inner-wrapper hoverable hoverable--visible">
 		<label class="flex-row input-summary padded-top-bottom">
 			<span class="flex-column suggestion-icon suggestion-icon--input">
 				<IconStationLocation
@@ -173,31 +173,36 @@
 	}
 	.inner-wrapper {
 		position: relative;
-		border-radius: var(--border-radius--large);
-		border: var(--line-width) solid transparent;
+        padding: 0;
+        display: block;
+		background-color: transparent;
+		border-color: var(--foreground-color--transparent);
 	}
 
 	ul {
 		flex-direction: column;
 		display: none;
 	}
-	.inner-wrapper:has(input:focus) ul,
+	.inner-wrapper:focus-within ul,
 	ul:active {
 		display: block;
 	}
-	.inner-wrapper:has(input:focus),
+	.inner-wrapper:focus-within,
 	.inner-wrapper:active {
 		z-index: 50;
+		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid var(--foreground-color--transparent);
 		backdrop-filter: var(--blur);
 		background-color: var(--background-color--transparent);
+        /*background-image: linear-gradient(0deg, var(--foreground-color--very-transparent), var(--foreground-color--very-transparent));*/
 		-webkit-backdrop-filter: var(--blur);
 	}
 
 	.input-summary {
 		align-items: center;
 		gap: 0.5rem;
-		padding: 0 0.5rem;
+		padding: var(--line-width) calc(0.5rem + var(--line-width));
+        margin: calc(-1 * var(--line-width));
 	}
 	input {
 		padding: 0.5rem 0;
@@ -254,19 +259,18 @@
 	.suggestion-icon--input::after {
 		content: "";
 		width: 4px;
-		height: 2rem;
+		height: calc(1lh + 1rem + 6px);
 		background-color: var(--foreground-color);
-		margin: -1rem auto;
 		border-radius: 2px;
 		transition: background-color 0.4s var(--cubic-bezier);
 	}
 
 	.suggestion-icon--input::after {
-		margin: -8px auto -2rem;
+		margin: -8px auto calc(-1lh - 1rem - 6px);
 	}
 
 	.suggestion-icon--input::before {
-		margin: -2rem auto -8px;
+		margin: calc(-1lh - 1rem - 6px) auto -8px;
 	}
 
 	:global(.input-container:first-child) .suggestion-icon::before,
