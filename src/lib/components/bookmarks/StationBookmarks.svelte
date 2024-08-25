@@ -48,14 +48,14 @@
 </div>
 
 {#if bookmarks.length > 0}
-	<ul>
+	<ul class="flex-column">
 		{#each bookmarks as bookmark (bookmark.name)}
 			<div class="flex-row bookmark" transition:scale animate:flip={{ duration: 400 }}>
 				<IconStationLocation color="foreground" iconType={bookmark.type} />
 				<strong class="padded-top-bottom">
 					{bookmark.name}
 				</strong>
-				<button class="hoverable" on:click={() => void removeStationBookmark(bookmark)}>
+				<button class="hoverable hoverable--visible" on:click={() => void removeStationBookmark(bookmark)}>
 					<IconClose />
 				</button>
 			</div>
@@ -64,8 +64,12 @@
 {/if}
 
 <style>
+	ul {
+		padding-top: 4px;
+		gap: 4px;
+	}
 	.input-container {
-		height: 3rem;
+		height: calc(8px + 1rem + 1lh);
 	}
 	.bookmark {
 		padding-left: calc(0.5rem + 4px);
