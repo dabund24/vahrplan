@@ -35,7 +35,7 @@
 		position = constrain(container, size, min, max, position, priority);
 	}
 
-	onMount(() => setTimeout(() => loading = false, 500))
+	onMount(() => setTimeout(() => (loading = false), 500));
 
 	function update(x: number, y: number): void {
 		if (disabled) return;
@@ -112,12 +112,12 @@
 			class:disabled
 			class:dragging
 			use:drag={(e) => void update(e.clientX, e.clientY)}
-		/>
+		></div>
 	{/if}
 </div>
 
 {#if dragging}
-	<div class="mousecatcher" />
+	<div class="mousecatcher"></div>
 {/if}
 
 <style>
@@ -187,8 +187,8 @@
 		background-color: var(--background-color);
 		background-image: linear-gradient(
 			0deg,
-			var(--foreground-color--opaque),
-			var(--foreground-color--opaque)
+			var(--foreground-color--transparent),
+			var(--foreground-color--transparent)
 		);
 		translate: -50% 0;
 		transition: width 0.2s ease-out;
@@ -270,18 +270,18 @@
 		height: 1px;
 	}
 
-    @media screen and (max-width: 999px) {
+	@media screen and (max-width: 999px) {
 		.pane {
 			overflow: unset;
 		}
-        .pane > :global(*) {
+		.pane > :global(*) {
 			overflow: unset;
-        }
-    }
+		}
+	}
 
-    @media screen and (pointer: fine) {
-        .divider:not(:hover)::after {
+	@media screen and (pointer: fine) {
+		.divider:not(:hover)::after {
 			border-width: 0;
 		}
-    }
+	}
 </style>
