@@ -418,6 +418,7 @@ header {
 	background-color: var(--accent-color);
 	color: var(--background-color);
 	border: var(--border);
+	font-weight: bolder;
 }
 
 .hoverable:hover,
