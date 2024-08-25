@@ -26,7 +26,10 @@
 
 	let { initialFormData }: Props = $props();
 
-	let stops: KeyedItem<ParsedLocation | undefined, number>[] = $state([]);
+	let stops: KeyedItem<ParsedLocation | undefined, number>[] = $state([
+		{ value: undefined, key: Math.random() },
+		{ value: undefined, key: Math.random() }
+	]);
 	$effect.pre(() => {
 		if (initialFormData === undefined) {
 			stops = [
@@ -74,9 +77,7 @@
 
 	async function handleFormSubmit(event: SubmitEvent): Promise<void> {
 		event.preventDefault();
-		const stopsToBeDisplayed = stops.filter<KeyedItem<ParsedLocation, number>>(
-			valueIsDefined<ParsedLocation, number>
-		);
+		const stopsToBeDisplayed = stops.filter(valueIsDefined);
 		if (stopsToBeDisplayed.length < 2) {
 			return;
 		}
@@ -214,7 +215,7 @@
 					animate:flip={{ duration: 400 }}
 				>
 					<button
-						class="add-button hoverable"
+						class="add-button hoverable hoverable--visible"
 						type="button"
 						onclick={() => void addVia(i)}
 						title="Station hinzufügen"
@@ -239,7 +240,7 @@
 								: "Ziel"}
 					/>
 					<button
-						class="remove-button hoverable"
+						class="remove-button hoverable hoverable--visible"
 						type="button"
 						onclick={() => void removeVia(i)}
 						title="Station entfernen"
@@ -247,7 +248,7 @@
 						<IconClose />
 					</button>
 					<button
-						class="hoverable switch-button"
+						class="hoverable hoverable--visible switch-button"
 						type="button"
 						onclick={reverseStops}
 						title="Stationsreihenfolge tauschen"
@@ -283,7 +284,12 @@
 		</div>
 		<div class="time-input-container">
 			{#if timeIsNow !== undefined && !timeIsNow}
-				<input transition:scale class="hoverable hoverable--visible" type="datetime-local" bind:value={time} />
+				<input
+					transition:scale
+					class="hoverable hoverable--visible"
+					type="datetime-local"
+					bind:value={time}
+				/>
 			{/if}
 		</div>
 		<div class="filter-submit">
@@ -331,6 +337,12 @@
 		width: 100%;
 	}
 
+	.input-container {
+		height: calc(8px + 1rem + 1lh);
+		padding: calc(var(--line-width) / 2) 0;
+		gap: var(--line-width);
+	}
+
 	.input-container:first-child .add-button,
 	.input-container:first-child .remove-button {
 		visibility: hidden;
@@ -342,7 +354,7 @@
 
 	.add-button,
 	.input-container:last-child:nth-child(2) .switch-button {
-		translate: 0 -50%;
+		translate: 0 calc(-0.5lh - 0.5rem - 6px);
 		transition: translate 0.4s var(--cubic-bezier);
 	}
 	.remove-button,
@@ -378,7 +390,7 @@
 		margin-top: 1rem;
 		transition: margin-top 0.4s var(--cubic-bezier);
 		justify-content: end;
-		gap: .5rem;
+		gap: 0.5rem;
 		& > button {
 			width: fit-content;
 			padding: 0.5rem 1rem;
