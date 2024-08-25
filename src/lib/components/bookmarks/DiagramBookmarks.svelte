@@ -46,7 +46,7 @@
 	<ol class="flex-column bookmarks">
 		{#each bookmarks as bookmark, i (bookmark.link)}
 			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
-				<a href={bookmark.link} class="hoverable flex-column">
+				<a href={bookmark.link} class="hoverable hoverable--visible flex-column">
 					<div class="time-data">
 						{bookmark.transitType === "departure" ? "Abfahrt" : "Ankunft"}: {dateToString(
 							bookmark.time
@@ -86,6 +86,7 @@
 		padding: 0 1rem;
 		width: 100%;
 		margin-right: calc(-24px - 1rem);
+		border-radius: var(--border-radius--large);
 	}
 
 	.options-container {
