@@ -4,7 +4,7 @@
     -webkit-backdrop-filter: var(--blur);
     color: var(--foreground-color);
     box-shadow: none;
-    border-radius: var(--border-radius--large);
+    border-radius: 50vh;
     border: var(--line-width) solid var(--foreground-color--transparent);
 }
 
