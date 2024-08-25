@@ -85,10 +85,7 @@
 		padding: 4px 0;
 		text-align: center;
 		align-items: stretch;
-		transition:
-			border-radius 0.4s,
-			border 0.4s,
-			background-color 0.4s;
+		transition: border-radius 0.4s;
 		&[aria-current="true"] {
 			border-color: var(--accent-color);
 		}
