@@ -20,6 +20,8 @@
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { getJourneyUrl } from "$lib/urls";
 	import Options from "$lib/components/Options.svelte";
+	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
+	import IconMap from "$lib/components/icons/IconMap.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -90,6 +92,13 @@
 
 <svelte:window bind:outerWidth={clientWidth} />
 
+{#snippet iconJourneyInfo()}
+	<IconJourneyInfo />
+{/snippet}
+{#snippet iconMap()}
+	<IconMap />
+{/snippet}
+
 <div class="content display-{displayedContent}">
 	<Header
 		title={$displayedFormData !== undefined
@@ -97,7 +106,14 @@
 			: "Verbindungsdetails"}
 		mobileOnly={true}
 	>
-		<SingleSelect names={["J", "M"]} bind:selected={displayedContent} />
+		<SingleSelect
+			type={"icon"}
+			titles={[
+				{ title: "Klassische Ansicht", icon: iconJourneyInfo },
+				{ title: "Karte", icon: iconMap }
+			]}
+			bind:selected={displayedContent}
+		/>
 		{#if tokens.length > 0 && tokens.every((token) => token.length > 5)}
 			<Options id={"journey"} {options} />
 		{/if}
