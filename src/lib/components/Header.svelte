@@ -1,13 +1,19 @@
 <script lang="ts">
-	export let title: string;
-	export let mobileOnly: boolean = false;
-	export let fullScreen: boolean = false;
+	import type { Snippet } from "svelte";
+
+	type Props = {
+		title: string,
+		mobileOnly?: boolean,
+		fullScreen?: boolean,
+		children: Snippet
+	}
+	let {title, mobileOnly = false, fullScreen = false, children}: Props = $props()
 </script>
 
 <header class="flex-row" class:mobile-only={mobileOnly} class:full-screen={fullScreen}>
 	<strong class="limit-lines">{title}</strong>
 	<div class="buttons flex-row">
-		<slot />
+		{@render children()}
 	</div>
 </header>
 
@@ -33,6 +39,8 @@
 
 	.buttons {
 		margin-left: auto;
+		align-items: center;
+		gap: var(--line-width);
 	}
 
 	.mobile-only {
