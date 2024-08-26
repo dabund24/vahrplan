@@ -5,7 +5,7 @@
 		title: string,
 		mobileOnly?: boolean,
 		fullScreen?: boolean,
-		children: Snippet
+		children?: Snippet
 	}
 	let {title, mobileOnly = false, fullScreen = false, children}: Props = $props()
 </script>
@@ -13,7 +13,7 @@
 <header class="flex-row" class:mobile-only={mobileOnly} class:full-screen={fullScreen}>
 	<strong class="limit-lines">{title}</strong>
 	<div class="buttons flex-row">
-		{@render children()}
+		{@render children?.()}
 	</div>
 </header>
 
