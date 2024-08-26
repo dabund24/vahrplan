@@ -1,41 +1,52 @@
 <script lang="ts">
-	export let amountOfPositions: number;
-	export let newPosition: number;
-	let position = 0;
-	let oldPosition = 0;
+	type Props = {
+		amountOfPositions: number;
+		newPosition: number;
+		isShort?: boolean;
+	};
 
-	$: updatePosition(newPosition);
-	function updatePosition(newPosition: number): void {
-		oldPosition = position;
-		position = newPosition;
-	}
+	let { amountOfPositions, newPosition = $bindable(), isShort = false }: Props = $props();
+
+	let oldPosition = $state(newPosition)
+	let slidesToRight = $state(true);
+
+	$effect(() => {
+		if (oldPosition === newPosition) {
+			return
+		}
+		slidesToRight = newPosition > oldPosition
+		oldPosition = newPosition;
+	});
+
 </script>
 
 <div
 	class="line--accent"
-	class:slide-to-right={position > oldPosition}
-	class:slide-to-left={position < oldPosition}
-	style:--position={`calc(${100 * position + 50}% / ${amountOfPositions})`}
+	class:slides-to-right={slidesToRight}
+	class:short={isShort}
+	style:--position={`calc(${100 * newPosition + 50}% / ${amountOfPositions})`}
 ></div>
 
 <style>
 	.line--accent {
-		margin: calc(var(--line-width) * -1) calc(100% - var(--position) - 1rem) 0
-			calc(var(--position) - 1rem);
+		--line-length: 2rem;
+		margin: calc(var(--line-width) * -1) calc(100% - var(--position) - var(--line-length) / 2) 0
+			calc(var(--position) - var(--line-length) / 2);
 		height: var(--line-width);
+        transition:
+                background-color 0.4s var(--cubic-bezier),
+                margin-left 0.4s var(--cubic-bezier),
+                margin-right 0.4s var(--cubic-bezier) 0.1s;
+    }
+    .line--accent.slides-to-right {
+        transition:
+                background-color 0.4s var(--cubic-bezier),
+                margin-left 0.4s var(--cubic-bezier) 0.1s,
+                margin-right 0.4s var(--cubic-bezier);
+    }
+
+	.short {
+		--line-length: 1rem;
 	}
 
-	.slide-to-right {
-		transition:
-			background-color 0.4s var(--cubic-bezier),
-			margin-left 0.4s var(--cubic-bezier) 0.1s,
-			margin-right 0.4s var(--cubic-bezier);
-	}
-
-	.slide-to-left {
-		transition:
-			background-color 0.4s var(--cubic-bezier),
-			margin-left 0.4s var(--cubic-bezier),
-			margin-right 0.4s var(--cubic-bezier) 0.1s;
-	}
 </style>
