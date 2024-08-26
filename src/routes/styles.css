@@ -229,6 +229,10 @@ button {
 		border-color 0.4s var(--cubic-bezier);
 }
 
+svg {
+	display: block;
+}
+
 svg polyline,
 svg line,
 svg path,
