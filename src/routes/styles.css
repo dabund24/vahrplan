@@ -423,6 +423,9 @@ header {
 	color: var(--background-color);
 	border: var(--border);
 	font-weight: bolder;
+	svg {
+		--foreground-color: var(--background-color);
+	}
 }
 
 .hoverable:hover,

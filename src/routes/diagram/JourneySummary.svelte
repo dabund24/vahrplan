@@ -73,103 +73,123 @@
 	}
 </script>
 
-<div class="flex-row actions">
-	<button class="hoverable" on:click={() => void shareDiagram($displayedFormData)}>
-		<IconShare />
-	</button>
-	<button class="hoverable" on:click={handleBookmarkClick}>
-		<IconBookmark isBookmarked={isBookmarked} />
-	</button>
-</div>
 <div class="flex-column" id="journey-summary">
-	<div class="flex-row summary-background">
-		{#each $displayedFormData?.locations ?? [] as location, i (location.key)}
-			<div
-				class="summary-element flex-column"
-				class:station--selected={journeyInfo[i].legs.length > 0}
-				transition:scale
-				animate:flip={{ duration: 400 }}
+	<div class="flex-column summary-background">
+		<div class="flex-row padded-top-bottom actions" class:all-selected={allSelected}>
+			<button
+				class="hoverable hoverable--visible"
+				onclick={() => void shareDiagram($displayedFormData)}
+				title="Diagramm teilen"
 			>
-				<strong class="station-name"
-					>{location.value.type === "currentLocation"
-						? getGeolocationString(location.value.asAt)
-						: location.value.name}</strong
+				<IconShare />
+			</button>
+			<button
+				class="hoverable hoverable--visible"
+				onclick={handleBookmarkClick}
+				title="Diagram merken"
+			>
+				<IconBookmark {isBookmarked} />
+			</button>
+			{#if allSelected}
+				<a
+					href="/journey"
+					class="hoverable hoverable--accent"
+					title="Reisedetails anzeigen"
+					transition:scale
 				>
-				<div class="visuals-container flex-row">
-					<div class="station-icon-container">
-						<SummaryStationIcon
-							location={location.value}
-							locationIndex={i}
-							actsAsStopover={areStopovers[i]}
-							isDisplayedLocation={true}
-							bind:pressedStationId
-						/>
-					</div>
-					<div class="visuals--selected">
-						<div class="intermediate-stations flex-row">
-							<!--
+					<IconRightArrow />
+				</a>
+			{/if}
+		</div>
+		<div class="flex-row">
+			{#each $displayedFormData?.locations ?? [] as location, i (location.key)}
+				<div
+					class="summary-element flex-column"
+					class:station--selected={journeyInfo[i].legs.length > 0}
+					transition:scale
+					animate:flip={{ duration: 400 }}
+				>
+					<strong class="station-name"
+						>{location.value.type === "currentLocation"
+							? getGeolocationString(location.value.asAt)
+							: location.value.name}</strong
+					>
+					<div class="visuals-container flex-row">
+						<div class="station-icon-container">
+							<SummaryStationIcon
+								location={location.value}
+								locationIndex={i}
+								actsAsStopover={areStopovers[i]}
+								isDisplayedLocation={true}
+								bind:pressedStationId
+							/>
+						</div>
+						<div class="visuals--selected">
+							<div class="intermediate-stations flex-row">
+								<!--
 						TODO change transition after https://github.com/sveltejs/svelte/issues/10251 is resolved
 						-->
-							{#each journeyInfo[i].legs.slice(1) as leg (leg.departureData.location.requestParameter)}
-								<div
-									class="station-icon-container"
-									in:scale
-									out:scale
-									animate:flip={{ duration: 400 }}
-								>
-									<SummaryStationIcon
-										location={leg.departureData.location}
-										locationIndex={i}
-										isDisplayedLocation={false}
-										bind:pressedStationId
-									></SummaryStationIcon>
-								</div>
-							{/each}
-						</div>
-						<div class="lines flex-row">
-							{#each journeyInfo[i].legs as leg (leg.blockKey)}
-								<div in:scale={{}} animate:flip={{ duration: 400 }}>
-									<button
-										class="desktop-line-container hoverable"
-										on:click={() => void showLegModal(leg)}
-										title={leg.line.name}
+								{#each journeyInfo[i].legs.slice(1) as leg (leg.departureData.location.requestParameter)}
+									<div
+										class="station-icon-container"
+										in:scale
+										out:scale
+										animate:flip={{ duration: 400 }}
 									>
-										<span class="line--product product--{leg.line.product}"
-										></span>
-									</button>
-								</div>
-							{/each}
+										<SummaryStationIcon
+											location={leg.departureData.location}
+											locationIndex={i}
+											isDisplayedLocation={false}
+											bind:pressedStationId
+										></SummaryStationIcon>
+									</div>
+								{/each}
+							</div>
+							<div class="lines flex-row">
+								{#each journeyInfo[i].legs as leg (leg.blockKey)}
+									<div in:scale={{}} animate:flip={{ duration: 400 }}>
+										<button
+											class="desktop-line-container hoverable"
+											onclick={() => void showLegModal(leg)}
+											title={leg.line.name}
+										>
+											<span class="line--product product--{leg.line.product}"
+											></span>
+										</button>
+									</div>
+								{/each}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="times-container flex-row">
-					<div class="times--station flex-row">
-						<span class="arrival-time">
-							<Time time={journeyInfo.at(i - 1)?.arrival ?? {}} />
-						</span>
-						<span class="wait-time">
+					<div class="times-container flex-row">
+						<div class="times--station flex-row">
+							<span class="arrival-time">
+								<Time time={journeyInfo.at(i - 1)?.arrival ?? {}} />
+							</span>
+							<span class="wait-time">
+								<Duration
+									duration={dateDifference(
+										journeyInfo.at(i - 1)?.arrival.arrival?.time,
+										journeyInfo[i].departure.departure?.time
+									)}
+								/>
+							</span>
+							<span class="departure-time time">
+								<Time time={journeyInfo[i].departure ?? {}} />
+							</span>
+						</div>
+						<div class="times--journey flex-row">
 							<Duration
 								duration={dateDifference(
-									journeyInfo.at(i - 1)?.arrival.arrival?.time,
-									journeyInfo[i].departure.departure?.time
-								)}
+									journeyInfo[i].departure.departure?.time,
+									journeyInfo[i].arrival.arrival?.time
+								) ?? 0}
 							/>
-						</span>
-						<span class="departure-time time">
-							<Time time={journeyInfo[i].departure ?? {}} />
-						</span>
-					</div>
-					<div class="times--journey flex-row">
-						<Duration
-							duration={dateDifference(
-								journeyInfo[i].departure.departure?.time,
-								journeyInfo[i].arrival.arrival?.time
-							) ?? 0}
-						/>
+						</div>
 					</div>
 				</div>
-			</div>
-		{/each}
+			{/each}
+		</div>
 	</div>
 	<div class="transition"></div>
 </div>
@@ -193,11 +213,30 @@
 
 <style>
 	.actions {
-		width: min(var(--display-width), var(--diagram-width));
 		position: sticky;
-		left: 0;
+		right: 0.25rem;
 		align-self: start;
 		align-items: start;
+		margin-left: auto;
+		gap: 4px;
+		transition: padding-right 0.4s var(--cubic-bezier);
+		a {
+			display: none;
+			position: absolute;
+			right: 0;
+		}
+	}
+
+	@media screen and (max-width: 999px) {
+		.actions {
+			right: 0.75rem;
+			&.all-selected {
+				padding-right: calc(28px + 1rem);
+			}
+			a {
+				display: block;
+			}
+		}
 	}
 
 	#journey-summary {
@@ -215,16 +254,16 @@
 	}
 
 	.summary-background {
-        padding: max(env(safe-area-inset-top), 1rem) 0.5rem 0.5rem;
-        margin: 0 -0.5rem;
-        background-color: var(--background-color--transparent);
-        backdrop-filter: var(--blur);
-        -webkit-backdrop-filter: var(--blur);
-    }
+		padding: env(safe-area-inset-top) 0.5rem 0.5rem;
+		margin: 0 -0.5rem;
+		background-color: var(--background-color--transparent);
+		backdrop-filter: var(--blur);
+		-webkit-backdrop-filter: var(--blur);
+	}
 
 	@media screen and (min-width: 1000px) {
 		#journey-summary {
-			top: -1rem;
+			top: -0.5rem;
 		}
 	}
 
