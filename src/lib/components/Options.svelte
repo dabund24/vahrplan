@@ -84,6 +84,10 @@
 		padding: 0;
 	}
 
+	button:hover, button:active {
+		background-color: var(--foreground-color--very-transparent);
+	}
+
 	@supports (left: anchor(right)) {
 		.close-button {
 			display: none;
@@ -125,7 +129,8 @@
 
 		.close-button {
 			width: 100%;
-			text-align: center;
+            display: flex;
+			justify-content: center;
 		}
 
 		.options-container {
@@ -138,7 +143,11 @@
 		}
 
 		.options {
-			padding: 0 0.5rem 0.5rem;
+			padding: 0 0 0.5rem;
+		}
+
+		.options :global(button) {
+			padding: .5rem 1rem;
 		}
 
 		@media screen and (min-width: 500px) {
