@@ -2,7 +2,11 @@
 	import type { TreeNode } from "$lib/types";
 	import JourneyDiagramElement from "./JourneyDiagramElement.svelte";
 
-	export let nodes: TreeNode[];
+	type Props = {
+		nodes: TreeNode[];
+	}
+
+	let { nodes }: Props = $props();
 </script>
 
 <div class="flex-column diagram-column">

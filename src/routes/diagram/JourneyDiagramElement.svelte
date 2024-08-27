@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types";
+	import type { JourneyBlock, ParsedTime } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import {
 		selectedJourneys,
@@ -8,18 +8,20 @@
 	} from "$lib/stores/journeyStores";
 	import { settings } from "$lib/stores/settingStore";
 
-	export let blocks: JourneyBlock[];
-	export let depth: number;
-	export let index: number;
-	export let refreshToken: string;
-	export let departure: ParsedTime;
-	export let arrival: ParsedTime;
+	type Props = {
+		blocks: JourneyBlock[];
+		depth: number;
+		index: number;
+		refreshToken: string;
+		departure: ParsedTime;
+		arrival: ParsedTime;
+	};
 
-	$: displayedBlocks = blocks.filter<LegBlock>(
-		((block) => block.type === "leg") as (block: JourneyBlock) => block is LegBlock
-	);
+	let { blocks, depth, index, refreshToken, departure, arrival }: Props = $props();
 
-	$: isSelected = index === $selectedJourneys.at(depth)?.selectedBy;
+	let displayedBlocks = $derived(blocks.filter((block) => block.type === "leg"));
+
+	let isSelected = $derived(index === $selectedJourneys.at(depth)?.selectedBy);
 
 	function handleDiagramElementClick(): void {
 		if (isSelected) {
@@ -48,7 +50,7 @@
 	type="button"
 	class="flex-row diagram-element hoverable"
 	aria-current={isSelected}
-	on:click={handleDiagramElementClick}
+	onclick={handleDiagramElementClick}
 	title="Verbindung aus-/abwählen"
 >
 	<span class="time">
@@ -56,7 +58,8 @@
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
-			<svelte:element this={block.attribute === "cancelled" ? "s" : "span"}
+			<svelte:element
+				this={block.attribute === "cancelled" ? "s" : "span"}
 				class="leg product--{block.line.product}"
 				class:cancelled={block.attribute === "cancelled"}
 				style="--duration: {getLegWidth(block.duration)}"

@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import { displayedFormData, mergingBlocks, selectedJourneys } from "$lib/stores/journeyStores.js";
+	import {
+		displayedFormData,
+		mergingBlocks,
+		selectedJourneys
+	} from "$lib/stores/journeyStores.js";
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
 	import Time from "$lib/components/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";
@@ -18,6 +22,7 @@
 	import { toggleDiagramBookmark, getBookmarks } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { onMount } from "svelte";
+	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -25,24 +30,24 @@
 		arrival: ParsedTime;
 	};
 
-	$: journeyInfo = [
+	let journeyInfo = $derived([
 		...$selectedJourneys.map((selectedJourney) => {
 			return {
 				legs: selectedJourney.blocks.filter<LegBlock>(isLeg),
 				departure: { departure: { time: selectedJourney.departure.departure?.time } },
-				arrival: { arrival: {time: selectedJourney.arrival.arrival?.time} }
+				arrival: { arrival: { time: selectedJourney.arrival.arrival?.time } }
 			};
 		}),
 		{ legs: [], departure: {}, arrival: {} }
-	] as JourneyInfo[];
+	] as JourneyInfo[]);
 
 	function isLeg(block: JourneyBlock): block is LegBlock {
 		return block.type === "leg";
 	}
 
-	let pressedStationId = 0;
+	let pressedStationId = $state(0);
 
-	let modalLeg: LegBlock | undefined;
+	let modalLeg: LegBlock | undefined = $state();
 	function showLegModal(leg: LegBlock): void {
 		modalLeg = { ...leg };
 		pushState("", {
@@ -50,17 +55,21 @@
 		});
 	}
 
-	$: areStopovers = $mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover);
+	let areStopovers = $derived(
+		$mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover)
+	);
 
-	let isBookmarked = false
+	let isBookmarked = $state(false);
+
+	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 
 	onMount(() => {
-		const bookmarkedDiagrams = getBookmarks("diagram")
-		 isBookmarked = bookmarkedDiagrams.some(bookmark => bookmark.link === location.href)
-	})
+		const bookmarkedDiagrams = getBookmarks("diagram");
+		isBookmarked = bookmarkedDiagrams.some((bookmark) => bookmark.link === location.href);
+	});
 
 	function handleBookmarkClick(): void {
-		isBookmarked = toggleDiagramBookmark($displayedFormData)
+		isBookmarked = toggleDiagramBookmark($displayedFormData);
 	}
 </script>
 
