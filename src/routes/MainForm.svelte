@@ -85,7 +85,7 @@
 		const timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
 		const options = get(settings).journeysOptions;
 		const formData: DisplayedFormData = {
-			locations: stopsToBeDisplayed,
+			locations: stopsToBeDisplayed.map((stop) => ({ ...stop })), // important, unwanted dom updates would happen otherwise later on!
 			time: journeyTime,
 			timeRole,
 			options,

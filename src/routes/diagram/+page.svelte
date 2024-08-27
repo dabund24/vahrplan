@@ -33,7 +33,7 @@
 			setDisplayedFormDataAndTree(initialFormData);
 		}
 	}
-	
+
 	const tabContent: ComponentProps<Tabs>["tabs"] = [
 		{
 			title: "Übersicht",
@@ -43,7 +43,7 @@
 			title: "Karte",
 			content: map
 		}
-	]
+	];
 </script>
 
 <svelte:head>
