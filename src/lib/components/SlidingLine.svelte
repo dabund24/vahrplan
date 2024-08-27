@@ -7,24 +7,24 @@
 
 	let { amountOfPositions, newPosition = $bindable(), isShort = false }: Props = $props();
 
-	let oldPosition = $state(newPosition)
-	let slidesToRight = $state(true);
-
-	$effect(() => {
-		if (oldPosition === newPosition) {
+	let position = $state(0);
+	let oldPosition = $state(0);
+	$effect(() => updatePosition(newPosition))
+	function updatePosition(newPosition: number): void {
+		if (newPosition === position) {
 			return
 		}
-		slidesToRight = newPosition > oldPosition
-		oldPosition = newPosition;
-	});
+		oldPosition = position;
+		position = newPosition;
+	}
 
 </script>
 
 <div
 	class="line--accent"
-	class:slides-to-right={slidesToRight}
+	class:slides-to-right={newPosition > oldPosition}
 	class:short={isShort}
-	style:--position={`calc(${100 * newPosition + 50}% / ${amountOfPositions})`}
+	style:--position={`calc(${100 * position + 50}% / ${amountOfPositions})`}
 ></div>
 
 <style>
@@ -37,6 +37,7 @@
                 background-color 0.4s var(--cubic-bezier),
                 margin-left 0.4s var(--cubic-bezier),
                 margin-right 0.4s var(--cubic-bezier) 0.1s;
+
     }
     .line--accent.slides-to-right {
         transition:
