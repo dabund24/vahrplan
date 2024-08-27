@@ -349,7 +349,7 @@ header {
 	stroke: var(--product-color);
 }
 
-.product--undefined {
+.product--undefined, .product-- {
 	--product-color: transparent;
 	--product-color--opaque: transparent;
 }

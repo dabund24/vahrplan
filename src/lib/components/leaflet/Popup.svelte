@@ -1,6 +1,6 @@
 <script lang="ts">
 	import L from "leaflet";
-	import { getContext, onDestroy, onMount } from "svelte";
+	import { getContext, onDestroy, onMount, type Snippet } from "svelte";
 	import type { PopupData } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
@@ -8,7 +8,13 @@
 	import IconFiller from "$lib/components/icons/IconFiller.svelte";
 	import Duration from "$lib/components/Duration.svelte";
 
-	export let popupData: PopupData;
+	type Props = {
+		popupData: PopupData;
+		// the icon to be displayed in the popup
+		children?: Snippet;
+	};
+
+	let { popupData, children }: Props = $props();
 	let popup: L.Popup | undefined;
 	let popupElement: HTMLElement;
 
@@ -23,7 +29,7 @@
 		}
 	});
 
-	$: popup?.setContent(popupElement);
+	$effect(() => void popup?.setContent(popupElement));
 
 	onDestroy(() => {
 		layer?.unbindPopup();
@@ -68,7 +74,7 @@
 		<div class="flex-column middle">
 			<div class="line--vertical product--{popupData.product1} line--product"></div>
 			<div class="icon product--{popupData.product1 ?? popupData.product2}">
-				<slot />
+				{@render children?.()}
 			</div>
 			<div class="line--vertical product--{popupData.product2} line--product"></div>
 		</div>
@@ -79,9 +85,6 @@
 <style>
 	.flex-row {
 		gap: calc(1rem - 4px);
-		& > i {
-			white-space: nowrap;
-		}
 		align-items: center;
 	}
 	.icon {

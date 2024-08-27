@@ -1,21 +1,26 @@
 <script lang="ts">
 	import type { PopupDataStation, TransitData } from "$lib/types";
 	import L from "leaflet";
-	import { getContext, onDestroy, onMount, setContext } from "svelte";
+	import { getContext, onDestroy, onMount, setContext, type Snippet } from "svelte";
 	import Popup from "$lib/components/leaflet/Popup.svelte";
 
-	export let data: TransitData;
-	export let product1: string | undefined = undefined;
-	export let product2: string | undefined = undefined;
-	let marker: L.Marker | undefined;
+	type Props = {
+		data: TransitData;
+		product1?: string;
+		product2?: string;
+		children: Snippet
+	};
+
+	let { data, product1, product2, children }: Props = $props();
+	let marker: L.Marker | undefined = $state();
 	let markerElement: HTMLElement;
 
-	$: popupData = {
+	let popupData = $derived({
 		type: "station",
 		transitData: data,
 		product1,
-		product2,
-	} as PopupDataStation;
+		product2
+	} as PopupDataStation);
 
 	const { getMap }: { getMap: () => L.Map | undefined } = getContext("map");
 	const map = getMap();
@@ -35,7 +40,8 @@
 		}
 	});
 
-	$: marker?.setLatLng(data.location.position)
+	// update marker position
+	$effect(() => void marker?.setLatLng(data.location.position));
 
 	onDestroy(() => {
 		marker?.remove();
@@ -45,9 +51,9 @@
 
 <div bind:this={markerElement}>
 	{#if marker !== undefined}
-		<slot />
+		{@render children()}
 		<Popup {popupData}>
-			<slot />
+			{@render children()}
 		</Popup>
 	{/if}
 </div>

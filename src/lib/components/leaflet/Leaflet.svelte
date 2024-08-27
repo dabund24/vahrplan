@@ -17,10 +17,10 @@
 	import { settings } from "$lib/stores/settingStore";
 	import L from "leaflet";
 
-	let map: L.Map | undefined;
+	let map: L.Map | undefined = $state();
 	let mapElement: HTMLElement;
 
-	let currentPosition: ParsedLocation["position"] | undefined;
+	let currentPosition: ParsedLocation["position"] | undefined = $state();
 	let geolocationWatcher: number | undefined = undefined;
 
 	if ($settings.view.map.geolocation) {
@@ -38,11 +38,10 @@
 		map?.invalidateSize();
 	});
 
-	$: if (map !== undefined) addLayersToMap(map, $settings.view.map.layers);
-
 	onMount(() => {
 		map = L.map(mapElement, { zoomControl: false });
 		resizeObserver.observe(mapElement);
+		addLayersToMap(map, $settings.view.map.layers);
 	});
 
 	onDestroy(() => {
@@ -85,7 +84,7 @@
 		}
 	}
 
-	$: setMapContent(map, $selectedJourneys, $displayedFormData);
+	$effect(() => setMapContent(map, $selectedJourneys, $displayedFormData));
 
 	function setMapContent(
 		map: L.Map | undefined,
