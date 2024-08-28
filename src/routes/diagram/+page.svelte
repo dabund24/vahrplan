@@ -32,6 +32,8 @@
 			// this happens when the user navigates here without the app context
 			setDisplayedFormDataAndTree(initialFormData);
 		}
+		const pageData = $page.data;
+		pageData.formData = undefined
 	}
 
 	const tabContent: ComponentProps<Tabs>["tabs"] = [

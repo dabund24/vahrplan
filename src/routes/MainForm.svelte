@@ -21,7 +21,7 @@
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 
 	type Props = {
-		initialFormData: DisplayedFormData | undefined;
+		initialFormData?: DisplayedFormData;
 	};
 
 	let { initialFormData }: Props = $props();
