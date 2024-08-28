@@ -44,7 +44,7 @@
 		if (text.trim() === "") {
 			return Promise.resolve(staticSuggestions);
 		}
-		const url = getApiLocationsUrl(text, true);
+		const url = getApiLocationsUrl(text);
 		return getApiData<ParsedLocation[]>(url, undefined).then((response) => {
 			// start with fitting static suggestions (current location and bookmarks)
 			let suggestions = staticSuggestions.filter((suggestion) =>
