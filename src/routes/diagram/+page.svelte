@@ -129,7 +129,7 @@
 	*/
 
 	.main-application {
-		padding: calc(0.5rem + env(safe-area-inset-top)) 0.5rem;
+		padding: calc(0.5rem + env(safe-area-inset-top)) 0.5rem 0.5rem;
 		overscroll-behavior-x: none;
 		box-sizing: border-box;
 		--connection-width--min-threshold: 11em;

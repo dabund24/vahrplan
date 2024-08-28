@@ -143,7 +143,7 @@
 		}
 
 		.options {
-			padding: 0 0 0.5rem;
+			padding: 0 0 calc(0.5rem + env(safe-area-inset-bottom));
 		}
 
 		.options :global(button) {

@@ -7,22 +7,15 @@
 	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
 </svelte:head>
 
-<div class="split-container">
-	<section class="form padded-top-bottom">
-		<MainForm />
-	</section>
-</div>
+<section class="form padded-top-bottom">
+	<MainForm />
+</section>
 
 <style>
 	.form {
 		position: sticky;
-		left: 0.75rem;
+		left: 0;
 		z-index: 100;
-        max-width: calc(100vw - 1.5rem);
-    }
-
-	.split-container {
-		height: 100%;
 	}
 
 	section {
@@ -32,10 +25,11 @@
 		align-items: center;
 	}
 
-	@media screen and (min-width: 1000px) {
+	@media screen and (max-width: 999px) {
 		.form {
-			left: 0;
-            max-width: unset;
-        }
+			padding-top: calc(0.5rem + env(safe-area-inset-top));
+			left: 0.75rem;
+			max-width: calc(100vw - 1.5rem);
+		}
 	}
 </style>
