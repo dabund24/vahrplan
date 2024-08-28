@@ -71,9 +71,8 @@ export function getJourneyUrl(journey: SelectedJourney[]): URL {
 	return url;
 }
 
-export function getApiLocationsUrl(input: string, hafas: boolean): URL {
+export function getApiLocationsUrl(input: string): URL {
 	const url = new URL("/api/locations", location.origin);
 	url.searchParams.set("name", input);
-	url.searchParams.set("hafas", String(hafas));
 	return url;
 }
