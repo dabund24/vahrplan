@@ -59,8 +59,7 @@
 	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 
 	function handleJourneyBookmarkClick(): void {
-		toggleJourneyBookmark($selectedJourneys, $displayedFormData);
-		journeyBookmarks = getBookmarks("journey");
+		journeyBookmarks = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
 	}
 </script>
 
@@ -87,7 +86,7 @@
 			</section>
 			<section class="diagram">
 				{#if $displayedFormData !== undefined}
-					<JourneySummary allSelected={allSelected} />
+					<JourneySummary {allSelected} />
 					{#await $displayedTree}
 						<JourneyDiagramSkeleton depth={$displayedFormData.locations.length - 1} />
 					{:then tree}

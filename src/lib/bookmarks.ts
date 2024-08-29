@@ -42,7 +42,6 @@ export type JourneyBookmark = {
  */
 export function getBookmarks<T extends BookmarkType>(type: T): Bookmarks<T>["bookmarks"] {
 	const stringifiedBookmarks = localStorage.getItem(`${type}Bookmarks`);
-	console.log(stringifiedBookmarks);
 	if (stringifiedBookmarks === null) {
 		return [];
 	}
@@ -77,11 +76,11 @@ export function setBookmarks<T extends BookmarkType>(bookmarks: Bookmarks<T>): v
 /**
  * either removes or adds a diagram bookmark
  * @param formData form data of the diagram
- * @returns `true` if the data is bookmarked now; `false` otherwise
+ * @returns all current bookmarks
  */
-export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): boolean {
+export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): DiagramBookmark[] {
 	if (formData === undefined) {
-		return false;
+		return getBookmarks("diagram");
 	}
 	const bookmarks = getBookmarks("diagram");
 	const diagramUrlHref = getDiagramUrlFromFormData(formData).href;
@@ -90,7 +89,7 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		// bookmark already exists => remove it
 		bookmarks.splice(indexInOldData, 1);
 		setBookmarks({ type: "diagram", bookmarks });
-		return false;
+		return bookmarks;
 	}
 	// bookmark does not yet exist => add it
 	const bookmark: DiagramBookmark = {
@@ -106,30 +105,30 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "diagram", bookmarks });
-	return true;
+	return bookmarks;
 }
 
 /**
  * either removes or adds a diagram bookmark
  * @param journey all sub-journeys
  * @param formData displayed form data
- * @returns `true` if the data is bookmarked now; `false` otherwise
+ * @returns all current bookmarks
  */
 export function toggleJourneyBookmark(
 	journey: SelectedJourney[],
 	formData: DisplayedFormData | undefined
-): boolean {
+): JourneyBookmark[] {
+	const bookmarks = getBookmarks("journey");
 	if (journey.length === 0 || formData === undefined) {
-		return false;
+		return bookmarks;
 	}
 	const journeyUrlHref = getJourneyUrl(journey).href;
-	const bookmarks = getBookmarks("journey");
 	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.link === journeyUrlHref);
 	if (indexInOldData !== -1) {
 		// bookmark already exists => remove it
 		bookmarks.splice(indexInOldData, 1);
 		setBookmarks({ type: "journey", bookmarks });
-		return false;
+		return bookmarks;
 	}
 	// bookmark does not yet exist => add it
 	const bookmark: JourneyBookmark = {
@@ -147,5 +146,5 @@ export function toggleJourneyBookmark(
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "journey", bookmarks });
-	return true;
+	return bookmarks;
 }

@@ -19,10 +19,12 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { shareDiagram } from "./share";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
-	import { toggleDiagramBookmark, getBookmarks } from "$lib/bookmarks";
+	import { toggleDiagramBookmark, getBookmarks, type DiagramBookmark } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { onMount } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
+	import { getDiagramUrlFromFormData } from "$lib/urls";
+	import { browser } from "$app/environment";
 
 	type Props = {
 		allSelected: boolean;
@@ -65,15 +67,20 @@
 		$mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover)
 	);
 
-	let isBookmarked = $state(false);
+	let diagramBookmarks: DiagramBookmark[] = $state([]);
+	let isBookmarked = $derived(
+		browser &&
+			diagramBookmarks.some(
+				(bookmark) => bookmark.link === getDiagramUrlFromFormData($displayedFormData).href
+			)
+	);
 
-	onMount(() => {
-		const bookmarkedDiagrams = getBookmarks("diagram");
-		isBookmarked = bookmarkedDiagrams.some((bookmark) => bookmark.link === location.href);
-	});
+	$inspect(diagramBookmarks);
 
-	function handleBookmarkClick(): void {
-		isBookmarked = toggleDiagramBookmark($displayedFormData);
+	onMount(() => (diagramBookmarks = getBookmarks("diagram")));
+
+	function handleDiagramBookmarkClick(): void {
+		diagramBookmarks = toggleDiagramBookmark($displayedFormData);
 	}
 </script>
 
@@ -89,7 +96,7 @@
 			</button>
 			<button
 				class="hoverable hoverable--visible"
-				onclick={handleBookmarkClick}
+				onclick={handleDiagramBookmarkClick}
 				title="Diagram merken"
 			>
 				<IconBookmark {isBookmarked} />

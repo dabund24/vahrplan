@@ -14,7 +14,7 @@
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { type ComponentProps, onMount } from "svelte";
-	import { getBookmarks, toggleJourneyBookmark } from "$lib/bookmarks";
+	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { getJourneyUrl } from "$lib/urls";
 	import Options from "$lib/components/Options.svelte";
@@ -31,7 +31,22 @@
 
 	let clientWidth: number = $state(0);
 
-	let isBookmarked = $state(false);
+	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
+
+	let journeyBookmarks: JourneyBookmark[] = $state([]);
+
+	onMount(() => (journeyBookmarks = getBookmarks("journey")));
+
+	let isBookmarked = $derived(
+		browser &&
+			journeyBookmarks.some(
+				(bookmark) => bookmark.link === getJourneyUrl($selectedJourneys).href
+			)
+	);
+
+	function handleJourneyBookmarkClick(): void {
+		journeyBookmarks = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
+	}
 
 	const options: ComponentProps<Options>["options"] = [
 		{
@@ -47,22 +62,9 @@
 		{
 			name: "Merken",
 			icon: iconBookmark,
-			onClick: handleBookmarkClick
+			onClick: handleJourneyBookmarkClick
 		}
 	];
-
-	onMount(() => {
-		const bookmarkedJourneys = getBookmarks("journey");
-		isBookmarked = bookmarkedJourneys.some(
-			(bookmark) => bookmark.link === getJourneyUrl($selectedJourneys).href
-		);
-	});
-
-	function handleBookmarkClick(): void {
-		isBookmarked = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
-	}
-
-	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 {#snippet iconRefresh()}
