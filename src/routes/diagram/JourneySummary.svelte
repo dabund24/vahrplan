@@ -25,6 +25,7 @@
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { browser } from "$app/environment";
+	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 
 	type Props = {
 		allSelected: boolean;
@@ -84,8 +85,8 @@
 	}
 </script>
 
-<div class="flex-column" id="journey-summary">
-	<div class="flex-column summary-background">
+<TitlelessHeader --header-width="var(--diagram-width)">
+	<div id="journey-summary" class="flex-column summary-background">
 		<div class="flex-row actions" class:all-selected={allSelected}>
 			<button
 				class="hoverable hoverable--visible"
@@ -202,8 +203,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="transition"></div>
-</div>
+</TitlelessHeader>
 {#if $page.state.showLegModal && modalLeg}
 	<Modal
 		bind:showModal={$page.state.showLegModal}
@@ -252,39 +252,25 @@
 		}
 	}
 
-	#journey-summary {
-		position: sticky;
-		z-index: 5;
-		top: 0;
-		width: var(--diagram-width);
-		transition: width 0.4s var(--cubic-bezier);
-		& > :last-child {
-			padding: 0 0.5rem;
-			margin: 0 -0.5rem;
-		}
-		--beginning-end-offset: 1.5em;
-		word-break: break-word;
-	}
-
-	.summary-background {
-		padding: env(safe-area-inset-top) 0.5rem 0.5rem;
+    #journey-summary,
+	:global(.transition) {
+		padding: 0 0.5rem;
 		margin: 0 -0.5rem;
-		background-color: var(--background-color--transparent);
-		backdrop-filter: var(--blur);
-		-webkit-backdrop-filter: var(--blur);
 	}
 
-	@media screen and (min-width: 1000px) {
-		#journey-summary {
-			top: -0.5rem;
-		}
-		.summary-background {
-			padding: 0 0.5rem 0.5rem;
+    #journey-summary {
+        --beginning-end-offset: 1.5em;
+        word-break: break-word;
+	}
+
+	@media screen and (max-width: 999px) {
+        #journey-summary {
+			padding-top: env(safe-area-inset-top);
 		}
 	}
 
-	:global(.pane:has(~ .dragging)) #journey-summary,
-	:global(.container.loading) #journey-summary {
+	:global(.pane:has(~ .dragging) .titleless-header),
+	:global(.container.loading .titleless-header) {
 		transition: none;
 	}
 

@@ -7,7 +7,7 @@
 	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
 </svelte:head>
 
-<section class="form padded-top-bottom">
+<section class="form">
 	<MainForm />
 </section>
 
@@ -27,7 +27,6 @@
 
 	@media screen and (max-width: 999px) {
 		.form {
-			padding-top: calc(0.5rem + env(safe-area-inset-top));
 			left: 0.75rem;
 			max-width: calc(100vw - 1.5rem);
 		}

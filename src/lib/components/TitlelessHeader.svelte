@@ -21,13 +21,15 @@
 
 <style>
 	.titleless-header {
-		width: 100%;
+		width: var(--header-width, 100%);
 		position: sticky;
 		top: 0;
         z-index: 500;
+		transition: width 0.4s var(--cubic-bezier);
 		& > :global(:not(:last-child)) {
 			background-color: var(--background-color--transparent);
-		}
+            transition: background 0.4s var(--cubic-bezier);
+        }
 	}
 
     .transition {
