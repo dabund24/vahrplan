@@ -26,6 +26,7 @@
 	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import { shareJourney } from "../journey/share";
+	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 
 	let windowWidth: number = $state(0);
 
@@ -100,11 +101,11 @@
 		<div slot="b" class="journey-preview">
 			{#if showSplitPane}
 				{#snippet topBar(miniTabSelector: Snippet)}
-					<div class="preview--top-bar">
-						<div class="flex-row">
+					<TitlelessHeader>
+						<div class="flex-row journey-actions">
 							{@render miniTabSelector()}
 							{#if allSelected}
-								<div class="flex-row preview--top-bar--buttons" transition:scale>
+								<div class="flex-row journey-actions--buttons" transition:scale>
 									<button
 										class="hoverable hoverable--visible"
 										onclick={() => void shareJourney($selectedJourneys)}
@@ -126,8 +127,7 @@
 								</div>
 							{/if}
 						</div>
-						<div class="transition"></div>
-					</div>
+					</TitlelessHeader>
 				{/snippet}
 				{#snippet detailsIcon()}
 					<IconJourneyInfo />
@@ -211,19 +211,12 @@
 		margin: auto;
 	}
 
-	.preview--top-bar {
-		position: sticky;
-		top: 0;
-		z-index: 500;
-	}
-
-	.preview--top-bar > :first-child {
+	.journey-actions {
 		padding: var(--line-width) 0.75rem;
-		background-color: var(--background-color--transparent);
 		justify-content: space-between;
 	}
 
-	.preview--top-bar--buttons {
+	.journey-actions--buttons {
 		gap: var(--line-width);
 	}
 
