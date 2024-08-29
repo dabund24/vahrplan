@@ -107,10 +107,9 @@
 		mobileOnly={true}
 	>
 		<SingleSelect
-			type={"icon"}
 			titles={[
-				{ title: "Klassische Ansicht", icon: iconJourneyInfo },
-				{ title: "Karte", icon: iconMap }
+				{ type: "icon", title: "Klassische Ansicht", icon: iconJourneyInfo },
+				{ type: "icon", title: "Karte", icon: iconMap }
 			]}
 			bind:selected={displayedContent}
 		/>

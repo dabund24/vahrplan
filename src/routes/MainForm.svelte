@@ -273,8 +273,10 @@
 	<div class="time-filter-submit" class:time-is-now={timeIsNow}>
 		<div class="flex-row">
 			<SingleSelect
-				type={"text"}
-				titles={[{ title: "Abfahrt" }, { title: "Ankunft" }]}
+				titles={[
+					{ type: "text", title: "Abfahrt" },
+					{ type: "text", title: "Ankunft" }
+				]}
 				bind:selected={departureArrivalSelection}
 			/>
 			<Setting

@@ -1,19 +1,16 @@
-<script lang="ts">
+<script lang="ts" generics="T extends 'text' | 'icon'">
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import type { Snippet } from "svelte";
 
-	type Props = { selected: number } & (
-		| {
-				type: "text";
-				titles: { title: string }[];
-		  }
-		| {
-				type: "icon";
-				titles: { title: string; icon: Snippet }[];
-		  }
-	);
+	type Props = { selected: number } & (T extends "text"
+		? {
+				titles: { type: T; title: string }[];
+			}
+		: {
+				titles: { type: T; title: string; icon: Snippet }[];
+			});
 
-	let { type, titles, selected = $bindable() }: Props = $props();
+	let { selected = $bindable(), titles }: Props = $props();
 </script>
 
 <div class="flex-column">
@@ -21,7 +18,7 @@
 		{#each titles as title, i}
 			<li>
 				<button type="button" title={title.title} onclick={() => void (selected = i)}>
-					{#if type === "icon"}
+					{#if title.type === "icon"}
 						{@render title.icon()}
 					{:else}
 						{title.title}
@@ -34,7 +31,7 @@
 		<SlidingLine
 			amountOfPositions={titles.length}
 			bind:newPosition={selected}
-			isShort={type === "icon"}
+			isShort={titles[0].type === "icon"}
 		/>
 	</div>
 </div>
