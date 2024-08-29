@@ -252,19 +252,19 @@
 		}
 	}
 
-    #journey-summary,
-	:global(.transition) {
-		padding: 0 0.5rem;
-		margin: 0 -0.5rem;
+	#journey-summary,
+	:global(.titleless-header:has(#journey-summary) .transition) {
+		padding: 0 var(--line-width);
+		margin: 0 calc(-1 * var(--line-width));
 	}
 
-    #journey-summary {
-        --beginning-end-offset: 1.5em;
-        word-break: break-word;
+	#journey-summary {
+		--beginning-end-offset: 1.5em;
+		word-break: break-word;
 	}
 
 	@media screen and (max-width: 999px) {
-        #journey-summary {
+		#journey-summary {
 			padding-top: env(safe-area-inset-top);
 		}
 	}
