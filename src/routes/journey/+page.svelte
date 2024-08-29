@@ -12,7 +12,6 @@
 	import { browser } from "$app/environment";
 	import { shareJourney } from "./share";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
-	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { type ComponentProps, onMount, type Snippet } from "svelte";
 	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
@@ -21,14 +20,13 @@
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
+	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
 	if (browser && formData !== undefined && treeNodes !== undefined) {
 		initializeSharedData(formData, treeNodes);
 	}
-
-	let displayedContent: 0 | 1 = $state(0);
 
 	let clientWidth: number = $state(0);
 
@@ -124,6 +122,30 @@
 {:else}
 	<div class="columns">
 		<section class="journeys">
+			<TitlelessHeader>
+				{#if allSelected && $selectedJourneys.length > 0}
+					<div class="flex-row journey-actions--buttons">
+						<button
+							class="hoverable hoverable--visible"
+							onclick={() => void shareJourney($selectedJourneys)}
+						>
+							<IconShare />
+						</button>
+						<button
+							class="hoverable hoverable--visible"
+							onclick={handleJourneyBookmarkClick}
+						>
+							<IconBookmark {isBookmarked} />
+						</button>
+						<button
+							class="hoverable hoverable--visible"
+							onclick={refreshJourney}
+						>
+							<IconRefresh />
+						</button>
+					</div>
+				{/if}
+			</TitlelessHeader>
 			{@render journeyOverview()}
 		</section>
 		<section class="map">
@@ -146,5 +168,11 @@
 	section {
 		max-height: 100%;
 		overflow: auto;
+	}
+	.journey-actions--buttons {
+        width: fit-content;
+		margin-left: auto;
+		padding: var(--line-width) .75rem 0;
+		gap: var(--line-width);
 	}
 </style>
