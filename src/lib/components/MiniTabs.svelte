@@ -12,7 +12,7 @@
 		tabEnvironment: Snippet<[Snippet]>;
 	};
 
-	const { padContent = false, tabs, tabEnvironment } = $props() as Props;
+	const { padContent = false, tabs, tabEnvironment }: Props = $props();
 	const tabsWithType: ComponentProps<SingleSelect<"icon">>["titles"] = tabs.map((tab) => ({
 		title: tab.title,
 		icon: tab.icon,
