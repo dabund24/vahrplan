@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import type { Snippet } from "svelte";
+	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 
 	type Props = {
 		isBelowHeaderMobile?: boolean;
@@ -22,19 +23,15 @@
 	let activeTab = $state(0);
 </script>
 
-<div
-	class="tabs-container"
-	class:below-header--mobile={isBelowHeaderMobile}
-	class:below-header--desktop={isBelowHeaderDesktop}
->
+<TitlelessHeader {isBelowHeaderMobile} {isBelowHeaderDesktop}>
 	<div class="tabs padded-top-bottom">
-		<ul class="flex-row hoverable--visible--group hoverable--visible--group--no-side-padding" role="tablist">
+		<ul
+			class="flex-row hoverable--visible--group hoverable--visible--group--no-side-padding"
+			role="tablist"
+		>
 			{#each tabs as tab, i}
 				<li role="tab" aria-selected={activeTab === i}>
-					<button
-						onclick={() => void (activeTab = i)}
-						type="button">{tab.title}</button
-					>
+					<button onclick={() => void (activeTab = i)} type="button">{tab.title}</button>
 				</li>
 			{/each}
 		</ul>
@@ -42,39 +39,15 @@
 			<SlidingLine amountOfPositions={tabs.length} newPosition={activeTab} />
 		</div>
 	</div>
-	<div class="transition"></div>
-</div>
+</TitlelessHeader>
 
 <div class:pad-content={padContent}>
 	{@render tabs[activeTab].content()}
 </div>
 
 <style>
-	.tabs-container {
-		overflow-y: auto;
-		position: sticky;
-		top: 0;
-		z-index: 500;
-	}
-
-	@media screen and (min-width: 1000px) {
-		.below-header--desktop {
-			top: calc(3.5rem + 4px);
-		}
-	}
-
-	@media screen and (max-width: 999px) {
-		.below-header--mobile {
-			top: calc(3.5rem + 4px);
-		}
-	}
-
 	.tabs {
-		background-color: var(--background-color--transparent);
-		backdrop-filter: var(--blur);
-		-webkit-backdrop-filter: var(--blur);
 		padding: 4px 0.5rem 0;
-		transition: background 0.4s var(--cubic-bezier);
 	}
 
 	li {
@@ -88,22 +61,6 @@
 	.line-container {
 		position: relative;
 		padding: 0 0.25rem;
-	}
-
-	.transition {
-		background: linear-gradient(
-			to bottom,
-			var(--background-color--opaque--transitionable),
-			transparent
-		);
-		--background-color--opaque--transitionable: var(--background-color--transparent);
-		transition: --background-color--opaque--transitionable 0.4s var(--cubic-bezier);
-	}
-
-	@property --background-color--opaque--transitionable {
-		syntax: "<color>";
-		initial-value: #ffffffe0;
-		inherits: false;
 	}
 
 	.pad-content {
