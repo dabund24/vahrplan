@@ -1,6 +1,6 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
 import { hafasClient } from "$lib/server/setup";
-import { journeyToBlocks } from "$lib/server/parse";
+import { journeyToBlocks } from "$lib/server/parse/parse";
 import { getSuccessResponse, getZugError } from "$lib/server/responses";
 import type { JourneyBlock, UnselectedBlock, ZugResponse } from "$lib/types";
 

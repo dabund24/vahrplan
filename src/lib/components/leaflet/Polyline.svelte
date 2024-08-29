@@ -21,7 +21,8 @@
 				type: "line",
 				duration: block.duration,
 				direction: block.direction,
-				line: block.line
+				product: block.product,
+				name: block.name
 			};
 		}
 		if (block.type === "walk") {
@@ -51,7 +52,7 @@
 		}
 		if (block.type === "leg") {
 			polyline = L.polyline(block.polyline, {
-				className: `product--${block.line.product} stroke--product`,
+				className: `product--${block.product} stroke--product`,
 				weight: 4,
 				smoothFactor: 2
 			});

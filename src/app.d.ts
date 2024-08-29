@@ -1,8 +1,8 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
-import type { DisplayedFormData, SelectedJourney } from "$lib/stores/journeyStores";
-import type { JourneyNode, TreeNode } from "$lib/types";
+import type { DisplayedFormData } from "$lib/stores/journeyStores";
+import type { JourneyNode } from "$lib/types";
 
 declare global {
 	namespace App {

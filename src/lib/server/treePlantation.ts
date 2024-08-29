@@ -9,7 +9,7 @@ import type {
 	ZugResponse
 } from "$lib/types";
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
-import { journeyToBlocks } from "$lib/server/parse";
+import { journeyToBlocks } from "$lib/server/parse/parse";
 import { getFirstAndLastTime } from "$lib/util";
 
 const MAX_DATE = 8_640_000_000_000_000;

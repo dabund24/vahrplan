@@ -135,7 +135,7 @@
 				{#if block.type === "leg"}
 					<Polyline {block} />
 					{#if block.precededBy === undefined}
-						<Marker data={block.departureData} product2={block.line.product ?? ""}>
+						<Marker data={block.departureData} product2={block.product ?? ""}>
 							<IconStationLocation
 								color="product"
 								iconType="station"
@@ -146,8 +146,8 @@
 					{#each block.stopovers as stopover}
 						<Marker
 							data={stopover}
-							product1={block.line.product ?? ""}
-							product2={block.line.product ?? ""}
+							product1={block.product ?? ""}
+							product2={block.product ?? ""}
 						>
 							<IconStationLocation
 								color="product"
@@ -158,7 +158,7 @@
 						</Marker>
 					{/each}
 					{#if block.succeededBy === undefined}
-						<Marker data={block.arrivalData} product1={block.line.product ?? ""}>
+						<Marker data={block.arrivalData} product1={block.product ?? ""}>
 							<IconStationLocation
 								color="product"
 								iconType="station"
@@ -178,7 +178,7 @@
 								width="16px"
 								height="16px"
 								xmlns="http://www.w3.org/2000/svg"
-								class="product--{block.line.product}"
+								class="product--{block.product}"
 							>
 								<circle
 									cx="8"

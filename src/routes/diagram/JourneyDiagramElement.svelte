@@ -60,12 +60,12 @@
 		{#each displayedBlocks as block}
 			<svelte:element
 				this={block.attribute === "cancelled" ? "s" : "span"}
-				class="leg product--{block.line.product}"
+				class="leg product--{block.product}"
 				class:cancelled={block.attribute === "cancelled"}
 				style="--duration: {getLegWidth(block.duration)}"
 			>
-				<span class="leg__name--long">{block.line.name}</span>
-				<span class="leg__name--short">{block.line.productName}</span>
+				<span class="leg__name--long">{block.name}</span>
+				<span class="leg__name--short">{block.productName}</span>
 			</svelte:element>
 		{/each}
 	</span>

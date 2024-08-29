@@ -14,6 +14,8 @@ import type {
 } from "$lib/types";
 import { dateDifference } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
+import type { Product } from "$lib/stores/settingStore";
+import { parseLegInfo } from "$lib/server/parse/parseLegInfo";
 
 export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 	if (journey?.legs === undefined) {
@@ -67,9 +69,9 @@ export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 			// last two blocks are legs => no walk => transfer needs to be inserted
 			const transferBlock = transferToBlock(
 				lastBlock.arrivalData,
-				lastBlock.line.product ?? "",
+				lastBlock.product ?? "",
 				thisBlock.departureData,
-				thisBlock.line.product ?? "",
+				thisBlock.product ?? "",
 				false
 			);
 			blocks.splice(-1, 0, transferBlock);
@@ -116,8 +118,11 @@ function legToBlock(leg: Leg): LegBlock {
 				leg.departure ?? leg.plannedDeparture,
 				leg.arrival ?? leg.plannedArrival
 			) ?? 0,
-		direction: leg.direction ?? "undefined",
-		line: leg.line ?? { type: "line" },
+		direction: leg.direction ?? "n.a.",
+		name: leg.line?.name ?? leg.line?.productName ?? "n.a.",
+		productName: leg.line?.productName ?? leg.line?.name ?? "n.a.",
+		product: (leg.line?.product as Product | undefined) ?? "nationalExpress",
+		info: parseLegInfo(leg),
 		currentLocation: getLegCurrentLocation(leg),
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
 		polyline:

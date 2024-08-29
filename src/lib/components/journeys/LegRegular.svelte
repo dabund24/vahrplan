@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="flex-row leg product--{block.line?.product}"
+	class="flex-row leg product--{block.product}"
 	class:hide-top={block.precededBy === "stopover" && !compact}
 	class:hide-bottom={block.succeededBy === "stopover" && !compact}
 >
@@ -41,7 +41,7 @@
 			{:else}
 				<details>
 					<summary class="hoverable flex-row">
-						<span>{block.line?.name} &rightarrow; {block.direction}</span>
+						<span>{block.name} &rightarrow; {block.direction}</span>
 						<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
 							<g
 								stroke="var(--foreground-color)"

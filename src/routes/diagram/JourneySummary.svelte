@@ -163,9 +163,9 @@
 										<button
 											class="desktop-line-container hoverable"
 											onclick={() => void showLegModal(leg)}
-											title={leg.line.name}
+											title={leg.name}
 										>
-											<span class="line--product product--{leg.line.product}"
+											<span class="line--product product--{leg.product}"
 											></span>
 										</button>
 									</div>
@@ -207,7 +207,7 @@
 {#if $page.state.showLegModal && modalLeg}
 	<Modal
 		bind:showModal={$page.state.showLegModal}
-		title={`${modalLeg.line.name} → ${modalLeg.direction}`}
+		title={`${modalLeg.name} → ${modalLeg.direction}`}
 	>
 		<div class="modal-content">
 			{#if modalLeg.attribute === "cancelled"}

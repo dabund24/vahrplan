@@ -81,9 +81,9 @@ export function getMergingBlock(
 			succeedingBlock.precededBy = mergeWithStopover ? "stopover" : "transfer";
 			return transferToBlock(
 				precedingBlock.arrivalData,
-				precedingBlock.line.product ?? "",
+				precedingBlock.product ?? "",
 				succeedingBlock.departureData,
-				succeedingBlock.line.product ?? "",
+				succeedingBlock.product ?? "",
 				mergeWithStopover
 			);
 		} else {

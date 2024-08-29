@@ -1,5 +1,5 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
-import { parseStationStopLocation } from "$lib/server/parse";
+import { parseStationStopLocation } from "$lib/server/parse/parse";
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
 import { hafasClient } from "$lib/server/setup";
 

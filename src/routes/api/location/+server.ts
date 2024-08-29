@@ -1,7 +1,7 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
 import { hafasClient } from "$lib/server/setup";
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
-import { parseStationStopLocation } from "$lib/server/parse";
+import { parseStationStopLocation } from "$lib/server/parse/parse";
 import type { Location } from "hafas-client";
 
 export const GET: RequestHandler = async ({ url }) => {

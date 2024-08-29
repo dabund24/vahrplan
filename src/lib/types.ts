@@ -1,6 +1,6 @@
 import type { Line, Location, Station, Stop } from "hafas-client";
 import type { NumericRange } from "@sveltejs/kit";
-import type { Settings } from "$lib/stores/settingStore";
+import type { Product, Settings } from "$lib/stores/settingStore";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -148,7 +148,13 @@ export type LegBlock = {
 	attribute?: TransitAttribute;
 	duration: number;
 	direction: string;
-	line: Line;
+	name: string;
+	productName: string;
+	product: Product;
+	info: {
+		statuses: string[];
+		hints: string[];
+	};
 	currentLocation?: ParsedGeolocation;
 	stopovers: TransitData[];
 	polyline: [number, number][];
@@ -212,7 +218,8 @@ export type PopupDataLine = {
 	type: "line";
 	duration: number;
 	direction: string;
-	line: Line;
+	product: Product;
+	name: string;
 };
 
 export type PopupDataStation = {

@@ -41,8 +41,8 @@
 <div bind:this={popupElement} class="flex-row popup__content">
 	{#if popupData.type === "line"}
 		<Duration duration={popupData.duration} />
-		<div class="product--{popupData.line.product} line--vertical line--product"></div>
-		<span>{popupData.line.name} &rightarrow; {popupData.direction}</span>
+		<div class="product--{popupData.product} line--vertical line--product"></div>
+		<span>{popupData.name} &rightarrow; {popupData.direction}</span>
 	{:else if popupData.type === "walk"}
 		<Duration duration={popupData.duration} />
 		<div class="filler-icon">
