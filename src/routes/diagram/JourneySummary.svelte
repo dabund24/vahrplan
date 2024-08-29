@@ -24,6 +24,12 @@
 	import { onMount } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 
+	type Props = {
+		allSelected: boolean;
+	};
+
+	let { allSelected }: Props = $props();
+
 	type JourneyInfo = {
 		legs: LegBlock[];
 		departure: ParsedTime;
@@ -61,8 +67,6 @@
 
 	let isBookmarked = $state(false);
 
-	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
-
 	onMount(() => {
 		const bookmarkedDiagrams = getBookmarks("diagram");
 		isBookmarked = bookmarkedDiagrams.some((bookmark) => bookmark.link === location.href);
@@ -75,7 +79,7 @@
 
 <div class="flex-column" id="journey-summary">
 	<div class="flex-column summary-background">
-		<div class="flex-row padded-top-bottom actions" class:all-selected={allSelected}>
+		<div class="flex-row actions" class:all-selected={allSelected}>
 			<button
 				class="hoverable hoverable--visible"
 				onclick={() => void shareDiagram($displayedFormData)}
@@ -217,6 +221,7 @@
 		right: 0.25rem;
 		align-self: start;
 		align-items: start;
+		padding: 4px 0 0.5rem;
 		margin-left: auto;
 		gap: 4px;
 		transition: padding-right 0.4s var(--cubic-bezier);
@@ -229,6 +234,7 @@
 
 	@media screen and (max-width: 999px) {
 		.actions {
+			padding: 0.5rem 0;
 			right: 0.75rem;
 			&.all-selected {
 				padding-right: calc(28px + 1rem);
@@ -264,6 +270,9 @@
 	@media screen and (min-width: 1000px) {
 		#journey-summary {
 			top: -0.5rem;
+		}
+		.summary-background {
+			padding: 0 0.5rem 0.5rem;
 		}
 	}
 

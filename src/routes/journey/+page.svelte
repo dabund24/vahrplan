@@ -11,8 +11,6 @@
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
 	import { shareJourney } from "./share";
-	import { getFirstAndLastTime } from "$lib/util";
-	import type { ParsedTime } from "$lib/types";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { type ComponentProps, onMount } from "svelte";
@@ -29,16 +27,6 @@
 		initializeSharedData(formData, treeNodes);
 	}
 
-	let tokens = $derived($selectedJourneys.map((journey) => journey.refreshToken));
-
-	let departure: ParsedTime = $derived.by(() => {
-		if ($selectedJourneys.length === 0) {
-			return { departure: { time: new Date(0) } };
-		}
-		const { departure } = getFirstAndLastTime($selectedJourneys[0].blocks);
-		return departure;
-	});
-
 	let displayedContent: 0 | 1 = $state(0);
 
 	let clientWidth: number = $state(0);
@@ -54,7 +42,7 @@
 		{
 			name: "Teilen",
 			icon: iconShare,
-			onClick: () => shareJourney(tokens, departure)
+			onClick: () => shareJourney($selectedJourneys)
 		},
 		{
 			name: "Merken",
@@ -73,6 +61,8 @@
 	function handleBookmarkClick(): void {
 		isBookmarked = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
 	}
+
+	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 {#snippet iconRefresh()}
@@ -113,7 +103,7 @@
 			]}
 			bind:selected={displayedContent}
 		/>
-		{#if tokens.length > 0 && tokens.every((token) => token.length > 5)}
+		{#if allSelected && $selectedJourneys.length > 0}
 			<Options id={"journey"} {options} />
 		{/if}
 	</Header>

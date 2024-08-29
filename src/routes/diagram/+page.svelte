@@ -4,9 +4,9 @@
 		type DisplayedFormData,
 		displayedFormData,
 		displayedTree,
+		refreshJourney,
 		setDisplayedFormDataAndTree
 	} from "$lib/stores/journeyStores";
-	import Tabs from "$lib/components/Tabs.svelte";
 	import MainForm from "../MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
@@ -14,8 +14,18 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
-	import { getDiagramUrlFromFormData } from "$lib/urls.js";
-	import type { ComponentProps } from "svelte";
+	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls.js";
+	import { onMount, type Snippet } from "svelte";
+	import MiniTabs from "$lib/components/MiniTabs.svelte";
+	import IconMap from "$lib/components/icons/IconMap.svelte";
+	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
+	import { selectedJourneys } from "$lib/stores/journeyStores";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
+	import { scale } from "svelte/transition";
+	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
+	import IconShare from "$lib/components/icons/IconShare.svelte";
+	import { shareJourney } from "../journey/share";
 
 	let windowWidth: number = $state(0);
 
@@ -33,34 +43,31 @@
 			setDisplayedFormDataAndTree(initialFormData);
 		}
 		const pageData = $page.data;
-		pageData.formData = undefined
+		pageData.formData = undefined;
 	}
 
-	const tabContent: ComponentProps<Tabs>["tabs"] = [
-		{
-			title: "Übersicht",
-			content: journeyOverview
-		},
-		{
-			title: "Karte",
-			content: map
-		}
-	];
+	let journeyBookmarks: JourneyBookmark[] = $state([]);
+	onMount(() => (journeyBookmarks = getBookmarks("journey")));
+
+	let isBookmarked = $derived(
+		browser &&
+			journeyBookmarks.some(
+				(bookmark) => bookmark.link === getJourneyUrl($selectedJourneys).href
+			)
+	);
+
+	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
+
+	function handleJourneyBookmarkClick(): void {
+		toggleJourneyBookmark($selectedJourneys, $displayedFormData);
+		journeyBookmarks = getBookmarks("journey");
+	}
 </script>
 
 <svelte:head>
 	<title>Start</title>
 	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
 </svelte:head>
-
-{#snippet journeyOverview()}
-	<Journeys />
-{/snippet}
-{#snippet map()}
-	{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
-		<Leaflet.default />
-	{/await}
-{/snippet}
 
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
@@ -80,7 +87,7 @@
 			</section>
 			<section class="diagram">
 				{#if $displayedFormData !== undefined}
-					<JourneySummary />
+					<JourneySummary allSelected={allSelected} />
 					{#await $displayedTree}
 						<JourneyDiagramSkeleton depth={$displayedFormData.locations.length - 1} />
 					{:then tree}
@@ -93,7 +100,62 @@
 		</div>
 		<div slot="b" class="journey-preview">
 			{#if showSplitPane}
-				<Tabs tabs={tabContent} />
+				{#snippet topBar(miniTabSelector: Snippet)}
+					<div class="preview--top-bar">
+						<div class="flex-row">
+							{@render miniTabSelector()}
+							{#if allSelected}
+								<div class="flex-row preview--top-bar--buttons" transition:scale>
+									<button
+										class="hoverable hoverable--visible"
+										onclick={() => void shareJourney($selectedJourneys)}
+									>
+										<IconShare />
+									</button>
+									<button
+										class="hoverable hoverable--visible"
+										onclick={handleJourneyBookmarkClick}
+									>
+										<IconBookmark {isBookmarked} />
+									</button>
+									<button
+										class="hoverable hoverable--visible"
+										onclick={refreshJourney}
+									>
+										<IconRefresh />
+									</button>
+								</div>
+							{/if}
+						</div>
+						<div class="transition"></div>
+					</div>
+				{/snippet}
+				{#snippet detailsIcon()}
+					<IconJourneyInfo />
+				{/snippet}
+				{#snippet journeyOverview()}
+					<Journeys />
+				{/snippet}
+				{#snippet mapIcon()}
+					<IconMap />
+				{/snippet}
+				{#snippet map()}
+					{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
+						<Leaflet.default />
+					{/await}
+				{/snippet}
+				<MiniTabs
+					tabEnvironment={topBar}
+					tabs={[
+						{
+							title: "Klassische Ansicht",
+							icon: detailsIcon,
+							content: journeyOverview
+						},
+						{ title: "Karte", icon: mapIcon, content: map }
+					]}
+				/>
+				<!--Tabs tabs={tabContent} /-->
 			{/if}
 		</div>
 	</SplitPane>
@@ -148,6 +210,22 @@
 		width: fit-content;
 		min-width: fit-content;
 		margin: auto;
+	}
+
+	.preview--top-bar {
+		position: sticky;
+		top: 0;
+		z-index: 500;
+	}
+
+	.preview--top-bar > :first-child {
+		padding: var(--line-width) 0.75rem;
+		background-color: var(--background-color--transparent);
+		justify-content: space-between;
+	}
+
+	.preview--top-bar--buttons {
+		gap: var(--line-width);
 	}
 
 	@media screen and (min-width: 1000px) {

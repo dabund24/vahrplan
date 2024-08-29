@@ -1,24 +1,27 @@
 import type { KeylessDatabaseEntry, ParsedTime } from "$lib/types";
-import { putApiData } from "$lib/util";
+import { getFirstAndLastTime, putApiData } from "$lib/util";
+import { type SelectedJourney } from "$lib/stores/journeyStores";
 
 /**
  * if no sub-journey is unselected, generates a short link for a journey and shows the share dialog if supported.
- * @param tokens refresh tokens of sub-journeys
- * @param departure departure time of journey
+ * @param selectedSubJourneys all selected sub-journeys
  */
-export async function shareJourney(tokens: string[], { departure }: ParsedTime): Promise<void> {
-	if (
-		tokens.length === 0 ||
-		tokens.some((t) => t.length < 5) ||
-		departure === undefined ||
-		departure === null
-	) {
+export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Promise<void> {
+	if (selectedSubJourneys.length === 0 || selectedSubJourneys.some((j) => j.selectedBy === -1)) {
+		return;
+	}
+
+	const { departure }: ParsedTime = getFirstAndLastTime(selectedSubJourneys[0].blocks)[
+		"departure"
+	];
+
+	if (departure === null || departure === undefined) {
 		return;
 	}
 
 	const keylessDatabaseEntry: KeylessDatabaseEntry<string[]> = {
 		type: "journey",
-		value: tokens,
+		value: selectedSubJourneys.map((journey) => journey.refreshToken),
 		expirationDate: new Date(departure.time).getTime() + 604_800_000 // 7 days
 	};
 
