@@ -18,7 +18,7 @@ export const GET: RequestHandler = async function ({ url }) {
  * or `tokens` param containing the tokens directly
  */
 function getHafasTokensFromUrl(url: URL): (string | null)[] | undefined {
-	const tokenParam = url.searchParams.get("tokens") ?? "";
+	const tokenParam = decodeURIComponent(url.searchParams.get("tokens") ?? "");
 	try {
 		return JSON.parse(tokenParam) as (string | null)[];
 	} catch {
