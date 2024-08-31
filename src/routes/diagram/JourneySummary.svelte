@@ -220,7 +220,7 @@
 				date={modalLeg.departureData.time.departure?.time}
 				duration={modalLeg.duration}
 			/>
-			<LegRegular block={modalLeg} compact={true} />
+			<LegRegular block={modalLeg} isCompact={true} />
 		</div>
 	</Modal>
 {/if}
