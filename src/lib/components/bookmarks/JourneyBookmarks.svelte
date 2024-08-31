@@ -40,8 +40,7 @@
 			{
 				name: "Lesezeichen löschen",
 				onClick: (): void => {
-					const bookmarkIndex = bookmarks.findIndex(b => b.link === bookmark.link)
-					console.log(bookmarkIndex);
+					const bookmarkIndex = bookmarks.findIndex((b) => b.link === bookmark.link);
 					bookmarks.splice(bookmarkIndex, 1);
 					setBookmarks({ type: "journey", bookmarks });
 				},
@@ -58,7 +57,7 @@
 	<IconRightArrow />
 {/snippet}
 
-{#snippet bookmarksSnippet(bookmarks: JourneyBookmark[])}
+{#snippet bookmarksSnippet(bookmarks: JourneyBookmark[], isPastBookmarks: boolean)}
 	<ol class="flex-column">
 		{#each bookmarks as bookmark, i (bookmark.link)}
 			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
@@ -99,7 +98,10 @@
 					</div>
 				</a>
 				<div class="options-container">
-					<Options id={`journey-bookmark__${i}`} options={getOptions(bookmark)} />
+					<Options
+						id={`journey-bookmark__${isPastBookmarks ? -i - 1 : i}`}
+						options={getOptions(bookmark)}
+					/>
 				</div>
 			</li>
 		{/each}
@@ -107,11 +109,11 @@
 {/snippet}
 
 {#if futureBookmarks.length > 0}
-	{@render bookmarksSnippet(futureBookmarks)}
+	{@render bookmarksSnippet(futureBookmarks, false)}
 {/if}
 {#if pastBookmarks.length > 0}
 	<AccordionElement title={"Vergangene Reisen"}>
-		{@render bookmarksSnippet(pastBookmarks)}
+		{@render bookmarksSnippet(pastBookmarks, true)}
 	</AccordionElement>
 {/if}
 
