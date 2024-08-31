@@ -6,23 +6,29 @@
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 
-	export let block: FillerBlock;
-	let osmLink: string;
-	$: if (block.type === "walk") {
-		osmLink =
-			"https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&from=" +
-			block.originLocation.position.lat +
-			"%2C" +
-			block.originLocation.position.lng +
-			"&to=" +
-			block.destinationLocation.position.lat +
-			"%2C" +
-			block.destinationLocation.position.lng;
-	}
-	$: duration =
+	type Props = {
+		block: FillerBlock;
+	};
+
+	let { block }: Props = $props();
+	let osmLink: string | undefined = $derived(
+		block.type !== "walk"
+			? undefined
+			: "https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&from=" +
+					block.originLocation.position.lat +
+					"%2C" +
+					block.originLocation.position.lng +
+					"&to=" +
+					block.destinationLocation.position.lat +
+					"%2C" +
+					block.destinationLocation.position.lng
+	);
+
+	let duration = $derived(
 		block.type === "walk" || block.type === "onward-journey" || block.type === "transfer"
 			? block.transferTime
-			: undefined;
+			: undefined
+	);
 </script>
 
 <div
@@ -33,12 +39,12 @@
 		{#if block.type === "transfer" && block.isStopover}
 			<Time time={block.transitData.time} />
 		{:else}
-			<Duration {duration} alignRight={true} />
+			<Duration {duration} isAlignedRight={true} />
 		{/if}
 	</div>
 	<div class="icon-container flex-row">
 		{#if block.type === "transfer" && block.isStopover}
-			<IconStationLocation color={"product"} smallIcon={true} iconType={"station"} />
+			<IconStationLocation color={"product"} isSmallIcon={true} iconType={"station"} />
 		{:else}
 			<IconFiller type={block.type} />
 		{/if}
@@ -59,7 +65,7 @@
 			({(block.distance - (block.distance % 100)) / 1000}km, ca. <i>{block.travelTime}min</i>)
 		</span>
 	{:else if block.type === "transfer" && block.isStopover}
-		<NameDelayPlatform transitData={block.transitData} nameIsStrong={true} />
+		<NameDelayPlatform transitData={block.transitData} hasStrongName={true} />
 	{:else}
 		<div class="height-setter">-</div>
 	{/if}

@@ -7,21 +7,25 @@
 	import Duration from "$lib/components/Duration.svelte";
 	import JourneyInfo from "$lib/components/journeys/TripInfo.svelte";
 
-	export let block: LegBlock;
-	export let compact = false;
+	type Props = {
+		block: LegBlock;
+		isCompact?: boolean;
+	};
+
+	let { block, isCompact = false }: Props = $props();
 </script>
 
 <div
 	class="flex-row leg product--{block.product}"
-	class:hide-top={block.precededBy === "stopover" && !compact}
-	class:hide-bottom={block.succeededBy === "stopover" && !compact}
+	class:hide-top={block.precededBy === "stopover" && !isCompact}
+	class:hide-bottom={block.succeededBy === "stopover" && !isCompact}
 >
 	<div class="flex-column">
 		<div class="top-or-bottom flex-column">
 			<Time time={block.departureData.time} />
 		</div>
 		<div class="middle duration-container">
-			<Duration duration={block.duration} alignRight={true} />
+			<Duration duration={block.duration} isAlignedRight={true} />
 		</div>
 		<div class="top-or-bottom flex-column">
 			<Time time={block.arrivalData.time} />
@@ -31,21 +35,21 @@
 		<IconStationLocation
 			color="product"
 			iconType="station"
-			cancelled={block.departureData.attribute === "cancelled"}
+			isCancelled={block.departureData.attribute === "cancelled"}
 		/>
 		<div class="line--product line--vertical"></div>
 		<IconStationLocation
 			color="product"
 			iconType="station"
-			cancelled={block.arrivalData.attribute === "cancelled"}
+			isCancelled={block.arrivalData.attribute === "cancelled"}
 		/>
 	</div>
 	<div class="right-to-line flex-column">
 		<div class="top-or-bottom flex-row">
-			<NameDelayPlatform transitData={block.departureData} nameIsStrong={true} />
+			<NameDelayPlatform transitData={block.departureData} hasStrongName={true} />
 		</div>
 		<div class="middle padded-top-bottom flex-row">
-			{#if compact}
+			{#if isCompact}
 				<Stopovers stopovers={block.stopovers} />
 			{:else}
 				<details>
@@ -74,7 +78,7 @@
 			{/if}
 		</div>
 		<div class="flex-row top-or-bottom">
-			<NameDelayPlatform transitData={block.arrivalData} nameIsStrong={true} />
+			<NameDelayPlatform transitData={block.arrivalData} hasStrongName={true} />
 		</div>
 	</div>
 </div>
@@ -114,14 +118,13 @@
 		}
 	}
 
-    @supports not (align-self: anchor-center) {
-        details:not(:last-child) > *:not(summary) {
-            margin-right: calc(-16px - 1rem - 2 * var(--line-width));
-        }
-    }
+	@supports not (align-self: anchor-center) {
+		details:not(:last-child) > *:not(summary) {
+			margin-right: calc(-16px - 1rem - 2 * var(--line-width));
+		}
+	}
 
 	svg {
-		transition: transform 0.4s var(--cubic-bezier);
 		perspective: 3rem;
 		flex-shrink: 0;
 	}

@@ -2,15 +2,25 @@
 	import type { ParsedLocation } from "$lib/types";
 	import { draw } from "svelte/transition";
 
-	export let color: "product" | "foreground" | "accent";
-	export let iconType: ParsedLocation["type"];
-	export let smallIcon = false;
-	export let secondaryProduct: string | undefined = undefined;
-	export let cancelled: boolean = false;
+	type Props = {
+		color: "product" | "foreground" | "accent";
+		iconType: ParsedLocation["type"];
+		isSmallIcon?: boolean;
+		secondaryProduct?: string;
+		isCancelled?: boolean;
+	};
+
+	let {
+		color,
+		iconType,
+		isSmallIcon = false,
+		secondaryProduct = undefined,
+		isCancelled = false
+	}: Props = $props();
 </script>
 
 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" class="skeleton-text">
-	{#if iconType === "station" && !smallIcon && secondaryProduct === undefined}
+	{#if iconType === "station" && !isSmallIcon && secondaryProduct === undefined}
 		<circle
 			cx="8"
 			cy="8"
@@ -21,7 +31,7 @@
 			in:draw
 		/>
 		<circle cx="8" cy="8" r="2" fill="var(--{color}-color)" />
-	{:else if iconType === "station" && !smallIcon && secondaryProduct !== undefined}
+	{:else if iconType === "station" && !isSmallIcon && secondaryProduct !== undefined}
 		<path d="M 0 8 A 8 8 0 0 1 16 8" fill="var(--product-color)" />
 		<path
 			d="M 0 8 A 8 8 0 0 0 16 8"
@@ -36,7 +46,7 @@
 			stroke="var(--background-color)"
 			stroke-width="3"
 		/>
-	{:else if iconType === "station" && smallIcon}
+	{:else if iconType === "station" && isSmallIcon}
 		<circle
 			cx="8"
 			cy="8"
@@ -81,13 +91,14 @@
 			in:draw
 		/>
 	{/if}
-	{#if cancelled}
+	{#if isCancelled}
 		<g stroke="var(--accent-red)" stroke-width="3" stroke-linecap="round">
 			<line x1="2" y1="2" x2="14" y2="14" />
 			<line x1="2" y1="14" x2="14" y2="2" />
 		</g>
 	{/if}
 </svg>
+
 <style>
 	svg {
 		flex-shrink: 0;

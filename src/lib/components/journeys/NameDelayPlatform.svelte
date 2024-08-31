@@ -3,35 +3,41 @@
 	import { getGeolocationString } from "$lib/util";
 	import { displayedFormData } from "$lib/stores/journeyStores";
 
-	export let transitData: TransitData;
-	export let nameIsStrong = false;
+	type Props = {
+		transitData: TransitData;
+		hasStrongName?: boolean;
+	};
 
-	$: stationOuterTag = nameIsStrong ? "strong" : "span";
+	let { transitData, hasStrongName = false }: Props = $props();
 
-	$: stationInnerTag = transitData.attribute === "cancelled" ? "s" : "span";
+	let stationOuterTag = $derived(hasStrongName ? "strong" : "span");
 
-	$: asAt =
+	let stationInnerTag = $derived(transitData.attribute === "cancelled" ? "s" : "span");
+
+	let asAt = $derived(
 		transitData.location.type === "currentLocation"
 			? transitData.location.asAt
-			: $displayedFormData.geolocationDate;
+			: ($displayedFormData?.geolocationDate ?? new Date())
+	);
 
-	let locationName = transitData.location.name;
+	let locationName = $derived(
+		transitData.location.type === "currentLocation" || transitData.location.name === "Standort"
+			? getGeolocationString(asAt, transitData.location.name)
+			: transitData.location.name
+	);
 
-	$: if (transitData.location.type === "currentLocation" || locationName === "Standort") {
-		locationName = getGeolocationString(asAt, transitData.location.name);
-	}
+	let delayTextA = $derived(
+		transitData.time.arrival?.delay !== undefined ? `(+${transitData.time.arrival.delay})` : ""
+	);
 
-	let delayTextA = "";
-	$: if (transitData.time.arrival?.delay !== undefined) {
-		delayTextA = `(+${transitData.time.arrival.delay})`;
-	}
-	let delayTextB = "";
-	$: if (transitData.time.departure?.delay !== undefined) {
-		delayTextB = `(+${transitData.time.departure.delay})`;
-	}
+	let delayTextB = $derived(
+		transitData.time.departure?.delay !== undefined
+			? `(+${transitData.time.departure.delay})`
+			: ""
+	);
 
-	$: platformData = transitData.platformData;
-	$: platformData2 = transitData.platformData2;
+	let platformData = $derived(transitData.platformData);
+	let platformData2 = $derived(transitData.platformData2);
 </script>
 
 <div class="flex-row name-delay-platform">
@@ -41,7 +47,7 @@
 		class:text--red={transitData.attribute === "cancelled"}
 		class:text--blue={transitData.attribute === "additional"}
 	>
-		<svelte:element this={stationInnerTag} class:limit-lines={nameIsStrong}>
+		<svelte:element this={stationInnerTag} class:limit-lines={hasStrongName}>
 			{locationName}
 		</svelte:element>
 	</svelte:element>
@@ -50,7 +56,8 @@
 			<span class="delay text--{transitData.time.arrival?.status}">&#8203;{delayTextA}</span>
 		{/if}
 		{#if transitData.time.departure !== undefined}
-			<span class="delay text--{transitData.time.departure?.status}">&#8203;{delayTextB}</span>
+			<span class="delay text--{transitData.time.departure?.status}">&#8203;{delayTextB}</span
+			>
 		{/if}
 	</div>
 

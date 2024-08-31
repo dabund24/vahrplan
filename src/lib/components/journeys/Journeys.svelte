@@ -10,26 +10,28 @@
 	import type { JourneyBlock, LegBlock, TransferBlock, WalkingBlock } from "$lib/types";
 	import Warning from "$lib/components/Warning.svelte";
 
-	$: selectedDeparture = $selectedJourneys.at(0)?.departure.departure?.time;
-	$: selectedArrival = $selectedJourneys.at(-1)?.arrival.arrival?.time;
+	let selectedDeparture = $derived($selectedJourneys.at(0)?.departure.departure?.time);
+	let selectedArrival = $derived($selectedJourneys.at(-1)?.arrival.arrival?.time);
 
-	$: flatBlocks = $displayedJourneys.flatMap((journey) => journey.value);
+	let flatBlocks = $derived($displayedJourneys.flatMap((journey) => journey.value));
 
-	$: hasImpossibleTransfer = flatBlocks
-		.filter(isTransferOrWalkingBlock)
-		.some((transfer) => transfer.transferTime < 0);
+	let hasImpossibleTransfer = $derived(
+		flatBlocks.filter(isTransferOrWalkingBlock).some((transfer) => transfer.transferTime < 0)
+	);
 
-	function isTransferOrWalkingBlock(block: JourneyBlock): block is (TransferBlock | WalkingBlock) {
+	function isTransferOrWalkingBlock(block: JourneyBlock): block is TransferBlock | WalkingBlock {
 		return block.type === "transfer" || block.type === "walk";
 	}
 
-	$: hasCancelledLeg = flatBlocks.filter(isLegBlock).some((leg) => leg.attribute === "cancelled");
+	let hasCancelledLeg = $derived(
+		flatBlocks.filter(isLegBlock).some((leg) => leg.attribute === "cancelled")
+	);
 
 	function isLegBlock(block: JourneyBlock): block is LegBlock {
 		return block.type === "leg";
 	}
 
-	$: warningMessage = getWarningMessage(hasImpossibleTransfer, hasCancelledLeg);
+	let warningMessage = $derived(getWarningMessage(hasImpossibleTransfer, hasCancelledLeg));
 
 	function getWarningMessage(
 		hasImpossibleTransfer: boolean,

@@ -5,17 +5,23 @@
 	import { getGeolocationString } from "$lib/util";
 	import { displayedFormData } from "$lib/stores/journeyStores";
 
-	export let block: LocationBlock
+	type Props = {
+		block: LocationBlock;
+	};
 
-	let locationName = block.location.name
-	let locationType = block.location.type
+	let { block }: Props = $props();
 
-	if (block.location.type === "currentLocation") {
-		locationName = getGeolocationString(block.location.asAt)
-	} else if (block.location.name === "Standort") {
-		locationName = getGeolocationString($displayedFormData.geolocationDate)
-		locationType = "currentLocation"
-	}
+	let { locationName, locationType } = $derived.by(() => {
+		let locationName = block.location.name;
+		let locationType = block.location.type;
+		if (block.location.type === "currentLocation") {
+			locationName = getGeolocationString(block.location.asAt);
+		} else if (block.location.name === "Standort") {
+			locationName = getGeolocationString($displayedFormData?.geolocationDate ?? new Date());
+			locationType = "currentLocation";
+		}
+		return { locationName, locationType };
+	});
 </script>
 
 <div class="flex-row">
@@ -29,7 +35,7 @@
 <style>
 	.flex-row {
 		height: 3rem;
-		gap: .5rem;
+		gap: 0.5rem;
 		align-items: center;
 	}
 </style>

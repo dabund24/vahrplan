@@ -1,8 +1,12 @@
 <script lang="ts">
-	export let duration: number | undefined;
-	export let alignRight = false;
+	type Props = {
+		duration: number | undefined;
+		isAlignedRight?: boolean;
+	};
 
-	$: durationText = duration === undefined ? "" : durationToString(duration);
+	let { duration, isAlignedRight = false }: Props = $props();
+
+	let durationText = $derived(duration === undefined ? "" : durationToString(duration));
 
 	function durationToString(duration: number): string {
 		const durationAbs = Math.abs(duration);
@@ -18,7 +22,7 @@
 </script>
 
 <div class="duration-container">
-	<i class:align-right={alignRight} class:text--red={(duration ?? 0) < 0}>
+	<i class:align-right={isAlignedRight} class:text--red={(duration ?? 0) < 0}>
 		&lrm;{durationText}
 	</i>
 	<div class="width-setter">00:00</div>
@@ -30,7 +34,7 @@
 	}
 	.align-right {
 		display: flex;
-        white-space: unset;
+		white-space: unset;
 		margin: auto 0 auto auto;
 		direction: rtl;
 		width: 0;
@@ -41,9 +45,9 @@
 		height: 0;
 		visibility: hidden;
 		width: auto;
-        display: none;
+		display: none;
 	}
 	.align-right + .width-setter {
-        display: block;
+		display: block;
 	}
 </style>

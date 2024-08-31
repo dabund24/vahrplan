@@ -2,14 +2,18 @@
 	import type { ParsedTime } from "$lib/types";
 	import { timeToString } from "$lib/util.js";
 
-	export let time: ParsedTime;
-	export let variableWidth = true;
+	type Props = {
+		time: ParsedTime;
+		hasVariableWidth?: boolean;
+	};
 
-	const arrivalTag = time.arrival?.status === "cancelled" ? "s" : "div"
-	const departureTag = time.departure?.status === "cancelled" ? "s" : "div"
+	let { time, hasVariableWidth = true }: Props = $props();
+
+	let arrivalTag = $derived(time.arrival?.status === "cancelled" ? "s" : "div");
+	const departureTag = $derived(time.departure?.status === "cancelled" ? "s" : "div");
 </script>
 
-<div class="time flex-column" style="--time-width: {variableWidth ? 'auto' : '4rem'}">
+<div class="time flex-column" style="--time-width: {hasVariableWidth ? 'auto' : '4rem'}">
 	{#if time.arrival !== undefined}
 		<svelte:element this={arrivalTag} class="text--{time.arrival?.status} skeleton-text">
 			{timeToString(time.arrival?.time)}
@@ -30,8 +34,8 @@
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 	}
-    .width-setter {
-        visibility: hidden;
-        height: 0;
-    }
+	.width-setter {
+		visibility: hidden;
+		height: 0;
+	}
 </style>

@@ -4,20 +4,24 @@
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import type { TransitData } from "$lib/types";
 
-	export let stopovers: TransitData[];
+	type Props = {
+		stopovers: TransitData[];
+	};
+
+	let { stopovers }: Props = $props();
 </script>
 
 <ol>
 	{#each stopovers as stopover}
 		<li class="flex-row padded-top-bottom">
 			<div class="time">
-				<Time time={stopover.time} variableWidth={false} />
+				<Time time={stopover.time} hasVariableWidth={false} />
 			</div>
 			<IconStationLocation
 				iconType={stopover.location.type}
 				color="product"
-				smallIcon={true}
-				cancelled={stopover.attribute === "cancelled"}
+				isSmallIcon={true}
+				isCancelled={stopover.attribute === "cancelled"}
 			/>
 			<NameDelayPlatform transitData={stopover} />
 		</li>
