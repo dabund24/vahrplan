@@ -89,7 +89,10 @@ function legToBlock(leg: Leg): LegBlock {
 		type: "leg",
 		tripId: leg.tripId ?? "",
 		blockKey:
-			"" + leg.line?.operator?.name + leg.line?.fahrtNr + leg.line?.name + leg.direction,
+			`${leg.line?.operator?.name}${leg.line?.fahrtNr}${leg.line?.name}${leg.direction}`.replace(
+				/\W/g,
+				"_"
+			), // make it usable as a css variable
 		attribute: leg.cancelled ? "cancelled" : undefined,
 		departureData: {
 			location: parseStationStopLocation(leg.origin),

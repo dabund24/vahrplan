@@ -9,7 +9,7 @@
 			icon: Snippet; // the icon used
 			content: Snippet; // the content associated with the tab
 		}[];
-		tabEnvironment: Snippet<[Snippet]>;
+		tabEnvironment: Snippet<[Snippet, Snippet]>;
 	};
 
 	const { padContent = false, tabs, tabEnvironment }: Props = $props();
@@ -26,10 +26,13 @@
 	<SingleSelect titles={tabsWithType} bind:selected={activeTab} />
 {/snippet}
 
-{@render tabEnvironment(miniTabs)}
-<div class:pad-content={padContent}>
-	{@render tabs[activeTab].content()}
-</div>
+{#snippet tabContent()}
+	<div class:pad-content={padContent}>
+		{@render tabs[activeTab].content()}
+	</div>
+{/snippet}
+
+{@render tabEnvironment(miniTabs, tabContent)}
 
 <style>
 	.pad-content {

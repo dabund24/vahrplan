@@ -97,7 +97,7 @@
 		<Leaflet />
 	{/await}
 {/snippet}
-{#snippet header(miniTabSelector: Snippet)}
+{#snippet header(miniTabSelector: Snippet, tabContent: Snippet)}
 	<Header
 		title={$displayedFormData !== undefined
 			? `${$displayedFormData.locations[0].value.name} — ${$displayedFormData.locations.at(-1)?.value.name}`
@@ -109,6 +109,7 @@
 			<Options id={"journey"} {options} />
 		{/if}
 	</Header>
+	{@render tabContent()}
 {/snippet}
 
 {#if clientWidth < 1000}

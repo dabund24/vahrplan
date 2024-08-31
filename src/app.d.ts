@@ -15,6 +15,7 @@ declare global {
 		interface PageState {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
+			showTripInfoModal?: Record<string, boolean>;
 		}
 		// interface Platform {}
 	}

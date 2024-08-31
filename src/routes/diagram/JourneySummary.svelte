@@ -211,8 +211,11 @@
 	>
 		<div class="modal-content">
 			{#if modalLeg.attribute === "cancelled"}
-				<Warning message="Fahrt entfällt" color="red" />
+				<Warning color="red">Fahrt entfällt</Warning>
 			{/if}
+			{#each modalLeg.info.statuses as status}
+				<Warning color="red">{status}</Warning>
+			{/each}
 			<DateDuration
 				date={modalLeg.departureData.time.departure?.time}
 				duration={modalLeg.duration}

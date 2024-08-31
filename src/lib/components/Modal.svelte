@@ -2,40 +2,52 @@
 
 <script lang="ts">
 	import Header from "$lib/components/Header.svelte";
+	import type { Snippet } from "svelte";
+	import IconClose from "$lib/components/icons/IconClose.svelte";
 
-	export let showModal: boolean;
-	export let title: string;
-	export let height: string = "fit-content";
+	type Props = {
+		showModal: boolean;
+		title: string;
+		height?: string;
+		children: Snippet;
+		headerItems?: Snippet;
+	};
+
+	let {
+		showModal = $bindable(),
+		title,
+		height = "fit-content",
+		children,
+		headerItems
+	}: Props = $props();
 
 	let dialog: HTMLDialogElement;
 
-	$: if (dialog && showModal) dialog.showModal();
+	$effect(() => {
+		if (dialog && showModal) {
+			dialog.showModal();
+		}
+	});
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog
-	bind:this={dialog}
-	on:click|self={() => void dialog.close()}
-	on:close={() => void history.back()}
->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation style:height>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+
+<dialog bind:this={dialog} onclick={() => void dialog.close()} onclose={() => void history.back()}>
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div onclick={(e) => void e.stopPropagation()} style:height>
 		<Header {title}>
+			{@render headerItems?.()}
 			<button
-				on:click={() => void dialog.close()}
+				onclick={() => void dialog.close()}
 				class="hoverable"
 				type="button"
 				title="Dialog schließen"
 			>
-				<svg width="16px" height="16px">
-					<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
-						<line x1="3" y1="3" x2="13" y2="13" />
-						<line x1="3" y1="13" x2="13" y2="3" />
-					</g>
-				</svg>
+				<IconClose />
 			</button>
 		</Header>
-		<slot />
+		{@render children()}
 	</div>
 </dialog>
 

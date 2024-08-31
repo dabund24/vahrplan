@@ -5,6 +5,7 @@
 	import Stopovers from "./Stopovers.svelte";
 	import type { LegBlock } from "$lib/types";
 	import Duration from "$lib/components/Duration.svelte";
+	import JourneyInfo from "$lib/components/journeys/TripInfo.svelte";
 
 	export let block: LegBlock;
 	export let compact = false;
@@ -27,21 +28,32 @@
 		</div>
 	</div>
 	<div class="desktop-line-container flex-column">
-		<IconStationLocation color="product" iconType="station" cancelled={block.departureData.attribute === "cancelled"}/>
+		<IconStationLocation
+			color="product"
+			iconType="station"
+			cancelled={block.departureData.attribute === "cancelled"}
+		/>
 		<div class="line--product line--vertical"></div>
-		<IconStationLocation color="product" iconType="station" cancelled={block.arrivalData.attribute === "cancelled"}/>
+		<IconStationLocation
+			color="product"
+			iconType="station"
+			cancelled={block.arrivalData.attribute === "cancelled"}
+		/>
 	</div>
 	<div class="right-to-line flex-column">
 		<div class="top-or-bottom flex-row">
 			<NameDelayPlatform transitData={block.departureData} nameIsStrong={true} />
 		</div>
-		<div class="middle padded-top-bottom flex-column">
+		<div class="middle padded-top-bottom flex-row">
 			{#if compact}
 				<Stopovers stopovers={block.stopovers} />
 			{:else}
 				<details>
-					<summary class="hoverable flex-row">
-						<span>{block.name} &rightarrow; {block.direction}</span>
+					<summary
+						class="hoverable flex-row"
+						style="anchor-name: --anchor-{block.blockKey}"
+					>
+						<span class="limit-lines">{block.name} &rightarrow; {block.direction}</span>
 						<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
 							<g
 								stroke="var(--foreground-color)"
@@ -58,6 +70,7 @@
 						<Stopovers stopovers={block.stopovers} />
 					</div>
 				</details>
+				<JourneyInfo info={block.info} tripId={block.blockKey} />
 			{/if}
 		</div>
 		<div class="flex-row top-or-bottom">
@@ -69,6 +82,8 @@
 <style>
 	.middle {
 		margin: auto 0;
+		align-items: start;
+		position: relative;
 	}
 	.top-or-bottom {
 		height: 3rem;
@@ -84,14 +99,26 @@
 	.right-to-line {
 		width: 100%;
 	}
+	details:not(:last-child) {
+		width: 100%;
+	}
 
 	summary {
-		margin-left: calc(-0.5rem - var(--line-width));
+		margin: 0 calc(3 * var(--line-width) + 1rem + 16px) 0 calc(-0.5rem - var(--line-width));
 		width: fit-content;
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.5rem;
+		.limit-lines {
+			-webkit-line-clamp: 2;
+		}
 	}
+
+    @supports not (align-self: anchor-center) {
+        details:not(:last-child) > *:not(summary) {
+            margin-right: calc(-16px - 1rem - 2 * var(--line-width));
+        }
+    }
 
 	svg {
 		transition: transform 0.4s var(--cubic-bezier);
@@ -112,13 +139,15 @@
 	}
 
 	.hide-top {
-		& .top-or-bottom:first-child, & .desktop-line-container > :first-child {
+		& .top-or-bottom:first-child,
+		& .desktop-line-container > :first-child {
 			opacity: 0;
 		}
 	}
 	.hide-bottom {
-        & .top-or-bottom:last-child, & .desktop-line-container > :last-child {
-            opacity: 0;
-        }
-    }
+		& .top-or-bottom:last-child,
+		& .desktop-line-container > :last-child {
+			opacity: 0;
+		}
+	}
 </style>

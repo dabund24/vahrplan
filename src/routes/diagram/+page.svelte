@@ -100,7 +100,7 @@
 		</div>
 		<div slot="b" class="journey-preview">
 			{#if showSplitPane}
-				{#snippet topBar(miniTabSelector: Snippet)}
+				{#snippet topBar(miniTabSelector: Snippet, tabContent: Snippet)}
 					<TitlelessHeader>
 						<div class="flex-row journey-actions">
 							{@render miniTabSelector()}
@@ -128,6 +128,7 @@
 							{/if}
 						</div>
 					</TitlelessHeader>
+					{@render tabContent()}
 				{/snippet}
 				{#snippet detailsIcon()}
 					<IconJourneyInfo />
@@ -154,7 +155,6 @@
 						{ title: "Karte", icon: mapIcon, content: map }
 					]}
 				/>
-				<!--Tabs tabs={tabContent} /-->
 			{/if}
 		</div>
 	</SplitPane>

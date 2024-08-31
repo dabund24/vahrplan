@@ -28,6 +28,7 @@
 	ol {
 		padding: 0;
 		margin: 0 0 0 calc(-5rem - var(--height--icon--small));
+		width: calc(100% + 5rem + var(--height--icon--small));
 	}
 	li {
 		align-items: center;

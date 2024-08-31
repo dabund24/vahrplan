@@ -47,7 +47,7 @@
 
 <div class="journeys-container">
 	{#if warningMessage !== undefined}
-		<Warning message={warningMessage} color="red" />
+		<Warning color="red">{warningMessage}</Warning>
 	{/if}
 	<DateDuration
 		date={selectedDeparture}
