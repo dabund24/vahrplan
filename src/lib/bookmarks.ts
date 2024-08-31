@@ -64,7 +64,7 @@ export function setBookmarks<T extends BookmarkType>(bookmarks: Bookmarks<T>): v
 			break;
 		case "journey":
 			sortedBookmarks = bookmarks.bookmarks.sort(
-				(a, b) => new Date(b.departure).getTime() - new Date(a.departure).getTime()
+				(a, b) => new Date(a.departure).getTime() - new Date(b.departure).getTime()
 			);
 			break;
 		default:

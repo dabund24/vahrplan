@@ -12,23 +12,36 @@
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
+	import AccordionElement from "$lib/components/AccordionElement.svelte";
 
 	let bookmarks: JourneyBookmark[] = $state([]);
+	let { futureBookmarks, pastBookmarks } = $derived.by(() => {
+		const futureBookmarks = bookmarks.filter(
+			(bookmark) => new Date(bookmark.arrival).getTime() > Date.now()
+		);
+		const pastBookmarks = bookmarks.filter(
+			(bookmark) => new Date(bookmark.arrival).getTime() < Date.now()
+		);
+		pastBookmarks.reverse();
+		return { futureBookmarks, pastBookmarks };
+	});
 
 	onMount(() => {
 		bookmarks = getBookmarks("journey");
 	});
 
-	function getOptions(bookmarkIndex: number): ComponentProps<Options>["options"] {
+	function getOptions(bookmark: JourneyBookmark): ComponentProps<Options>["options"] {
 		return [
 			{
 				name: "Verbindung anzeigen",
-				onClick: () => goto(new URL(bookmarks[bookmarkIndex].link)),
+				onClick: () => goto(bookmark.link),
 				icon: iconRightArrow
 			},
 			{
 				name: "Lesezeichen löschen",
 				onClick: (): void => {
+					const bookmarkIndex = bookmarks.findIndex(b => b.link === bookmark.link)
+					console.log(bookmarkIndex);
 					bookmarks.splice(bookmarkIndex, 1);
 					setBookmarks({ type: "journey", bookmarks });
 				},
@@ -45,14 +58,10 @@
 	<IconRightArrow />
 {/snippet}
 
-{#if bookmarks.length > 0}
+{#snippet bookmarksSnippet(bookmarks: JourneyBookmark[])}
 	<ol class="flex-column">
 		{#each bookmarks as bookmark, i (bookmark.link)}
-			<li
-				class="flex-row"
-				transition:scale
-				animate:flip={{ duration: 400 }}
-			>
+			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
 				<a href={bookmark.link} class="hoverable hoverable--visible flex-column">
 					<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
 
@@ -90,16 +99,25 @@
 					</div>
 				</a>
 				<div class="options-container">
-					<Options id={`journey-bookmark__${i}`} options={getOptions(i)} />
+					<Options id={`journey-bookmark__${i}`} options={getOptions(bookmark)} />
 				</div>
 			</li>
 		{/each}
 	</ol>
+{/snippet}
+
+{#if futureBookmarks.length > 0}
+	{@render bookmarksSnippet(futureBookmarks)}
+{/if}
+{#if pastBookmarks.length > 0}
+	<AccordionElement title={"Vergangene Reisen"}>
+		{@render bookmarksSnippet(pastBookmarks)}
+	</AccordionElement>
 {/if}
 
 <style>
 	ol {
-		gap: .5rem;
+		gap: 0.5rem;
 	}
 	a {
 		text-decoration: none;
