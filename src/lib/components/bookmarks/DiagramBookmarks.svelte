@@ -9,23 +9,35 @@
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
+	import AccordionElement from "$lib/components/AccordionElement.svelte";
 
 	let bookmarks: DiagramBookmark[] = $state([]);
+	let { futureBookmarks, pastBookmarks } = $derived.by(() => {
+		const futureBookmarks = bookmarks.filter(
+			(bookmark) => new Date(bookmark.time).getTime() > Date.now()
+		);
+		const pastBookmarks = bookmarks.filter(
+			(bookmark) => new Date(bookmark.time).getTime() < Date.now()
+		);
+		pastBookmarks.reverse();
+		return { futureBookmarks, pastBookmarks };
+	});
 
 	onMount(() => {
 		bookmarks = getBookmarks("diagram");
 	});
 
-	function getOptions(bookmarkIndex: number): ComponentProps<Options>["options"] {
+	function getOptions(bookmark: DiagramBookmark): ComponentProps<Options>["options"] {
 		return [
 			{
 				name: "Diagramm anzeigen",
-				onClick: () => goto(new URL(bookmarks[bookmarkIndex].link)),
+				onClick: () => goto(bookmark.link),
 				icon: iconRightArrow
 			},
 			{
 				name: "Lesezeichen löschen",
 				onClick: (): void => {
+					const bookmarkIndex = bookmarks.findIndex((b) => b.link === bookmark.link);
 					bookmarks.splice(bookmarkIndex, 1);
 					setBookmarks({ type: "diagram", bookmarks });
 				},
@@ -42,7 +54,7 @@
 	<IconRightArrow />
 {/snippet}
 
-{#if bookmarks.length > 0}
+{#snippet bookmarksSnippet(bookmarks: DiagramBookmark[], isPastBookmarks: boolean)}
 	<ol class="flex-column bookmarks">
 		{#each bookmarks as bookmark, i (bookmark.link)}
 			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
@@ -69,15 +81,27 @@
 					</ol>
 				</a>
 				<div class="options-container">
-					<Options id={`diagram-bookmark__${i}`} options={getOptions(i)} />
+					<Options
+						id={`diagram-bookmark__${isPastBookmarks ? -i - 1 : i}`}
+						options={getOptions(bookmark)}
+					/>
 				</div>
 			</li>
 		{/each}
 	</ol>
+{/snippet}
+{#if futureBookmarks.length > 0}
+	{@render bookmarksSnippet(futureBookmarks, false)}
+{/if}
+
+{#if pastBookmarks.length > 0}
+	<AccordionElement title={"Alte Diagramme"}>
+		{@render bookmarksSnippet(pastBookmarks, true)}
+	</AccordionElement>
 {/if}
 
 <style>
-	.bookmarks {
+	ol {
 		gap: 0.5rem;
 	}
 
