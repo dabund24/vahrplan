@@ -121,7 +121,7 @@
 				on:keydown={handleInputKeydown}
 			/>
 			{#if inputText !== ""}
-				<button class="hoverable clear-input" on:click={clearInput}>
+				<button type="button" class="hoverable clear-input" on:click={clearInput}>
 					<IconClearInput />
 				</button>
 			{/if}
