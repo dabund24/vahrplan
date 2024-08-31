@@ -164,7 +164,7 @@
 	.form {
 		position: sticky;
 		left: 0.75rem;
-		z-index: 100;
+		z-index: 600;
 		max-width: calc(100vw - 1.5rem);
 	}
 	.diagram {

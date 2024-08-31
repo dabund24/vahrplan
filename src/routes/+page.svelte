@@ -15,7 +15,7 @@
 	.form {
 		position: sticky;
 		left: 0;
-		z-index: 100;
+		z-index: 700;
 	}
 
 	section {

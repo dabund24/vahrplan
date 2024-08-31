@@ -108,7 +108,7 @@
 			bottom: 0;
 			width: 100vw;
 			box-sizing: border-box;
-			z-index: 550;
+			z-index: 700;
 			background-color: var(--background-color--transparent);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);
