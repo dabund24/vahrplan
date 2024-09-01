@@ -86,10 +86,7 @@ displayedFormData.subscribe(resetMergingBlocks);
 export const selectedJourneys = writable<SelectedJourney[]>([]);
 displayedFormData.subscribe(resetSelectedJourneys);
 
-export const displayedJourneys = derived(
-	[mergingBlocks, selectedJourneys],
-	calculateDisplayedJourneys
-);
+export const displayedJourneys = derived(selectedJourneys, calculateDisplayedJourneys);
 
 // this is recalculated when and only when displayedLocations changes
 // export const displayedTree = derived(displayedLocations, calculateTree);
@@ -172,19 +169,19 @@ function resetMergingBlocks(formData: DisplayedFormData | undefined): void {
 	);
 }
 
-function calculateDisplayedJourneys([merging, selected]: [
-	AdhesiveBlock[],
-	SelectedJourney[]
-]): KeyedItem<JourneyBlock[], string>[] {
+function calculateDisplayedJourneys(
+	selected: SelectedJourney[]
+): KeyedItem<JourneyBlock[], string>[] {
+	const merging = get(mergingBlocks);
 	return Array.from({ length: 2 * merging.length - 1 }, (_v, i) => {
 		const mergingBlock = merging[i / 2];
 		return i % 2 === 0
 			? {
 					value: merging[i / 2] !== undefined ? [merging[i / 2]] : [],
 					key:
-						(i >= 2 ? selected[i / 2 - 1].refreshToken : "") +
+						(merging?.[i / 2]?.type ?? "") +
 						(mergingBlock?.type === "location" ? mergingBlock.location.name : "-") +
-						(selected.at(i / 2)?.refreshToken ?? "")
+						i
 				}
 			: {
 					value: selected[~~(i / 2)].blocks,
