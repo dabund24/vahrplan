@@ -3,13 +3,25 @@
 	import { fade, fly } from "svelte/transition";
 	import type { ParsedLocation } from "$lib/types";
 	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores/journeyStores";
-	export let location: ParsedLocation;
-	export let locationIndex: number;
-	export let isStopover: boolean = false;
-	export let isDisplayedLocation: boolean;
-	export let pressedStationId: number;
-	let thisPressedId = -1;
-	$: isPressed = thisPressedId === pressedStationId;
+
+	type Props = {
+		location: ParsedLocation;
+		locationIndex: number;
+		isStopover?: boolean;
+		isDisplayedLocation: boolean;
+		pressedStationId: number;
+	};
+
+	let {
+		location,
+		locationIndex,
+		isStopover = false,
+		isDisplayedLocation,
+		pressedStationId = $bindable()
+	}: Props = $props();
+
+	let thisPressedId = $state(-1);
+	let isPressed = $derived(thisPressedId === pressedStationId);
 
 	function handleStationPress(): void {
 		if (!isPressed) {
@@ -27,7 +39,7 @@
 <button
 	class="icon-container hoverable"
 	aria-pressed={isPressed}
-	on:click={handleStationPress}
+	onclick={handleStationPress}
 	title={location.name}
 >
 	<IconStationLocation color={"product"} iconType={location.type} isSmallIcon={isStopover} />
@@ -35,7 +47,7 @@
 {#if isPressed && isDisplayedLocation}
 	<button
 		class="icon-neighbor action-button"
-		on:click={() => void removeDisplayedLocation(locationIndex)}
+		onclick={() => void removeDisplayedLocation(locationIndex)}
 		transition:fly={{ y: -36 }}
 		title="Station als Zwischenstation entfernen"
 	>
@@ -50,7 +62,7 @@
 	<button
 		class="icon-neighbor action-button"
 		transition:fly={{ y: -36 }}
-		on:click={() => void addDisplayedLocation(location, locationIndex + 1)}
+		onclick={() => void addDisplayedLocation(location, locationIndex + 1)}
 		title="Station als Zwischenstation hinzufügen"
 	>
 		<svg width="16px" height="16px">
