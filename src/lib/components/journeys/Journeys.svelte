@@ -51,6 +51,9 @@
 	{#if warningMessage !== undefined}
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
+	{#if $selectedJourneys.some((j) => j.selectedBy === -1)}
+		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning>
+	{/if}
 	<DateDuration
 		date={selectedDeparture}
 		duration={dateDifference(selectedDeparture, selectedArrival)}

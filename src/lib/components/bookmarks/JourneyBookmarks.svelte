@@ -13,6 +13,9 @@
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
+	import Warning from "$lib/components/Warning.svelte";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import IconOptions from "$lib/components/icons/IconOptions.svelte";
 
 	let bookmarks: JourneyBookmark[] = $state([]);
 	let { futureBookmarks, pastBookmarks } = $derived.by(() => {
@@ -78,7 +81,7 @@
 						<div>
 							<Duration
 								duration={dateDifference(bookmark.departure, bookmark.arrival)}
-								alignRight={true}
+								isAlignedRight={true}
 							/>
 						</div>
 						<div>
@@ -108,6 +111,14 @@
 	</ol>
 {/snippet}
 
+{#if bookmarks.length === 0}
+	<Warning
+		>Merke dir eine Reise, indem du auf <span class="desktop-only"
+			>das Lesezeichen-Symbol (<IconBookmark isBookmarked={false} />)</span
+		><span class="mobile-only">"Merken" in den Optionen (<IconOptions />)</span> darüber klickst.
+		Die Reise ist dann hier jederzeit verfügbar.</Warning
+	>
+{/if}
 {#if futureBookmarks.length > 0}
 	{@render bookmarksSnippet(futureBookmarks, false)}
 {/if}

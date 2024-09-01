@@ -21,6 +21,7 @@
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
+	import Warning from "$lib/components/Warning.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -90,6 +91,13 @@
 	<IconMap />
 {/snippet}
 {#snippet journeyOverview()}
+	{#if $displayedFormData === undefined}
+		<Warning
+			>Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
+			Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
+			hier angezeigt.
+		</Warning>
+	{/if}
 	<Journeys />
 {/snippet}
 {#snippet map()}
@@ -138,10 +146,7 @@
 						>
 							<IconBookmark {isBookmarked} />
 						</button>
-						<button
-							class="hoverable hoverable--visible"
-							onclick={refreshJourney}
-						>
+						<button class="hoverable hoverable--visible" onclick={refreshJourney}>
 							<IconRefresh />
 						</button>
 					</div>
@@ -171,9 +176,9 @@
 		overflow: auto;
 	}
 	.journey-actions--buttons {
-        width: fit-content;
+		width: fit-content;
 		margin-left: auto;
-		padding: var(--line-width) .75rem 0;
+		padding: var(--line-width) 0.75rem 0;
 		gap: var(--line-width);
 	}
 </style>

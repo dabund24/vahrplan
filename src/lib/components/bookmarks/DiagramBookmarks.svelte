@@ -10,6 +10,8 @@
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
+	import Warning from "$lib/components/Warning.svelte";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 
 	let bookmarks: DiagramBookmark[] = $state([]);
 	let { futureBookmarks, pastBookmarks } = $derived.by(() => {
@@ -90,6 +92,15 @@
 		{/each}
 	</ol>
 {/snippet}
+
+{#if bookmarks.length === 0}
+	<Warning
+		>Merke dir ein Verbindungs-Diagramm, indem du auf das Lesezeichen-Symbol (<IconBookmark
+			isBookmarked={false}
+		/>) darüber klickst. Das Diagramm ist dann jederzeit hier verfügbar.</Warning
+	>
+{/if}
+
 {#if futureBookmarks.length > 0}
 	{@render bookmarksSnippet(futureBookmarks, false)}
 {/if}

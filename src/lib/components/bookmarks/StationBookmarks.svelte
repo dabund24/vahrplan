@@ -7,6 +7,7 @@
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import Warning from "$lib/components/Warning.svelte";
 
 	let bookmarks: ParsedLocation[] = [];
 
@@ -47,7 +48,11 @@
 	</div>
 </div>
 
-{#if bookmarks.length > 0}
+{#if bookmarks.length === 0}
+	<Warning
+		>Gemerkte Stationen werden in den Eigabefeldern auf der Startseite als erstes angezeigt</Warning
+	>
+{:else}
 	<ul class="flex-column">
 		{#each bookmarks as bookmark (bookmark.name)}
 			<div class="flex-row bookmark" transition:scale animate:flip={{ duration: 400 }}>
@@ -55,7 +60,10 @@
 				<strong class="padded-top-bottom">
 					{bookmark.name}
 				</strong>
-				<button class="hoverable hoverable--visible" on:click={() => void removeStationBookmark(bookmark)}>
+				<button
+					class="hoverable hoverable--visible"
+					on:click={() => void removeStationBookmark(bookmark)}
+				>
 					<IconClose />
 				</button>
 			</div>

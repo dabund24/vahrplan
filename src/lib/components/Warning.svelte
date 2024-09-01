@@ -23,4 +23,9 @@
 			flex-shrink: 0;
 		}
 	}
+
+	span :global(svg) {
+		display: inline-block;
+		vertical-align: middle;
+	}
 </style>

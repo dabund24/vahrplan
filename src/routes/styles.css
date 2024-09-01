@@ -513,9 +513,19 @@ header {
 	}
 }
 
+.desktop-only {
+	display: none;
+}
+
 @media screen and (min-width: 1000px) {
 	html,
 	body {
 		margin: 0;
+	}
+	.desktop-only {
+		display: unset;
+	}
+	.mobile-only {
+		display: none;
 	}
 }
