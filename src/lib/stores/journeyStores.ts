@@ -149,7 +149,7 @@ function resetSelectedJourneys(formData: DisplayedFormData | undefined): void {
 			return {
 				blocks: [{ type: "unselected" }],
 				selectedBy: -1,
-				refreshToken: i.toString(),
+				refreshToken: i,
 				arrival: {},
 				departure: {}
 			};
@@ -177,11 +177,8 @@ function calculateDisplayedJourneys(
 		const mergingBlock = merging[i / 2];
 		return i % 2 === 0
 			? {
-					value: merging[i / 2] !== undefined ? [merging[i / 2]] : [],
-					key:
-						(merging?.[i / 2]?.type ?? "") +
-						(mergingBlock?.type === "location" ? mergingBlock.location.name : "-") +
-						i
+					value: mergingBlock !== undefined ? [mergingBlock] : [],
+					key: `-${i}`
 				}
 			: {
 					value: selected[~~(i / 2)].blocks,
