@@ -149,7 +149,7 @@ function resetSelectedJourneys(formData: DisplayedFormData | undefined): void {
 			return {
 				blocks: [{ type: "unselected" }],
 				selectedBy: -1,
-				refreshToken: i,
+				refreshToken: `${i}`,
 				arrival: {},
 				departure: {}
 			};
