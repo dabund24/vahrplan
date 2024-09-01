@@ -1,10 +1,14 @@
 <script lang="ts">
 	import Duration from "$lib/components/Duration.svelte";
 
-	export let date: Date | undefined;
-	export let duration: number | undefined;
+	type Props = {
+		date: Date | undefined;
+		duration: number | undefined;
+	};
 
-	$: dateString =
+	let { date, duration }: Props = $props();
+
+	let dateString = $derived(
 		date === undefined
 			? ""
 			: new Date(date).toLocaleDateString("de-DE", {
@@ -12,13 +16,16 @@
 					day: "numeric",
 					month: "short",
 					year: "numeric"
-				});
+				})
+	);
 </script>
 
-<div class="flex-row padded-top-bottom">
-	<div>{dateString}&#8203;</div>
-	<Duration {duration} />
-</div>
+{#if date !== undefined || duration !== undefined}
+	<div class="flex-row padded-top-bottom">
+		<div>{dateString}</div>
+		<Duration {duration} />
+	</div>
+{/if}
 
 <style>
 	.flex-row {
