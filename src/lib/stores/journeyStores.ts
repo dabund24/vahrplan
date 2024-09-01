@@ -221,8 +221,7 @@ export function selectJourneyBlocks(selectedJourney: SelectedJourney, depth: num
 			depth
 		);
 
-		// selected journey
-		journeys[depth] = { ...selectedJourney };
+		journeys[depth] = selectedJourney;
 		return journeys;
 	});
 }
@@ -262,16 +261,24 @@ function updateMergingBlocks(
 	index: number
 ): void {
 	mergingBlocks.update((mergingBlocks) => {
+		const previousBlock = previousJourney?.blocks.at(-1) ?? { type: "unselected" };
 		const mergingBlockPrevious = getMergingBlock(
-			previousJourney?.blocks.at(-1) ?? { type: "unselected" },
+			previousBlock,
 			locations[index],
 			startingBlock
 		);
-		const mergingBlockNext = getMergingBlock(
-			endingBlock,
-			locations[index + 1],
-			nextJourney?.blocks[0] ?? { type: "unselected" }
-		);
+		if (previousJourney !== undefined && previousBlock.type === "leg") {
+			// reassign previous block to trigger possible dom updates for it since it may change
+			previousJourney.blocks[previousJourney.blocks.length - 1] = { ...previousBlock };
+		}
+
+		const nextBlock = nextJourney?.blocks[0] ?? { type: "unselected" };
+		const mergingBlockNext = getMergingBlock(endingBlock, locations[index + 1], nextBlock);
+		if (nextJourney !== undefined && nextBlock.type === "leg") {
+			// reassing next block to trigger possible dom updates for it since it may change
+			nextJourney.blocks[0] = { ...nextBlock };
+		}
+
 		return [
 			...mergingBlocks.slice(0, index),
 			mergingBlockPrevious,

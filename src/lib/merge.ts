@@ -23,7 +23,7 @@ import { dateDifference, getRawLocationBlock, mergeTransitData } from "$lib/util
  * @returns the corresponding merging block based on these rules:
  * | preceding block      | succeeding block     | locations match | merging block |
  * | :--------------      | :---------------     | :-------------  | ------------- |
- * | `unselected`         | `unselected`         | 		           | `location`    |
+ * | `unselected`         | `unselected`         | 	               | `location`    |
  * | `unselected`         | `leg`                |                 | `undefined`   |
  * | `unselected`         | `location`           |                 | `undefined`   |
  * | `leg`                | `leg`                | [x]             | `transfer`    |

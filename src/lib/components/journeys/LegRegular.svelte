@@ -143,13 +143,13 @@
 
 	.hide-top {
 		& .top-or-bottom:first-child,
-		& .desktop-line-container > :first-child {
+		& .desktop-line-container > :global(:first-child) {
 			opacity: 0;
 		}
 	}
 	.hide-bottom {
 		& .top-or-bottom:last-child,
-		& .desktop-line-container > :last-child {
+		& .desktop-line-container > :global(:last-child) {
 			opacity: 0;
 		}
 	}
