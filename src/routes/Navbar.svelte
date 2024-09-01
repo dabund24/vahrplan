@@ -6,11 +6,11 @@
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import IconDetails from "$lib/components/icons/IconDetails.svelte";
 	import { browser } from "$app/environment";
-	import { getDiagramUrlFromFormData } from "$lib/urls";
-	import { displayedFormData } from "$lib/stores/journeyStores";
+	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
+	import { displayedFormData, selectedJourneys } from "$lib/stores/journeyStores";
 	import IconBookmarkLarge from "$lib/components/icons/IconBookmarkLarge.svelte";
 
-	$: currentPage = getCurrentPageIndex($page.url.pathname);
+	let currentPage = $derived(getCurrentPageIndex($page.url.pathname));
 
 	function getCurrentPageIndex(pathname: string): number {
 		if (pathname === "/" || pathname.startsWith("/diagram")) return 0;
@@ -20,23 +20,30 @@
 		else return 4;
 	}
 
-	$: diagramURL =
+	let diagramUrl = $derived(
 		browser && $displayedFormData !== undefined
 			? getDiagramUrlFromFormData($displayedFormData).href
-			: "/";
+			: "/"
+	);
+
+	let journeyUrl = $derived(
+		browser && $selectedJourneys.length > 0 && $selectedJourneys.every(j => j.selectedBy !== -1)
+			? getJourneyUrl($selectedJourneys).href
+			: "/journey"
+	);
 </script>
 
 <nav>
 	<div class="links-container">
 		<ul>
 			<li aria-current={currentPage === 0 ? "page" : undefined}>
-				<a href={diagramURL} class="hoverable flex-row">
+				<a href={diagramUrl} class="hoverable flex-row">
 					<IconLogo />
 					<span>Verbindungssuche</span>
 				</a>
 			</li>
 			<li aria-current={currentPage === 1 ? "page" : undefined}>
-				<a href="/journey" class="hoverable flex-row">
+				<a href={journeyUrl} class="hoverable flex-row">
 					<IconDetails />
 					<span>Details/Karte</span>
 				</a>

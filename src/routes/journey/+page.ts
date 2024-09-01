@@ -1,9 +1,21 @@
-import type { PageServerLoad } from "./$types";
+import type { PageLoad } from "./$types";
 import type { JourneyBlock, JourneyNode, KeyedItem, ParsedLocation, ZugResponse } from "$lib/types";
 import { getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
 import { error } from "@sveltejs/kit";
+import { browser } from "$app/environment";
+import { getJourneyUrl } from "$lib/urls";
+import { get } from "svelte/store";
+import { selectedJourneys } from "$lib/stores/journeyStores";
 
-export const load: PageServerLoad = async function ({ url, fetch }) {
+export const load: PageLoad = async function ({ url, fetch }) {
+	if (browser && getJourneyUrl(get(selectedJourneys)).href === url.href) {
+		// no need to refetch the journey, displayed journey is already correct
+		return {
+			formData: undefined,
+			treeNodes: undefined
+		};
+	}
+
 	const shortJourneyParam = url.searchParams.get("j");
 	const longJourneyParam = url.searchParams.get("journey");
 	if (shortJourneyParam === null && longJourneyParam === null) {

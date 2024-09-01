@@ -23,7 +23,7 @@
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { onMount } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
-	import { getDiagramUrlFromFormData } from "$lib/urls";
+	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
 	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 
@@ -102,7 +102,7 @@
 			</button>
 			{#if allSelected}
 				<a
-					href="/journey"
+					href={getJourneyUrl($selectedJourneys).href}
 					class="hoverable hoverable--accent"
 					title="Reisedetails anzeigen"
 					transition:scale
