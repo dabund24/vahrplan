@@ -119,6 +119,9 @@
 	}
 
 	@supports not (align-self: anchor-center) {
+		summary {
+			margin-right: var(--line-width);
+		}
 		details:not(:last-child) > *:not(summary) {
 			margin-right: calc(-16px - 1rem - 2 * var(--line-width));
 		}
