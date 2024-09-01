@@ -139,7 +139,7 @@
 							<IconStationLocation
 								color="product"
 								iconType="station"
-								cancelled={block.departureData.attribute === "cancelled"}
+								isCancelled={block.departureData.attribute === "cancelled"}
 							/>
 						</Marker>
 					{/if}
@@ -152,8 +152,8 @@
 							<IconStationLocation
 								color="product"
 								iconType="station"
-								smallIcon={true}
-								cancelled={stopover.attribute === "cancelled"}
+								isSmallIcon={true}
+								isCancelled={stopover.attribute === "cancelled"}
 							/>
 						</Marker>
 					{/each}
@@ -162,7 +162,7 @@
 							<IconStationLocation
 								color="product"
 								iconType="station"
-								cancelled={block.arrivalData.attribute === "cancelled"}
+								isCancelled={block.arrivalData.attribute === "cancelled"}
 							/>
 						</Marker>
 					{/if}
@@ -201,7 +201,7 @@
 							color="product"
 							iconType="station"
 							secondaryProduct={block.departureProduct}
-							smallIcon={block.isStopover}
+							isSmallIcon={block.isStopover}
 							cancelled={block.transitData.attribute === "cancelled" &&
 								block.transitData.attribute2 === "cancelled"}
 						/>

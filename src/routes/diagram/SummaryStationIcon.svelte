@@ -5,7 +5,7 @@
 	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores/journeyStores";
 	export let location: ParsedLocation;
 	export let locationIndex: number;
-	export let actsAsStopover: boolean = false;
+	export let isStopover: boolean = false;
 	export let isDisplayedLocation: boolean;
 	export let pressedStationId: number;
 	let thisPressedId = -1;
@@ -30,7 +30,7 @@
 	on:click={handleStationPress}
 	title={location.name}
 >
-	<IconStationLocation color={"product"} iconType={location.type} smallIcon={actsAsStopover} />
+	<IconStationLocation color={"product"} iconType={location.type} isSmallIcon={isStopover} />
 </button>
 {#if isPressed && isDisplayedLocation}
 	<button

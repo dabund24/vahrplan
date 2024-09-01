@@ -76,8 +76,6 @@
 			)
 	);
 
-	$inspect(diagramBookmarks);
-
 	onMount(() => (diagramBookmarks = getBookmarks("diagram")));
 
 	function handleDiagramBookmarkClick(): void {
@@ -131,7 +129,7 @@
 							<SummaryStationIcon
 								location={location.value}
 								locationIndex={i}
-								actsAsStopover={areStopovers[i]}
+								isStopover={areStopovers[i]}
 								isDisplayedLocation={true}
 								bind:pressedStationId
 							/>
