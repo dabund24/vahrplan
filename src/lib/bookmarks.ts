@@ -1,6 +1,7 @@
 import type { ParsedLocation, TransitType } from "$lib/types";
 import { type DisplayedFormData, type SelectedJourney } from "$lib/stores/journeyStores";
 import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
+import { toast } from "$lib/stores/toastStore";
 
 export type BookmarkType = "diagram" | "journey" | "station";
 
@@ -89,6 +90,7 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		// bookmark already exists => remove it
 		bookmarks.splice(indexInOldData, 1);
 		setBookmarks({ type: "diagram", bookmarks });
+		toast("Lesezeichen für Diagramm entfernt.", "green");
 		return bookmarks;
 	}
 	// bookmark does not yet exist => add it
@@ -105,6 +107,7 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "diagram", bookmarks });
+	toast("Lesezeichen für Diagramm hinzugefügt.", "green");
 	return bookmarks;
 }
 
@@ -128,6 +131,7 @@ export function toggleJourneyBookmark(
 		// bookmark already exists => remove it
 		bookmarks.splice(indexInOldData, 1);
 		setBookmarks({ type: "journey", bookmarks });
+		toast("Lesezeichen für Reise entfernt.", "green");
 		return bookmarks;
 	}
 	// bookmark does not yet exist => add it
@@ -146,5 +150,6 @@ export function toggleJourneyBookmark(
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "journey", bookmarks });
+	toast("Lesezeichen für Reise hinzugefügt.", "green");
 	return bookmarks;
 }

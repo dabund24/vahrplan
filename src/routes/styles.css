@@ -48,6 +48,7 @@
 	--line-length--vertical: 1.5rem;
 	--connection-width: 24em;
 	--height--icon--small: 16px;
+	--navbar-space--bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
 
 	--overflow-content: hidden;
 
@@ -231,6 +232,7 @@ button {
 
 svg {
 	display: block;
+	flex-shrink: 0;
 }
 
 svg polyline,
@@ -518,6 +520,9 @@ header {
 }
 
 @media screen and (min-width: 1000px) {
+	:root {
+		--navbar-space--bottom: 0rem;
+	}
 	html,
 	body {
 		margin: 0;

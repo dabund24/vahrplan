@@ -6,7 +6,8 @@ export function getZugError(type: ZugErrorType, station1?: number, station2?: nu
 		code: getErrorCodeFromErrorType(type),
 		type,
 		station1,
-		station2
+		station2,
+		description: getDescriptionFromErrorType(type)
 	};
 }
 
@@ -15,8 +16,11 @@ export function getZugErrorFromHafasError(
 	station1?: number,
 	station2?: number
 ): ZugError {
+	console.log(error);
 	let errorType: ZugErrorType = "ERROR";
+	let description: string = "Server-Fehler";
 	if (isHafasError(error)) {
+		description = `Hafas: ${error.hafasDescription ?? ""}`;
 		errorType = `HAFAS_${error.code}`;
 	}
 	return {
@@ -24,7 +28,8 @@ export function getZugErrorFromHafasError(
 		code: getErrorCodeFromErrorType(errorType),
 		type: errorType,
 		station1,
-		station2
+		station2,
+		description
 	};
 }
 
@@ -50,10 +55,18 @@ function getErrorCodeFromErrorType(type: ZugErrorType): ZugError["code"] {
 		HAFAS_INVALID_REQUEST: 400,
 		HAFAS_NOT_FOUND: 404,
 		HAFAS_SERVER_ERROR: 500,
-		NO_CONNECTIONS: 404,
-		MISSING_PROPERTY: 400,
-		NETWORK_ERROR: 500,
 		NOT_FOUND: 404,
 		ERROR: 500
 	}[type] as ZugError["code"];
+}
+
+function getDescriptionFromErrorType(type: ZugErrorType): string {
+	return {
+		HAFAS_ACCESS_DENIED: "Hafas: Zugriff verweigert.",
+		HAFAS_INVALID_REQUEST: "Hafas: ungültige Anfrage.",
+		HAFAS_NOT_FOUND: "Hafas: Ressource nicht gefunden.",
+		HAFAS_SERVER_ERROR: "Hafas: Server-Fehler.",
+		NOT_FOUND: "Ressource nicht gefunden.",
+		ERROR: "Server-Fehler."
+	}[type];
 }

@@ -13,6 +13,7 @@ import type {
 	KeylessDatabaseEntry
 } from "$lib/types";
 import { startLoading, stopLoading } from "$lib/stores/loadingStore";
+import { toast } from "$lib/stores/toastStore";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -41,12 +42,15 @@ export async function getApiData<T extends Fetchable>(
 				type: "ERROR",
 				code: 400,
 				station1: undefined,
-				station2: undefined
+				station2: undefined,
+				description: "Verbindung zum Server fehlgeschlagen."
 			};
 		});
-
 	if (loadingId !== undefined) {
 		stopLoading(loadingId, result.isError);
+		if (result.isError) {
+			toast(result.description, "red");
+		}
 	}
 	return result;
 }
@@ -76,12 +80,16 @@ export async function putApiData<R, T>(
 				type: "ERROR",
 				code: 400,
 				station1: undefined,
-				station2: undefined
+				station2: undefined,
+				description: "Verbindung zum Server fehlgeschlagen."
 			};
 		});
 
 	if (loadingId !== undefined) {
 		stopLoading(loadingId, result.isError);
+		if (result.isError) {
+			toast(result.description, "red");
+		}
 	}
 	return result;
 }
@@ -281,6 +289,7 @@ export async function getCurrentGeolocation(): Promise<ParsedGeolocation> {
 			},
 			() => {
 				stopLoading(loadingId, true);
+				toast("Standort konnte nicht ermittelt werden.", "red");
 				throw new Error();
 			}
 		);

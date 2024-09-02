@@ -1,4 +1,4 @@
-import type { Line, Location, Station, Stop } from "hafas-client";
+import type { Location, Station, Stop } from "hafas-client";
 import type { NumericRange } from "@sveltejs/kit";
 import type { Product, Settings } from "$lib/stores/settingStore";
 
@@ -20,16 +20,12 @@ export type ZugError = {
 	isError: true;
 	code: NumericRange<400, 599>;
 	type: ZugErrorType;
+	description: string;
 	station1?: number;
 	station2?: number;
 };
 
-export type ZugErrorType =
-	| `HAFAS_${HafasError["code"]}`
-	| "NO_CONNECTIONS"
-	| "MISSING_PROPERTY"
-	| "NOT_FOUND"
-	| "ERROR";
+export type ZugErrorType = `HAFAS_${HafasError["code"]}` | "NOT_FOUND" | "ERROR";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = {
@@ -37,6 +33,7 @@ export type HafasError = {
 	code: "ACCESS_DENIED" | "INVALID_REQUEST" | "NOT_FOUND" | "SERVER_ERROR";
 	isCausedByServer: boolean;
 	hafasCode: string;
+	hafasDescription: string;
 };
 
 export type TransitType = "arrival" | "departure";

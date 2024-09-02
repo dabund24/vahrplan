@@ -14,6 +14,7 @@ import { getMergingBlock } from "$lib/merge";
 import { getApiRefreshUrl, getApiJourneysUrl, getDiagramUrlFromFormData } from "$lib/urls";
 import type { Settings } from "$lib/stores/settingStore";
 import { goto } from "$app/navigation";
+import { toast } from "$lib/stores/toastStore";
 
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
@@ -304,6 +305,7 @@ export async function refreshJourney(): Promise<void> {
 	displayedTree.update(async (tree) => {
 		return replaceJourneysInTree(await tree, refreshedJourneys, idsInDepth);
 	});
+	toast("Reisedaten aktualisiert.", "green");
 }
 
 /**

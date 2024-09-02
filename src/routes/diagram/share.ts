@@ -1,6 +1,7 @@
 import type { DiagramRequestData, KeylessDatabaseEntry } from "$lib/types";
 import type { DisplayedFormData } from "$lib/stores/journeyStores";
 import { putApiData } from "$lib/util";
+import { toast } from "$lib/stores/toastStore";
 
 export async function shareDiagram(formData: DisplayedFormData | undefined): Promise<void> {
 	if (formData === undefined) {
@@ -38,6 +39,8 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 			url: shortUrl.href
 		});
 	} else {
-		void navigator.clipboard.writeText(shortUrl.href);
+		void navigator.clipboard
+			.writeText(shortUrl.href)
+			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
 	}
 }

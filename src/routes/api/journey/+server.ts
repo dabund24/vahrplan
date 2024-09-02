@@ -7,7 +7,7 @@ import type { JourneyBlock, UnselectedBlock, ZugResponse } from "$lib/types";
 export const GET: RequestHandler = async function ({ url }) {
 	const hafasTokens = getHafasTokensFromUrl(url);
 	if (hafasTokens === undefined) {
-		return json(getZugError("HAFAS_INVALID_REQUEST"));
+		return json(getZugError("NOT_FOUND"));
 	}
 	return json(await getJourneyByTokens(hafasTokens));
 };

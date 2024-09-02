@@ -1,6 +1,7 @@
 import type { KeylessDatabaseEntry, ParsedTime } from "$lib/types";
 import { getFirstAndLastTime, putApiData } from "$lib/util";
 import { type SelectedJourney } from "$lib/stores/journeyStores";
+import { toast } from "$lib/stores/toastStore";
 
 /**
  * if no sub-journey is unselected, generates a short link for a journey and shows the share dialog if supported.
@@ -40,6 +41,8 @@ export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Prom
 			url: shortUrl.href
 		});
 	} else {
-		void navigator.clipboard.writeText(shortUrl.href);
+		void navigator.clipboard
+			.writeText(shortUrl.href)
+			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
 	}
 }

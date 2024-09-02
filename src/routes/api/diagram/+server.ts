@@ -7,7 +7,7 @@ export const GET: RequestHandler = async function ({ url }) {
 	const diagramData = parseApiJourneysUrl(url);
 
 	if (diagramData === undefined) {
-		return json(getZugError("HAFAS_INVALID_REQUEST"));
+		return json(getZugError("NOT_FOUND"));
 	}
 
 	const { stops, timeRole, options } = diagramData;

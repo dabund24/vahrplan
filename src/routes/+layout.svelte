@@ -5,6 +5,7 @@
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
+	import Toasts from "$lib/components/Toasts.svelte";
 
 	beforeNavigate((navigation) => {
 		const loadingID = startLoading(2);
@@ -22,6 +23,7 @@
 	<main>
 		<slot />
 	</main>
+	<Toasts />
 </div>
 
 <style>
@@ -42,6 +44,7 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 		overflow-y: auto;
+        padding-bottom: var(--navbar-space--bottom);
 	}
 
 	@media screen and (max-width: 999px) {
@@ -50,7 +53,6 @@
 		}
 
 		main {
-			padding-bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
 			overflow: unset;
 		}
 	}
