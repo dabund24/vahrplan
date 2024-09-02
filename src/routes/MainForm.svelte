@@ -103,9 +103,9 @@
 			});
 		}
 
-		setDisplayedFormDataAndTree(formData);
-
 		void goto(getDiagramUrlFromFormData(formData));
+
+		setDisplayedFormDataAndTree(formData);
 	}
 
 	function showFilterModal(): void {
