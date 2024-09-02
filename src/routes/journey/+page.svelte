@@ -176,9 +176,8 @@
 		overflow: auto;
 	}
 	.journey-actions--buttons {
-		width: fit-content;
-		margin-left: auto;
 		padding: var(--line-width) 0.75rem 0;
 		gap: var(--line-width);
+		justify-content: end;
 	}
 </style>
