@@ -25,12 +25,12 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		// short token is used, redirect to proper page
 		requestData = (await fetch(`/api/diagram/shorturl?token=${shortToken}`)
 			.then((res) => res.json())
-			.catch(() => error(404))) as DiagramRequestData;
+			.catch(() => error(404, "Fehlerhafte URL."))) as DiagramRequestData;
 		const diagramURL = getDiagramUrlFromRequestData(requestData);
 		redirect(303, diagramURL);
 	}
 
-	requestData = parseApiJourneysUrl(url) ?? error(404);
+	requestData = parseApiJourneysUrl(url) ?? error(404, "Fehlerhafte URL.");
 	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
 		requestData.stops.map(async (stopQuery) => {
 			const locationUrl = `/api/location?id=${encodeURIComponent(JSON.stringify(stopQuery))}`;
@@ -38,7 +38,8 @@ export const load: PageLoad = async ({ url, fetch }) => {
 				.then((res) => res.json())
 				.catch(() => {
 					return {
-						isError: true
+						isError: true,
+						description: "Fehlerhafte URL."
 					};
 				})) as ZugResponse<ParsedLocation>;
 			if (!response.isError) {
@@ -47,17 +48,13 @@ export const load: PageLoad = async ({ url, fetch }) => {
 					value: response.content
 				};
 			}
-			return {
-				key: Math.random(),
-				value: {
-					name: response.type,
-					requestParameter: "",
-					type: "station",
-					position: { lat: 0, lng: 0 }
-				}
-			};
+			error(404, response.description);
 		})
 	);
+
+	if (stopObjects.length < 2) {
+		error(400, "Weniger als 2 Stationen angegeben.");
+	}
 
 	const formData: DisplayedFormData = {
 		locations: stopObjects,
