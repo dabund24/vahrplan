@@ -19,6 +19,7 @@
 	import { get } from "svelte/store";
 	import type { ComponentProps } from "svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import { toast } from "$lib/stores/toastStore";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -78,7 +79,7 @@
 	async function handleFormSubmit(event: SubmitEvent): Promise<void> {
 		event.preventDefault();
 		const stopsToBeDisplayed = stops.filter(valueIsDefined);
-		if (stopsToBeDisplayed.length < 2) {
+		if (!verifyUserInput(stopsToBeDisplayed.map(s => s.value))) {
 			return;
 		}
 		const journeyTime = timeIsNow ? new Date() : new Date(time);
@@ -106,6 +107,20 @@
 		void goto(getDiagramUrlFromFormData(formData));
 
 		setDisplayedFormDataAndTree(formData);
+	}
+
+	function verifyUserInput(stops: ParsedLocation[]): boolean {
+		if (stops.length < 2) {
+			toast("Start oder Ziel wurde nicht angegeben", "red")
+			return false
+		}
+		for (let i = 1; i < stops.length; i++) {
+			if (stops[i].name === stops[i - 1].name) {
+				toast(`Station ${stops[i].name} wurde mehrfach in Folge angegeben.`, "red")
+				return false;
+			}
+		}
+		return true
 	}
 
 	function showFilterModal(): void {
