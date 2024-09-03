@@ -105,17 +105,11 @@
 </svelte:head>
 
 <Header title={"Einstellungen"} mobileOnly={true} />
-<div id="settings">
+<div id="settings" class="content-wrapper">
 	<Tabs tabs={tabContent} isBelowHeaderMobile={true} padContent={true} />
 </div>
 
 <style>
-	#settings {
-		max-width: 30rem;
-		margin: auto;
-		text-wrap: balance;
-	}
-
 	h1 {
 		font-size: 1.2rem;
 	}

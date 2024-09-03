@@ -8,14 +8,12 @@ import Header from "$lib/components/Header.svelte";
 </svelte:head>
 
 <Header title={"Über diese Seite"} mobileOnly={true} />
-<div id="about">
+<div class="content-wrapper">
 	Daniel Bund, 2023 - 2024
 </div>
 
 <style>
-	#about {
-		max-width: 30rem;
-        margin: auto;
+	.content-wrapper {
         padding: 1rem;
 	}
 </style>

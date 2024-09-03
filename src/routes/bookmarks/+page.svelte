@@ -33,13 +33,6 @@
 {/snippet}
 
 <Header title="Favoriten" mobileOnly={true} />
-<div id="bookmarks" data-sveltekit-preload-data="off">
+<div class="content-wrapper" data-sveltekit-preload-data="off">
 	<Tabs tabs={tabContent} isBelowHeaderMobile={true} padContent={true} />
 </div>
-
-<style>
-	#bookmarks {
-		max-width: 30rem;
-		margin: auto;
-	}
-</style>
