@@ -48,6 +48,7 @@
 		border: var(--border);
 		width: min(25rem, 100vw - 3rem);
 		background-color: var(--background-color--transparent);
+		box-sizing: border-box;
 	}
 
 	.flex-row {
