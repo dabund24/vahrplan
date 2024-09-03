@@ -119,7 +119,7 @@
 					transition:scale
 					animate:flip={{ duration: 400 }}
 				>
-					<strong class="station-name"
+					<strong class="station-name limit-lines"
 						>{location.value.type === "currentLocation"
 							? getGeolocationString(location.value.asAt)
 							: location.value.name}</strong
@@ -350,8 +350,8 @@
 		width: 100%;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
-		/*noinspection CssInvalidPropertyValue*/
 		text-wrap: balance;
+		-webkit-line-clamp: 3;
 	}
 
 	/* rules for everything between name and time data */

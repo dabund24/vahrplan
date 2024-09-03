@@ -92,11 +92,13 @@
 {/snippet}
 {#snippet journeyOverview()}
 	{#if $displayedFormData === undefined}
-		<Warning
+		<div class="content-wrapper">
+			<Warning
 			>Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
-			Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
-			hier angezeigt.
-		</Warning>
+				Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
+				hier angezeigt.
+			</Warning>
+		</div>
 	{/if}
 	<Journeys />
 {/snippet}
@@ -161,6 +163,9 @@
 {/if}
 
 <style>
+	.content-wrapper {
+		padding: .5rem 1rem;
+	}
 	.columns {
 		display: grid;
 		grid-template-columns: 30rem 1fr;

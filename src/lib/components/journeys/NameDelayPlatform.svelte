@@ -86,8 +86,6 @@
 	.station {
 		text-overflow: ellipsis;
 		overflow-x: hidden;
-		/*noinspection CssInvalidPropertyValue*/
-		text-wrap: balance;
 	}
 
 	.limit-lines {
