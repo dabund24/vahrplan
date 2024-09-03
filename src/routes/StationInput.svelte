@@ -7,59 +7,62 @@
 	import { onMount } from "svelte";
 	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
 
-	export let selectedLocation: ParsedLocation | undefined = undefined;
-	export let inputPlaceholder: string;
+	type Props = {
+		selectedLocation: ParsedLocation | undefined;
+		inputPlaceholder: string;
+		isSimpleInput?: boolean;
+	};
+
 	/**
-	 * if true, behavior changes like this:
+	 * if `isSimpleInput` is true, behavior changes like this:
 	 * - current location and bookmarks are not getting suggested
 	 * - after selecting a suggestion, the input text is cleared instead of being set to the name of the selected item
-	 * @default false
 	 */
-	export let simpleInput = false;
+	let {
+		selectedLocation = $bindable(undefined),
+		inputPlaceholder,
+		isSimpleInput = false
+	}: Props = $props();
 
-	let staticSuggestions: ParsedLocation[] = [];
-
-	let inputText = (selectedLocation?.name ?? "") as string;
+	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
-	let promisedSuggestions: Promise<ParsedLocation[]> = Promise.resolve([]);
-	let focused = 0;
+	let focused = $state(0);
 
-	$: promisedSuggestions = fetchLocations(inputText);
+	let bookmarkedLocations: ParsedLocation[] = $state([]);
+	let apiSuggestions: Promise<ParsedLocation[]> = $derived(getApiSuggestionsFromInput(inputText));
+	let suggestions = $derived.by(async () => {
+		const bookmarkSuggestions = bookmarkedLocations.filter((suggestion) =>
+			suggestion.name.toLowerCase().startsWith(inputText.trim().toLowerCase())
+		);
+		const filteredApiSuggestions = await apiSuggestions.then((unfilteredSuggestions) =>
+			unfilteredSuggestions.filter((suggestion) =>
+				bookmarkSuggestions.every((s) => s.name !== suggestion.name)
+			)
+		);
+		return [...bookmarkSuggestions, ...filteredApiSuggestions];
+	});
 
 	onMount(() => {
-		if (!simpleInput) {
-			staticSuggestions = [
+		if (!isSimpleInput) {
+			bookmarkedLocations = [
 				getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
 				...getBookmarks("station")
 			];
-			promisedSuggestions = Promise.resolve(staticSuggestions);
 		}
 	});
 
 	/**
-	 * return station autocomplete suggestions for some user input
-	 * @param text input from the user
+	 * return autocomplete suggestions from api for some user input
+	 * @param input input from the user
 	 */
-	async function fetchLocations(text: string): Promise<ParsedLocation[]> {
-		if (text.trim() === "") {
-			return Promise.resolve(staticSuggestions);
+	async function getApiSuggestionsFromInput(input: string): Promise<ParsedLocation[]> {
+		if (input.trim().length < 3) {
+			return Promise.resolve([]);
 		}
-		const url = getApiLocationsUrl(text);
-		return getApiData<ParsedLocation[]>(url, undefined).then((response) => {
-			// start with fitting static suggestions (current location and bookmarks)
-			let suggestions = staticSuggestions.filter((suggestion) =>
-				suggestion.name.toLowerCase().startsWith(text.toLowerCase())
-			);
-			if (!response.isError) {
-				// add suggestions from hafas and remove duplicates
-				suggestions.push(
-					...response.content.filter((suggestion) =>
-						suggestions.every((s) => s.name !== suggestion.name)
-					)
-				);
-			}
-			return suggestions;
-		});
+		const url = getApiLocationsUrl(input);
+		return getApiData<ParsedLocation[]>(url, undefined).then((response) =>
+			response.isError ? [] : response.content
+		);
 	}
 
 	function handleSuggestionClick(suggestion: ParsedLocation | undefined): void {
@@ -67,12 +70,12 @@
 			return;
 		}
 		selectedLocation = suggestion;
-		inputText = simpleInput ? "" : suggestion.name;
+		inputText = isSimpleInput ? "" : suggestion.name;
 		focused = 0;
 	}
 
 	function handleInputKeydown(ev: KeyboardEvent): void {
-		void promisedSuggestions.then((suggestions) => {
+		void suggestions.then((suggestions) => {
 			switch (ev.key) {
 				case "ArrowDown":
 					focused = (focused + 1) % suggestions.length;
@@ -118,16 +121,16 @@
 				placeholder={inputPlaceholder}
 				bind:this={inputElement}
 				bind:value={inputText}
-				on:keydown={handleInputKeydown}
+				onkeydown={handleInputKeydown}
 			/>
 			{#if inputText !== ""}
-				<button type="button" class="hoverable clear-input" on:click={clearInput}>
+				<button type="button" class="hoverable clear-input" onclick={clearInput}>
 					<IconClearInput />
 				</button>
 			{/if}
 		</label>
 		<ul>
-			{#await promisedSuggestions}
+			{#await suggestions}
 				{#each { length: 10 } as _}
 					<li class="skeleton">
 						<span class="flex-row padded-top-bottom suggestion">
@@ -146,7 +149,7 @@
 							class="flex-row padded-top-bottom suggestion"
 							aria-current={focused === i}
 							tabindex="-1"
-							on:click|preventDefault={() => void handleSuggestionClick(suggestion)}
+							onclick={() => void handleSuggestionClick(suggestion)}
 						>
 							<span class="suggestion-icon">
 								<IconStationLocation
@@ -173,8 +176,8 @@
 	}
 	.inner-wrapper {
 		position: relative;
-        padding: 0;
-        display: block;
+		padding: 0;
+		display: block;
 		background-color: transparent;
 		border-color: var(--foreground-color--transparent);
 	}
@@ -194,7 +197,6 @@
 		border: var(--line-width) solid var(--foreground-color--transparent);
 		backdrop-filter: var(--blur);
 		background-color: var(--background-color--transparent);
-        /*background-image: linear-gradient(0deg, var(--foreground-color--very-transparent), var(--foreground-color--very-transparent));*/
 		-webkit-backdrop-filter: var(--blur);
 	}
 
@@ -202,7 +204,7 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: var(--line-width) calc(0.5rem + var(--line-width));
-        margin: calc(-1 * var(--line-width));
+		margin: calc(-1 * var(--line-width));
 	}
 	input {
 		padding: 0.5rem 0;

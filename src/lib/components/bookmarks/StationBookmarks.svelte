@@ -43,7 +43,7 @@
 		<StationInput
 			bind:selectedLocation={toBeBookmarkedStation}
 			inputPlaceholder="Station hinzufügen..."
-			simpleInput={true}
+			isSimpleInput={true}
 		/>
 	</div>
 </div>
