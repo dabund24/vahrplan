@@ -121,8 +121,9 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 }
 export function removeDisplayedLocation(index: number): void {
 	displayedFormData.update((formData) => {
-		if (formData === undefined) {
-			return undefined;
+		if (formData === undefined || formData.locations.length <= 2) {
+			toast("Entfernen der Station nicht möglich.", "red");
+			return formData;
 		}
 		const newFormData: DisplayedFormData = {
 			locations: [
