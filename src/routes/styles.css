@@ -473,7 +473,7 @@ h3 {
 		border-bottom-left-radius: 50vh;
 		border-left: var(--border--very-transparant);
 		padding-left: calc(var(--base-padding) + 0.25rem);
-		&:hover {
+		&:hover, &:active {
 			border-left-color: var(--foreground-color--transparent);
 		}
 	}
@@ -482,7 +482,7 @@ h3 {
 		border-bottom-right-radius: 50vh;
 		border-right: var(--border--very-transparant);
 		padding-right: calc(var(--base-padding) + 0.25rem);
-		&:hover {
+		&:hover, &:active {
 			border-right-color: var(--foreground-color--transparent);
 		}
 	}
