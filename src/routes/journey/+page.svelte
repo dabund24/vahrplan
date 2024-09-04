@@ -187,6 +187,9 @@
 		grid-template-columns: 30rem 1fr;
 		height: 100%;
 	}
+	.journeys {
+		border-right: var(--border);
+	}
 	.map {
 		height: 100%;
 		width: 100%;
