@@ -141,12 +141,6 @@
 		height: 100%;
 		overflow: auto;
 		box-sizing: border-box;
-		&:first-child {
-			padding-right: calc(var(--sp-thickness) / 2);
-		}
-		&:nth-child(2) {
-			padding-left: calc(var(--sp-thickness) / 2);
-		}
 	}
 
 	.pane > :global(*) {
@@ -248,6 +242,15 @@
 			overflow: unset;
 		}
 	}
+
+    @media screen and (min-width: 1000px) {
+        .pane:first-child {
+            padding-right: calc(var(--sp-thickness) / 2);
+        }
+        .pane:nth-child(2) {
+            padding-left: calc(var(--sp-thickness) / 2);
+        }
+    }
 
 	@media screen and (pointer: fine) {
 		.divider::after {
