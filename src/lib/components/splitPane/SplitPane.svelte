@@ -32,6 +32,7 @@
 	let size = $state(0);
 
 	let desiredPosition = $state(pos);
+	$effect(() => void (desiredPosition = pos));
 	let position = $derived(constrain(container, size, min, max, desiredPosition, priority));
 	let loading = $state(true);
 
@@ -243,14 +244,14 @@
 		}
 	}
 
-    @media screen and (min-width: 1000px) {
-        .pane:first-child {
-            padding-right: calc(var(--sp-thickness) / 2);
-        }
-        .pane:nth-child(2) {
-            padding-left: calc(var(--sp-thickness) / 2);
-        }
-    }
+	@media screen and (min-width: 1000px) {
+		.pane:first-child {
+			padding-right: calc(var(--sp-thickness) / 2);
+		}
+		.pane:nth-child(2) {
+			padding-left: calc(var(--sp-thickness) / 2);
+		}
+	}
 
 	@media screen and (pointer: fine) {
 		.divider::after {
