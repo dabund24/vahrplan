@@ -6,6 +6,11 @@
 	import { beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
+	import type { Snippet } from "svelte";
+
+	type Props = { children: Snippet };
+
+	let { children }: Props = $props();
 
 	beforeNavigate((navigation) => {
 		const loadingID = startLoading(2);
@@ -14,14 +19,13 @@
 			() => stopLoading(loadingID, true)
 		);
 	});
-
 </script>
 
 <div class="app" data-blur={$settings.view.general.blur ? "true" : ""}>
 	<ProgressBar />
 	<Navbar />
 	<main>
-		<slot />
+		{@render children()}
 	</main>
 	<Toasts />
 </div>
@@ -36,7 +40,7 @@
 
 	@media (display-mode: browser) {
 		.app {
-            min-height: unset;
+			min-height: unset;
 		}
 	}
 	main {
@@ -44,7 +48,7 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 		overflow-y: auto;
-        padding-bottom: var(--navbar-space--bottom);
+		padding-bottom: var(--navbar-space--bottom);
 	}
 
 	@media screen and (max-width: 999px) {
@@ -66,10 +70,10 @@
 		}
 	}
 
-    @media screen and (min-width: 1000px) and (display-mode: browser) {
-        .app {
-            position: fixed;
-            height: 100vh;
-        }
-    }
+	@media screen and (min-width: 1000px) and (display-mode: browser) {
+		.app {
+			position: fixed;
+			height: 100vh;
+		}
+	}
 </style>

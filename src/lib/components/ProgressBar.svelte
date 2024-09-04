@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { type LoadingStatus, loadingStatus } from "$lib/stores/loadingStore";
 
-	let resetWidth = false;
+	let resetWidth = $state(false);
 
-	$: resetLoadingBar($loadingStatus);
+	$effect(() => resetLoadingBar($loadingStatus));
 
 	function resetLoadingBar(loadingStatus: LoadingStatus): void {
 		if (loadingStatus.status === "loading") {

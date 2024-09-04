@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Time from "$lib/components/Time.svelte";
 
-	export let depth: number;
+	type Props = { depth: number };
+
+	let { depth }: Props = $props();
 </script>
 
 <div class="flex-column skeleton">

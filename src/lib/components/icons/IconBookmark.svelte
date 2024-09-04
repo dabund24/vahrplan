@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let isBookmarked: boolean;
+	type Props = { isBookmarked: boolean };
+
+	let { isBookmarked }: Props = $props();
 </script>
 
 <svg

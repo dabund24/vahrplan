@@ -46,7 +46,7 @@
 	{:else if popupData.type === "walk"}
 		<Duration duration={popupData.duration} />
 		<div class="filler-icon">
-			<IconFiller type="walk" smallIcon={true} />
+			<IconFiller type="walk" isSmallIcon={true} />
 		</div>
 		<span>
 			{#if popupData.distance !== undefined && popupData.walkingTime !== undefined}
@@ -58,7 +58,7 @@
 	{:else if popupData.type === "onward-journey"}
 		<Duration duration={popupData.duration} />
 		<div class="filler-icon">
-			<IconFiller type="onward-journey" smallIcon={true} />
+			<IconFiller type="onward-journey" isSmallIcon={true} />
 		</div>
 		<span>
 			Anreise zur nächsten Station{#if popupData.recommendedAction !== undefined},

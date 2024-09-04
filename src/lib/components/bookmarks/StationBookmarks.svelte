@@ -9,15 +9,15 @@
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 
-	let bookmarks: ParsedLocation[] = [];
+	let bookmarks: ParsedLocation[] = $state([]);
 
 	onMount(() => {
 		bookmarks = getBookmarks("station");
 	});
 
-	let toBeBookmarkedStation: ParsedLocation | undefined = undefined;
+	let toBeBookmarkedStation: ParsedLocation | undefined = $state(undefined);
 
-	$: addStationBookmark(toBeBookmarkedStation);
+	$effect(() => addStationBookmark(toBeBookmarkedStation));
 
 	function addStationBookmark(newBookmark: ParsedLocation | undefined): void {
 		toBeBookmarkedStation = undefined;
@@ -62,7 +62,7 @@
 				</strong>
 				<button
 					class="hoverable hoverable--visible"
-					on:click={() => void removeStationBookmark(bookmark)}
+					onclick={() => void removeStationBookmark(bookmark)}
 				>
 					<IconClose />
 				</button>

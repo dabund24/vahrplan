@@ -1,6 +1,9 @@
 <script lang="ts" generics="T extends string | boolean | number">
-	export let settingName: string;
-	export let setting: T;
+	type Props = {
+		settingName: string;
+		setting: T;
+		settingInfo: SettingInfo;
+	};
 	type SettingInfo = T extends string | number
 		? {
 				type: "options";
@@ -13,7 +16,8 @@
 			: {
 					type: "never";
 				};
-	export let settingInfo: SettingInfo;
+
+	let { settingName, setting = $bindable(), settingInfo }: Props = $props();
 </script>
 
 <label class="flex-row">
