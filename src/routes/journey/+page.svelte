@@ -35,12 +35,12 @@
 			formData1 = $displayedFormData;
 		} else {
 			return {
-				pageTitle: "",
+				pageTitle: "Reisedetails",
 				pageDescription: "Reisedetails in Vahrplan"
 			};
 		}
 		return {
-			pageTitle: `${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
+			pageTitle: `Reisedetails: ${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
 			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.time)} mit Abfahrt ${timeToString(formData1.time)} Uhr`
 		};
 	});
@@ -98,8 +98,8 @@
 {/snippet}
 
 <svelte:head>
-	<title>Vahrplan - Reiseübersicht {pageTitle}</title>
-	<meta name="title" content="Vahrplan - Reiseübersicht {pageTitle}" />
+	<title>Vahrplan - {pageTitle}</title>
+	<meta name="title" content="Vahrplan - {pageTitle}" />
 	<meta name="description" content={pageDescription} />
 </svelte:head>
 

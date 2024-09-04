@@ -34,7 +34,7 @@
 		const formData = $page.data.formData ?? $displayedFormData;
 		if (formData === undefined) {
 			return {
-				pageTitle: "",
+				pageTitle: "Diagramm",
 				pageDescription: "Verbindungsdiagramm in Vahrplan"
 			};
 		}
@@ -49,9 +49,11 @@
 								`${acc}${i === array.length - 1 ? " und" : ","} ${name}`
 						)}`;
 		return {
-			pageTitle: formData.locations
-				.map((location) => location.value.name)
-				.reduce((acc, name) => `${acc} – ${name}`),
+			pageTitle:
+				"Diagramm: " +
+				formData.locations
+					.map((location) => location.value.name)
+					.reduce((acc, name) => `${acc} – ${name}`),
 			pageDescription:
 				`Verbindungsdiagramm für eine Fahrt von ${formData.locations[0].value.name}${viaString} nach ${formData.locations.at(-1)?.value.name}` +
 				` am ${dateToString(formData.time)} mit ${formData.timeRole === "arrival" ? "Ankunft" : "Abfahrt"} ${timeToString(formData.time)} Uhr`
@@ -95,8 +97,8 @@
 </script>
 
 <svelte:head>
-	<title>Vahrplan - Diagramm {pageTitle}</title>
-	<meta name="title" content="Vahrplan - Diagramm {pageTitle}" />
+	<title>Vahrplan - {pageTitle}</title>
+	<meta name="title" content="Vahrplan - {pageTitle}" />
 	<meta name="description" content={pageDescription} />
 </svelte:head>
 
