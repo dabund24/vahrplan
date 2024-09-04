@@ -203,11 +203,6 @@ details[open] summary::after {
 	width: var(--line-length);
 }
 
-html,
-body {
-	overscroll-behavior-y: none;
-}
-
 body {
 	font-family: var(--font-family), sans-serif;
 	color: var(--foreground-color);
@@ -216,7 +211,7 @@ body {
 	hyphens: auto;
 }
 
-body:has(dialog[open]) {
+html:has(dialog[open]), body:has(dialog[open]) {
 	overflow: hidden;
 }
 
