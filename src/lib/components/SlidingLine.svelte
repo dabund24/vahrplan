@@ -7,8 +7,8 @@
 
 	let { amountOfPositions, newPosition = $bindable(), isShort = false }: Props = $props();
 
-	let position = $state(0);
-	let oldPosition = $state(0);
+	let position = $state(newPosition);
+	let oldPosition = $state(newPosition);
 	$effect(() => updatePosition(newPosition))
 	function updatePosition(newPosition: number): void {
 		if (newPosition === position) {
