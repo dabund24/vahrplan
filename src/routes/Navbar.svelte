@@ -27,7 +27,9 @@
 	);
 
 	let journeyUrl = $derived(
-		browser && $selectedJourneys.length > 0 && $selectedJourneys.every(j => j.selectedBy !== -1)
+		browser &&
+			$selectedJourneys.length > 0 &&
+			$selectedJourneys.every((j) => j.selectedBy !== -1)
 			? getJourneyUrl($selectedJourneys).href
 			: "/journey"
 	);
@@ -39,13 +41,17 @@
 			<li aria-current={currentPage === 0 ? "page" : undefined}>
 				<a href={diagramUrl} class="hoverable flex-row">
 					<IconLogo />
-					<span>Verbindungssuche</span>
+					<span
+						>{browser && $displayedFormData !== undefined
+							? "Diagramm"
+							: "Startseite"}</span
+					>
 				</a>
 			</li>
 			<li aria-current={currentPage === 1 ? "page" : undefined}>
 				<a href={journeyUrl} class="hoverable flex-row">
 					<IconDetails />
-					<span>Details/Karte</span>
+					<span>Reisedetails</span>
 				</a>
 			</li>
 			<li aria-current={currentPage === 2 ? "page" : undefined}>
@@ -100,7 +106,10 @@
 
 	@media screen and (min-width: 1000px) {
 		.line-container {
-			translate: calc(100% / -10 + var(--line-width) + 1rem + 13px);
+			translate: calc(100% / -10 + var(--line-width) + 1.25rem + 13px);
+		}
+		li {
+			margin: 0 0.25rem;
 		}
 	}
 
