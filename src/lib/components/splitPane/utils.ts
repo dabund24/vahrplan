@@ -3,13 +3,16 @@
 import type { Length } from "$lib/components/splitPane/types";
 
 export function constrain(
-	element: HTMLElement,
+	element: HTMLElement | undefined,
 	size: number,
 	min: Length,
 	max: Length,
 	pos: Length,
 	priority: "min" | "max"
 ): Length {
+	if (element === undefined) {
+		return "0px";
+	}
 	let min_px = normalize(min, element, size);
 	let max_px = normalize(max, element, size);
 	let pos_px = normalize(pos, element, size);

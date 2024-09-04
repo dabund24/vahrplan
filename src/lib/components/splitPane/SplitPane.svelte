@@ -1,53 +1,50 @@
 <!-- Stolen and adapted from here: https://github.com/Rich-Harris/svelte-split-pane -->
 <script lang="ts">
-	import { createEventDispatcher, onMount } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 	import { constrain } from "./utils";
 	import type { Length } from "$lib/components/splitPane/types";
 
-	const dispatch = createEventDispatcher();
+	type Props = {
+		id?: string;
+		pos?: Length;
+		min?: Length;
+		max?: Length;
+		disabled?: boolean;
+		priority?: "min" | "max";
+		leftPane: Snippet;
+		rightPane: Snippet;
+	};
 
-	export let id: string | undefined = undefined;
+	let {
+		id = undefined,
+		pos = "50%",
+		min = "0%",
+		max = "100%",
+		disabled = false,
+		priority = "min",
+		leftPane,
+		rightPane
+	}: Props = $props();
 
-	export let type: "horizontal" | "vertical";
+	let container: HTMLElement | undefined;
 
-	export let pos: Length = "50%";
+	let dragging = $state(false);
+	let size = $state(0);
 
-	export let min: Length = "0%";
-
-	export let max: Length = "100%";
-
-	export let disabled = false;
-
-	export let priority: "min" | "max" = "min";
-
-	let container: HTMLElement;
-
-	let dragging = false;
-	let w = 0;
-	let h = 0;
-
-	$: position = pos;
-	let loading = true;
-
-	// constrain position
-	$: if (container) {
-		const size = type === "horizontal" ? w : h;
-		position = constrain(container, size, min, max, position, priority);
-	}
+	let desiredPosition = $state(pos);
+	let position = $derived(constrain(container, size, min, max, desiredPosition, priority));
+	let loading = $state(true);
 
 	onMount(() => setTimeout(() => (loading = false), 500));
 
-	function update(x: number, y: number): void {
-		if (disabled) return;
+	function update(x: number): void {
+		if (disabled || container === undefined) return;
 
-		const { top, left } = container.getBoundingClientRect();
+		const { left } = container.getBoundingClientRect();
 
-		const pos_px = type === "horizontal" ? x - left : y - top;
-		const size = type === "horizontal" ? w : h;
+		const pos_px = x - left;
 
-		position = pos.endsWith("%") ? `${(100 * pos_px) / size}%` : `${pos_px}px`;
-
-		dispatch("change");
+		desiredPosition = pos.endsWith("%") ? `${(100 * pos_px) / size}%` : `${pos_px}px`;
 	}
 
 	function drag(
@@ -92,26 +89,25 @@
 
 <div
 	data-pane={id}
-	class="container {type}"
+	class="container"
 	class:loading
 	bind:this={container}
-	bind:clientWidth={w}
-	bind:clientHeight={h}
+	bind:clientWidth={size}
 	style="--pos: {position}"
 >
 	<div class="pane">
-		<slot name="a" />
+		{@render leftPane()}
 	</div>
 
 	{#if !disabled}
 		<div class="pane">
-			<slot name="b" />
+			{@render rightPane()}
 		</div>
 		<div
-			class="{type} divider"
+			class="divider"
 			class:disabled
 			class:dragging
-			use:drag={(e) => void update(e.clientX, e.clientY)}
+			use:drag={(e) => void update(e.clientX)}
 		></div>
 	{/if}
 </div>
@@ -122,16 +118,16 @@
 
 <style>
 	.container {
-		--sp-thickness: var(--line-width);
+		--sp-thickness: calc(3 * var(--line-width));
 		display: grid;
 		position: relative;
 		width: 100%;
 		height: 100%;
 		transition: 0.4s var(--cubic-bezier);
+		grid-template-columns: var(--pos) 1fr;
 	}
 
 	.container:has(.divider:hover, .divider:active, .divider.dragging) {
-		--sp-thickness: calc(3 * var(--line-width));
 		transition: 0s;
 	}
 
@@ -139,19 +135,18 @@
 		transition: 0s;
 	}
 
-	.container.vertical {
-		grid-template-rows: var(--pos) 1fr;
-	}
-
-	.container.horizontal {
-		grid-template-columns: var(--pos) 1fr;
-	}
-
 	.pane {
 		width: 100%;
 		max-width: 100vw;
 		height: 100%;
 		overflow: auto;
+		box-sizing: border-box;
+		&:first-child {
+			padding-right: calc(var(--sp-thickness) / 2);
+		}
+		&:nth-child(2) {
+			padding-left: calc(var(--sp-thickness) / 2);
+		}
 	}
 
 	.pane > :global(*) {
@@ -176,7 +171,13 @@
 		z-index: 500;
 		touch-action: none !important;
 		transition: left 0.4s var(--cubic-bezier);
+		width: 0;
+		height: 100%;
+		cursor: ew-resize;
+		left: var(--pos);
+		transform: translate(calc(-50% * var(--sp-thickness)), 0);
 	}
+
 	.loading .divider {
 		transition: none;
 	}
@@ -195,6 +196,11 @@
 		border-left: transparent solid calc(1rem - 8px);
 		border-right: transparent solid calc(1rem - 8px);
 		background-clip: padding-box;
+		left: 50%;
+		top: 0;
+		width: var(--sp-thickness);
+		height: 100%;
+		z-index: 100;
 	}
 
 	.divider::before {
@@ -202,7 +208,7 @@
 		position: absolute;
 		z-index: 700;
 		width: var(--line-width);
-		height: 0;
+		height: var(--line-length);
 		background-color: var(--foreground-color);
 		border-radius: var(--border-radius--small);
 		translate: -50% -50%;
@@ -215,28 +221,12 @@
 	.divider.dragging {
 		transition: none;
 		&::before {
-			height: var(--line-length);
+			height: calc(1.5 * var(--line-length));
 		}
 	}
 
 	.divider.dragging::before {
 		background-color: var(--accent-color);
-	}
-
-	.horizontal > .divider {
-		width: 0;
-		height: 100%;
-		cursor: ew-resize;
-		left: var(--pos);
-		transform: translate(calc(-50% * var(--sp-thickness)), 0);
-	}
-
-	.horizontal > .divider::after {
-		left: 50%;
-		top: 0;
-		width: var(--sp-thickness);
-		height: 100%;
-		z-index: 100;
 	}
 
 	.divider.disabled {
@@ -250,26 +240,6 @@
 		}
 	}
 
-	.vertical > .divider {
-		padding: calc(0.5 * var(--sp-thickness)) 0;
-		width: 100%;
-		height: 0;
-		cursor: ns-resize;
-		top: var(--pos);
-		transform: translate(0, calc(-50% * var(--sp-thickness)));
-	}
-
-	.vertical > .divider.disabled {
-		cursor: default;
-	}
-
-	.vertical > .divider::after {
-		top: 50%;
-		left: 0;
-		width: 100%;
-		height: 1px;
-	}
-
 	@media screen and (max-width: 999px) {
 		.pane {
 			overflow: unset;
@@ -280,7 +250,7 @@
 	}
 
 	@media screen and (pointer: fine) {
-		.divider:not(:hover)::after {
+		.divider::after {
 			border-width: 0;
 		}
 	}

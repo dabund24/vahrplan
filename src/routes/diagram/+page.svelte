@@ -102,92 +102,99 @@
 
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
-		type={"horizontal"}
 		min="360px"
 		max={showSplitPane ? "-360px" : "100%"}
 		pos={showSplitPane ? "-30rem" : "100%"}
 		disabled={!showSplitPane}
 	>
-		<div
-			class="main-application flex-column"
-			style:--connection-count={($displayedFormData?.locations.length ?? 1) - 1}
-			slot="a"
-		>
-			<section class="form">
-				<MainForm initialFormData={$displayedFormData} />
-			</section>
-			<section class="diagram">
-				{#if $displayedFormData !== undefined}
-					<JourneySummary {allSelected} />
-					{#await $displayedTree}
-						<JourneyDiagramSkeleton depth={$displayedFormData.locations.length - 1} />
-					{:then tree}
-						<JourneyDiagram nodes={tree} />
-					{:catch err}
-						{err}
-					{/await}
-				{/if}
-			</section>
-		</div>
-		<div slot="b" class="journey-preview">
-			{#if showSplitPane}
-				{#snippet topBar(miniTabSelector: Snippet, tabContent: Snippet)}
-					<TitlelessHeader>
-						<div class="flex-row journey-actions">
-							{@render miniTabSelector()}
-							{#if allSelected}
-								<div class="flex-row journey-actions--buttons" transition:scale>
-									<button
-										class="hoverable hoverable--visible"
-										onclick={() => void shareJourney($selectedJourneys)}
-									>
-										<IconShare />
-									</button>
-									<button
-										class="hoverable hoverable--visible"
-										onclick={handleJourneyBookmarkClick}
-									>
-										<IconBookmark {isBookmarked} />
-									</button>
-									<button
-										class="hoverable hoverable--visible"
-										onclick={refreshJourney}
-									>
-										<IconRefresh />
-									</button>
+		{#snippet leftPane()}
+			<div
+				class="main-application flex-column"
+				style:--connection-count={($displayedFormData?.locations.length ?? 1) - 1}
+			>
+				<section class="form">
+					<MainForm initialFormData={$displayedFormData} />
+				</section>
+				<section class="diagram">
+					{#if $displayedFormData !== undefined}
+						<JourneySummary {allSelected} />
+						{#await $displayedTree}
+							<JourneyDiagramSkeleton
+								depth={$displayedFormData.locations.length - 1}
+							/>
+						{:then tree}
+							<JourneyDiagram nodes={tree} />
+						{:catch err}
+							{err}
+						{/await}
+					{/if}
+				</section>
+			</div>
+		{/snippet}
+		{#snippet rightPane()}
+			<div class="journey-preview">
+				{#if showSplitPane}
+					{#snippet detailsIcon()}
+						<IconJourneyInfo />
+					{/snippet}
+					{#snippet journeyOverview()}
+						<Journeys />
+					{/snippet}
+					{#snippet mapIcon()}
+						<IconMap />
+					{/snippet}
+					{#snippet map()}
+						{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
+							<Leaflet.default />
+						{/await}
+					{/snippet}
+					<MiniTabs
+						tabs={[
+							{
+								title: "Klassische Ansicht",
+								icon: detailsIcon,
+								content: journeyOverview
+							},
+							{ title: "Karte", icon: mapIcon, content: map }
+						]}
+					>
+						{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
+							<TitlelessHeader>
+								<div class="flex-row journey-actions">
+									{@render miniTabSelector()}
+									{#if allSelected}
+										<div
+											class="flex-row journey-actions--buttons"
+											transition:scale
+										>
+											<button
+												class="hoverable hoverable--visible"
+												onclick={() => void shareJourney($selectedJourneys)}
+											>
+												<IconShare />
+											</button>
+											<button
+												class="hoverable hoverable--visible"
+												onclick={handleJourneyBookmarkClick}
+											>
+												<IconBookmark {isBookmarked} />
+											</button>
+											<button
+												class="hoverable hoverable--visible"
+												onclick={refreshJourney}
+											>
+												<IconRefresh />
+											</button>
+										</div>
+									{/if}
 								</div>
-							{/if}
-						</div>
-					</TitlelessHeader>
-					{@render tabContent()}
-				{/snippet}
-				{#snippet detailsIcon()}
-					<IconJourneyInfo />
-				{/snippet}
-				{#snippet journeyOverview()}
-					<Journeys />
-				{/snippet}
-				{#snippet mapIcon()}
-					<IconMap />
-				{/snippet}
-				{#snippet map()}
-					{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
-						<Leaflet.default />
-					{/await}
-				{/snippet}
-				<MiniTabs
-					tabEnvironment={topBar}
-					tabs={[
-						{
-							title: "Klassische Ansicht",
-							icon: detailsIcon,
-							content: journeyOverview
-						},
-						{ title: "Karte", icon: mapIcon, content: map }
-					]}
-				/>
-			{/if}
-		</div>
+							</TitlelessHeader>
+							{@render tabContent()}
+						{/snippet}
+					</MiniTabs>
+				{/if}
+			</div>
+		{/snippet}
 	</SplitPane>
 </div>
 
