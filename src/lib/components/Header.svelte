@@ -29,6 +29,7 @@
 		top: 0;
 		z-index: 500;
 		height: 2.5rem;
+		gap: .5rem;
 		transition:
 			background-color 0.4s var(--cubic-bezier),
 			border-bottom-color 0.4s var(--cubic-bezier);
