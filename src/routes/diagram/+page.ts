@@ -30,6 +30,9 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		redirect(303, diagramURL);
 	}
 
+	if (url.searchParams.size === 0) {
+		redirect(303, "/");
+	}
 	requestData = parseApiJourneysUrl(url) ?? error(404, "Fehlerhafte URL.");
 	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
 		requestData.stops.map(async (stopQuery) => {
