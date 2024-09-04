@@ -1,34 +1,27 @@
 <script lang="ts">
-	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import { settings } from "$lib/stores/settingStore";
 	import Header from "$lib/components/Header.svelte";
-	import type { ComponentProps } from "svelte";
-
-	const tabContent: ComponentProps<Tabs>["tabs"] = [
-		{
-			title: "Darstellung",
-			content: viewSettings
-		},
-		{
-			title: "Speicher",
-			content: storageSettings
-		}
-	];
 </script>
 
-{#snippet viewSettings()}
-	<h1>Allgemein</h1>
+<svelte:head>
+	<title>Vahrplan - Einstellungen</title>
+	<meta name="description" content="Einstellungen für Vahrplan" />
+</svelte:head>
+
+<Header title={"Einstellungen"} mobileOnly={true} />
+<div class="content-wrapper">
+	<h1>Farbschema</h1>
 	<Setting
 		settingName={"Dunkelmodus"}
-		bind:setting={$settings.view.general.darkTheme}
+		bind:setting={$settings.general.theme.darkTheme}
 		settingInfo={{
 			type: "boolean"
 		}}
 	/>
 	<Setting
 		settingName={"Akzentfarbe"}
-		bind:setting={$settings.view.general.color}
+		bind:setting={$settings.general.theme.color}
 		settingInfo={{
 			type: "options",
 			options: [
@@ -40,80 +33,47 @@
 			]
 		}}
 	/>
-	<Setting
-		settingName={"Verwischungseffekte"}
-		bind:setting={$settings.view.general.blur}
-		settingInfo={{
-			type: "boolean"
-		}}
-	/>
-	<h1>Verbindungsdiagramm</h1>
-	<Setting
-		settingName={"Verhältnis Breite Verbindungsabschnitt zu Reisedauer"}
-		bind:setting={$settings.view.diagram.legWidth}
-		settingInfo={{
-			type: "options",
-			options: [
-				{ value: "linear", name: "Linear" },
-				{ value: "logarithmic", name: "Logarithmisch" },
-				{ value: "equal", name: "Konstant" }
-			]
-		}}
-	/>
 	<h1>Karte</h1>
 	<Setting
 		settingName={"Live-Standort auf Karte anzeigen"}
-		bind:setting={$settings.view.map.geolocation}
+		bind:setting={$settings.general.map.geolocation}
 		settingInfo={{ type: "boolean" }}
-	/>
-	<Setting
-		settingName={"Kartenebene"}
-		bind:setting={$settings.view.map.layers}
-		settingInfo={{
-			type: "options",
-			options: [
-				{ value: "osm", name: "OpenStreetMap" },
-				{ value: "orm", name: "OpenRailwayMap" },
-				{ value: "oepnvk", name: "ÖPNV-Karte" }
-			]
-		}}
 	/>
 	<Setting
 		settingName={"Dunkelmodus auf Karte übertragen"}
-		bind:setting={$settings.view.map.darkFilter}
+		bind:setting={$settings.general.map.darkFilter}
 		settingInfo={{ type: "boolean" }}
 	/>
-{/snippet}
-
-{#snippet storageSettings()}
+	<h1>Generierung von Kurzlinks beim Teilen</h1>
+	<Setting
+		settingName={"Kurzlinks für Verbindungsdiagramme"}
+		bind:setting={$settings.general.shortLinks.diagrams}
+		settingInfo={{ type: "boolean" }}
+	/>
+	<Setting
+		settingName={"Kurzlinks für Reisen"}
+		bind:setting={$settings.general.shortLinks.journeys}
+		settingInfo={{ type: "boolean" }}
+	/>
 	<h1>Persistentes Speichern von Einstellungen</h1>
+	<Setting
+		settingName={"App-Einstellungen"}
+		bind:setting={$settings.storage.general}
+		settingInfo={{ type: "boolean" }}
+	/>
 	<Setting
 		settingName={"Verbindungsfilter"}
 		bind:setting={$settings.storage.journeysOptions}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<Setting
-		settingName={"Darstellung"}
-		bind:setting={$settings.storage.view}
-		settingInfo={{ type: "boolean" }}
-	/>
-{/snippet}
-
-<svelte:head>
-	<title>Vahrplan - Einstellungen</title>
-	<meta name="description" content="Einstellungen für Vahrplan" />
-</svelte:head>
-
-<Header title={"Einstellungen"} mobileOnly={true} />
-<div id="settings" class="content-wrapper">
-	<Tabs tabs={tabContent} isBelowHeaderMobile={true} padContent={true} />
 </div>
 
 <style>
+	.content-wrapper {
+		padding: 0 1rem;
+	}
 	h1 {
 		font-size: 1.2rem;
-	}
-	h1:not(:first-of-type) {
 		padding-top: 0.5rem;
 	}
 

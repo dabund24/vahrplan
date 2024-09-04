@@ -26,18 +26,17 @@ export type Settings = {
 		transfers: -1 | 0 | 1 | 2 | 3 | 4 | 5;
 		transferTime: number;
 	};
-	view: {
-		general: {
+	general: {
+		theme: {
 			darkTheme: boolean;
 			color: "red" | "yellow" | "green" | "blue" | "purple";
-			blur: boolean;
 		};
-		diagram: {
-			legWidth: "equal" | "logarithmic" | "linear";
+		shortLinks: {
+			diagrams: boolean;
+			journeys: boolean;
 		};
 		map: {
 			geolocation: boolean;
-			layers: "osm" | "orm" | "oepnvk";
 			darkFilter: boolean;
 		};
 	};
@@ -63,24 +62,23 @@ export const settings = writable<Settings>({
 		transfers: -1,
 		transferTime: 0
 	},
-	view: {
-		general: {
+	general: {
+		theme: {
 			darkTheme: false,
-			color: "green",
-			blur: false
+			color: "green"
 		},
-		diagram: {
-			legWidth: "logarithmic"
+		shortLinks: {
+			diagrams: false,
+			journeys: false
 		},
 		map: {
 			geolocation: false,
-			layers: "osm",
 			darkFilter: true
 		}
 	},
 	storage: {
 		journeysOptions: false,
-		view: false
+		general: false
 	}
 });
 
@@ -89,7 +87,7 @@ if (browser) {
 		const systemDarkTheme =
 			window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 		if (systemDarkTheme) {
-			settings.view.general.darkTheme = true;
+			settings.general.theme.darkTheme = true;
 		}
 
 		let k: keyof Settings;
@@ -97,9 +95,9 @@ if (browser) {
 			if (k === "storage") continue;
 			const storedSetting = window.localStorage.getItem(k);
 			if (storedSetting === null) continue;
-			if (k === "view") {
-				settings.view = JSON.parse(storedSetting) as Settings["view"];
-				settings.storage.view = true;
+			if (k === "general") {
+				settings.general = JSON.parse(storedSetting) as Settings["general"];
+				settings.storage.general = true;
 			} else if (k === "journeysOptions") {
 				settings.journeysOptions = JSON.parse(storedSetting) as Settings["journeysOptions"];
 				settings.storage.journeysOptions = true;
@@ -107,9 +105,9 @@ if (browser) {
 		}
 		document.documentElement.setAttribute(
 			"data-theme",
-			settings.view.general.darkTheme ? "dark" : "light"
+			settings.general.theme.darkTheme ? "dark" : "light"
 		);
-		document.documentElement.setAttribute("data-color", settings.view.general.color);
+		document.documentElement.setAttribute("data-color", settings.general.theme.color);
 		return settings;
 	});
 
@@ -125,12 +123,12 @@ if (browser) {
 		}
 		document.documentElement.setAttribute(
 			"data-theme",
-			settings.view.general.darkTheme ? "dark" : "light"
+			settings.general.theme.darkTheme ? "dark" : "light"
 		);
-		document.documentElement.setAttribute("data-color", settings.view.general.color);
+		document.documentElement.setAttribute("data-color", settings.general.theme.color);
 		document
 			.getElementById("theme-color")!
-			.setAttribute("content", settings.view.general.darkTheme ? "#121212" : "#ffffff");
+			.setAttribute("content", settings.general.theme.darkTheme ? "#121212" : "#ffffff");
 
 		return settings;
 	});

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import "./styles.css";
 	import Navbar from "./Navbar.svelte";
-	import { settings } from "$lib/stores/settingStore";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
@@ -21,7 +20,7 @@
 	});
 </script>
 
-<div class="app" data-blur={$settings.view.general.blur ? "true" : ""}>
+<div class="app">
 	<ProgressBar />
 	<Navbar />
 	<main>

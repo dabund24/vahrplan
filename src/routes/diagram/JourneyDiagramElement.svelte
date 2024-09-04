@@ -6,7 +6,6 @@
 		selectJourneyBlocks,
 		unselectJourneyBlocks
 	} from "$lib/stores/journeyStores";
-	import { settings } from "$lib/stores/settingStore";
 
 	type Props = {
 		blocks: JourneyBlock[];
@@ -35,14 +34,7 @@
 	}
 
 	function getLegWidth(duration: number): number {
-		switch ($settings.view.diagram.legWidth) {
-			case "linear":
-				return duration;
-			case "logarithmic":
-				return Math.log2(duration + 2);
-			case "equal":
-				return 1;
-		}
+		return Math.log2(duration + 2);
 	}
 </script>
 
@@ -94,13 +86,19 @@
 		}
 	}
 
-	:global(.diagram-box:has(> .diagram-column > :first-child > .diagram-element[aria-current="true"])) > .diagram-element[aria-current="true"] {
+	:global(
+			.diagram-box:has(
+					> .diagram-column > :first-child > .diagram-element[aria-current="true"]
+				)
+		) > .diagram-element[aria-current="true"] {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-right-color: transparent;
 	}
 
-	:global(.diagram-box:has(> .diagram-element[aria-current="true"]) > .diagram-column > :first-child) > .diagram-element[aria-current="true"] {
+	:global(
+			.diagram-box:has(> .diagram-element[aria-current="true"]) > .diagram-column	> :first-child
+		) > .diagram-element[aria-current="true"] {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
 		border-left-color: transparent;

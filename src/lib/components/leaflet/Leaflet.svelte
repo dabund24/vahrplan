@@ -23,7 +23,7 @@
 	let currentPosition: ParsedLocation["position"] | undefined = $state();
 	let geolocationWatcher: number | undefined = undefined;
 
-	if ($settings.view.map.geolocation) {
+	if ($settings.general.map.geolocation) {
 		navigator.geolocation.watchPosition(
 			(position) => {
 				currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
@@ -41,7 +41,7 @@
 	onMount(() => {
 		map = L.map(mapElement, { zoomControl: false });
 		resizeObserver.observe(mapElement);
-		addLayersToMap(map, $settings.view.map.layers);
+		addLayersToMap(map);
 	});
 
 	onDestroy(() => {
@@ -57,31 +57,13 @@
 		getMap: () => map
 	});
 
-	function addLayersToMap(map: L.Map, layer: typeof $settings.view.map.layers): void {
-		if (layer === "osm" || layer === "orm") {
-			L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-				maxZoom: 19,
-				attribution:
-					'&copy; <a href="https:///www.openstreetmap.org/copyright">OpenStreetMap</a>',
-				className: "osm-tiles"
-			}).addTo(map);
-		}
-		if (layer === "orm") {
-			L.tileLayer("https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png", {
-				maxZoom: 19,
-				attribution:
-					'<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>, Style: <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA 2.0</a> <a href="http://www.openrailwaymap.org/">OpenRailwayMap</a> and OpenStreetMap',
-				className: "orm-tiles"
-			}).addTo(map);
-		}
-		if (layer === "oepnvk") {
-			L.tileLayer("https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png", {
-				maxZoom: 17,
-				attribution:
-					'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/"> CC-BY-SA</a>, map data <a href="http://openstreetmap.org/"> Openstreetmap</a> <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a>',
-				className: "oepnvk-tiles"
-			}).addTo(map);
-		}
+	function addLayersToMap(map: L.Map): void {
+		L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+			maxZoom: 19,
+			attribution:
+				'&copy; <a href="https:///www.openstreetmap.org/copyright">OpenStreetMap</a>',
+			className: "osm-tiles"
+		}).addTo(map);
 	}
 
 	$effect(() => setMapContent(map, $selectedJourneys, $displayedFormData));
@@ -125,7 +107,7 @@
 <div
 	class="map"
 	bind:this={mapElement}
-	data-theme={$settings.view.map.darkFilter && $settings.view.general.darkTheme
+	data-theme={$settings.general.map.darkFilter && $settings.general.theme.darkTheme
 		? "dark"
 		: "light"}
 >
@@ -202,7 +184,7 @@
 							iconType="station"
 							secondaryProduct={block.departureProduct}
 							isSmallIcon={block.isStopover}
-							cancelled={block.transitData.attribute === "cancelled" &&
+							isCancelled={block.transitData.attribute === "cancelled" &&
 								block.transitData.attribute2 === "cancelled"}
 						/>
 					</Marker>

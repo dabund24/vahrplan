@@ -2,9 +2,13 @@ import type { KeylessDatabaseEntry, ParsedTime } from "$lib/types";
 import { getFirstAndLastTime, putApiData } from "$lib/util";
 import { type SelectedJourney } from "$lib/stores/journeyStores";
 import { toast } from "$lib/stores/toastStore";
+import { get } from "svelte/store";
+import { settings } from "$lib/stores/settingStore";
+import { getJourneyUrl } from "$lib/urls";
 
 /**
- * if no sub-journey is unselected, generates a short link for a journey and shows the share dialog if supported.
+ * shares a journey if no sub-journey is unselected and shows the share dialog if supported.
+ * Generates a short url if enabled in the settings.
  * @param selectedSubJourneys all selected sub-journeys
  */
 export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Promise<void> {
@@ -12,12 +16,36 @@ export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Prom
 		return;
 	}
 
+	const urlHref: string = get(settings).general.shortLinks.journeys
+		? ((await generateJourneyShortUrl(selectedSubJourneys)) ??
+			getJourneyUrl(selectedSubJourneys).href)
+		: getJourneyUrl(selectedSubJourneys).href;
+
+	if (navigator.share) {
+		void navigator.share({
+			title: document.title,
+			url: urlHref
+		});
+	} else {
+		void navigator.clipboard
+			.writeText(urlHref)
+			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
+	}
+}
+
+/**
+ * generates a short url for a given journey
+ * @param selectedSubJourneys
+ */
+async function generateJourneyShortUrl(
+	selectedSubJourneys: SelectedJourney[]
+): Promise<string | undefined> {
 	const { departure }: ParsedTime = getFirstAndLastTime(selectedSubJourneys[0].blocks)[
 		"departure"
 	];
 
 	if (departure === null || departure === undefined) {
-		return;
+		return undefined;
 	}
 
 	const keylessDatabaseEntry: KeylessDatabaseEntry<string[]> = {
@@ -29,20 +57,11 @@ export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Prom
 	const requestUrl = new URL("/api/journey/shorturl", location.origin);
 	const keyResponse = await putApiData<string[], string>(requestUrl, keylessDatabaseEntry, 2);
 	if (keyResponse.isError) {
-		console.error("something went wrong generating short url!");
+		toast("Kurzlink konnte nicht generiert werden.", "red");
 		return;
 	}
+	const url = new URL(`/journey`, location.origin);
+	url.searchParams.set("j", keyResponse.content);
 
-	const shortUrl = new URL(`/journey`, location.origin);
-	shortUrl.searchParams.set("j", keyResponse.content);
-	if (navigator.share) {
-		void navigator.share({
-			title: `Vahrplan`,
-			url: shortUrl.href
-		});
-	} else {
-		void navigator.clipboard
-			.writeText(shortUrl.href)
-			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
-	}
+	return url.href;
 }
