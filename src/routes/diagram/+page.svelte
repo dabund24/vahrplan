@@ -27,6 +27,36 @@
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import { shareJourney } from "../journey/share";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
+	import { dateToString } from "$lib/util";
+	import { timeToString } from "$lib/util.js";
+
+	let { pageTitle, pageDescription } = $derived.by(() => {
+		const formData = $page.data.formData ?? $displayedFormData;
+		if (formData === undefined) {
+			return {
+				pageTitle: "",
+				pageDescription: "Verbindungsdiagramm in Vahrplan"
+			};
+		}
+		const viaString =
+			formData.locations.length <= 2
+				? ""
+				: ` über ${formData.locations
+						.slice(1, -1)
+						.map((location) => location.value.name)
+						.reduce(
+							(acc, name, i, array) =>
+								`${acc}${i === array.length - 1 ? " und" : ","} ${name}`
+						)}`;
+		return {
+			pageTitle: formData.locations
+				.map((location) => location.value.name)
+				.reduce((acc, name) => `${acc} – ${name}`),
+			pageDescription:
+				`Verbindungsdiagramm für eine Fahrt von ${formData.locations[0].value.name}${viaString} nach ${formData.locations.at(-1)?.value.name}` +
+				` am ${dateToString(formData.time)} mit ${formData.timeRole === "arrival" ? "Ankunft" : "Abfahrt"} ${timeToString(formData.time)} Uhr`
+		};
+	});
 
 	let windowWidth: number = $state(0);
 
@@ -65,8 +95,9 @@
 </script>
 
 <svelte:head>
-	<title>Start</title>
-	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
+	<title>Vahrplan - Diagramm {pageTitle}</title>
+	<meta name="title" content="Vahrplan - Diagramm {pageTitle}" />
+	<meta name="description" content={pageDescription} />
 </svelte:head>
 
 <div class="split-container" bind:clientWidth={windowWidth}>
@@ -169,7 +200,7 @@
 	}
 	.diagram {
 		margin: 0 auto;
-		gap: .5rem;
+		gap: 0.5rem;
 	}
 	.split-container {
 		height: 100%;

@@ -3,8 +3,9 @@ import Header from "$lib/components/Header.svelte";
 </script>
 
 <svelte:head>
-	<title>Über</title>
-	<meta name="description" content="Über diese Seite" />
+	<title>Vahrplan - Über</title>
+	<meta name="title" content="Vahrplan - Über" />
+	<meta name="description" content="Weiterführende Informationen über Vahrplan" />
 </svelte:head>
 
 <Header title={"Über diese Seite"} mobileOnly={true} />

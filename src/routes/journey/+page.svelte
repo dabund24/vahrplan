@@ -2,6 +2,7 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
 	import {
+		type DisplayedFormData,
 		displayedFormData,
 		initializeSharedData,
 		refreshJourney,
@@ -22,8 +23,27 @@
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import Warning from "$lib/components/Warning.svelte";
+	import { dateToString, timeToString } from "$lib/util.js";
 
 	const { formData, treeNodes } = $page.data;
+
+	let { pageTitle, pageDescription } = $derived.by(() => {
+		let formData1: DisplayedFormData;
+		if (formData !== undefined) {
+			formData1 = formData;
+		} else if ($displayedFormData !== undefined && allSelected) {
+			formData1 = $displayedFormData;
+		} else {
+			return {
+				pageTitle: "",
+				pageDescription: "Reisedetails in Vahrplan"
+			};
+		}
+		return {
+			pageTitle: `${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
+			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.time)} mit Abfahrt ${timeToString(formData1.time)} Uhr`
+		};
+	});
 
 	if (browser && formData !== undefined && treeNodes !== undefined) {
 		initializeSharedData(formData, treeNodes);
@@ -78,8 +98,9 @@
 {/snippet}
 
 <svelte:head>
-	<title>Verbindungsdetails</title>
-	<meta name="description" content="Verbindungsdetails" />
+	<title>Vahrplan - Reiseübersicht {pageTitle}</title>
+	<meta name="title" content="Vahrplan - Reiseübersicht {pageTitle}" />
+	<meta name="description" content={pageDescription} />
 </svelte:head>
 
 <svelte:window bind:outerWidth={clientWidth} />
@@ -91,12 +112,12 @@
 	<IconMap />
 {/snippet}
 {#snippet journeyOverview()}
-	{#if $displayedFormData === undefined}
+	{#if formData === undefined && $displayedFormData === undefined}
 		<div class="content-wrapper">
 			<Warning
-			>Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
-				Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
-				hier angezeigt.
+				>Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
+				Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird
+				dann hier angezeigt.
 			</Warning>
 		</div>
 	{/if}
@@ -108,12 +129,7 @@
 	{/await}
 {/snippet}
 {#snippet header(miniTabSelector: Snippet, tabContent: Snippet)}
-	<Header
-		title={$displayedFormData !== undefined
-			? `${$displayedFormData.locations[0].value.name} — ${$displayedFormData.locations.at(-1)?.value.name}`
-			: "Verbindungsdetails"}
-		mobileOnly={true}
-	>
+	<Header title={pageTitle} mobileOnly={true}>
 		{@render miniTabSelector()}
 		{#if allSelected && $selectedJourneys.length > 0}
 			<Options id={"journey"} {options} />
@@ -164,7 +180,7 @@
 
 <style>
 	.content-wrapper {
-		padding: .5rem 1rem;
+		padding: 0.5rem 1rem;
 	}
 	.columns {
 		display: grid;

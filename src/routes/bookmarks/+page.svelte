@@ -21,6 +21,11 @@
 		}
 	];
 </script>
+<svelte:head>
+	<title>Vahrplan - Lesezeichen</title>
+	<meta name="title" content="Vahrplan - Lesezeichen" />
+	<meta name="description" content="Gemerkte Diagramme, Reisen und Stationen in Vahrplan" />
+</svelte:head>
 
 {#snippet diagramBookmarks()}
 	<DiagramBookmarks />
@@ -32,7 +37,7 @@
 	<StationBookmarks />
 {/snippet}
 
-<Header title="Favoriten" mobileOnly={true} />
+<Header title="Lesezeichen" mobileOnly={true} />
 <div class="content-wrapper" data-sveltekit-preload-data="off">
 	<Tabs tabs={tabContent} isBelowHeaderMobile={true} padContent={true} />
 </div>

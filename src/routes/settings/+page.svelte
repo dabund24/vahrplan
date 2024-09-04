@@ -100,8 +100,8 @@
 {/snippet}
 
 <svelte:head>
-	<title>Einstellungen</title>
-	<meta name="description" content="Einstellungen" />
+	<title>Vahrplan - Einstellungen</title>
+	<meta name="description" content="Einstellungen für Vahrplan" />
 </svelte:head>
 
 <Header title={"Einstellungen"} mobileOnly={true} />
