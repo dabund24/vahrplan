@@ -266,7 +266,7 @@
 			left: 0;
 		}
 		.main-application {
-			padding: 0 0.5rem 0.5rem;
+			padding: 0 0.5rem 1.5rem;
 			container-type: inline-size;
 			--display-width: calc(100cqw - 1.5rem);
 			width: auto;

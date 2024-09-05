@@ -25,6 +25,12 @@
 	<Navbar />
 	<main>
 		{@render children()}
+		<footer>
+			<small>
+				<a href="about/privacy">Datenschutz</a>
+				<a href="about/imprint">Impressum</a>
+			</small>
+		</footer>
 	</main>
 	<Toasts />
 </div>
@@ -35,6 +41,17 @@
 		grid-template-rows: auto 1fr;
 		-webkit-overflow-scrolling: touch;
 		min-height: 100vh;
+	}
+
+	small {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		font-size: 0.75rem;
+		background-color: var(--background-color--transparent);
+		padding: 0 5px;
+		line-height: 1.4;
+		transition: background-color .4s var(--cubic-bezier), color .4s var(--cubic-bezier);
 	}
 
 	@media (display-mode: browser) {
@@ -57,6 +74,10 @@
 
 		main {
 			overflow: unset;
+		}
+
+		small {
+            display: none;
 		}
 	}
 
