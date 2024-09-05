@@ -9,8 +9,8 @@
 		pos?: Length;
 		min?: Length;
 		max?: Length;
-		disabled?: boolean;
 		priority?: "min" | "max";
+		disabled?: boolean;
 		leftPane: Snippet;
 		rightPane: Snippet;
 	};
@@ -20,10 +20,10 @@
 		pos = "50%",
 		min = "0%",
 		max = "100%",
-		disabled = false,
 		priority = "min",
+		disabled = false,
 		leftPane,
-		rightPane
+		rightPane,
 	}: Props = $props();
 
 	let container: HTMLElement | undefined;
@@ -34,9 +34,6 @@
 	let desiredPosition = $state(pos);
 	$effect(() => void (desiredPosition = pos));
 	let position = $derived(constrain(container, size, min, max, desiredPosition, priority));
-	let loading = $state(true);
-
-	onMount(() => setTimeout(() => (loading = false), 500));
 
 	function update(x: number): void {
 		if (disabled || container === undefined) return;
@@ -91,7 +88,6 @@
 <div
 	data-pane={id}
 	class="container"
-	class:loading
 	bind:this={container}
 	bind:clientWidth={size}
 	style="--pos: {position}"
@@ -124,16 +120,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		transition: 0.4s var(--cubic-bezier);
 		grid-template-columns: var(--pos) 1fr;
-	}
-
-	.container:has(.divider:hover, .divider:active, .divider.dragging) {
-		transition: 0s;
-	}
-
-	.container.loading {
-		transition: 0s;
 	}
 
 	.pane {
@@ -165,16 +152,11 @@
 		position: absolute;
 		z-index: 500;
 		touch-action: none !important;
-		transition: left 0.4s var(--cubic-bezier);
 		width: 0;
 		height: 100%;
 		cursor: ew-resize;
 		left: var(--pos);
 		transform: translate(calc(-50% * var(--sp-thickness)), 0);
-	}
-
-	.loading .divider {
-		transition: none;
 	}
 
 	.divider::after {
@@ -214,7 +196,6 @@
 	.divider:hover,
 	.divider:active,
 	.divider.dragging {
-		transition: none;
 		&::before {
 			height: calc(1.5 * var(--line-length));
 		}
@@ -222,17 +203,6 @@
 
 	.divider.dragging::before {
 		background-color: var(--accent-color);
-	}
-
-	.divider.disabled {
-		cursor: default;
-		visibility: hidden;
-		width: 0;
-		&::before,
-		&::after {
-			width: 0;
-			border: none;
-		}
 	}
 
 	@media screen and (max-width: 999px) {
