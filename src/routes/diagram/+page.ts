@@ -51,7 +51,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 					value: response.content
 				};
 			}
-			error(404, response.description);
+			error(response.code, response.description);
 		})
 	);
 
