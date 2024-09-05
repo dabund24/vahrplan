@@ -48,9 +48,9 @@ export async function getApiData<T extends Fetchable>(
 		});
 	if (loadingId !== undefined) {
 		stopLoading(loadingId, result.isError);
-		if (result.isError) {
-			toast(result.description, "red");
-		}
+	}
+	if (result.isError) {
+		toast(result.description, "red");
 	}
 	return result;
 }
@@ -87,9 +87,9 @@ export async function putApiData<R, T>(
 
 	if (loadingId !== undefined) {
 		stopLoading(loadingId, result.isError);
-		if (result.isError) {
-			toast(result.description, "red");
-		}
+	}
+	if (result.isError) {
+		toast(result.description, "red");
 	}
 	return result;
 }
