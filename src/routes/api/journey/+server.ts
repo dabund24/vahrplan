@@ -7,9 +7,10 @@ import type { JourneyBlock, UnselectedBlock, ZugResponse } from "$lib/types";
 export const GET: RequestHandler = async function ({ url }) {
 	const hafasTokens = getHafasTokensFromUrl(url);
 	if (hafasTokens === undefined) {
-		return json(getZugError("NOT_FOUND"));
+		return json(getZugError("NOT_FOUND"), { status: 404 });
 	}
-	return json(await getJourneyByTokens(hafasTokens));
+	const result = await getJourneyByTokens(hafasTokens);
+	return json(result, { status: result.isError ? result.code : 200 });
 };
 
 /**

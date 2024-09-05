@@ -7,7 +7,7 @@ export const GET: RequestHandler = async function ({ url }) {
 	const diagramData = parseApiJourneysUrl(url);
 
 	if (diagramData === undefined) {
-		return json(getZugError("NOT_FOUND"));
+		return json(getZugError("NOT_FOUND"), { status: 404 });
 	}
 
 	const { stops, timeRole, options } = diagramData;
@@ -16,5 +16,5 @@ export const GET: RequestHandler = async function ({ url }) {
 	options.results = 10;
 	options.language = "de";
 	const result = await getJourneyTree(stops, options, timeRole);
-	return json(result);
+	return json(result, { status: result.isError ? result.code : 200 });
 };

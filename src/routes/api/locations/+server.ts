@@ -8,5 +8,5 @@ export const GET: RequestHandler = async ({ url }) => {
 		.locations(url.searchParams.get("name") ?? "", { results: 10 })
 		.then((locations) => getSuccessResponse(locations.map(parseStationStopLocation)))
 		.catch(getZugErrorFromHafasError);
-	return json(result);
+	return json(result, { status: result.isError ? result.code : 200 });
 };

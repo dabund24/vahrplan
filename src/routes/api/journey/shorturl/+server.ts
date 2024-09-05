@@ -18,12 +18,12 @@ export const GET: RequestHandler = async function ({ url }) {
 	const shortToken = url.searchParams.get("token");
 	if (shortToken === null) {
 		// no token
-		return json(getZugError("NOT_FOUND"));
+		return json(getZugError("NOT_FOUND"), { status: 404 });
 	}
 	const hafasTokens = await getDatabaseEntry<string[]>("journey", shortToken);
 	if (hafasTokens === undefined) {
 		// invalid token
-		return json(getZugError("NOT_FOUND"));
+		return json(getZugError("NOT_FOUND"), { status: 404 });
 	}
 	return json(getSuccessResponse(hafasTokens));
 };

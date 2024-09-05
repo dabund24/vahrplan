@@ -13,5 +13,5 @@ export const GET: RequestHandler = async ({ url }) => {
 		.stop(param, {})
 		.then((location) => getSuccessResponse(parseStationStopLocation(location)))
 		.catch(getZugErrorFromHafasError);
-	return json(result);
+	return json(result, { status: result.isError ? result.code : 200 });
 };
