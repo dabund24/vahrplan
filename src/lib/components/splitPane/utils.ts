@@ -11,7 +11,7 @@ export function constrain(
 	priority: "min" | "max"
 ): Length {
 	if (element === undefined) {
-		return "0px";
+		return "100%";
 	}
 	let min_px = normalize(min, element, size);
 	let max_px = normalize(max, element, size);
