@@ -5,7 +5,6 @@
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import IconInfo from "$lib/components/icons/IconInfo.svelte";
 	import IconCheckmark from "$lib/components/icons/IconCheckmark.svelte";
-	$inspect($toasts);
 </script>
 
 <div class="toasts flex-column">

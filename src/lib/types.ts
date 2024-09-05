@@ -25,12 +25,12 @@ export type ZugError = {
 	station2?: number;
 };
 
-export type ZugErrorType = `HAFAS_${HafasError["code"]}` | "NOT_FOUND" | "ERROR";
+export type ZugErrorType = `HAFAS_${HafasError["code"]}` | "NOT_FOUND" | "ERROR" | "QUOTA_EXCEEDED";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = {
 	isHafasError: true;
-	code: "ACCESS_DENIED" | "INVALID_REQUEST" | "NOT_FOUND" | "SERVER_ERROR";
+	code: "ACCESS_DENIED" | "INVALID_REQUEST" | "NOT_FOUND" | "SERVER_ERROR" | "QUOTA_EXCEEDED";
 	isCausedByServer: boolean;
 	hafasCode: string;
 	hafasDescription: string;

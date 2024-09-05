@@ -16,10 +16,13 @@ export function getZugErrorFromHafasError(
 	station1?: number,
 	station2?: number
 ): ZugError {
-	console.log(error);
 	let errorType: ZugErrorType = "ERROR";
 	let description: string = "Server-Fehler";
 	if (isHafasError(error)) {
+		if (error.code === "QUOTA_EXCEEDED") {
+			// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
+			return getZugError("QUOTA_EXCEEDED");
+		}
 		description = `Hafas: ${error.hafasDescription ?? ""}`;
 		errorType = `HAFAS_${error.code}`;
 	}
@@ -56,7 +59,9 @@ function getErrorCodeFromErrorType(type: ZugErrorType): ZugError["code"] {
 		HAFAS_NOT_FOUND: 404,
 		HAFAS_SERVER_ERROR: 500,
 		NOT_FOUND: 404,
-		ERROR: 500
+		ERROR: 500,
+		QUOTA_EXCEEDED: 429,
+		HAFAS_QUOTA_EXCEEDED: 429
 	}[type] as ZugError["code"];
 }
 
@@ -67,6 +72,23 @@ function getDescriptionFromErrorType(type: ZugErrorType): string {
 		HAFAS_NOT_FOUND: "Hafas: Ressource nicht gefunden.",
 		HAFAS_SERVER_ERROR: "Hafas: Server-Fehler.",
 		NOT_FOUND: "Ressource nicht gefunden.",
-		ERROR: "Server-Fehler."
+		ERROR: "Server-Fehler.",
+		QUOTA_EXCEEDED: "Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut.",
+		HAFAS_QUOTA_EXCEEDED:
+			"Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut."
 	}[type];
+}
+
+/**
+ * throw a hafas quota error such that it can be handled as any other hafas-error
+ * @throws HafasError
+ */
+export function throwHafasQuotaError(): never {
+	throw {
+		isHafasError: true,
+		code: "QUOTA_EXCEEDED",
+		isCausedByServer: true,
+		hafasCode: "",
+		hafasDescription: ""
+	} as HafasError;
 }
