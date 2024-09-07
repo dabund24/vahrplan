@@ -208,9 +208,6 @@
 		title={`${modalLeg.name} → ${modalLeg.direction}`}
 	>
 		<div class="modal-content">
-			{#if modalLeg.attribute === "cancelled"}
-				<Warning color="red">Fahrt entfällt</Warning>
-			{/if}
 			{#each modalLeg.info.statuses as status}
 				<Warning color="red">{status}</Warning>
 			{/each}
