@@ -35,12 +35,12 @@
 			formData1 = $displayedFormData;
 		} else {
 			return {
-				pageTitle: "Reisedetails",
+				pageTitle: "",
 				pageDescription: "Reisedetails in Vahrplan"
 			};
 		}
 		return {
-			pageTitle: `Reisedetails: ${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
+			pageTitle: `: ${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
 			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.time)} mit Abfahrt ${timeToString(formData1.time)} Uhr`
 		};
 	});
@@ -98,9 +98,9 @@
 {/snippet}
 
 <svelte:head>
-	<title>Vahrplan - {pageTitle}</title>
-	<meta name="title" content="Vahrplan - {pageTitle}" />
-	<meta name="description" content={pageDescription} />
+	<title>Vahrplan - Reisedetails{pageTitle}</title>
+	<meta name="title" content="Vahrplan - Reisedetails{pageTitle}" />
+	<meta name="description" content="Reisedetails{pageDescription}" />
 </svelte:head>
 
 <svelte:window bind:outerWidth={clientWidth} />
@@ -129,7 +129,7 @@
 	{/await}
 {/snippet}
 {#snippet header(miniTabSelector: Snippet, tabContent: Snippet)}
-	<Header title={pageTitle} mobileOnly={true}>
+	<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} mobileOnly={true}>
 		{@render miniTabSelector()}
 		{#if allSelected && $selectedJourneys.length > 0}
 			<Options id={"journey"} {options} />
