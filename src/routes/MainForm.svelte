@@ -308,6 +308,7 @@
 					class="hoverable hoverable--visible"
 					type="datetime-local"
 					bind:value={time}
+					aria-label={`${departureArrivalSelection === 0 ? "Abfahrt" : "Ankunft"}szeit`}
 				/>
 			{/if}
 		</div>
@@ -401,8 +402,8 @@
 		}
 		input[type="datetime-local"] {
 			padding: 0.5rem;
-			width: 100%;
-			margin: var(--line-width) auto;
+			margin: var(--line-width) 0;
+			font-variant-numeric: tabular-nums;
 		}
 	}
 
