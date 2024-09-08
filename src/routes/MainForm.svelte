@@ -79,10 +79,11 @@
 	async function handleFormSubmit(event: SubmitEvent): Promise<void> {
 		event.preventDefault();
 		const stopsToBeDisplayed = stops.filter(valueIsDefined);
-		if (!verifyUserInput(stopsToBeDisplayed.map(s => s.value))) {
+		if (!verifyUserInput(stopsToBeDisplayed.map((s) => s.value))) {
 			return;
 		}
 		const journeyTime = timeIsNow ? new Date() : new Date(time);
+		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
 		const timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
 		const options = get(settings).journeysOptions;
 		const formData: DisplayedFormData = {
@@ -111,16 +112,16 @@
 
 	function verifyUserInput(stops: ParsedLocation[]): boolean {
 		if (stops.length < 2) {
-			toast("Start oder Ziel wurde nicht angegeben", "red")
-			return false
+			toast("Start oder Ziel wurde nicht angegeben", "red");
+			return false;
 		}
 		for (let i = 1; i < stops.length; i++) {
 			if (stops[i].name === stops[i - 1].name) {
-				toast(`Station ${stops[i].name} wurde mehrfach in Folge angegeben.`, "red")
+				toast(`Station ${stops[i].name} wurde mehrfach in Folge angegeben.`, "red");
 				return false;
 			}
 		}
-		return true
+		return true;
 	}
 
 	function showFilterModal(): void {
