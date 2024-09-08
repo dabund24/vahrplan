@@ -1,9 +1,6 @@
 import { sequence } from "@sveltejs/kit/hooks";
 import { type Handle, json } from "@sveltejs/kit";
 import { RateLimiter } from "$lib/server/RateLimiter";
-import { valkeyClient } from "$lib/server/setup";
-import { cacheRequest, getCacheDatabaseKey } from "$lib/server/cache";
-import type { ZugResponse } from "$lib/types";
 
 const logger: Handle = function ({ event, resolve }) {
 	console.log(event.url.href);
@@ -11,24 +8,30 @@ const logger: Handle = function ({ event, resolve }) {
 };
 
 const cache: Handle = async function ({ event, resolve }) {
-	if (!event.url.pathname.startsWith("/api/")) {
-		return resolve(event);
+	const response = await resolve(event);
+	if (response.status === 429) {
+		// don't cache rate limit responses
+		return response;
 	}
-
-	// check if resource is in cache
-	const cachedResult = await valkeyClient.get(getCacheDatabaseKey(event.url));
-	if (cachedResult !== null) {
-		const resultJson = JSON.parse(cachedResult) as ZugResponse<unknown>;
-		return new Response(cachedResult, {
-			status: resultJson.isError ? resultJson.code : 200,
-			headers: { "Content-Type": "application/json" }
-		});
-	}
-	const result = await resolve(event);
-	const resultText = await result.text();
-	cacheRequest(event.url, resultText);
-	return new Response(resultText, { status: result.status, headers: result.headers });
+	const cacheDuration = getCacheDuration(event.url);
+	response.headers.set("Cache-Control", `max-age=${cacheDuration}`);
+	return response;
 };
+
+function getCacheDuration(url: URL): number {
+	switch (url.pathname) {
+		case "/api/diagram":
+			return 120;
+		case "/api/journey":
+			return 30;
+		case "/api/location":
+			return 31536000;
+		case "/api/locations":
+			return 31536000;
+		default:
+			return 0;
+	}
+}
 
 const userRateLimiter = new RateLimiter(60, 200);
 
