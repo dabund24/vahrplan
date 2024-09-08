@@ -125,7 +125,12 @@
 				onkeydown={handleInputKeydown}
 			/>
 			{#if inputText !== ""}
-				<button type="button" class="hoverable clear-input" onclick={clearInput}>
+				<button
+					type="button"
+					class="hoverable clear-input"
+					onclick={clearInput}
+					title="Eingabe löschen"
+				>
 					<IconClearInput />
 				</button>
 			{/if}
