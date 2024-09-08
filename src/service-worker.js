@@ -42,38 +42,30 @@ self.addEventListener("fetch", (event) => {
 		if (ASSETS.includes(url.pathname)) {
 			const response = await cache.match(url.pathname);
 
-			if (response) {
+			if (response !== undefined) {
 				return response;
 			}
 		}
 
-		// for everything else, try the network first, but
-		// fall back to the cache if we're offline
-		try {
-			const response = await fetch(event.request);
-
-			// if we're offline, fetch can return a value that is not a Response
-			// instead of throwing - and we can't pass this non-Response to respondWith
-			if (!(response instanceof Response)) {
-				throw new Error("invalid response from fetch");
-			}
-
-			if (response.status === 200) {
-				void cache.put(event.request, response.clone());
-			}
-
-			return response;
-		} catch (err) {
-			const response = await cache.match(event.request);
-
-			if (response) {
-				return response;
-			}
-
-			// if there's no cache, then just error out
-			// as there is nothing we can do to respond to this request
-			throw err;
+		// check if resource is in cache
+		const cachedResponse = await cache.match(event.request);
+		if (cachedResponse) {
+			// resource was found in cache, don't consult server
+			return cachedResponse;
 		}
+
+		// make request
+		const response = await fetch(event.request);
+
+		if (!(response instanceof Response)) {
+			throw new Error("invalid response from fetch");
+		}
+
+		if (response.status === 200) {
+			void cache.put(event.request, response.clone());
+		}
+
+		return response;
 	}
 
 	event.respondWith(respond());
