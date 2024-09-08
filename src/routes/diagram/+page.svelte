@@ -161,8 +161,8 @@
 							{ title: "Karte", icon: mapIcon, content: map }
 						]}
 						startingTab={$settings.general.journeyDetailsStandardView === "classic"
-							? 1
-							: 0}
+							? 0
+							: 1}
 					>
 						{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
 							<TitlelessHeader>
