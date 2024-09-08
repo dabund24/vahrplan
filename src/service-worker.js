@@ -32,7 +32,7 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
 	// ignore api calls and POST requests etc
-	if (event.request.method !== "GET" || event.request.url.includes("/api/")) return;
+	if (!urlIsCachedByServiceWorker(event.request.url)) return;
 
 	async function respond() {
 		const url = new URL(event.request.url);
@@ -78,3 +78,29 @@ self.addEventListener("fetch", (event) => {
 
 	event.respondWith(respond());
 });
+
+/**
+ * Decides whether the content of a url should be cached by the service worker or the browser.
+ * Here, the service worker stores just stuff related to the app shell.
+ * Caching of dynamic content is handled separately in `hooks.server.ts`
+ * @param {string} url
+ * @returns {boolean} `true` if caching is preferred to be handled by the service worker, `false` if the node server decides on caching
+ */
+function urlIsCachedByServiceWorker(url) {
+	if (url.includes("/api/")) {
+		// api requests are always handled by the server
+		return false;
+	}
+
+	if (url.includes("/diagram?")) {
+		// loading diagrams with data includes api requests, so they are handled by the server
+		return false;
+	}
+	if (url.includes("/journey?")) {
+		// loading a specific journey includes an api request, so it's handled by the server
+		return false;
+	}
+
+	// all static pages remain
+	return true;
+}

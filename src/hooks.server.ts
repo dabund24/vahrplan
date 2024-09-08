@@ -21,8 +21,10 @@ const cache: Handle = async function ({ event, resolve }) {
 function getCacheDuration(url: URL): number {
 	switch (url.pathname) {
 		case "/api/diagram":
+		case "/diagram":
 			return 120;
 		case "/api/journey":
+		case "/journey":
 			return 30;
 		case "/api/location":
 			return 31536000;
