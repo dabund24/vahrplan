@@ -23,7 +23,7 @@
 	let currentPosition: ParsedLocation["position"] | undefined = $state();
 	let geolocationWatcher: number | undefined = undefined;
 
-	if ($settings.general.map.geolocation) {
+	if ($settings.general.mapGeolocation) {
 		navigator.geolocation.watchPosition(
 			(position) => {
 				currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
@@ -107,7 +107,7 @@
 <div
 	class="map"
 	bind:this={mapElement}
-	data-theme={$settings.general.map.darkFilter && $settings.general.theme.darkTheme
+	data-theme={$settings.general.mapDarkFilter && $settings.general.darkTheme
 		? "dark"
 		: "light"}
 >

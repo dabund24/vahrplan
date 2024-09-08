@@ -27,18 +27,13 @@ export type Settings = {
 		transferTime: number;
 	};
 	general: {
-		theme: {
-			darkTheme: boolean;
-			color: "red" | "yellow" | "green" | "blue" | "purple";
-		};
-		shortLinks: {
-			diagrams: boolean;
-			journeys: boolean;
-		};
-		map: {
-			geolocation: boolean;
-			darkFilter: boolean;
-		};
+		darkTheme: boolean;
+		color: "red" | "yellow" | "green" | "blue" | "purple";
+		journeyDetailsStandardView: "classic" | "map";
+		shortLinksDiagrams: boolean;
+		shortLinksJourneys: boolean;
+		mapGeolocation: boolean;
+		mapDarkFilter: boolean;
 	};
 	storage: { [Key in Exclude<keyof Settings, "storage">]: boolean };
 };
@@ -63,18 +58,13 @@ export const settings = writable<Settings>({
 		transferTime: 0
 	},
 	general: {
-		theme: {
-			darkTheme: false,
-			color: "green"
-		},
-		shortLinks: {
-			diagrams: false,
-			journeys: false
-		},
-		map: {
-			geolocation: false,
-			darkFilter: true
-		}
+		darkTheme: false,
+		color: "green",
+		journeyDetailsStandardView: "classic",
+		shortLinksDiagrams: false,
+		shortLinksJourneys: false,
+		mapGeolocation: false,
+		mapDarkFilter: true
 	},
 	storage: {
 		journeysOptions: false,
@@ -87,27 +77,21 @@ if (browser) {
 		const systemDarkTheme =
 			window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 		if (systemDarkTheme) {
-			settings.general.theme.darkTheme = true;
+			settings.general.darkTheme = true;
 		}
 
-		let k: keyof Settings;
-		for (k in settings) {
-			if (k === "storage") continue;
-			const storedSetting = window.localStorage.getItem(k);
-			if (storedSetting === null) continue;
-			if (k === "general") {
-				settings.general = JSON.parse(storedSetting) as Settings["general"];
-				settings.storage.general = true;
-			} else if (k === "journeysOptions") {
-				settings.journeysOptions = JSON.parse(storedSetting) as Settings["journeysOptions"];
-				settings.storage.journeysOptions = true;
+		let key: keyof Settings;
+		for (key in settings) {
+			if (key === "storage") {
+				continue;
 			}
+			settings = applyLocalStorageSettingGroupToAppSettings(key, settings);
 		}
 		document.documentElement.setAttribute(
 			"data-theme",
-			settings.general.theme.darkTheme ? "dark" : "light"
+			settings.general.darkTheme ? "dark" : "light"
 		);
-		document.documentElement.setAttribute("data-color", settings.general.theme.color);
+		document.documentElement.setAttribute("data-color", settings.general.color);
 		return settings;
 	});
 
@@ -123,13 +107,42 @@ if (browser) {
 		}
 		document.documentElement.setAttribute(
 			"data-theme",
-			settings.general.theme.darkTheme ? "dark" : "light"
+			settings.general.darkTheme ? "dark" : "light"
 		);
-		document.documentElement.setAttribute("data-color", settings.general.theme.color);
+		document.documentElement.setAttribute("data-color", settings.general.color);
 		document
 			.getElementById("theme-color")!
-			.setAttribute("content", settings.general.theme.darkTheme ? "#121212" : "#ffffff");
+			.setAttribute("content", settings.general.darkTheme ? "#121212" : "#ffffff");
 
 		return settings;
 	});
+}
+
+/**
+ * find settings of setting group stored in local storage of user and apply them safely to passed app settings
+ * @param type the group of settings to be updated
+ * @param settings all app settings
+ * @returns the updated settings. The object reference remains unchanged
+ */
+function applyLocalStorageSettingGroupToAppSettings<K extends keyof Settings>(
+	type: K,
+	settings: Settings
+): Settings {
+	const storageSettingsStringified = window.localStorage.getItem(type);
+	if (storageSettingsStringified === null) {
+		// the setting group does not exist in local storage of user => keep default settings
+		return settings;
+	}
+	const storageSettings = JSON.parse(storageSettingsStringified) as Partial<Settings[K]>;
+
+	let key: keyof Settings[K];
+	for (key in settings[type]) {
+		// loop through all settings in setting group and apply settings from local storage
+		const storedSetting = storageSettings[key];
+		if (storedSetting !== undefined) {
+			// the setting is set in local storage
+			settings[type][key] = storedSetting;
+		}
+	}
+	return settings;
 }

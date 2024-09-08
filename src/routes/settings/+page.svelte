@@ -14,14 +14,14 @@
 	<h1>Farbschema</h1>
 	<Setting
 		settingName={"Dunkelmodus"}
-		bind:setting={$settings.general.theme.darkTheme}
+		bind:setting={$settings.general.darkTheme}
 		settingInfo={{
 			type: "boolean"
 		}}
 	/>
 	<Setting
 		settingName={"Akzentfarbe"}
-		bind:setting={$settings.general.theme.color}
+		bind:setting={$settings.general.color}
 		settingInfo={{
 			type: "options",
 			options: [
@@ -33,26 +33,38 @@
 			]
 		}}
 	/>
+	<h1>Reisedetails</h1>
+	<Setting
+		settingName="Standardansicht"
+		bind:setting={$settings.general.journeyDetailsStandardView}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: "classic", name: "Klassisch" },
+				{ value: "map", name: "Karte" }
+			]
+		}}
+	/>
 	<h1>Karte</h1>
 	<Setting
 		settingName={"Live-Standort auf Karte anzeigen"}
-		bind:setting={$settings.general.map.geolocation}
+		bind:setting={$settings.general.mapGeolocation}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
 		settingName={"Dunkelmodus auf Karte übertragen"}
-		bind:setting={$settings.general.map.darkFilter}
+		bind:setting={$settings.general.mapDarkFilter}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Generierung von Kurzlinks beim Teilen</h1>
 	<Setting
 		settingName={"Kurzlinks für Verbindungsdiagramme"}
-		bind:setting={$settings.general.shortLinks.diagrams}
+		bind:setting={$settings.general.shortLinksDiagrams}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
 		settingName={"Kurzlinks für Reisen"}
-		bind:setting={$settings.general.shortLinks.journeys}
+		bind:setting={$settings.general.shortLinksJourneys}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Persistentes Speichern von Einstellungen</h1>
