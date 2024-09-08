@@ -74,6 +74,7 @@
 
 {#if info.statuses.length > 0 || info.hints.length > 0}
 	<button
+		title="Fahrtinformationen anzeigen"
 		class="hoverable hoverable--visible"
 		onclick={showInfoModal}
 		style="position-anchor: --anchor-{tripId};"
@@ -94,9 +95,8 @@
 			bind:showModal={$page.state.showTripInfoModal[tripId]}
 			headerItems={modalHeaderItems}
 			height="20rem"
-		>
-			{@render tabContent()}
-		</Modal>
+			children={tabContent}
+		/>
 	{/if}
 {/snippet}
 
@@ -105,10 +105,10 @@
 		padding: 0.5rem 1rem;
 	}
 	@supports (align-self: anchor-center) {
-        button {
-            position: absolute;
-            align-self: anchor-center;
-            right: 0;
-        }
+		button {
+			position: absolute;
+			align-self: anchor-center;
+			right: 0;
+		}
 	}
 </style>
