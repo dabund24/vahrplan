@@ -33,7 +33,7 @@
 			]
 		}}
 	/>
-	<h1>Reisedetails</h1>
+	<h1><span class="mobile-only">Reisedetails</span><span class="desktop-only">Reisevorschau</span></h1>
 	<Setting
 		settingName="Standardansicht"
 		bind:setting={$settings.general.journeyDetailsStandardView}
