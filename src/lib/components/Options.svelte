@@ -24,6 +24,7 @@
 <div class="container">
 	<button
 		id="{id}-popover-toggle"
+		title="Optionen"
 		popovertarget="{id}-popover"
 		class="hoverable"
 		style="anchor-name: --{id}-popover-anchor;"
