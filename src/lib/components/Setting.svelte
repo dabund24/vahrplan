@@ -23,9 +23,15 @@
 <label class="flex-row">
 	<span class="name">{settingName}</span>
 	{#if settingInfo.type === "boolean" && typeof setting === "boolean"}
-		<input type="checkbox" role="switch" tabindex="0" bind:checked={setting} />
+		<input
+			type="checkbox"
+			role="switch"
+			tabindex="0"
+			name={settingName}
+			bind:checked={setting}
+		/>
 	{:else if settingInfo.type === "options"}
-		<select class="hoverable hoverable--visible" bind:value={setting}>
+		<select class="hoverable hoverable--visible" name={settingName} bind:value={setting}>
 			{#each settingInfo.options as option}
 				<option value={option.value}>
 					{option.name}
