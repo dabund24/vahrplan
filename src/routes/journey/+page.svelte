@@ -24,6 +24,7 @@
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import { dateToString, timeToString } from "$lib/util.js";
+	import { settings } from "$lib/stores/settingStore";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -145,6 +146,7 @@
 			{ title: "Karte", icon: iconMap, content: map }
 		]}
 		tabEnvironment={header}
+		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	/>
 {:else}
 	<div class="columns">

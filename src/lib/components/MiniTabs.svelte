@@ -10,16 +10,17 @@
 			content: Snippet; // the content associated with the tab
 		}[];
 		tabEnvironment: Snippet<[Snippet, Snippet]>;
+		startingTab?: number;
 	};
 
-	const { padContent = false, tabs, tabEnvironment }: Props = $props();
+	const { padContent = false, tabs, tabEnvironment, startingTab = 0 }: Props = $props();
 	const tabsWithType: ComponentProps<SingleSelect<"icon">>["titles"] = tabs.map((tab) => ({
 		title: tab.title,
 		icon: tab.icon,
 		type: "icon"
 	}));
 
-	let activeTab = $state(0);
+	let activeTab = $state(startingTab);
 </script>
 
 {#snippet miniTabs()}

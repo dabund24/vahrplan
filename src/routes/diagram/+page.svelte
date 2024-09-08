@@ -29,6 +29,7 @@
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { dateToString } from "$lib/util";
 	import { timeToString } from "$lib/util.js";
+	import { settings } from "$lib/stores/settingStore";
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
 		const formData = $page.data.formData ?? $displayedFormData;
@@ -159,6 +160,9 @@
 							},
 							{ title: "Karte", icon: mapIcon, content: map }
 						]}
+						startingTab={$settings.general.journeyDetailsStandardView === "classic"
+							? 1
+							: 0}
 					>
 						{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
 							<TitlelessHeader>
