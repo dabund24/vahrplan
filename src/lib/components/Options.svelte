@@ -98,8 +98,8 @@
 			border-radius: var(--border-radius--large);
 			background-color: var(--background-color--transparent);
 			border: var(--border);
-			right: anchor(right);
-			top: calc(anchor(bottom) + 4px);
+			right: calc(anchor(right) - var(--line-width));
+			top: calc(anchor(bottom) + var(--line-width));
 			margin: 0 0 0 auto;
 		}
 
