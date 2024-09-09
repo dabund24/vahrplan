@@ -11,12 +11,17 @@
 
 <Header title={"Einstellungen"} mobileOnly={true} />
 <div class="content-wrapper">
-	<h1>Farbschema</h1>
+	<h1>Farben</h1>
 	<Setting
-		settingName={"Dunkelmodus"}
-		bind:setting={$settings.general.darkTheme}
+		settingName={"Schema"}
+		bind:setting={$settings.general.colorScheme}
 		settingInfo={{
-			type: "boolean"
+			type: "options",
+			options: [
+				{ value: "system", name: "System" },
+				{ value: "light", name: "Hell" },
+				{ value: "dark", name: "Dunkel" }
+			]
 		}}
 	/>
 	<Setting
@@ -33,7 +38,9 @@
 			]
 		}}
 	/>
-	<h1><span class="mobile-only">Reisedetails</span><span class="desktop-only">Reisevorschau</span></h1>
+	<h1>
+		<span class="mobile-only">Reisedetails</span><span class="desktop-only">Reisevorschau</span>
+	</h1>
 	<Setting
 		settingName="Standardansicht"
 		bind:setting={$settings.general.journeyDetailsStandardView}

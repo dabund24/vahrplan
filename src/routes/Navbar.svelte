@@ -83,7 +83,10 @@
 	nav {
 		border-bottom: var(--border);
 		padding: max(0.5rem, env(safe-area-inset-top) + 0.2rem) 0.5rem 0.5rem;
-	}
+        transition:
+                background-color 0.4s var(--cubic-bezier),
+                border-color 0.4s var(--cubic-bezier);
+    }
 	.links-container {
 		width: fit-content;
 		margin: auto;
@@ -128,9 +131,6 @@
 			background-color: var(--background-color--transparent);
 			backdrop-filter: var(--blur);
 			-webkit-backdrop-filter: var(--blur);
-			transition:
-				background-color 0.4s var(--cubic-bezier),
-				border-color 0.4s var(--cubic-bezier);
 		}
 		.links-container {
 			width: 100%;

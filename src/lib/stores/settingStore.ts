@@ -27,7 +27,7 @@ export type Settings = {
 		transferTime: number;
 	};
 	general: {
-		darkTheme: boolean;
+		colorScheme: "system" | "light" | "dark";
 		color: "red" | "yellow" | "green" | "blue" | "purple";
 		journeyDetailsStandardView: "classic" | "map";
 		shortLinksDiagrams: boolean;
@@ -58,7 +58,7 @@ export const settings = writable<Settings>({
 		transferTime: 0
 	},
 	general: {
-		darkTheme: false,
+		colorScheme: "system",
 		color: "green",
 		journeyDetailsStandardView: "classic",
 		shortLinksDiagrams: false,
@@ -74,12 +74,6 @@ export const settings = writable<Settings>({
 
 if (browser) {
 	settings.update((settings) => {
-		const systemDarkTheme =
-			window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-		if (systemDarkTheme) {
-			settings.general.darkTheme = true;
-		}
-
 		let key: keyof Settings;
 		for (key in settings) {
 			if (key === "storage") {
@@ -87,10 +81,7 @@ if (browser) {
 			}
 			settings = applyLocalStorageSettingGroupToAppSettings(key, settings);
 		}
-		document.documentElement.setAttribute(
-			"data-theme",
-			settings.general.darkTheme ? "dark" : "light"
-		);
+		document.documentElement.setAttribute("data-theme", settings.general.colorScheme);
 		document.documentElement.setAttribute("data-color", settings.general.color);
 		return settings;
 	});
@@ -105,14 +96,18 @@ if (browser) {
 				window.localStorage.removeItem(k);
 			}
 		}
-		document.documentElement.setAttribute(
-			"data-theme",
-			settings.general.darkTheme ? "dark" : "light"
-		);
+		document.documentElement.setAttribute("data-theme", settings.general.colorScheme);
 		document.documentElement.setAttribute("data-color", settings.general.color);
-		document
-			.getElementById("theme-color")!
-			.setAttribute("content", settings.general.darkTheme ? "#121212" : "#ffffff");
+
+		let isDarkTheme: boolean;
+		if (settings.general.colorScheme === "system") {
+			isDarkTheme =
+				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+		} else {
+			isDarkTheme = settings.general.colorScheme === "dark";
+		}
+		const themeColorElement = document.getElementById("theme-color")!;
+		themeColorElement.setAttribute("content", isDarkTheme ? "#121212" : "#ffffff");
 
 		return settings;
 	});

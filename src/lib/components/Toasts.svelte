@@ -13,7 +13,7 @@
 			class="toast"
 			transition:scale
 			animate:flip={{ duration: 400 }}
-			style="--color: var(--accent-{toast.color})"
+			style="--color: var(--accent--{toast.color})"
 		>
 			<div class="flex-row">
 				{#if toast.color === "red"}

@@ -8,7 +8,7 @@
 
 <svg width="16px" height="16px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 	<g
-		stroke={color === undefined ? "var(--foreground-color)" : `var(--accent-${color})`}
+		stroke={color === undefined ? "var(--foreground-color)" : `var(--accent--${color})`}
 		stroke-width="3"
 		stroke-linecap="round"
 		fill="none"

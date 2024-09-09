@@ -1,21 +1,21 @@
 @media (update: fast) {
-	.map[data-theme="dark"] {
+	.map[data-theme="dark"], .map[data-theme="system"] {
 		.osm-tiles {
-			filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
-				brightness(0.7);
-		}
-		.orm-tiles,
-		.oepnvk-tiles {
-			filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+			filter: var(--map-filter);
 		}
 	}
-	.map[data-theme="light"] .product--nationalExpress {
-		--product-color: #000000;
+	.map[data-theme="light"] {
+		.product--nationalExpress {
+			--product-color: #000000;
+		}
 	}
-}
-
-.orm-tiles {
-	opacity: 0.7 !important;
+	@media (prefers-color-scheme: light) {
+		.map[data-theme="system"] {
+			.product--nationalExpress {
+				--product-color: #000000;
+			}
+		}
+	}
 }
 
 .leaflet-container {

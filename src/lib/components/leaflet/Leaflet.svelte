@@ -107,9 +107,7 @@
 <div
 	class="map"
 	bind:this={mapElement}
-	data-theme={$settings.general.mapDarkFilter && $settings.general.darkTheme
-		? "dark"
-		: "light"}
+	data-theme={!$settings.general.mapDarkFilter ? "light" : $settings.general.colorScheme}
 >
 	{#if map !== undefined}
 		{#each $displayedJourneys as journey (journey.key)}
