@@ -23,7 +23,7 @@
 		priority = "min",
 		disabled = false,
 		leftPane,
-		rightPane,
+		rightPane
 	}: Props = $props();
 
 	let container: HTMLElement | undefined;
@@ -34,6 +34,10 @@
 	let desiredPosition = $state(pos);
 	$effect(() => void (desiredPosition = pos));
 	let position = $derived(constrain(container, size, min, max, desiredPosition, priority));
+
+	let isLoading = $state(true);
+
+	onMount(() => setTimeout(() => (isLoading = false), 400));
 
 	function update(x: number): void {
 		if (disabled || container === undefined) return;
@@ -88,6 +92,7 @@
 <div
 	data-pane={id}
 	class="container"
+	class:loading={isLoading}
 	bind:this={container}
 	bind:clientWidth={size}
 	style="--pos: {position}"
