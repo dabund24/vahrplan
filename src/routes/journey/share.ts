@@ -16,7 +16,7 @@ export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Prom
 		return;
 	}
 
-	const urlHref: string = get(settings).general.shortLinks.journeys
+	const urlHref: string = get(settings).general.shortLinksJourneys
 		? ((await generateJourneyShortUrl(selectedSubJourneys)) ??
 			getJourneyUrl(selectedSubJourneys).href)
 		: getJourneyUrl(selectedSubJourneys).href;

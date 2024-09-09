@@ -16,7 +16,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 		return;
 	}
 
-	const diagramUrl = get(settings).general.shortLinks.diagrams
+	const diagramUrl = get(settings).general.shortLinksDiagrams
 		? ((await generateDiagramShortUrl(formData)) ?? getDiagramUrlFromFormData(formData))
 		: getDiagramUrlFromFormData(formData);
 
