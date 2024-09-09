@@ -107,7 +107,7 @@
 		-moz-appearance: none;
 		-webkit-appearance: none;
 		appearance: none;
-		padding: 0.5rem calc(1rem + 16px) 0.5rem 0.5rem;
+		padding: 0.5rem calc(1rem + 16px) 0.5rem 0.75rem;
 		text-align-last: right;
 		font-family: inherit;
 	}
