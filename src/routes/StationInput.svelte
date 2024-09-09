@@ -119,7 +119,6 @@
 			<input
 				type="text"
 				placeholder={inputPlaceholder}
-				name={inputPlaceholder}
 				bind:this={inputElement}
 				bind:value={inputText}
 				onkeydown={handleInputKeydown}
