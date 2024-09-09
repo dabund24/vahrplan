@@ -48,7 +48,7 @@ const userRateLimiting: Handle = function ({ event, resolve }) {
 	if (result.isError) {
 		return json(result, { status: result.code });
 	}
-	return resolve(event);
+	return result.content;
 };
 
 export const handle = sequence(logger, cache, userRateLimiting);
