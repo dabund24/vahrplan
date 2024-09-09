@@ -119,7 +119,7 @@ if (browser) {
  * @param settings all app settings
  * @returns the updated settings. The object reference remains unchanged
  */
-function applyLocalStorageSettingGroupToAppSettings<K extends keyof Settings>(
+function applyLocalStorageSettingGroupToAppSettings<K extends Exclude<keyof Settings, "storage">>(
 	type: K,
 	settings: Settings
 ): Settings {
@@ -128,7 +128,8 @@ function applyLocalStorageSettingGroupToAppSettings<K extends keyof Settings>(
 		// the setting group does not exist in local storage of user => keep default settings
 		return settings;
 	}
-	const storageSettings = JSON.parse(storageSettingsStringified) as Partial<Settings[K]>;
+	settings.storage[type] = true; // the group is in fact stored
+	const storageSettings = JSON.parse(storageSettingsStringified) as Partial<Settings[K]>; // assume that some settings could be not existing in storage settings
 
 	let key: keyof Settings[K];
 	for (key in settings[type]) {
