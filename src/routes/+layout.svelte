@@ -12,6 +12,10 @@
 	let { children }: Props = $props();
 
 	beforeNavigate((navigation) => {
+		if (navigation.to?.url.origin !== location.origin) {
+			// ignore requests to other domains
+			return;
+		}
 		const loadingID = startLoading(2);
 		navigation.complete.then(
 			() => stopLoading(loadingID, false),
@@ -51,7 +55,9 @@
 		background-color: var(--background-color--transparent);
 		padding: 0 5px;
 		line-height: 1.4;
-		transition: background-color .4s var(--cubic-bezier), color .4s var(--cubic-bezier);
+		transition:
+			background-color 0.4s var(--cubic-bezier),
+			color 0.4s var(--cubic-bezier);
 	}
 
 	@media (display-mode: browser) {
@@ -77,7 +83,7 @@
 		}
 
 		small {
-            display: none;
+			display: none;
 		}
 	}
 
