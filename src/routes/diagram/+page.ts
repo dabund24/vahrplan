@@ -10,6 +10,7 @@ import { browser } from "$app/environment";
 import { get } from "svelte/store";
 import { error, redirect } from "@sveltejs/kit";
 import type { DiagramRequestData } from "$lib/types";
+import { toast } from "$lib/stores/toastStore";
 
 export const load: PageLoad = async ({ url, fetch }) => {
 	if (browser && getDiagramUrlFromFormData(get(displayedFormData)).href === url.href) {
@@ -20,20 +21,30 @@ export const load: PageLoad = async ({ url, fetch }) => {
 	}
 
 	const shortToken = url.searchParams.get("d");
-	let requestData: DiagramRequestData;
 	if (shortToken !== null) {
 		// short token is used, redirect to proper page
-		requestData = (await fetch(`/api/diagram/shorturl?token=${shortToken}`)
+		const requestDataResponse = (await fetch(`/api/diagram/shorturl?token=${shortToken}`)
 			.then((res) => res.json())
-			.catch(() => error(404, "Fehlerhafte URL."))) as DiagramRequestData;
-		const diagramURL = getDiagramUrlFromRequestData(requestData);
+			.catch(() => undefined)) as ZugResponse<DiagramRequestData> | undefined;
+		if (requestDataResponse === undefined) {
+			if (browser) {
+				toast("Zum Server konnte keine Verbindung hergestellt werden", "red");
+				return;
+			}
+			error(500, "Server-Fehler");
+		}
+		if (requestDataResponse.isError) {
+			error(requestDataResponse.code, requestDataResponse.description);
+		}
+
+		const diagramURL = getDiagramUrlFromRequestData(requestDataResponse.content);
 		redirect(303, diagramURL);
 	}
 
 	if (url.searchParams.size === 0) {
 		redirect(303, "/");
 	}
-	requestData = parseApiJourneysUrl(url) ?? error(404, "Fehlerhafte URL.");
+	const requestData = parseApiJourneysUrl(url) ?? error(404, "Fehlerhafte URL.");
 	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
 		requestData.stops.map(async (stopQuery) => {
 			const locationUrl = `/api/location?id=${encodeURIComponent(JSON.stringify(stopQuery))}`;
@@ -42,7 +53,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 				.catch(() => {
 					return {
 						isError: true,
-						description: "Fehlerhafte URL."
+						description: "Anfrage kann nicht verarbeitet werden."
 					};
 				})) as ZugResponse<ParsedLocation>;
 			if (!response.isError) {
@@ -67,6 +78,6 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		geolocationDate: new Date()
 	};
 	return {
-		formData: formData
+		formData
 	};
 };
