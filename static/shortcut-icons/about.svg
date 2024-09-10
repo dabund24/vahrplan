@@ -1,0 +1,24 @@
+<svg width="512px" height="512px" viewBox="-3 -3 32 32" xmlns="http://www.w3.org/2000/svg">
+<title>Über</title>
+    <style>
+        .regular-lines {
+        stroke: #000000;
+        }
+        .accent-lines {
+        stroke: #0e7667;
+        }
+        @media (prefers-color-scheme: dark) {
+        .regular-lines {
+        stroke: #ffffff;
+        }
+        .accent-lines {
+        stroke: #27f4e2;
+        }
+        }
+    </style>
+    <circle class="regular-lines" cx="13" cy="13" r="11" stroke-width="3" fill="none"/>
+    <g class="accent-lines" stroke-width="4" fill="none" stroke-linecap="round">
+        <line x1="13" y1="18" x2="13" y2="14"/>
+        <line x1="13" y1="8" x2="13" y2="8"/>
+    </g>
+</svg>

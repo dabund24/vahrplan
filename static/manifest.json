@@ -8,6 +8,12 @@
 			"purpose": "maskable"
 		},
 		{
+			"src": "pwa/manifest-icon-192.maskable.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
 			"src": "pwa/manifest-icon-512.maskable.png",
 			"sizes": "512x512",
 			"type": "image/png",
@@ -77,12 +83,54 @@
 	"start_url": ".",
 	"shortcuts": [
 		{
-			"name": "Settings",
-			"description": "modify app appearance and change search preferences",
+			"name": "Startseite",
+			"description": "Verbindungssuche in Vahrplan",
+			"url": ".",
+			"icons": [
+				{
+					"src": "shortcut-icons/home.svg",
+					"sizes": "512x512",
+					"type": " image/svg+xml",
+					"purpose": "any"
+				}
+			]
+		},
+		{
+			"name": "Lesezeichen",
+			"description": "Gemerkte Diagramme, Reisen und Stationen",
+			"url": "/bookmarks",
+			"icons": [
+				{
+					"src": "shortcut-icons/bookmarks.svg",
+					"sizes": "512x512",
+					"type": " image/svg+xml",
+					"purpose": "any"
+				}
+			]
+		},
+		{
+			"name": "Einstellungen",
+			"description": "Einstellungen für Vahrplan",
 			"url": "/settings",
 			"icons": [
 				{
-					"src": "favicon.svg"
+					"src": "shortcut-icons/settings.svg",
+					"sizes": "512x512",
+					"type": " image/svg+xml",
+					"purpose": "any"
+				}
+			]
+		},
+		{
+			"name": "Über Vahrplan",
+			"description": "Weiterführende Informationen über Vahrplan",
+			"url": "/about",
+			"icons": [
+				{
+					"src": "shortcut-icons/about.svg",
+					"sizes": "512x512",
+					"type": " image/svg+xml",
+					"purpose": "any"
 				}
 			]
 		}

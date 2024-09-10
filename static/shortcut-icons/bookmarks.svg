@@ -1,0 +1,29 @@
+<svg width="512px" height="512px" viewBox="-3 -3 32 32" xmlns="http://www.w3.org/2000/svg">
+<title>Lesezeichen</title>
+    <style>
+        .regular-lines {
+        stroke: #000000;
+        }
+        .accent-lines {
+        stroke: #0e7667;
+        }
+        @media (prefers-color-scheme: dark) {
+        .regular-lines {
+        stroke: #ffffff;
+        }
+        .accent-lines {
+        stroke: #27f4e2;
+        }
+        }
+    </style>
+    <mask id="bookmark-mask">
+        <g stroke-width="8">
+            <polyline points="21,24 21,2 5,2 5,24" stroke="white" />
+            <polyline points="5,24 13,16 21,24" stroke="black" stroke-linecap="round" />
+        </g>
+    </mask>
+    <g fill="none" stroke-linejoin="round">
+        <polyline class="regular-lines" points="21,24 21,2 5,2 5,24" stroke-width="3" mask="url(#bookmark-mask)" />
+        <polyline class="accent-lines" points="5,24 13,16 21,24" stroke-width="4" stroke-linecap="round" />
+    </g>
+</svg>

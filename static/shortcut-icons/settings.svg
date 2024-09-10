@@ -1,0 +1,30 @@
+<svg width="512px" height="512px" viewBox="-3 -3 32 32" xmlns="http://www.w3.org/2000/svg">
+    <title>Einstellungen</title>
+    <style>
+        .regular-lines {
+        stroke: #000000;
+        }
+        .accent-lines {
+        stroke: #0e7667;
+        }
+        @media (prefers-color-scheme: dark) {
+        .regular-lines {
+        stroke: #ffffff;
+        }
+        .accent-lines {
+        stroke: #27f4e2;
+        }
+        }
+    </style>
+    <g class="regular-lines" stroke-width="3" stroke-linecap="round" fill="none">
+        <path d="M 13,24 C 13,21 19,19 21,21" />
+        <path d="M 21,21 C 19,19 21,13 24,13" />
+        <path d="M 24,13 C 21,13 19, 7 21, 5" />
+        <path d="M 21, 5 C 19, 7 13, 5 13, 2" />
+        <path d="M 13, 2 C 13, 5  7, 7  5, 5" />
+        <path d="M  5, 5 C  7, 7  5,13  2,13" />
+        <path d="M  2,13 C  5,13  7,19  5,21" />
+        <path d="M  5,21 C  7,19 13,21 13,24" />
+    </g>
+    <circle class="accent-lines" cx="13" cy="13" r="3" stroke-width="3" fill="none" />
+</svg>
