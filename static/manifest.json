@@ -1,46 +1,92 @@
 {
-  "name": "Vahrplan",
-  "icons": [
-    {
-      "src": "pwa/manifest-icon-192.maskable.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "pwa/manifest-icon-192.maskable.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "pwa/manifest-icon-512.maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "pwa/manifest-icon-512.maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
-  ],
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "start_url": ".",
-  "shortcuts": [
-    {
-      "name": "Settings",
-      "description": "modify app appearance and change search preferences",
-      "url": "/settings",
-      "icons": [
-        {
-          "src": "favicon.svg"
-        }
-      ]
-    }
-  ],
-  "display": "standalone",
-  "orientation": "portrait"
+	"name": "Vahrplan",
+	"icons": [
+		{
+			"src": "pwa/manifest-icon-192.maskable.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "pwa/manifest-icon-512.maskable.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "screenshots/desktop_1.png",
+			"sizes": "1920x1080",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Verbindugsdiagramm mit Reisevorschau (Klassische Ansicht)"
+		},
+		{
+			"src": "screenshots/desktop_2.png",
+			"sizes": "1920x1080",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Verbindugsdiagramm mit Reisevorschau (Karte)"
+		},
+		{
+			"src": "screenshots/desktop_3.png",
+			"sizes": "1920x1080",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Reisedetails"
+		},
+		{
+			"src": "screenshots/desktop_4.png",
+			"sizes": "1920x1080",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Lesezeichen"
+		},
+		{
+			"src": "screenshots/mobile_1.png",
+			"sizes": "1125x2436",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Verbindungsdiagramm"
+		},
+		{
+			"src": "screenshots/mobile_2.png",
+			"sizes": "1125x2436",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Reisedetails (Klassische Ansicht)"
+		},
+		{
+			"src": "screenshots/mobile_3.png",
+			"sizes": "1125x2436",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Reisedetails (Karte)"
+		},
+		{
+			"src": "screenshots/mobile_4.png",
+			"sizes": "1125x2436",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Lesezeichen"
+		}
+	],
+	"background_color": "#121212",
+	"theme_color": "#121212",
+	"start_url": ".",
+	"shortcuts": [
+		{
+			"name": "Settings",
+			"description": "modify app appearance and change search preferences",
+			"url": "/settings",
+			"icons": [
+				{
+					"src": "favicon.svg"
+				}
+			]
+		}
+	],
+	"display": "standalone",
+	"orientation": "portrait"
 }
