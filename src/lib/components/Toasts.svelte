@@ -34,7 +34,7 @@
 	.toasts {
 		position: fixed;
 		z-index: 800;
-		bottom: calc(var(--navbar-space--bottom) + 0.5rem);
+		bottom: calc(max(var(--navbar-space--bottom), env(safe-area-inset-bottom)) + 0.5rem);
 		left: 50%;
 		width: 0;
 		align-items: center;

@@ -100,6 +100,7 @@
 		.app {
 			position: fixed;
 			height: 100vh;
+			height: -webkit-fill-available;
 		}
 	}
 </style>
