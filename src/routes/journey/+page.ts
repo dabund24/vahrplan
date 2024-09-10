@@ -6,6 +6,7 @@ import { browser } from "$app/environment";
 import { getJourneyUrl } from "$lib/urls";
 import { get } from "svelte/store";
 import { selectedJourneys } from "$lib/stores/journeyStores";
+import { toast } from "$lib/stores/toastStore";
 
 export const load: PageLoad = async function ({ url, fetch }) {
 	if (browser && getJourneyUrl(get(selectedJourneys)).href === url.href) {
@@ -32,9 +33,16 @@ export const load: PageLoad = async function ({ url, fetch }) {
 		tokens = JSON.parse(decodeURIComponent(longJourneyParam)) as string[];
 	} else {
 		// get refresh tokens from short url
-		const tokensResponse = (await fetch(
-			`/api/journey/shorturl?token=${shortJourneyParam}`
-		).then((res) => res.json())) as ZugResponse<string[]>;
+		const tokensResponse = (await fetch(`/api/journey/shorturl?token=${shortJourneyParam}`)
+			.then((res) => res.json())
+			.catch(() => undefined)) as ZugResponse<string[]> | undefined;
+		if (tokensResponse === undefined) {
+			if (browser) {
+				toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
+				return;
+			}
+			error(500, "Server-Fehler.");
+		}
 		if (tokensResponse.isError) {
 			error(404, "Token existiert nicht");
 		}
@@ -44,9 +52,18 @@ export const load: PageLoad = async function ({ url, fetch }) {
 	// get journey from refresh tokens
 	const subjourneysResponse = (await fetch(
 		`/api/journey?tokens=${encodeURIComponent(JSON.stringify(tokens))}`
-	).then((res) => res.json())) as ZugResponse<JourneyBlock[][]>;
+	)
+		.then((res) => res.json())
+		.catch(() => undefined)) as ZugResponse<JourneyBlock[][]> | undefined;
+	if (subjourneysResponse === undefined) {
+		if (browser) {
+			toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
+			return;
+		}
+		error(500, "Server-Fehler.");
+	}
 	if (subjourneysResponse.isError) {
-		error(404, "Laden der Verbindung fehlgeschlagen");
+		error(subjourneysResponse.code, subjourneysResponse.description);
 	}
 	const subjourneys = subjourneysResponse.content;
 

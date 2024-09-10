@@ -28,10 +28,10 @@ export const load: PageLoad = async ({ url, fetch }) => {
 			.catch(() => undefined)) as ZugResponse<DiagramRequestData> | undefined;
 		if (requestDataResponse === undefined) {
 			if (browser) {
-				toast("Zum Server konnte keine Verbindung hergestellt werden", "red");
+				toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
 				return;
 			}
-			error(500, "Server-Fehler");
+			error(500, "Server-Fehler.");
 		}
 		if (requestDataResponse.isError) {
 			error(requestDataResponse.code, requestDataResponse.description);
