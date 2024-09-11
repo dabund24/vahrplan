@@ -27,9 +27,12 @@
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
 	let focused = $state(0);
+	let blurredInputWithSelection = $state(true);
 
 	let bookmarkedLocations: ParsedLocation[] = $state([]);
-	let apiSuggestions: Promise<ParsedLocation[]> = $derived(getApiSuggestionsFromInput(inputText));
+	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
+		getApiSuggestionsFromInput(inputText.trim())
+	);
 	let suggestions = $derived.by(async () => {
 		const bookmarkSuggestions = bookmarkedLocations.filter((suggestion) =>
 			suggestion.name.toLowerCase().startsWith(inputText.trim().toLowerCase())
@@ -52,11 +55,29 @@
 	});
 
 	/**
+	 * selects the first suggested location if the user leaves the input without a selection
+	 */
+	function handleInputBlur(): void {
+		blurredInputWithSelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
+		setTimeout(() => {
+			if (
+				!blurredInputWithSelection && // no suggestion was selected
+				inputText.trim().length > 0 && // the input is not empty
+				inputText.trim() !== selectedLocation?.name // the selected location isn't what the user typed in
+			) {
+				// select the first suggested location
+				void suggestions.then((suggestions) => handleSuggestionClick(suggestions[0]));
+			}
+		}, 500);
+	}
+
+	/**
 	 * return autocomplete suggestions from api for some user input
 	 * @param input input from the user
 	 */
 	async function getApiSuggestionsFromInput(input: string): Promise<ParsedLocation[]> {
-		if (input.trim().length < 3) {
+		if (input.length < 2) {
+			// don't show suggestions for input of length 1 or 0 since they're bullshit
 			return Promise.resolve([]);
 		}
 		const url = getApiLocationsUrl(input);
@@ -69,9 +90,12 @@
 		if (suggestion === undefined) {
 			return;
 		}
+		inputElement.focus(); // important! Otherwise, the suggestions would still be shown since they remain `active`
 		selectedLocation = suggestion;
 		inputText = isSimpleInput ? "" : suggestion.name;
 		focused = 0;
+		inputElement.blur();
+		blurredInputWithSelection = true;
 	}
 
 	function handleInputKeydown(ev: KeyboardEvent): void {
@@ -86,10 +110,6 @@
 					ev.preventDefault();
 					break;
 				case "Enter":
-					handleSuggestionClick(suggestions[focused]);
-					inputElement.blur();
-					focused = 0;
-					break;
 				case "Tab":
 					handleSuggestionClick(suggestions[focused]);
 					focused = 0;
@@ -122,6 +142,8 @@
 				bind:this={inputElement}
 				bind:value={inputText}
 				onkeydown={handleInputKeydown}
+				onblur={handleInputBlur}
+				onfocus={() => void (blurredInputWithSelection = false)}
 			/>
 			{#if inputText !== ""}
 				<button
