@@ -90,11 +90,13 @@
 		if (suggestion === undefined) {
 			return;
 		}
-		inputElement.focus(); // important! Otherwise, the suggestions would still be shown since they remain `active`
+		if (suggestion.name === inputText) {
+			inputElement.focus(); // important! Otherwise, the suggestions would still be shown since they remain `active`
+		}
+		inputElement.blur();
 		selectedLocation = suggestion;
 		inputText = isSimpleInput ? "" : suggestion.name;
 		focused = 0;
-		inputElement.blur();
 		blurredInputWithSelection = true;
 	}
 
