@@ -3,8 +3,9 @@
 </script>
 
 <svelte:head>
-	<title>Start</title>
-	<meta name="description" content="Verbindungszusammenstellung für Fortgeschrittene" />
+	<title>Vahrplan - Startseite</title>
+	<meta name="title" content="Vahrplan" />
+	<meta name="description" content="Reiseplanung mithilfe eines Verbindungs-Diagramms" />
 </svelte:head>
 
 <section class="form">
