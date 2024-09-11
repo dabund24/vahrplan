@@ -92,7 +92,7 @@
 		/>
 	{/if}
 	{#if isCancelled}
-		<g stroke="var(--accent-red)" stroke-width="3" stroke-linecap="round">
+		<g stroke="var(--accent--red)" stroke-width="3" stroke-linecap="round">
 			<line x1="2" y1="2" x2="14" y2="14" />
 			<line x1="2" y1="14" x2="14" y2="2" />
 		</g>
