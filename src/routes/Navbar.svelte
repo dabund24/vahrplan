@@ -106,6 +106,9 @@
 		gap: 0.75rem;
 		align-items: center;
 	}
+	.line-container {
+		position: relative;
+	}
 
 	@media screen and (min-width: 1000px) {
 		.line-container {
