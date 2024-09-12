@@ -75,13 +75,13 @@
 		</ul>
 	</AccordionElement>
 	<AccordionElement title="Wie kann ich Vahrplan unterstützen?">
-		Vielen Dank erstmal :D. Am besten kannst du Vahrplan unterstützen, indem du das Programm in
-		deinem Freundeskreis und in deiner Familie weierempfielst. Wenn du magst, kannst du auch
+		Am besten kannst du Vahrplan unterstützen, indem du das Programm in
+		deinem Freundeskreis und in deiner Familie weiterempfielst. Wenn du magst, kannst du auch
 		gerne über <a href={PUBLIC_PAYPAL_LINK}>Paypal</a> eine Spende hinterlassen. Die Seite zu benutzen
-		ohne zu spenden ist aber völlig in Ordnung.
+		ohne zu spenden, ist aber völlig in Ordnung.
 	</AccordionElement>
 	<AccordionElement title="Ich habe einen Bug gefunden. Wo kann ich den melden?">
-		Falls du glaubst einen Fehler gefunden zu haben, würde ich mich darüber freuen, davon zu
+		Falls du glaubst, einen Fehler gefunden zu haben, würde ich mich darüber freuen, davon zu
 		erfahren. Du kannst gerne ein <a
 			href="https://github.com/dabund24/vahrplan/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
 			>Issue auf Github aufmachen</a
