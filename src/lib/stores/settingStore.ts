@@ -33,7 +33,7 @@ export type Settings = {
 		shortLinksDiagrams: boolean;
 		shortLinksJourneys: boolean;
 		mapGeolocation: boolean;
-		mapDarkFilter: boolean;
+		isMapAlwaysLight: boolean;
 	};
 	storage: { [Key in Exclude<keyof Settings, "storage">]: boolean };
 };
@@ -64,7 +64,7 @@ export const settings = writable<Settings>({
 		shortLinksDiagrams: false,
 		shortLinksJourneys: false,
 		mapGeolocation: false,
-		mapDarkFilter: true
+		isMapAlwaysLight: false
 	},
 	storage: {
 		journeysOptions: false,

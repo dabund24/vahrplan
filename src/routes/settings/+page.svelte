@@ -59,8 +59,8 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName={"Dunkelmodus auf Karte übertragen"}
-		bind:setting={$settings.general.mapDarkFilter}
+		settingName={"Karte vom Farbschema unabhängig immer hell lassen"}
+		bind:setting={$settings.general.isMapAlwaysLight}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Generierung von Kurzlinks beim Teilen</h1>
