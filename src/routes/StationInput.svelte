@@ -60,13 +60,21 @@
 	function handleInputBlur(): void {
 		blurredInputWithSelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
+			if (inputText.trim().length === 0) {
+				// the user probably intended to remove the station previously selected here
+				selectedLocation = undefined;
+				return;
+			}
 			if (
 				!blurredInputWithSelection && // no suggestion was selected
-				inputText.trim().length > 0 && // the input is not empty
 				inputText.trim() !== selectedLocation?.name // the selected location isn't what the user typed in
 			) {
 				// select the first suggested location
-				void suggestions.then((suggestions) => handleSuggestionClick(suggestions[0]));
+				void suggestions.then((suggestions) => {
+					selectedLocation = suggestions[0];
+					inputText = isSimpleInput ? "" : (suggestions[0]?.name ?? "");
+					focused = 0;
+				});
 			}
 		}, 500);
 	}
@@ -112,8 +120,11 @@
 					ev.preventDefault();
 					break;
 				case "Enter":
-				case "Tab":
 					handleSuggestionClick(suggestions[focused]);
+					focused = 0;
+					break;
+				case "Tab":
+					inputText = suggestions[focused].name;
 					focused = 0;
 					break;
 				default:
