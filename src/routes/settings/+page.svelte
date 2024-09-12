@@ -74,7 +74,7 @@
 		bind:setting={$settings.general.shortLinksJourneys}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<h1>Persistentes Speichern von Einstellungen</h1>
+	<h1>Dauerhaftes Speichern von Einstellungen</h1>
 	<Setting
 		settingName={"App-Einstellungen"}
 		bind:setting={$settings.storage.general}
