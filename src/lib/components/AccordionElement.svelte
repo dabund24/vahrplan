@@ -9,7 +9,7 @@
 	let { title, children }: Props = $props();
 </script>
 
-<details class="padded-top-bottom">
+<details>
 	<summary class="flex-row hoverable hoverable--visible">
 		{title}
 		<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
@@ -23,12 +23,16 @@
 </details>
 
 <style>
+	details {
+		padding: 0.25rem 0;
+	}
 	details[open] svg {
 		transform: scaleY(-1);
 	}
 	summary {
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 0.5rem;
+		margin: 0 -0.5rem 0.5rem;
+		padding: 0.5rem 0.75rem;
 	}
 </style>
