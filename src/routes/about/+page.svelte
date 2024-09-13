@@ -1,7 +1,11 @@
 <script>
 	import Header from "$lib/components/Header.svelte";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
-	import { PUBLIC_PAYPAL_LINK, PUBLIC_IMPRINT_EMAIL_ADDRESS, PUBLIC_VERSION } from "$env/static/public";
+	import {
+		PUBLIC_PAYPAL_LINK,
+		PUBLIC_IMPRINT_EMAIL_ADDRESS,
+		PUBLIC_VERSION
+	} from "$env/static/public";
 </script>
 
 <svelte:head>
@@ -39,8 +43,8 @@
 		Ja. Vahrplan ist als sogenannte <a href="https://de.wikipedia.org/wiki/Progressive_Web_App"
 			>Progressive Web App</a
 		> verfügbar. Die Installation erfolgt über den Browser und ist nicht browserübergreifend einheitlich.
-		Es handelt sich aber in der Regel um den Klick auf einen Button mit der Aufschrift "Zum
-		Home-Bildschirm hinzufügen" oder "Installieren" im Browser-Menü.
+		Es handelt sich aber in der Regel um den Klick auf einen Button mit der Aufschrift "Zum Home-Bildschirm
+		hinzufügen" oder "Installieren" im Browser-Menü.
 	</AccordionElement>
 	<AccordionElement title="Welche Tools/Bibliotheken/Frameworks verwendet Vahrplan?">
 		<h2>Allgemeine Sachen</h2>
@@ -75,10 +79,10 @@
 		</ul>
 	</AccordionElement>
 	<AccordionElement title="Wie kann ich Vahrplan unterstützen?">
-		Am besten kannst du Vahrplan unterstützen, indem du das Programm in
-		deinem Freundeskreis und in deiner Familie weiterempfielst. Wenn du magst, kannst du auch
-		gerne über <a href={PUBLIC_PAYPAL_LINK}>Paypal</a> eine Spende hinterlassen. Die Seite zu benutzen
-		ohne zu spenden, ist aber völlig in Ordnung.
+		Am besten kannst du Vahrplan unterstützen, indem du das Programm in deinem Freundeskreis und
+		in deiner Familie weiterempfielst. Wenn du magst, kannst du auch gerne über <a
+			href={PUBLIC_PAYPAL_LINK}>Paypal</a
+		> eine Spende hinterlassen.
 	</AccordionElement>
 	<AccordionElement title="Ich habe einen Bug gefunden. Wo kann ich den melden?">
 		Falls du glaubst, einen Fehler gefunden zu haben, würde ich mich darüber freuen, davon zu
@@ -86,7 +90,8 @@
 			href="https://github.com/dabund24/vahrplan/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
 			>Issue auf Github aufmachen</a
 		>
-		oder mir alternativ <a href="mailto:{PUBLIC_IMPRINT_EMAIL_ADDRESS}">eine E-Mail schreiben</a>.
+		oder mir alternativ
+		<a href="mailto:{PUBLIC_IMPRINT_EMAIL_ADDRESS}">eine E-Mail schreiben</a>.
 	</AccordionElement>
 
 	<AccordionElement title="Fahrplan schreibt man mit F. Bist du dumm?">
@@ -96,8 +101,8 @@
 	<div class="mobile-only">
 		<h1>Rechtliches</h1>
 		<ul>
-			<li><a href="/privacy">Datenschutz</a></li>
-			<li><a href="/imprint">Impressum</a></li>
+			<li><a href="/about/privacy">Datenschutz</a></li>
+			<li><a href="/about/imprint">Impressum</a></li>
 		</ul>
 	</div>
 
