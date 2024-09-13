@@ -1,0 +1,46 @@
+services:
+    sveltekit:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        depends_on:
+            - valkey
+        environment:
+            DATABASE_URL: redis://valkey:6379
+        restart: unless-stopped
+
+    valkey:
+        image: valkey/valkey:7.2.6-alpine
+        volumes:
+            - valkey_data:/var/lib/valkey
+        ports:
+            - "6379:6379"
+        restart: unless-stopped
+
+    umami:
+        image: docker.umami.is/umami-software/umami:postgresql-latest
+        environment:
+            DATABASE_URL: postgres://umami_user:umami_password@umami-db:5432/umami
+            DATABASE_TYPE: postgresql
+            PORT: 3001
+        ports:
+            - "3001:3001"
+        depends_on:
+            - umami-db
+        restart: unless-stopped
+
+    umami-db:
+        image: postgres:14
+        environment:
+            POSTGRES_USER: umami_user
+            POSTGRES_PASSWORD: umami_password
+            POSTGRES_DB: umami
+        volumes:
+            - umami_data:/var/lib/postgresql/data
+        restart: unless-stopped
+
+volumes:
+    valkey_data:
+    umami_data:

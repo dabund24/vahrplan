@@ -3,6 +3,7 @@ import { createClient as createRedisClient } from "redis";
 import { profile as dbProfile } from "hafas-client/p/db/index.js";
 import { RateLimiter } from "$lib/server/RateLimiter";
 import { throwHafasQuotaError } from "$lib/server/responses";
+import { building } from "$app/environment";
 
 // Hafas-client stuff
 
@@ -40,6 +41,12 @@ export const hafasClient = new Proxy(hafasClientRaw, hafasClientHandler);
 
 // Valkey stuff
 
-export const valkeyClient = await createRedisClient()
-	.on("error", (err) => console.error(err))
-	.connect();
+export let valkeyClient: Awaited<ReturnType<typeof createRedisClient>>;
+
+if (!building) {
+	valkeyClient = await createRedisClient({
+		url: process.env.DATABASE_URL ?? "redis://localhost:6379"
+	})
+		.on("error", (err) => console.error(err))
+		.connect();
+}
