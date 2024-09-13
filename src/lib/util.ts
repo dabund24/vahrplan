@@ -33,6 +33,11 @@ export async function getApiData<T extends Fetchable>(
 	if (loadingEst !== undefined) {
 		loadingId = startLoading(loadingEst);
 	}
+	if (window.umami !== undefined) {
+		console.log("hello");
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
+		void umami.track((props) => ({ ...props, url: url.pathname }));
+	}
 
 	const result: ZugResponse<T> = await fetch(url)
 		.then((res: Response) => res.json() as Promise<ZugResponse<T>>)

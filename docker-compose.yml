@@ -32,7 +32,7 @@ services:
         restart: unless-stopped
 
     umami-db:
-        image: postgres:14
+        image: postgres:14-alpine
         environment:
             POSTGRES_USER: umami_user
             POSTGRES_PASSWORD: umami_password
