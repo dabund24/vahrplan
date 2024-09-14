@@ -2,11 +2,6 @@ import { sequence } from "@sveltejs/kit/hooks";
 import { type Handle, json } from "@sveltejs/kit";
 import { RateLimiter } from "$lib/server/RateLimiter";
 
-const logger: Handle = function ({ event, resolve }) {
-	console.log(event.url.href);
-	return resolve(event);
-};
-
 const cache: Handle = async function ({ event, resolve }) {
 	const response = await resolve(event);
 	if (response.status === 429) {
@@ -51,4 +46,4 @@ const userRateLimiting: Handle = function ({ event, resolve }) {
 	return result.content;
 };
 
-export const handle = sequence(logger, cache, userRateLimiting);
+export const handle = sequence(cache, userRateLimiting);
