@@ -6,6 +6,7 @@
 	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
 	import type { Snippet } from "svelte";
+	import { PUBLIC_UMAMI_SCRIPT } from "$env/static/public";
 
 	type Props = { children: Snippet };
 
@@ -23,6 +24,10 @@
 		);
 	});
 </script>
+
+<svelte:head>
+	{PUBLIC_UMAMI_SCRIPT}
+</svelte:head>
 
 <div class="app">
 	<ProgressBar />
