@@ -1,0 +1,44 @@
+<script lang="ts">
+	import type { Snippet } from "svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import { pushState } from "$app/navigation";
+	import { page } from "$app/stores";
+
+	type Props = {
+		buttonContent: Snippet;
+		children: Snippet;
+		modalTitle: string;
+		showModalKey: Exclude<keyof App.PageState, "showTripInfoModal">;
+	};
+
+	let { buttonContent, children, modalTitle, showModalKey }: Props = $props();
+
+	function handleButtonClick(): void {
+		pushState("", {
+			[showModalKey]: true
+		});
+	}
+</script>
+
+<button class="hoverable hoverable--visible" onclick={handleButtonClick}>
+	{@render buttonContent()}
+</button>
+
+{#if $page.state[showModalKey]}
+	<Modal title={modalTitle} showModal={$page.state[showModalKey]}>
+		<div class="modal-content">
+			{@render children()}
+		</div>
+	</Modal>
+{/if}
+
+<style>
+	button {
+		padding: 0 0.5rem;
+		margin: 0.5rem 0;
+	}
+
+	.modal-content {
+		padding: 0 1rem;
+	}
+</style>
