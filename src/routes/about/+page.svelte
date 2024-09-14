@@ -43,6 +43,15 @@
 		Es handelt sich aber in der Regel um den Klick auf einen Button mit der Aufschrift "Zum Home-Bildschirm
 		hinzufügen" oder "Installieren" im Browser-Menü.
 	</AccordionElement>
+	<AccordionElement title="Beim Teilen sind mir die Links zu lang. Geht das auch kürzer?">
+		Ja. Aktiviere dafür in den <a href="/settings">Einstellungen</a> unter <q>Generierung von Kurzlinks beim Teilen</q> die
+		entsprechenden Optionen.
+	</AccordionElement>
+	<AccordionElement title="Wie kann ich meine Einstellungen sessionübergreifend behalten?">
+		Wenn du in den <a href="/settings">Einstellungen</a> unter <q>Dauerhaftes Speichern von Einstellungen</q> die Schalter
+		aktivierst, sind die von dir gesetzten App-Einstellungen bzw. Verbindungsfilter auch in der nächsten
+		Browser-Session noch verfügbar.
+	</AccordionElement>
 	<AccordionElement title="Welche Tools/Bibliotheken/Frameworks verwendet Vahrplan?">
 		<h2>Allgemeine Sachen</h2>
 		<ul>
@@ -90,7 +99,6 @@
 		oder mir alternativ
 		<a href="mailto:{PUBLIC_IMPRINT_EMAIL_ADDRESS}">eine E-Mail schreiben</a>.
 	</AccordionElement>
-
 	<AccordionElement title="Fahrplan schreibt man mit F. Bist du dumm?">
 		Wofür Vahrplan steht, ist ganz oben auf der Seite beschrieben. Ähnlichkeiten mit echten
 		Wörtern sind rein zufällig.
