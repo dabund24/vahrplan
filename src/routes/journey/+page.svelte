@@ -100,7 +100,10 @@
 
 <svelte:head>
 	<title>Vahrplan - Reisedetails{pageTitle.length > 0 ? ": " : ""}{pageTitle}</title>
-	<meta name="title" content="Vahrplan - Reisedetails{pageTitle}" />
+	<meta
+		name="title"
+		content="Vahrplan - Reisedetails{pageTitle.length > 0 ? ': ' : ''}{pageTitle}"
+	/>
 	<meta name="description" content="Reisedetails{pageDescription}" />
 </svelte:head>
 
