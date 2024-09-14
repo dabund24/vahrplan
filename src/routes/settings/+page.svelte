@@ -97,7 +97,7 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Dauerhaftes Speichern von Einstellungen</h1>
-	<ButtonModal modalTitle="Datenschutzhinweis Kurzlinks" showModalKey={"showPrivacyStoreModal"}>
+	<ButtonModal modalTitle="Datenschutzhinweis Local Storage" showModalKey={"showPrivacyStoreModal"}>
 		{#snippet buttonContent()}
 			<Warning>Datenschutzhinweis</Warning>
 		{/snippet}
