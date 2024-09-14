@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-	{PUBLIC_UMAMI_SCRIPT}
+	{@html PUBLIC_UMAMI_SCRIPT}
 </svelte:head>
 
 <div class="app">
