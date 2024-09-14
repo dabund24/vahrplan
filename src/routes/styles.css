@@ -306,6 +306,11 @@ h3 {
 	text-wrap: balance;
 }
 
+.inline-icons svg {
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .content-wrapper {
 	max-width: 30rem;
 	box-sizing: border-box;

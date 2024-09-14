@@ -2,6 +2,9 @@
 	import Setting from "$lib/components/Setting.svelte";
 	import { settings } from "$lib/stores/settingStore";
 	import Header from "$lib/components/Header.svelte";
+	import ButtonModal from "$lib/ButtonModal.svelte";
+	import Warning from "$lib/components/Warning.svelte";
+	import IconShare from "$lib/components/icons/IconShare.svelte";
 </script>
 
 <svelte:head>
@@ -64,6 +67,25 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Generierung von Kurzlinks beim Teilen</h1>
+	<ButtonModal modalTitle="Datenschutzhinweis Kurzlinks" showModalKey={"showPrivacyLinkModal"}>
+		{#snippet buttonContent()}
+			<Warning>Datenschutzhinweis</Warning>
+		{/snippet}
+		<div class="inline-icons">
+			<p>
+				Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
+				Klick auf das
+				<q>Teilen</q>-Symbol (<IconShare />) über einem Verbindungsdiagramm bzw. einer Reise
+				einen Kurzlink.
+			</p>
+			<p>
+				Damit beim Aufrufen des Links das richtige Diagramm/die richtige Verbindung
+				angezeigt werden kann, speichert der Server bis 7 Tage nach dem Zeitpunkt des
+				Diagramms/dem Ende der Reise, welches Diagramm/welche Reise einem Kurzlink
+				zugeordnet ist. Zusätzliche Daten werden nicht gespeichert.
+			</p>
+		</div>
+	</ButtonModal>
 	<Setting
 		settingName={"Kurzlinks für Verbindungsdiagramme"}
 		bind:setting={$settings.general.shortLinksDiagrams}
@@ -75,6 +97,30 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Dauerhaftes Speichern von Einstellungen</h1>
+	<ButtonModal modalTitle="Datenschutzhinweis Kurzlinks" showModalKey={"showPrivacyStoreModal"}>
+		{#snippet buttonContent()}
+			<Warning>Datenschutzhinweis</Warning>
+		{/snippet}
+		<div class="inline-icons">
+			<p>
+				Wird eine der folgenden beiden Einstellungen aktiviert, werden die App-Einstellungen
+				bzw. die gesetzten Verbindungsfilter im Browser mit der Web-Technologie <a
+					target="_blank"
+					href="https://de.wikipedia.org/wiki/Web_Storage"><q>Local Storage</q></a
+				> sessionübergreifend gespeichert. Diese funktioniert ähnlich wie Cookies, jedoch werden
+				die gespeicherten Daten nicht mit jeder Anfrage an den Server mitgesendet.
+			</p>
+			<p>
+				Konkret werden die App-Einstellungen unter keinen Umständen an den Server gesendet.
+				Die Verbindungsfilter werden unverändert weiterhin nur mit jeder Diagramm-Anfrage an
+				den Server geschickt.
+			</p>
+			<p>
+				Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.
+				Ansonsten entscheidet der Browser über die Dauer der Speicherung.
+			</p>
+		</div>
+	</ButtonModal>
 	<Setting
 		settingName={"App-Einstellungen"}
 		bind:setting={$settings.storage.general}

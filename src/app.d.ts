@@ -16,6 +16,8 @@ declare global {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showTripInfoModal?: Record<string, boolean>;
+			showPrivacyLinkModal?: boolean;
+			showPrivacyStoreModal?: boolean;
 		}
 		// interface Platform {}
 	}
