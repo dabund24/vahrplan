@@ -11,6 +11,7 @@
 	<title>Vahrplan - Impressum</title>
 	<meta name="title" content="Vahrplan - Impressum" />
 	<meta name="description" content="Das Impressum von Vahrplan" />
+	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
 <div class="content-wrapper">

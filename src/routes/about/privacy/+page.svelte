@@ -11,6 +11,7 @@
 	<title>Vahrplan - Datenschutz</title>
 	<meta name="title" content="Vahrplan - Datenschutz" />
 	<meta name="description" content="Die Datenschutzerklärung von Vahrplan" />
+	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
 <div class="content-wrapper">
