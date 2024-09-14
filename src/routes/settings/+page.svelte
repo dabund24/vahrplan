@@ -79,10 +79,11 @@
 				einen Kurzlink.
 			</p>
 			<p>
-				Damit beim Aufrufen des Links das richtige Diagramm/die richtige Verbindung
-				angezeigt werden kann, speichert der Server bis 7 Tage nach dem Zeitpunkt des
-				Diagramms/dem Ende der Reise, welches Diagramm/welche Reise einem Kurzlink
-				zugeordnet ist. Zusätzliche Daten werden nicht gespeichert.
+				Der Server speichert für einen Kurzlink bis 7 Tage nach dem Zeitpunkt des
+				Diagramms/des Endes der Reise, welches Diagramm/welche Reise ihm zugeordnet ist.
+				Dies ist technisch notwendig, damit beim Aufrufen des Links das richtige
+				Diagramm/die richtige Verbindung angezeigt werden kann. Zusätzliche Daten werden
+				nicht gespeichert.
 			</p>
 		</div>
 	</ButtonModal>
@@ -97,7 +98,10 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Dauerhaftes Speichern von Einstellungen</h1>
-	<ButtonModal modalTitle="Datenschutzhinweis Local Storage" showModalKey={"showPrivacyStoreModal"}>
+	<ButtonModal
+		modalTitle="Datenschutzhinweis Local Storage"
+		showModalKey={"showPrivacyStoreModal"}
+	>
 		{#snippet buttonContent()}
 			<Warning>Datenschutzhinweis</Warning>
 		{/snippet}
@@ -107,17 +111,13 @@
 				bzw. die gesetzten Verbindungsfilter im Browser mit der Web-Technologie <a
 					target="_blank"
 					href="https://de.wikipedia.org/wiki/Web_Storage"><q>Local Storage</q></a
-				> sessionübergreifend gespeichert. Diese funktioniert ähnlich wie Cookies, jedoch werden
-				die gespeicherten Daten nicht mit jeder Anfrage an den Server mitgesendet.
+				> sessionübergreifend gespeichert. Dies ist für die Funktionalität technisch notwendig.
 			</p>
-			<p>
-				Konkret werden die App-Einstellungen unter keinen Umständen an den Server gesendet.
-				Die Verbindungsfilter werden unverändert weiterhin nur mit jeder Diagramm-Anfrage an
-				den Server geschickt.
-			</p>
-			<p>
-				Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.
-				Ansonsten entscheidet der Browser über die Dauer der Speicherung.
+			<p> Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.</p>
+			<p
+				>Mehr Informationen zu Local Storage befinden sich <a
+					href="/about/privacy#web-storage">in der Datenschutzerklärung</a
+				>.
 			</p>
 		</div>
 	</ButtonModal>
