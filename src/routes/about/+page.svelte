@@ -57,6 +57,7 @@
 		<ul>
 			{@render tool("Programmiersprache", "TypeScript", "https://www.typescriptlang.org/")}
 			{@render tool("Meta-Framework", "SvelteKit", "https://kit.svelte.dev/")}
+			{@render tool("Container-Virtualisierung", "Docker", "https://www.docker.com/")}
 			{@render tool("Build-Tool", "Vite", "https://vitejs.dev/")}
 			{@render tool("Linter", "ESLint", "https://eslint.org/")}
 			{@render tool("Code Formatter", "Prettier", "https://prettier.io/")}
@@ -80,6 +81,7 @@
 		<h2>Das Drumherum</h2>
 		<ul>
 			{@render tool("Cloud-Hosting", "Hetzner", "https://www.hetzner.com/cloud/")}
+			{@render tool("Reverse-Proxy", "nginx", "https://nginx.org/")}
 			{@render tool("Analytics", "Umami", "https://umami.is/")}
 			{@render tool("Mail-Server", "mailcow", "https://mailcow.email/")}
 		</ul>
