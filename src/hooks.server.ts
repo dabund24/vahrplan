@@ -35,7 +35,7 @@ function getCacheDuration(url: URL): number {
 	}
 }
 
-const userRateLimiter = new RateLimiter(60, 200);
+const userRateLimiter = new RateLimiter(60, 40);
 
 /**
  * limits api access for each user

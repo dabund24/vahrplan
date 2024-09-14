@@ -11,7 +11,7 @@ const userAgent = "github.com/dabund24/vahrplan";
 
 const hafasClientRaw = createHafasClient(dbProfile, userAgent);
 
-const hafasGlobalRateLimiter = new RateLimiter(60, 100);
+const hafasGlobalRateLimiter = new RateLimiter(60, 200);
 
 // wrap hafas client with rate limiter
 const hafasClientHandler: ProxyHandler<HafasClient> = {
