@@ -1,11 +1,8 @@
 <script>
 	import Header from "$lib/components/Header.svelte";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
-	import {
-		PUBLIC_PAYPAL_LINK,
-		PUBLIC_IMPRINT_EMAIL_ADDRESS,
-		PUBLIC_VERSION
-	} from "$env/static/public";
+	import { PUBLIC_PAYPAL_LINK, PUBLIC_IMPRINT_EMAIL_ADDRESS } from "$env/static/public";
+	import { version } from "$app/environment";
 </script>
 
 <svelte:head>
@@ -107,7 +104,7 @@
 	</div>
 
 	<footer class="flex-column">
-		<small>Vahrplan {PUBLIC_VERSION}</small>
+		<small>Vahrplan {version}</small>
 		<small>Daniel Bund, 2023-2024</small>
 	</footer>
 </div>
