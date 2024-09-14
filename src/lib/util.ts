@@ -34,9 +34,8 @@ export async function getApiData<T extends Fetchable>(
 		loadingId = startLoading(loadingEst);
 	}
 	if (window.umami !== undefined) {
-		console.log("hello");
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
-		void umami.track((props) => ({ ...props, url: url.pathname }));
+		void window.umami.track((props) => ({ ...props, url: `GET ${url.pathname}` }));
 	}
 
 	const result: ZugResponse<T> = await fetch(url)
@@ -74,6 +73,10 @@ export async function putApiData<R, T>(
 	let loadingId: number | undefined = undefined;
 	if (loadingEst !== undefined) {
 		loadingId = startLoading(loadingEst);
+	}
+	if (window.umami !== undefined) {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
+		void window.umami.track((props) => ({ ...props, url: `PUT ${url.pathname}` }));
 	}
 
 	const stringifiedBody = JSON.stringify(body);
