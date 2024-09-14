@@ -7,6 +7,12 @@
 	} from "$env/static/public";
 </script>
 
+<svelte:head>
+	<title>Vahrplan - Datenschutz</title>
+	<meta name="title" content="Vahrplan - Datenschutz" />
+	<meta name="description" content="Die Datenschutzerklärung von Vahrplan" />
+</svelte:head>
+
 <div class="content-wrapper">
 	<h1>Datenschutz&shy;erkl&auml;rung</h1>
 	<h2>1. Datenschutz auf einen Blick</h2>
@@ -340,7 +346,7 @@
 
 <style>
 	.content-wrapper {
-		padding: 0 0.5rem;
+        padding: 0.5rem 1rem;
 	}
 
 	ul {
