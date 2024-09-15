@@ -30,7 +30,7 @@ const hafasClientHandler: ProxyHandler<HafasClient> = {
 
 			if (result.isError) {
 				// simulate hafas error which will be handled in the app.
-				return Promise.resolve(throwHafasQuotaError());
+				throwHafasQuotaError();
 			}
 			return result.content;
 		};

@@ -49,7 +49,7 @@ export async function getJourneyTree(
 	opt: JourneysOptions,
 	transitType: TransitType
 ): Promise<ZugResponse<TreeNode[]>> {
-	opt.routingMode = transitType === "departure" ? "REALTIME" : "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
+	opt.routingMode = "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
 	opt.stopovers = true;
 	opt.polylines = true;
 	opt.startWithWalking = true;
