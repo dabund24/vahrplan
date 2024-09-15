@@ -1,4 +1,4 @@
-# vahrplan <img src="static/favicon.svg" align="right" height="100"/>
+# Vahrplan <img src="static/favicon.svg" align="right" height="100"/>
 
 _**V**oll**a**utomatische **H**ilfe für **R**outen**plan**ung_ (vahrplan) is a web application assisting users of public transport in Germany on planning longer journeys with transfers.
 
@@ -22,25 +22,33 @@ This app can...
 
 - show journeys on a map
 
-## Usage
+## Build instructions
 
-Prerequisite: `node.js`
+### Build with Docker
 
-To run the application, execute these commands:
+Prerequisites:
+- `Docker` with Compose plugin
 
-```
-npm install
-```
+Instructions:
+- Rename `.env.example` to `.env`
+- Run `docker compose up --build`
 
-```
-npm run build
-```
+The app should now run on [`http://localhost:3000`](http://localhost:3000) and Umami runs on [`http://localhost:3001`](http://localhost:3001). Consult the [Umami Docs](https://umami.is/docs/login) for further instructions on how to get analytics. The environment variable `PUBLIC_UMAMI_SCRIPT` in `.env` can be used to insert the tracking script.
 
-```
-npm run preview
-```
+### Build with npm
 
-Then, open [`http://localhost:4173`](http://localhost:4173) in your browser.
+Prerequisites:
+- `node.js >= 22`
+- `Valkey >= 6.2.0` (or `Redis >= 6.2.0`)
+
+Instructions:
+- Rename `.env.example` to `.env`
+- Start Valkey with `valkey-server` (or Redis with `redis-server`) on Port 6379
+- Run `npm install`
+- Run `npm run build`
+- Run `npm run preview`
+
+The app is now running on [`http://localhost:4173`](http://localhost:4173)
 
 ## Tech Stack
 
@@ -53,7 +61,6 @@ Then, open [`http://localhost:4173`](http://localhost:4173) in your browser.
 - [hafas-client](https://github.com/public-transport/hafas-client)
 - [Leaflet](https://leafletjs.com)
 - [OpenStreetMap](https://www.openstreetmap.org)
-- [OpenRailwayMap](https://www.openrailwaymap.org)
 
 ## Screenshots
 
