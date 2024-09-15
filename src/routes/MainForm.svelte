@@ -66,6 +66,10 @@
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
 	}
 	function addVia(index: number): void {
+		if (stops.length >= 7) {
+			toast("Es sind maximal fünf Zwischenstationen möglich.", "red");
+			return;
+		}
 		stops = [
 			...stops.slice(0, index),
 			{ value: undefined, key: Math.random() },

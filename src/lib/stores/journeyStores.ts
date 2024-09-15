@@ -100,8 +100,9 @@ export function setDisplayedFormDataAndTree(formData: DisplayedFormData): void {
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
 	displayedFormData.update((formData) => {
-		if (formData === undefined) {
-			return undefined;
+		if (formData === undefined || formData.locations.length >= 7) {
+			toast("Hinzufügen der Station nicht möglich.", "red")
+			return formData;
 		}
 		const newFormData: DisplayedFormData = {
 			locations: [
