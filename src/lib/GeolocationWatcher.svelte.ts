@@ -17,7 +17,7 @@ export class GeolocationWatcher {
 	constructor() {
 		this.watchID = 0;
 
-		if (get(settings).general.mapGeolocation === undefined) {
+		if (!get(settings).general.mapGeolocation) {
 			return;
 		}
 
@@ -33,12 +33,29 @@ export class GeolocationWatcher {
 			}
 		);
 
-		window.addEventListener("deviceorientationabsolute", (e) => {
-			if (e.alpha === null || !e.absolute ) {
-				return
-			}
-			this.currentPositionData.orientation = Math.abs(e.alpha - 360);
-		});
+		if (
+			typeof DeviceOrientationEvent !== "undefined" &&
+			typeof DeviceOrientationEvent.requestPermission === "function"
+		) {
+			// ios
+			DeviceOrientationEvent.requestPermission()
+				.then((permissionState) => {
+					if (permissionState === "granted") {
+						window.addEventListener("deviceorientation", (e) => {
+							this.currentPositionData.orientation = e.webkitCompassHeading;
+						});
+					}
+				})
+				.catch(console.error);
+		} else {
+			// rest of world
+			window.addEventListener("deviceorientationabsolute", (e) => {
+				if (e.alpha === null) {
+					return;
+				}
+				this.currentPositionData.orientation = Math.abs(e.alpha - 360);
+			});
+		}
 	}
 
 	destroy(): void {
