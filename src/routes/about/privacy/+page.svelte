@@ -320,8 +320,8 @@
 	>
 	<h3>Cookies</h3>
 	<p>Cookies werden auf dieser Website nicht eingesetzt.</p>
-	<h2>5. Analyse-Tools und Werbung</h2>
-	<h3>Umami</h3> <p>Diese Website benutzt den Open Source Webanalysedienst Umami.</p>
+	<h2>5. Analyse-Tools</h2>
+	<h3>Umami</h3> <p>Diese Website benutzt das Open Source Webanalysetool Umami.</p>
 	<p
 		>Mit Hilfe von Umami sind wir in der Lage Daten &uuml;ber die Nutzung unserer Website durch
 		die Websitebesucher zu erfassen und zu analysieren. Hierdurch k&ouml;nnen wir u.&nbsp;a.
