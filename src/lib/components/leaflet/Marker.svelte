@@ -3,15 +3,17 @@
 	import L from "leaflet";
 	import { getContext, onDestroy, onMount, setContext, type Snippet } from "svelte";
 	import Popup from "$lib/components/leaflet/Popup.svelte";
+	import IconFlashLight from "$lib/components/icons/IconFlashLight.svelte";
 
 	type Props = {
 		data: TransitData;
 		product1?: string;
 		product2?: string;
-		children: Snippet
+		orientation?: number;
+		children: Snippet;
 	};
 
-	let { data, product1, product2, children }: Props = $props();
+	let { data, product1, product2, orientation, children }: Props = $props();
 	let marker: L.Marker | undefined = $state();
 	let markerElement: HTMLElement;
 
@@ -36,7 +38,10 @@
 				className: `product--${product1 ?? product2}`,
 				iconSize: L.point(16, 16)
 			});
-			marker = L.marker(data.location.position, { icon }).addTo(map);
+			marker = L.marker(data.location.position, {
+				icon,
+				zIndexOffset: orientation === undefined ? 0 : -100000
+			}).addTo(map);
 		}
 	});
 
@@ -52,6 +57,9 @@
 <div bind:this={markerElement}>
 	{#if marker !== undefined}
 		{@render children()}
+		{#if orientation !== undefined}
+			<IconFlashLight {orientation} />
+		{/if}
 		<Popup {popupData}>
 			{@render children()}
 		</Popup>

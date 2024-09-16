@@ -9,30 +9,19 @@
 		selectedJourneys
 	} from "$lib/stores/journeyStores";
 	import { onDestroy, onMount, setContext } from "svelte";
-	import type { DefiningBlock, ParsedLocation } from "$lib/types";
+	import type { DefiningBlock } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
 	import Marker from "$lib/components/leaflet/Marker.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { settings } from "$lib/stores/settingStore";
 	import L from "leaflet";
+	import { GeolocationWatcher } from "$lib/GeolocationWatcher.svelte";
 
 	let map: L.Map | undefined = $state();
 	let mapElement: HTMLElement;
 
-	let currentPosition: ParsedLocation["position"] | undefined = $state();
-	let geolocationWatcher: number | undefined = undefined;
-
-	if ($settings.general.mapGeolocation) {
-		navigator.geolocation.watchPosition(
-			(position) => {
-				currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
-			},
-			() => {
-				currentPosition = undefined;
-			}
-		);
-	}
+	let geolocationWatcher: GeolocationWatcher | undefined = $state();
 
 	const resizeObserver = new ResizeObserver(() => {
 		map?.invalidateSize();
@@ -42,15 +31,14 @@
 		map = L.map(mapElement, { zoomControl: false });
 		resizeObserver.observe(mapElement);
 		addLayersToMap(map);
+		geolocationWatcher = new GeolocationWatcher();
 	});
 
 	onDestroy(() => {
 		map?.remove();
 		map = undefined;
 		resizeObserver.disconnect();
-		if (geolocationWatcher !== undefined) {
-			navigator.geolocation.clearWatch(geolocationWatcher);
-		}
+		geolocationWatcher?.destroy();
 	});
 
 	setContext("map", {
@@ -206,18 +194,19 @@
 				{/if}
 			{/each}
 		{/each}
-		{#if currentPosition !== undefined}
+		{#if geolocationWatcher?.currentPositionData.position !== undefined}
 			<Marker
 				data={{
 					location: {
-						position: currentPosition,
+						position: geolocationWatcher.currentPositionData.position,
 						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
 						name: "Live-Standort",
 						requestParameter: { type: "location" }
 					},
 					time: {},
-					platformData: null
+					platformData: null,
 				}}
+				orientation={geolocationWatcher.currentPositionData.orientation}
 			>
 				<IconStationLocation iconType={"currentLocation"} color={"accent"} />
 			</Marker>
