@@ -36,8 +36,8 @@
 		{@render children()}
 		<footer>
 			<small>
-				<a href="about/privacy">Datenschutz</a>
-				<a href="about/imprint">Impressum</a>
+				<a href="/about/privacy">Datenschutz</a>
+				<a href="/about/imprint">Impressum</a>
 			</small>
 		</footer>
 	</main>
