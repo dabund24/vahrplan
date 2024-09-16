@@ -58,7 +58,6 @@
 			{@render tool("Programmiersprache", "TypeScript", "https://www.typescriptlang.org/")}
 			{@render tool("Meta-Framework", "SvelteKit", "https://kit.svelte.dev/")}
 			{@render tool("Container-Virtualisierung", "Docker", "https://www.docker.com/")}
-			{@render tool("Build-Tool", "Vite", "https://vitejs.dev/")}
 			{@render tool("Linter", "ESLint", "https://eslint.org/")}
 			{@render tool("Code Formatter", "Prettier", "https://prettier.io/")}
 		</ul>
@@ -75,6 +74,7 @@
 		<h2>Frontend</h2>
 		<ul>
 			{@render tool("Framework", "Svelte", "https://svelte.dev/")}
+			{@render tool("Build-Tool", "Vite", "https://vitejs.dev/")}
 			{@render tool("Karten-Bibliothek", "Leaflet", "https://leafletjs.com/")}
 			{@render tool("Karten-Kacheln", "OpenStreetMap", "https://www.openstreetmap.org/")}
 		</ul>
