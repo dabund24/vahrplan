@@ -104,7 +104,10 @@
 		name="title"
 		content="Vahrplan - Reisedetails{pageTitle.length > 0 ? ': ' : ''}{pageTitle}"
 	/>
-	<meta name="description" content="Reisedetails{pageDescription}" />
+	<meta
+		name="description"
+		content={pageDescription.length > 0 ? "Reisedetails" : pageDescription}
+	/>
 </svelte:head>
 
 <svelte:window bind:outerWidth={clientWidth} />
