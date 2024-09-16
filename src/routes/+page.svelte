@@ -5,7 +5,7 @@
 <svelte:head>
 	<title>Vahrplan - Startseite</title>
 	<meta name="title" content="Vahrplan" />
-	<meta name="description" content="Reiseplanung mithilfe eines Verbindungs-Diagramms" />
+	<meta name="description" content="Reiseplanung mit Verbindungsdiagrammen" />
 </svelte:head>
 
 <section class="form">
