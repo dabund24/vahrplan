@@ -38,14 +38,18 @@ export class GeolocationWatcher {
 			typeof DeviceOrientationEvent.requestPermission === "function"
 		) {
 			// ios
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 			DeviceOrientationEvent.requestPermission()
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				.then((permissionState) => {
 					if (permissionState === "granted") {
 						window.addEventListener("deviceorientation", (e) => {
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 							this.currentPositionData.orientation = e.webkitCompassHeading;
 						});
 					}
 				})
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				.catch(console.error);
 		} else {
 			// rest of world
