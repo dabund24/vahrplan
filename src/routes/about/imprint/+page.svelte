@@ -19,8 +19,7 @@
 	<p>
 		Daniel Bund<br />
 		{PUBLIC_IMPRINT_STREET}<br />
-		{PUBLIC_IMPRINT_TOWN}<br />
-		Deutschland
+		{PUBLIC_IMPRINT_TOWN}
 	</p>
 	<p>
 		Kontakt:<br />
