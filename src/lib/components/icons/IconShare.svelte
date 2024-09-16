@@ -41,11 +41,21 @@
 		display: none;
 	}
 
-	:global(_::-webkit-full-page-media), :global(_:future), :global(:root) .safari-only {
+	:global(_::-webkit-full-page-media),
+	:global(_:future),
+	:global(:root) .safari-only {
 		display: block;
 	}
 
-    :global(_::-webkit-full-page-media), :global(_:future), :global(:root) .other-os {
+	:global(_::-webkit-full-page-media),
+	:global(_:future),
+	:global(:root) .inline-icons .safari-only {
+		display: inline-block;
+	}
+
+	:global(_::-webkit-full-page-media),
+	:global(_:future),
+	:global(:root) .other-os {
 		display: none;
 	}
 </style>
