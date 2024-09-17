@@ -46,6 +46,7 @@
 	--border--very-transparant: var(--line-width) solid var(--foreground-color--very-transparent);
 	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
 
+	accent-color: var(--accent-color);
 	--foreground-color--light: #000000;
 	--background-color--light: #ffffff;
 	--foreground-color--transparent--light: #00000020;
