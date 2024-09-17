@@ -28,7 +28,7 @@ let orientationCleanup: () => void = () => void {};
  * can be processed from `currentPositionData`
  */
 export async function setupCurrentPositionData(): Promise<void> {
-	if (currentPositionData.position !== undefined && !get(settings).general.mapGeolocation) {
+	if (currentPositionData.position !== undefined || !get(settings).general.mapGeolocation) {
 		return;
 	}
 	positionCleanup = watchPosition();
