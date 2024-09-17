@@ -11,7 +11,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import SummaryStationIcon from "./SummaryStationIcon.svelte";
-	import { dateDifference, getGeolocationString } from "$lib/util";
+	import { dateDifference } from "$lib/util";
 	import Duration from "$lib/components/Duration.svelte";
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { page } from "$app/stores";
@@ -26,6 +26,7 @@
 	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
 	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
+	import { getGeolocationString } from "$lib/geolocation.svelte";
 
 	type Props = {
 		allSelected: boolean;

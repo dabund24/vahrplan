@@ -2,7 +2,7 @@
 	import type { LocationBlock } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { getGeolocationString } from "$lib/util";
+	import { getGeolocationString } from "$lib/geolocation.svelte";
 	import { displayedFormData } from "$lib/stores/journeyStores";
 
 	type Props = {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TransitData } from "$lib/types";
-	import { getGeolocationString } from "$lib/util";
+	import { getGeolocationString } from "$lib/geolocation.svelte";
 	import { displayedFormData } from "$lib/stores/journeyStores";
 
 	type Props = {

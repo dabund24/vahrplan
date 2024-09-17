@@ -2,7 +2,6 @@ import { json, type RequestHandler } from "@sveltejs/kit";
 import { getJourneyTree } from "$lib/server/treePlantation";
 import { getZugError } from "$lib/server/responses";
 import { parseApiJourneysUrl } from "$lib/urls";
-import { get } from "svelte/store";
 
 export const GET: RequestHandler = async function ({ url }) {
 	const diagramData = parseApiJourneysUrl(url);

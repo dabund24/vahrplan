@@ -1,7 +1,8 @@
-import type { ParsedLocation } from "$lib/types";
+import type { ParsedGeolocation, ParsedLocation } from "$lib/types";
 import { get } from "svelte/store";
 import { settings } from "$lib/stores/settingStore";
 import { toast } from "$lib/stores/toastStore";
+import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 
 export type CurrentPositionData = {
 	position: ParsedLocation["position"] | undefined;
@@ -111,4 +112,74 @@ export function cleanupCurrentPositionData(): void {
 	orientationCleanup();
 	currentPositionData.position = undefined;
 	currentPositionData.orientation = undefined;
+}
+
+/**
+ * gives a human-readable relative string for a given date from the past relative to now
+ * stolen from https://stackoverflow.com/a/53800501
+ * @param date the old date
+ */
+function relativeDate(date: Date): string {
+	const diff = Math.round(new Date(date).getTime() - new Date().getTime());
+	const units = {
+		year: 24 * 60 * 60 * 1000 * 365,
+		month: (24 * 60 * 60 * 1000 * 365) / 12,
+		day: 24 * 60 * 60 * 1000,
+		hour: 60 * 60 * 1000,
+		minute: 60 * 1000
+	};
+	const rtf = new Intl.RelativeTimeFormat("de", { numeric: "auto" });
+
+	let u: keyof typeof units;
+	for (u in units)
+		if (Math.abs(diff) > units[u]) {
+			return rtf.format(Math.round(diff / units[u]), u);
+		}
+	return "";
+}
+
+export function getGeolocationString(creationDate: Date, prefix = "Standort"): string {
+	return `${prefix} ${relativeDate(creationDate)}`;
+}
+
+export function getParsedGeolocation(
+	date: Date,
+	position: ParsedLocation["position"]
+): ParsedGeolocation {
+	return {
+		type: "currentLocation",
+		name: "Standort",
+		requestParameter: {
+			type: "location",
+			address: "Standort",
+			latitude: position.lat,
+			longitude: position.lng
+		},
+		position: position,
+		asAt: date
+	};
+}
+
+export async function getCurrentGeolocation(): Promise<ParsedGeolocation> {
+	const loadingId = startLoading(5);
+	return new Promise<ParsedGeolocation>((resolve) => {
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				const currentLocation: ParsedLocation = getParsedGeolocation(
+					new Date(position.timestamp),
+					{
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}
+				);
+				stopLoading(loadingId, false);
+				resolve(currentLocation);
+			},
+			() => {
+				stopLoading(loadingId, true);
+				toast("Standort konnte nicht ermittelt werden.", "red");
+				throw new Error();
+			}
+		);
+	});
 }

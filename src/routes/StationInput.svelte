@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
-	import { getApiData, getParsedGeolocation } from "$lib/util";
+	import { getApiData } from "$lib/util";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { getApiLocationsUrl } from "$lib/urls";
 	import { getBookmarks } from "$lib/bookmarks";
 	import { onMount } from "svelte";
 	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
+	import { getParsedGeolocation } from "$lib/geolocation.svelte";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;

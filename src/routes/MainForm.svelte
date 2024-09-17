@@ -1,7 +1,7 @@
 <script lang="ts">
 	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
-	import { dateToInputDate, getCurrentGeolocation, valueIsDefined } from "$lib/util.js";
+	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
 	import {
 		type DisplayedFormData,
 		setDisplayedFormDataAndTree
@@ -20,6 +20,7 @@
 	import type { ComponentProps } from "svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import { toast } from "$lib/stores/toastStore";
+	import { getCurrentGeolocation } from "$lib/geolocation.svelte";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
