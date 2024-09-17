@@ -39,18 +39,25 @@
 	<AccordionElement title="Lässt sich das Programm irgendwie als App installieren?">
 		Ja. Vahrplan ist als sogenannte <a href="https://de.wikipedia.org/wiki/Progressive_Web_App"
 			>Progressive Web App</a
-		> verfügbar. Die Installation erfolgt über den Browser und ist nicht browserübergreifend einheitlich.
-		Es handelt sich aber in der Regel um den Klick auf einen Button mit der Aufschrift <q>Zum Home-Bildschirm
-		hinzufügen</q> oder <q>Installieren</q> im Browser-Menü.
+		>
+		verfügbar. Die Installation erfolgt über den Browser und ist nicht browserübergreifend
+		einheitlich. Es handelt sich aber in der Regel um den Klick auf einen Button mit der
+		Aufschrift
+		<q>Zum Home-Bildschirm hinzufügen</q>
+		oder <q>Installieren</q> im Browser-Menü.
 	</AccordionElement>
 	<AccordionElement title="Beim Teilen sind mir die Links zu lang. Geht das auch kürzer?">
-		Ja. Aktiviere dafür in den <a href="/settings">Einstellungen</a> unter <q>Generierung von Kurzlinks beim Teilen</q> die
-		entsprechenden Optionen.
+		Ja. Aktiviere dafür in den <a href="/settings">Einstellungen</a> unter
+		<q>Generierung von Kurzlinks beim Teilen</q> die entsprechenden Optionen.
 	</AccordionElement>
 	<AccordionElement title="Wie kann ich meine Einstellungen sessionübergreifend behalten?">
-		Wenn du in den <a href="/settings">Einstellungen</a> unter <q>Dauerhaftes Speichern von Einstellungen</q> die Schalter
-		aktivierst, sind die von dir gesetzten App-Einstellungen bzw. Verbindungsfilter auch in der nächsten
-		Browser-Session noch verfügbar.
+		Wenn du in den <a href="/settings">Einstellungen</a> unter
+		<q>Dauerhaftes Speichern von Einstellungen</q> die Schalter aktivierst, sind die von dir gesetzten
+		App-Einstellungen bzw. Verbindungsfilter auch in der nächsten Browser-Session noch verfügbar.
+	</AccordionElement>
+	<AccordionElement title="Was muss ich tun, wenn der Standortzugriff verweigert wird?">
+		Erlaube deinem Browser den Zugriff auf den Standort. Dies kann in der Regel in den
+		Systemeinstellungen getan werden.
 	</AccordionElement>
 	<AccordionElement title="Welche Tools/Bibliotheken/Frameworks verwendet Vahrplan?">
 		<h2>Allgemeine Sachen</h2>
