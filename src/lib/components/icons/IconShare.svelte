@@ -49,7 +49,7 @@
 
 	:global(_::-webkit-full-page-media),
 	:global(_:future),
-	:global(:root) .inline-icons .safari-only {
+	:global(:root .inline-icons) .safari-only {
 		display: inline-block;
 	}
 
