@@ -14,14 +14,17 @@
 				<stop offset="100%" style="stop-color:var(--accent-color);stop-opacity:0" />
 			</radialGradient>
 			<mask id="flashlight-mask">
-				<g transform="translate(50,50) rotate({orientation + 90})" fill="white">
-					<path d="M0 0-35 35A50 50 0 0 1-35-35Z" />
-				</g>
+				<polyline
+					points="0,0 -50,-50 50,-50 0,0"
+					fill="white"
+					transform="translate(50,50) rotate({orientation})"
+				/>
 			</mask>
 		</defs>
-		<rect
-			width="100"
-			height="100"
+		<circle
+			cx="50%"
+			cy="50%"
+			r="50%"
 			fill="url(#flashlight-gradient)"
 			mask="url(#flashlight-mask)"
 		/>
@@ -38,6 +41,5 @@
 	svg {
 		position: absolute;
 		translate: calc(-50% + 8px) calc(-50% - 8px);
-		z-index: -500;
 	}
 </style>
