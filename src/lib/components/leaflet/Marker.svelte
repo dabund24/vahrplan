@@ -40,7 +40,7 @@
 			});
 			marker = L.marker(data.location.position, {
 				icon,
-				zIndexOffset: orientation === undefined ? 0 : -100000
+				zIndexOffset: data.location.name === "Live-Standort" ? -100000 : 0
 			}).addTo(map);
 		}
 	});
