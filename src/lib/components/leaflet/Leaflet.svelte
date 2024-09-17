@@ -16,12 +16,14 @@
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { settings } from "$lib/stores/settingStore";
 	import L from "leaflet";
-	import { GeolocationWatcher } from "$lib/GeolocationWatcher.svelte";
+	import {
+		cleanupCurrentPositionData,
+		currentPositionData,
+		setupCurrentPositionData
+	} from "$lib/geolocation.svelte.js";
 
 	let map: L.Map | undefined = $state();
 	let mapElement: HTMLElement;
-
-	let geolocationWatcher: GeolocationWatcher | undefined = $state();
 
 	const resizeObserver = new ResizeObserver(() => {
 		map?.invalidateSize();
@@ -31,14 +33,14 @@
 		map = L.map(mapElement, { zoomControl: false });
 		resizeObserver.observe(mapElement);
 		addLayersToMap(map);
-		geolocationWatcher = new GeolocationWatcher();
+		void setupCurrentPositionData();
 	});
 
 	onDestroy(() => {
 		map?.remove();
 		map = undefined;
 		resizeObserver.disconnect();
-		geolocationWatcher?.destroy();
+		cleanupCurrentPositionData();
 	});
 
 	setContext("map", {
@@ -194,19 +196,19 @@
 				{/if}
 			{/each}
 		{/each}
-		{#if geolocationWatcher?.currentPositionData.position !== undefined}
+		{#if currentPositionData.position !== undefined}
 			<Marker
 				data={{
 					location: {
-						position: geolocationWatcher.currentPositionData.position,
+						position: currentPositionData.position,
 						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
 						name: "Live-Standort",
 						requestParameter: { type: "location" }
 					},
 					time: {},
-					platformData: null,
+					platformData: null
 				}}
-				orientation={geolocationWatcher.currentPositionData.orientation}
+				orientation={currentPositionData.orientation}
 			>
 				<IconStationLocation iconType={"currentLocation"} color={"accent"} />
 			</Marker>
