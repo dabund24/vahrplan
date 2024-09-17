@@ -59,7 +59,7 @@
 		background-color: var(--background-color);
 		padding: 0;
 		scrollbar-width: thin;
-		max-height: calc(100% - 5rem);
+		max-height: calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 5rem);
 	}
 	dialog::backdrop {
 		background: var(--background-color--transparent, #ffffffe0);
