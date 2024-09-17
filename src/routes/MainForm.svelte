@@ -101,6 +101,9 @@
 		// handle current position
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
 			const currentLocation = await getCurrentGeolocation();
+			if (currentLocation === undefined) {
+				return
+			}
 			formData.geolocationDate = currentLocation.asAt;
 			formData.locations = formData.locations.map((l) => {
 				if (l.value.type === "currentLocation") {

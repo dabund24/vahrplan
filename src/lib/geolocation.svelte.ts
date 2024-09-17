@@ -160,7 +160,7 @@ export function getParsedGeolocation(
 	};
 }
 
-export async function getCurrentGeolocation(): Promise<ParsedGeolocation> {
+export async function getCurrentGeolocation(): Promise<ParsedGeolocation | undefined> {
 	const loadingId = startLoading(5);
 	return new Promise<ParsedGeolocation>((resolve) => {
 		navigator.geolocation.getCurrentPosition(
@@ -175,10 +175,10 @@ export async function getCurrentGeolocation(): Promise<ParsedGeolocation> {
 				stopLoading(loadingId, false);
 				resolve(currentLocation);
 			},
-			() => {
+			(e) => {
 				stopLoading(loadingId, true);
-				toast("Standort konnte nicht ermittelt werden.", "red");
-				throw new Error();
+				toast(getGeolocationErrorMessage(e.code), "red");
+				return undefined;
 			}
 		);
 	});
