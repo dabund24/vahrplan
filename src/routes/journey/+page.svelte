@@ -135,25 +135,25 @@
 		<Leaflet />
 	{/await}
 {/snippet}
-{#snippet header(miniTabSelector: Snippet, tabContent: Snippet)}
-	<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} mobileOnly={true}>
-		{@render miniTabSelector()}
-		{#if allSelected && $selectedJourneys.length > 0}
-			<Options id={"journey"} {options} />
-		{/if}
-	</Header>
-	{@render tabContent()}
-{/snippet}
 
 {#if clientWidth < 1000}
 	<MiniTabs
 		tabs={[
 			{ title: "Klassische Ansicht", icon: iconJourneyInfo, content: journeyOverview },
-			{ title: "Karte", icon: iconMap, content: map }
+			{ title: "Karte", icon: iconMap, content: map, isFullHeight: true }
 		]}
-		tabEnvironment={header}
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
-	/>
+	>
+		{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
+			<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} mobileOnly={true}>
+				{@render miniTabSelector()}
+				{#if allSelected && $selectedJourneys.length > 0}
+					<Options id={"journey"} {options} />
+				{/if}
+			</Header>
+			{@render tabContent()}
+		{/snippet}
+	</MiniTabs>
 {:else}
 	<div class="columns">
 		<section class="journeys">
