@@ -5,6 +5,7 @@
 		PUBLIC_PHONE_NUMBER,
 		PUBLIC_IMPRINT_EMAIL_ADDRESS
 	} from "$env/static/public";
+	import Header from "$lib/components/Header.svelte";
 </script>
 
 <svelte:head>
@@ -14,8 +15,9 @@
 	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
+<Header title={"Datenschutzerklärung"} mobileOnly={true} />
 <div class="content-wrapper">
-	<h1>Datenschutz&shy;erkl&auml;rung</h1>
+	<h1 class="desktop-only">Datenschutz&shy;erkl&auml;rung</h1>
 	<h2>1. Datenschutz auf einen Blick</h2>
 	<h3>Allgemeine Hinweise</h3>
 	<p

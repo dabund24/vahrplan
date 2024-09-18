@@ -5,6 +5,7 @@
 		PUBLIC_IMPRINT_EMAIL_ADDRESS,
 		PUBLIC_PHONE_NUMBER
 	} from "$env/static/public";
+	import Header from "$lib/components/Header.svelte";
 </script>
 
 <svelte:head>
@@ -14,8 +15,9 @@
 	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
+<Header title="Impressum" mobileOnly={true} />
 <div class="content-wrapper">
-	<h1>Impressum</h1>
+	<h1 class="desktop-only">Impressum</h1>
 	<p>
 		Daniel Bund<br />
 		{PUBLIC_IMPRINT_STREET}<br />
