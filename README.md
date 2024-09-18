@@ -8,6 +8,10 @@ This app is intended to be some sort of hybrid between [DB Navigator](https://ba
 
 An earlier version of this project can be found [here](https://github.com/dabund24/Zug).
 
+## Live Demo
+
+[https://vahrplan.de](https://vahrplan.de)
+
 ## Features
 
 This app can...
@@ -52,9 +56,19 @@ The app is now running on [`http://localhost:4173`](http://localhost:4173)
 
 ## Tech Stack
 
+### General Stuff
 - Meta-Framework: SvelteKit
-- UI-Framework: Svelte
-- Build Tool: Vite
+- OS-level Virtualization: Docker
+- Linter: ESLint
+- Code Formatter: Prettier
+
+### Backend
+- Runtime Environment: Node.js
+- Database: Valkey
+
+### Frontend
+- Framework: Svelte
+- Build-Tool: Vite
 
 ## Great projects this app relies on
 
@@ -64,9 +78,10 @@ The app is now running on [`http://localhost:4173`](http://localhost:4173)
 
 ## Screenshots
 
-![connection search 1](media/connection_search_1.png)
-![connection search 2](media/connection_search_2.png)
-![journey details](media/journey_details.png)
+![connection search 1](static/screenshots/desktop_1.png)
+![connection search 2](static/screenshots/desktop_2.png)
+![journey details](static/screenshots/desktop_3.png)
+![bookmarks](static/screenshots/desktop_4.png)
 
 ## How it works
 
