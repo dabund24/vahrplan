@@ -45,7 +45,7 @@
 		padding: .5rem 1rem;
 		border-radius: var(--border-radius--large);
 		border: var(--border);
-		width: min(25rem, 100vw - 3rem);
+		width: min(25rem, 100vw - 1.5rem);
 		background-color: var(--background-color--transparent);
 		box-sizing: border-box;
 	}
