@@ -88,8 +88,7 @@
 			];
 		}
 		map.fitBounds(L.latLngBounds(coordinates), {
-			paddingTopLeft: [20, 50],
-			paddingBottomRight: [20, 100]
+			padding: [10, 100],
 		});
 	}
 </script>
