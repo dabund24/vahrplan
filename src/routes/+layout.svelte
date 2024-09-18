@@ -30,6 +30,9 @@
 </svelte:head>
 
 <div class="app">
+	<noscript>
+		<dialog open>Leider ist Vahrplan nicht ohne Javascript nutzbar :/</dialog>
+	</noscript>
 	<ProgressBar />
 	<Navbar />
 	<main>
@@ -45,6 +48,9 @@
 </div>
 
 <style>
+	dialog {
+        z-index: 1000;
+	}
 	.app {
 		display: grid;
 		grid-template-rows: auto 1fr;
