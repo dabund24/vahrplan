@@ -2,15 +2,14 @@
 	import type { Snippet } from "svelte";
 
 	type Props = {
-		title: string,
-		mobileOnly?: boolean,
-		fullScreen?: boolean,
-		children?: Snippet
-	}
-	let {title, mobileOnly = false, fullScreen = false, children}: Props = $props()
+		title: string;
+		mobileOnly?: boolean;
+		children?: Snippet;
+	};
+	let { title, mobileOnly = false, children }: Props = $props();
 </script>
 
-<header class="flex-row" class:mobile-only={mobileOnly} class:full-screen={fullScreen}>
+<header class="flex-row" class:mobile-only={mobileOnly}>
 	<strong class="limit-lines">{title}</strong>
 	<div class="buttons flex-row">
 		{@render children?.()}
@@ -29,7 +28,7 @@
 		top: 0;
 		z-index: 500;
 		height: 2.5rem;
-		gap: .5rem;
+		gap: 0.5rem;
 		transition:
 			background-color 0.4s var(--cubic-bezier),
 			border-bottom-color 0.4s var(--cubic-bezier);
