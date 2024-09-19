@@ -34,7 +34,7 @@ Prerequisites:
 - `Docker` with Compose plugin
 
 Instructions:
-- Rename `.env.example` to `.env`
+- Copy `.env.example` to `.env`
 - Run `docker compose up --build`
 
 The app should now run on [`http://localhost:3000`](http://localhost:3000) and Umami runs on [`http://localhost:3001`](http://localhost:3001). Consult the [Umami Docs](https://umami.is/docs/login) for further instructions on how to get analytics. The environment variable `PUBLIC_UMAMI_SCRIPT` in `.env` can be used to insert the tracking script.
@@ -46,7 +46,7 @@ Prerequisites:
 - `Valkey >= 6.2.0` (or `Redis >= 6.2.0`)
 
 Instructions:
-- Rename `.env.example` to `.env`
+- Copy `.env.example` to `.env`
 - Start Valkey with `valkey-server` (or Redis with `redis-server`) on Port 6379
 - Run `npm install`
 - Run `npm run build`
