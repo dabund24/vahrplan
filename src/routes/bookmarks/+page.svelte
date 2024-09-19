@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import DiagramBookmarks from "$lib/components/bookmarks/DiagramBookmarks.svelte";
-	import JourneyBookmarks from "$lib/components/bookmarks/JourneyBookmarks.svelte";
-	import StationBookmarks from "$lib/components/bookmarks/StationBookmarks.svelte";
+	import DiagramBookmarks from "./DiagramBookmarks.svelte";
+	import JourneyBookmarks from "./JourneyBookmarks.svelte";
+	import StationBookmarks from "./StationBookmarks.svelte";
 	import type { ComponentProps } from "svelte";
 
 	const tabContent: ComponentProps<Tabs>["tabs"] = [

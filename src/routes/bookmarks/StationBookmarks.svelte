@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StationInput from "../../../routes/StationInput.svelte";
+	import StationInput from "../StationInput.svelte";
 	import type { ParsedLocation } from "$lib/types";
 	import { onMount } from "svelte";
 	import { getBookmarks, setBookmarks } from "$lib/bookmarks";
