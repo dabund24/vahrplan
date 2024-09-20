@@ -336,12 +336,6 @@ h3 {
 	padding-bottom: 0.5rem;
 }
 
-.line--accent {
-	background-color: var(--accent-color);
-	transition: background-color 0.4s var(--cubic-bezier);
-	border-radius: var(--border-radius--small);
-}
-
 .line--regular {
 	background-color: var(--foreground-color);
 	border-radius: var(--border-radius--small);
@@ -355,6 +349,12 @@ h3 {
 	height: 100%;
 	width: var(--line-width);
 	max-width: var(--line-width);
+}
+
+.line--accent {
+	background-color: var(--accent-color);
+	transition: background-color 0.4s var(--cubic-bezier);
+	border-radius: var(--border-radius--small);
 }
 
 .line--success {
