@@ -15,25 +15,13 @@ const hafasGlobalRateLimiter = new RateLimiter(60, 200);
 
 // wrap hafas client with rate limiter
 const hafasClientHandler: ProxyHandler<HafasClient> = {
-	get(target: HafasClient, prop: keyof HafasClient) {
-		const accessedFunction = target[prop] as (...args: unknown[]) => Promise<unknown>;
-
-		if (accessedFunction === undefined) {
-			return accessedFunction;
+	get(target: HafasClient, prop: keyof HafasClient): HafasClient[keyof HafasClient] {
+		const result = hafasGlobalRateLimiter.accessResource("global", () => target[prop]);
+		if (result.isError) {
+			// Pretend as if hafas client threw an error
+			return async () => Promise.resolve(throwHafasQuotaError());
 		}
-
-		return async function (...args: unknown[]) {
-			// call hafas-api wrapped with global rate limiter
-			const result = hafasGlobalRateLimiter.accessResource("global", () =>
-				accessedFunction.apply(target, args)
-			);
-
-			if (result.isError) {
-				// simulate hafas error which will be handled in the app.
-				throwHafasQuotaError();
-			}
-			return result.content;
-		};
+		return result.content;
 	}
 };
 
