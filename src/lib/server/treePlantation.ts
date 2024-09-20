@@ -157,10 +157,10 @@ async function findJourneysUntil(
 		}
 		remainingSearches--;
 	}
-	if (limit.type === "arrival") {
-		// sorting is necessary because of hybrid routing
-		journeys.sort((a, b) => a.departureTime.time.getTime() - b.departureTime.time.getTime());
-	}
+
+	// sorting is necessary because of hybrid routing
+	journeys.sort((a, b) => a.departureTime.time.getTime() - b.departureTime.time.getTime());
+
 	return journeys;
 }
 
