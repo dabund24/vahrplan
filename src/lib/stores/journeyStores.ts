@@ -1,6 +1,7 @@
 import { derived, get, writable } from "svelte/store";
 import type {
 	AdhesiveBlock,
+	Diagram,
 	JourneyBlock,
 	JourneyNode,
 	KeyedItem,
@@ -53,7 +54,9 @@ export function initializeSharedData(
 ): void {
 	formData.time = new Date(formData.time);
 	displayedFormData.set(formData);
-	displayedTree.set(Promise.resolve(journeyNodesToPathGraph(journeyNodes)));
+	displayedDiagram.set(
+		Promise.resolve({ recommendedVias: [], tree: journeyNodesToPathGraph(journeyNodes) })
+	);
 	journeyNodes.forEach((node) => {
 		const selectedJourney: SelectedJourney = {
 			blocks: node.blocks,
@@ -90,18 +93,18 @@ displayedFormData.subscribe(resetSelectedJourneys);
 export const displayedJourneys = derived(selectedJourneys, calculateDisplayedJourneys);
 
 // this is recalculated when and only when displayedLocations changes
-// export const displayedTree = derived(displayedLocations, calculateTree);
-export const displayedTree = writable<Promise<TreeNode[]>>(Promise.resolve([]));
-//displayedFormData.subscribe((formData) => displayedTree.set(calculateTree(formData)));
+export const displayedDiagram = writable<Promise<Diagram>>(
+	Promise.resolve({ recommendedVias: [], tree: [] })
+);
 
 export function setDisplayedFormDataAndTree(formData: DisplayedFormData): void {
 	displayedFormData.set(formData);
-	displayedTree.set(calculateTree(formData));
+	displayedDiagram.set(calculateDiagram(formData));
 }
 export function addDisplayedLocation(location: ParsedLocation, index: number): void {
 	displayedFormData.update((formData) => {
 		if (formData === undefined || formData.locations.length >= 7) {
-			toast("Hinzufügen der Station nicht möglich.", "red")
+			toast("Hinzufügen der Station nicht möglich.", "red");
 			return formData;
 		}
 		const newFormData: DisplayedFormData = {
@@ -116,7 +119,7 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 			geolocationDate: formData.geolocationDate
 		};
 		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
-		displayedTree.set(calculateTree(newFormData));
+		displayedDiagram.set(calculateDiagram(newFormData));
 		return newFormData;
 	});
 }
@@ -137,7 +140,7 @@ export function removeDisplayedLocation(index: number): void {
 			geolocationDate: formData.geolocationDate
 		};
 		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
-		displayedTree.set(calculateTree(newFormData));
+		displayedDiagram.set(calculateDiagram(newFormData));
 		return newFormData;
 	});
 }
@@ -190,15 +193,15 @@ function calculateDisplayedJourneys(
 	}) as KeyedItem<JourneyBlock[], string>[];
 }
 
-async function calculateTree(formData: DisplayedFormData | undefined): Promise<TreeNode[]> {
+async function calculateDiagram(formData: DisplayedFormData | undefined): Promise<Diagram> {
 	if (formData === undefined || formData.locations.length < 2) {
-		return Promise.resolve([]);
+		return Promise.resolve({ recommendedVias: [], tree: [] });
 	}
 	const url = getApiJourneysUrl(formData);
 	const loadingEst = formData.locations.length * 3;
-	return getApiData<TreeNode[]>(url, loadingEst).then((response) => {
+	return getApiData<Diagram>(url, loadingEst).then((response) => {
 		console.log(response);
-		return response.isError ? [] : response.content;
+		return response.isError ? { recommendedVias: [], tree: [] } : response.content;
 	});
 }
 
@@ -304,8 +307,12 @@ export async function refreshJourney(): Promise<void> {
 		}
 		return selectedJourneys;
 	});
-	displayedTree.update(async (tree) => {
-		return replaceJourneysInTree(await tree, refreshedJourneys, idsInDepth);
+	displayedDiagram.update(async (diagram) => {
+		const { recommendedVias, tree } = await diagram;
+		return {
+			recommendedVias,
+			tree: replaceJourneysInTree(tree, refreshedJourneys, idsInDepth)
+		};
 	});
 	toast("Reisedaten aktualisiert.", "green");
 }

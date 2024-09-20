@@ -7,7 +7,7 @@ export type KeyedItem<T, K extends number | string> = {
 	key: K;
 };
 
-export type Fetchable = TreeNode[] | JourneyBlock[][] | ParsedLocation[] | ParsedLocation;
+export type Fetchable = Diagram | JourneyBlock[][] | ParsedLocation[] | ParsedLocation;
 
 export type ZugResponse<T> = ZugSuccess<T> | ZugError;
 
@@ -88,6 +88,11 @@ export type TransitData = {
 		platformChanged: boolean;
 	} | null;
 };
+
+export type Diagram = {
+	recommendedVias: ParsedLocation[][]
+	tree: TreeNode[]
+}
 
 export type TreeNode = JourneyNode | EmptyNode;
 

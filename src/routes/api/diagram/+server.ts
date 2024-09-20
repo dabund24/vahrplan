@@ -1,5 +1,5 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
-import { getJourneyTree } from "$lib/server/treePlantation";
+import { getJourneyTree } from "./treePlantation.server";
 import { getZugError } from "$lib/server/responses";
 import { parseApiJourneysUrl } from "$lib/urls";
 

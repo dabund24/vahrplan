@@ -3,7 +3,7 @@
 	import {
 		type DisplayedFormData,
 		displayedFormData,
-		displayedTree,
+		displayedDiagram,
 		refreshJourney,
 		setDisplayedFormDataAndTree
 	} from "$lib/stores/journeyStores";
@@ -121,11 +121,11 @@
 				<section class="diagram">
 					{#if $displayedFormData !== undefined}
 						<JourneySummary {allSelected} />
-						{#await $displayedTree}
+						{#await $displayedDiagram}
 							<JourneyDiagramSkeleton
 								depth={$displayedFormData.locations.length - 1}
 							/>
-						{:then tree}
+						{:then { tree }}
 							<JourneyDiagram nodes={tree} />
 						{:catch err}
 							{err}

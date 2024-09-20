@@ -1,6 +1,7 @@
 import { hafasClient } from "$lib/server/setup";
 import type { JourneysOptions, Location, Station, Stop } from "hafas-client";
 import type {
+	Diagram,
 	JourneyBlock,
 	JourneyNode,
 	ParsedTime,
@@ -11,6 +12,7 @@ import type {
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
 import { journeyToBlocks } from "$lib/server/parse/parse";
 import { getFirstAndLastTime } from "$lib/util";
+import recommendVias from "./viaRecommendations.svelte";
 
 const MAX_DATE = 8_640_000_000_000_000;
 const SEARCH_MAX_THRESHOLD = 3;
@@ -48,26 +50,31 @@ export async function getJourneyTree(
 	stops: (string | Station | Stop | Location)[],
 	opt: JourneysOptions,
 	transitType: TransitType
-): Promise<ZugResponse<TreeNode[]>> {
+): Promise<ZugResponse<Diagram>> {
 	opt.routingMode = "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
 	opt.stopovers = true;
 	opt.polylines = true;
 	opt.startWithWalking = true;
 
 	// find all journeys of the tree
-	const journeyArraysResult = await getJourneyArrays(stops, opt, transitType);
-	if (journeyArraysResult.isError) {
-		return journeyArraysResult;
+	const subJourneysArraysResult = await getJourneyArrays(stops, opt, transitType);
+	if (subJourneysArraysResult.isError) {
+		return subJourneysArraysResult;
 	}
 
 	const progressInDepths = Array.from({ length: stops.length - 1 }, () => -1);
 	// construct the tree
-	const result = getTreeFromNodeArrays(journeyArraysResult.content, new Date(MAX_DATE), {
+	const tree = getTreeFromNodeArrays(subJourneysArraysResult.content, new Date(MAX_DATE), {
 		depth: 0,
 		progressInDepths
 	});
 
-	return getSuccessResponse<TreeNode[]>(result);
+	// find useful vias
+	const recommendedVias = subJourneysArraysResult.content.map((subJourney) =>
+		recommendVias(subJourney.map((subJourney) => subJourney.blocks))
+	);
+
+	return getSuccessResponse({ recommendedVias, tree });
 }
 
 /**
