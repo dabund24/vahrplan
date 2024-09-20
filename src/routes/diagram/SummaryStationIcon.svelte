@@ -105,8 +105,6 @@
 		position: absolute;
 		border: var(--border);
 		background-color: var(--background-color--transparent);
-		backdrop-filter: var(--blur);
-		-webkit-backdrop-filter: var(--blur);
 		translate: calc(16px - 50%) 0;
 	}
 </style>

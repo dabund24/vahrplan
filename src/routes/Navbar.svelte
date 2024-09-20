@@ -132,8 +132,6 @@
 			box-sizing: border-box;
 			z-index: 700;
 			background-color: var(--background-color--transparent);
-			backdrop-filter: var(--blur);
-			-webkit-backdrop-filter: var(--blur);
 		}
 		.links-container {
 			width: 100%;

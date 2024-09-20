@@ -236,9 +236,7 @@
 		z-index: 50;
 		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid var(--foreground-color--transparent);
-		backdrop-filter: var(--blur);
 		background-color: var(--background-color--transparent);
-		-webkit-backdrop-filter: var(--blur);
 	}
 
 	.input-summary {

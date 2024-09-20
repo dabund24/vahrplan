@@ -1,7 +1,5 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
     background-color: var(--background-color--transparent);
-    backdrop-filter: var(--blur);
-    -webkit-backdrop-filter: var(--blur);
     color: var(--foreground-color);
     box-shadow: none;
     border-radius: 50vh;
