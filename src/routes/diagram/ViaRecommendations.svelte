@@ -64,7 +64,12 @@
 
 	function handleFormSubmit(e: SubmitEvent): void {
 		e.preventDefault();
-		history.back()
+
+		if (suggestedLocations.every((s) => s.isSelected === s.isDisplayed)) {
+			history.back();
+			return;
+		}
+
 		updateDisplayedLocations(() =>
 			suggestedLocations.filter((l) => l.isSelected).map((l) => l.location)
 		);
