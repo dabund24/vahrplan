@@ -64,6 +64,7 @@
 
 	function handleFormSubmit(e: SubmitEvent): void {
 		e.preventDefault();
+		history.back()
 		updateDisplayedLocations(() =>
 			suggestedLocations.filter((l) => l.isSelected).map((l) => l.location)
 		);
