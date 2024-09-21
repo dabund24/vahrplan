@@ -67,26 +67,31 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Generierung von Kurzlinks beim Teilen</h1>
-	<ButtonModal modalTitle="Datenschutzhinweis Kurzlinks" showModalKey={"showPrivacyLinkModal"}>
-		{#snippet buttonContent()}
-			<Warning>Datenschutzhinweis</Warning>
-		{/snippet}
-		<div class="inline-icons">
-			<p>
-				Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
-				Klick auf das
-				<q>Teilen</q>-Symbol (<IconShare />) über einem Verbindungsdiagramm bzw. einer Reise
-				einen Kurzlink.
-			</p>
-			<p>
-				Der Server speichert für einen Kurzlink bis 7 Tage nach dem Zeitpunkt des
-				Diagramms/des Endes der Reise, welches Diagramm/welche Reise ihm zugeordnet ist.
-				Dies ist technisch notwendig, damit beim Aufrufen des Links das richtige
-				Diagramm/die richtige Verbindung angezeigt werden kann. Zusätzliche Daten werden
-				nicht gespeichert.
-			</p>
-		</div>
-	</ButtonModal>
+	<div class="button-modal-container">
+		<ButtonModal
+			modalTitle="Datenschutzhinweis Kurzlinks"
+			showModalKey={"showPrivacyLinkModal"}
+		>
+			{#snippet buttonContent()}
+				<Warning>Datenschutzhinweis</Warning>
+			{/snippet}
+			<div class="inline-icons">
+				<p>
+					Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
+					Klick auf das
+					<q>Teilen</q>-Symbol (<IconShare />) über einem Verbindungsdiagramm bzw. einer
+					Reise einen Kurzlink.
+				</p>
+				<p>
+					Der Server speichert für einen Kurzlink bis 7 Tage nach dem Zeitpunkt des
+					Diagramms/des Endes der Reise, welches Diagramm/welche Reise ihm zugeordnet ist.
+					Dies ist technisch notwendig, damit beim Aufrufen des Links das richtige
+					Diagramm/die richtige Verbindung angezeigt werden kann. Zusätzliche Daten werden
+					nicht gespeichert.
+				</p>
+			</div>
+		</ButtonModal>
+	</div>
 	<Setting
 		settingName={"Kurzlinks für Verbindungsdiagramme"}
 		bind:setting={$settings.general.shortLinksDiagrams}
@@ -98,29 +103,32 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>Dauerhaftes Speichern von Einstellungen</h1>
-	<ButtonModal
-		modalTitle="Datenschutzhinweis Local Storage"
-		showModalKey={"showPrivacyStoreModal"}
-	>
-		{#snippet buttonContent()}
-			<Warning>Datenschutzhinweis</Warning>
-		{/snippet}
-		<div class="inline-icons">
-			<p>
-				Wird eine der folgenden beiden Einstellungen aktiviert, werden die App-Einstellungen
-				bzw. die gesetzten Verbindungsfilter im Browser mit der Web-Technologie <a
-					target="_blank"
-					href="https://de.wikipedia.org/wiki/Web_Storage"><q>Local Storage</q></a
-				> sessionübergreifend gespeichert. Dies ist für die Funktionalität technisch notwendig.
-			</p>
-			<p> Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.</p>
-			<p
-				>Mehr Informationen zu Local Storage befinden sich <a
-					href="/about/privacy#web-storage">in der Datenschutzerklärung</a
-				>.
-			</p>
-		</div>
-	</ButtonModal>
+	<div class="button-modal-container">
+		<ButtonModal
+			modalTitle="Datenschutzhinweis Local Storage"
+			showModalKey={"showPrivacyStoreModal"}
+		>
+			{#snippet buttonContent()}
+				<Warning>Datenschutzhinweis</Warning>
+			{/snippet}
+			<div class="inline-icons">
+				<p>
+					Wird eine der folgenden beiden Einstellungen aktiviert, werden die
+					App-Einstellungen bzw. die gesetzten Verbindungsfilter im Browser mit der
+					Web-Technologie <a
+						target="_blank"
+						href="https://de.wikipedia.org/wiki/Web_Storage"><q>Local Storage</q></a
+					> sessionübergreifend gespeichert. Dies ist für die Funktionalität technisch notwendig.
+				</p>
+				<p> Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.</p>
+				<p
+					>Mehr Informationen zu Local Storage befinden sich <a
+						href="/about/privacy#web-storage">in der Datenschutzerklärung</a
+					>.
+				</p>
+			</div>
+		</ButtonModal>
+	</div>
 	<Setting
 		settingName={"App-Einstellungen"}
 		bind:setting={$settings.storage.general}
@@ -140,6 +148,10 @@
 	h1 {
 		font-size: 1.2rem;
 		padding-top: 0.5rem;
+	}
+
+	.button-modal-container {
+		margin: 0.5rem 0;
 	}
 
 	@media screen and (min-width: 1000px) {
