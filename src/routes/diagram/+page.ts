@@ -53,7 +53,8 @@ export const load: PageLoad = async ({ url, fetch }) => {
 				.catch(() => {
 					return {
 						isError: true,
-						description: "Anfrage kann nicht verarbeitet werden."
+						description: "Interner Fehler",
+						code: browser ? 400 : 500
 					};
 				})) as ZugResponse<ParsedLocation>;
 			if (!response.isError) {
