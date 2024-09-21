@@ -70,49 +70,54 @@
 	}
 </script>
 
-<ButtonModal modalTitle="Auswahl Zwischenstationen" showModalKey="showRecommendationModal">
-	{#snippet buttonContent()}
-		<div class="padded-top-bottom">
-			<IconStationLocation iconType="station" color="foreground" />
-		</div>
-	{/snippet}
-	<form onsubmit={handleFormSubmit}>
-		<Warning>
-			Für die hier zusätzlich angezeigten Zwischenstationen lohnt es sich möglicherweise, sie
-			auch im Diagramm zu berücksichtigen.
-		</Warning>
-		<div>
-			{#each suggestedLocations as suggestedLocation, i}
-				<div class="station-row" class:displayed={suggestedLocation.isDisplayed}>
-					<div class="icon flex-column">
-						<IconStationLocation
-							color={suggestedLocation.isDisplayed ? "accent" : "foreground"}
-							iconType={suggestedLocation.location.value.type}
-						/>
+{#if suggestedLocations.length > 2}
+	<ButtonModal modalTitle="Auswahl Zwischenstationen" showModalKey="showRecommendationModal">
+		{#snippet buttonContent()}
+			<div class="padded-top-bottom" class:hide={suggestedLocations.length <= 2}>
+				<IconStationLocation iconType="station" color="foreground" />
+			</div>
+		{/snippet}
+		<form onsubmit={handleFormSubmit}>
+			{#if recommendedVias.flat().length > 0}
+				<Warning>
+					Für die hier zusätzlich angezeigten Zwischenstationen lohnt es sich
+					möglicherweise, sie auch im Diagramm zu berücksichtigen.
+				</Warning>
+			{/if}
+			<div>
+				{#each suggestedLocations as suggestedLocation, i}
+					<div class="station-row" class:displayed={suggestedLocation.isDisplayed}>
+						<div class="icon flex-column">
+							<IconStationLocation
+								color={suggestedLocation.isDisplayed ? "accent" : "foreground"}
+								iconType={suggestedLocation.location.value.type}
+							/>
+						</div>
+						{#if i === 0 || i === suggestedLocations.length - 1}
+							<strong class="station-name"
+								>{suggestedLocation.location.value.name}</strong
+							>
+						{:else}
+							<Setting
+								settingName={suggestedLocation.location.value.name}
+								settingInfo={{ type: "boolean" }}
+								bind:setting={suggestedLocation.isSelected}
+							/>
+						{/if}
 					</div>
-					{#if i === 0 || i === suggestedLocations.length - 1}
-						<strong class="station-name">{suggestedLocation.location.value.name}</strong
-						>
-					{:else}
-						<Setting
-							settingName={suggestedLocation.location.value.name}
-							settingInfo={{ type: "boolean" }}
-							bind:setting={suggestedLocation.isSelected}
-						/>
-					{/if}
-				</div>
-			{/each}
-		</div>
-		<div class="flex-row buttons">
-			<button
-				class="hoverable hoverable--visible"
-				type="button"
-				onclick={() => void history.back()}>Abbrechen</button
-			>
-			<button class="hoverable hoverable--accent" type="submit">Übernehmen</button>
-		</div>
-	</form>
-</ButtonModal>
+				{/each}
+			</div>
+			<div class="flex-row buttons">
+				<button
+					class="hoverable hoverable--visible"
+					type="button"
+					onclick={() => void history.back()}>Abbrechen</button
+				>
+				<button class="hoverable hoverable--accent" type="submit">Übernehmen</button>
+			</div>
+		</form>
+	</ButtonModal>
+{/if}
 
 <style>
 	form {
