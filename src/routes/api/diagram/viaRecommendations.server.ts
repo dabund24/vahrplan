@@ -93,12 +93,7 @@ class ViaCandidates {
 	removeUnvisited(subJourneyLocationsNames: string[]): void {
 		// all names of locations, visited by a sub-journey
 		const subJourneyNameSet = new Set(subJourneyLocationsNames);
-		for (let i = 0; i < this.candidates.length; i++) {
-			if (this.candidates[i].names.isDisjointFrom(subJourneyNameSet)) {
-				this.candidates.splice(i, 1);
-				i--; // IMPORTANT, because an element of an array was just removed! This took me way too long to figure out
-			}
-		}
+		this.candidates.filter((candidate) => !candidate.names.isDisjointFrom(subJourneyNameSet))
 	}
 
 	/**
