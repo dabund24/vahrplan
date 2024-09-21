@@ -3,6 +3,8 @@
 	import { fade, fly } from "svelte/transition";
 	import type { ParsedLocation } from "$lib/types";
 	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores/journeyStores";
+	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 
 	type Props = {
 		location: ParsedLocation;
@@ -51,12 +53,7 @@
 		transition:fly={{ y: -36 }}
 		title="Station als Zwischenstation entfernen"
 	>
-		<svg width="16px" height="16px">
-			<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
-				<line x1="3" y1="3" x2="13" y2="13" />
-				<line x1="3" y1="13" x2="13" y2="3" />
-			</g>
-		</svg>
+		<IconClose />
 	</button>
 {:else if isPressed}
 	<button
@@ -65,12 +62,7 @@
 		onclick={() => void addDisplayedLocation(location, locationIndex + 1)}
 		title="Station als Zwischenstation hinzufügen"
 	>
-		<svg width="16px" height="16px">
-			<g stroke="var(--foreground-color)" stroke-width="3" stroke-linecap="round">
-				<line x1="8" y1="2" x2="8" y2="14" />
-				<line x1="2" y1="8" x2="14" y2="8" />
-			</g>
-		</svg>
+		<IconPlus />
 	</button>
 {/if}
 

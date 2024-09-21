@@ -21,6 +21,7 @@
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import { toast } from "$lib/stores/toastStore";
 	import { getCurrentGeolocation } from "$lib/geolocation.svelte";
+	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -102,7 +103,7 @@
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
 			const currentLocation = await getCurrentGeolocation();
 			if (currentLocation === undefined) {
-				return
+				return;
 			}
 			formData.geolocationDate = currentLocation.asAt;
 			formData.locations = formData.locations.map((l) => {
@@ -244,16 +245,7 @@
 						onclick={() => void addVia(i)}
 						title="Station hinzufügen"
 					>
-						<svg width="16px" height="16px">
-							<g
-								stroke="var(--foreground-color)"
-								stroke-width="3"
-								stroke-linecap="round"
-							>
-								<line x1="8" y1="2" x2="8" y2="14" />
-								<line x1="2" y1="8" x2="14" y2="8" />
-							</g>
-						</svg>
+						<IconPlus />
 					</button>
 					<StationInput
 						bind:selectedLocation={stop.value}
