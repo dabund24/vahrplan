@@ -46,9 +46,12 @@ function setDiagramSearchParams(formData: DisplayedFormData, url: URL): URL {
 export function parseApiJourneysUrl(url: URL): DiagramRequestData | undefined {
 	try {
 		return {
-			stops: JSON.parse(url.searchParams.get("stops") ?? "") as (string | Location)[],
+			stops: JSON.parse(decodeURIComponent(url.searchParams.get("stops") ?? "")) as (
+				| string
+				| Location
+			)[],
 			options: JSON.parse(
-				url.searchParams.get("options") ?? ""
+				decodeURIComponent(url.searchParams.get("options") ?? "")
 			) as Settings["journeysOptions"],
 			timeRole: url.searchParams.get("timeRole") as TransitType,
 			time: new Date(url.searchParams.get("time") as string)
