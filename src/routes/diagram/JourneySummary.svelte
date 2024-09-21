@@ -2,6 +2,7 @@
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import {
+		displayedDiagram,
 		displayedFormData,
 		mergingBlocks,
 		selectedJourneys
@@ -27,6 +28,7 @@
 	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
+	import ViaRecommendations from "./ViaRecommendations.svelte";
 
 	type Props = {
 		allSelected: boolean;
@@ -87,6 +89,9 @@
 <TitlelessHeader --header-width="var(--diagram-width)">
 	<div id="journey-summary" class="flex-column summary-background">
 		<div class="flex-row actions" class:all-selected={allSelected}>
+			{#await $displayedDiagram then { recommendedVias }}
+				<ViaRecommendations {recommendedVias} />
+			{/await}
 			<button
 				class="hoverable hoverable--visible"
 				onclick={() => void shareDiagram($displayedFormData)}

@@ -101,48 +101,55 @@ export function setDisplayedFormDataAndTree(formData: DisplayedFormData): void {
 	displayedFormData.set(formData);
 	displayedDiagram.set(calculateDiagram(formData));
 }
-export function addDisplayedLocation(location: ParsedLocation, index: number): void {
+
+export function updateDisplayedLocations(
+	updateLocationsFn: (formData: DisplayedFormData) => DisplayedFormData["locations"]
+): void {
 	displayedFormData.update((formData) => {
-		if (formData === undefined || formData.locations.length >= 7) {
-			toast("Hinzufügen der Station nicht möglich.", "red");
+		if (formData === undefined) {
+			return formData;
+		}
+
+		const locations = updateLocationsFn(formData);
+		if (formData.locations === locations) {
+			console.log("SAME");
+		}
+		if (locations.length < 2) {
+			toast("Mindestens zwei Stationen sind notwendig.", "red");
+			return formData;
+		}
+		if (locations.length > 7) {
+			toast("Es sind maximal fünf Zwischenstationen möglich.", "red");
 			return formData;
 		}
 		const newFormData: DisplayedFormData = {
-			locations: [
-				...formData.locations.slice(0, index),
-				{ value: location, key: Math.random() },
-				...formData.locations.slice(index)
-			],
+			locations,
 			time: formData.time,
 			timeRole: formData.timeRole,
 			options: formData.options,
 			geolocationDate: formData.geolocationDate
 		};
-		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
+
+		void goto(getDiagramUrlFromFormData(newFormData), {
+			state: { showFilterModal: false, showRecommendationModal: false }
+		});
 		displayedDiagram.set(calculateDiagram(newFormData));
 		return newFormData;
 	});
 }
+
+export function addDisplayedLocation(location: ParsedLocation, index: number): void {
+	updateDisplayedLocations((formData) => [
+		...formData.locations.slice(0, index),
+		{ value: location, key: Math.random() },
+		...formData.locations.slice(index)
+	]);
+}
 export function removeDisplayedLocation(index: number): void {
-	displayedFormData.update((formData) => {
-		if (formData === undefined || formData.locations.length <= 2) {
-			toast("Entfernen der Station nicht möglich.", "red");
-			return formData;
-		}
-		const newFormData: DisplayedFormData = {
-			locations: [
-				...formData.locations.slice(0, index),
-				...formData.locations.slice(index + 1)
-			],
-			time: formData.time,
-			timeRole: formData.timeRole,
-			options: formData.options,
-			geolocationDate: formData.geolocationDate
-		};
-		void goto(getDiagramUrlFromFormData(newFormData), { state: { showFilterModal: false } });
-		displayedDiagram.set(calculateDiagram(newFormData));
-		return newFormData;
-	});
+	updateDisplayedLocations((formData) => [
+		...formData.locations.slice(0, index),
+		...formData.locations.slice(index + 1)
+	]);
 }
 
 function resetSelectedJourneys(formData: DisplayedFormData | undefined): void {
