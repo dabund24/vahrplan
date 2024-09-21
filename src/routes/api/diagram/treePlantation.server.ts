@@ -12,7 +12,7 @@ import type {
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
 import { journeyToBlocks } from "$lib/server/parse/parse";
 import { getFirstAndLastTime } from "$lib/util";
-import recommendVias from "./viaRecommendations.svelte";
+import recommendVias from "./viaRecommendations.server";
 
 const MAX_DATE = 8_640_000_000_000_000;
 const SEARCH_MAX_THRESHOLD = 3;
