@@ -20,7 +20,7 @@
 	}
 </script>
 
-<button class="hoverable hoverable--visible" onclick={handleButtonClick}>
+<button type="button" class="hoverable hoverable--visible" onclick={handleButtonClick}>
 	{@render buttonContent()}
 </button>
 
