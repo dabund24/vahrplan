@@ -140,6 +140,6 @@
 	}
 
 	.button-content {
-		padding: 0.5rem 0.25rem;
+		padding: 0.5rem;
 	}
 </style>

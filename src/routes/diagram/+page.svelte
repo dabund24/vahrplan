@@ -228,7 +228,7 @@
 
 	.journey-preview {
 		position: relative;
-		padding: 0 1rem;
+		padding: 0 1rem 1rem;
 	}
 
 	/*
@@ -271,11 +271,14 @@
 			left: 0;
 		}
 		.main-application {
-			padding: 0 0.5rem 1.5rem;
+			padding: 0 0.5rem calc(env(safe-area-inset-bottom) + 1rem);
 			container-type: inline-size;
 			--display-width: calc(100cqw - 1.5rem);
 			width: auto;
 			min-width: 0;
+		}
+		.journey-preview {
+			padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
 		}
 	}
 </style>
