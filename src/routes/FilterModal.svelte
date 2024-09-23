@@ -5,6 +5,24 @@
 	import type { ComponentProps } from "svelte";
 	import Setting from "$lib/components/Setting.svelte";
 
+	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
+		settings.update((settings) => {
+			settings.journeysOptions.products = {
+				nationalExpress: preset === "all" || preset === "longDistance",
+				national: preset === "all" || preset === "longDistance",
+				regionalExpress: preset === "all" || preset === "longDistance",
+				regional: preset === "all" || preset === "regional",
+				subway: preset === "all" || preset === "regional",
+				suburban: preset === "all" || preset === "regional",
+				tram: preset === "all" || preset === "regional",
+				bus: preset === "all" || preset === "regional",
+				taxi: preset === "all" || preset === "regional",
+				ferry: preset === "all" || preset === "regional"
+			};
+			return settings;
+		});
+	}
+
 	const modalTabContent: ComponentProps<Tabs>["tabs"] = [
 		{
 			title: "Allgemein",
@@ -21,11 +39,7 @@
 	{#snippet buttonContent()}
 		<div class="button-content"> Filter </div>
 	{/snippet}
-	<Tabs
-		tabs={modalTabContent}
-		isBelowHeaderMobile={true}
-		isBelowHeaderDesktop={true}
-	/>
+	<Tabs tabs={modalTabContent} isBelowHeaderMobile={true} isBelowHeaderDesktop={true} />
 </ButtonModal>
 
 {#snippet generalFilter()}
@@ -83,6 +97,29 @@
 	/>
 {/snippet}
 {#snippet meansFilter()}
+	<div class="quick-means-presets flex-row padded-top-bottom">
+		<button
+			onclick={() => void setQuickMeansPreset("all")}
+			type="button"
+			class="hoverable hoverable--visible"
+		>
+			Alle
+		</button>
+		<button
+			onclick={() => void setQuickMeansPreset("regional")}
+			type="button"
+			class="hoverable hoverable--visible"
+		>
+			Nur Regional-/Nahverkehr
+		</button>
+		<button
+			onclick={() => void setQuickMeansPreset("longDistance")}
+			type="button"
+			class="hoverable hoverable--visible"
+		>
+			Nur Fernverkehr
+		</button>
+	</div>
 	{#each Object.entries(products) as [product, productName]}
 		<Setting
 			settingName={productName}
@@ -93,6 +130,15 @@
 {/snippet}
 
 <style>
+	.quick-means-presets {
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		& > * {
+			padding: 0.5rem 0.75rem;
+			text-wrap: nowrap;
+		}
+	}
+
 	.button-content {
 		padding: 0.5rem 0.25rem;
 	}
