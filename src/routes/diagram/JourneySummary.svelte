@@ -86,7 +86,7 @@
 	}
 </script>
 
-<TitlelessHeader --header-width="var(--diagram-width)">
+<TitlelessHeader --header-width="calc(var(--diagram-width) - 2rem">
 	<div id="journey-summary" class="flex-column summary-background">
 		<div class="flex-row actions" class:all-selected={allSelected}>
 			{#await $displayedDiagram then { recommendedVias }}
@@ -258,7 +258,7 @@
 
 	#journey-summary {
 		padding: 0 var(--line-width);
-		margin: 0 calc(-1 * var(--line-width) + 1rem);
+		margin: 0 calc(-1 * var(--line-width));
 	}
 
 	#journey-summary {
