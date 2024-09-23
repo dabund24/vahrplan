@@ -16,7 +16,6 @@
 	const {
 		isBelowHeaderMobile = false,
 		isBelowHeaderDesktop = false,
-		padContent = false,
 		tabs
 	}: Props = $props();
 
@@ -41,7 +40,7 @@
 	</div>
 </TitlelessHeader>
 
-<div class:pad-content={padContent}>
+<div>
 	{@render tabs[activeTab].content()}
 </div>
 
@@ -61,9 +60,5 @@
 	.line-container {
 		position: relative;
 		padding: 0 0.25rem;
-	}
-
-	.pad-content {
-		padding: 0 1rem;
 	}
 </style>

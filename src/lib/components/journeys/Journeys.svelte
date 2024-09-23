@@ -47,7 +47,7 @@
 	}
 </script>
 
-<div class="content-wrapper">
+<div class="journeys-wrapper">
 	{#if warningMessage !== undefined}
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
@@ -74,7 +74,8 @@
 </div>
 
 <style>
-	.content-wrapper {
-		padding: 0.5rem 1rem;
+	.journeys-wrapper {
+		max-width: 30rem;
+        margin: auto;
 	}
 </style>

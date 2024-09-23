@@ -142,9 +142,6 @@
 </div>
 
 <style>
-	.content-wrapper {
-		padding: 0 1rem;
-	}
 	h1 {
 		font-size: 1.2rem;
 		padding-top: 0.5rem;

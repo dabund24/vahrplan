@@ -26,18 +26,12 @@
 
 {#if $page.state[showModalKey]}
 	<Modal title={modalTitle} showModal={$page.state[showModalKey]}>
-		<div class="modal-content">
-			{@render children()}
-		</div>
+		{@render children()}
 	</Modal>
 {/if}
 
 <style>
 	button {
 		padding: 0 0.5rem;
-	}
-
-	.modal-content {
-		padding: 0 1rem;
 	}
 </style>

@@ -127,7 +127,7 @@
 
 <style>
 	form {
-		padding: 0.5rem 0 1rem;
+		padding: 0.5rem 0;
 	}
 
 	.station-row {

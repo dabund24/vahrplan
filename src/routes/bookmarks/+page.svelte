@@ -39,5 +39,5 @@
 
 <Header title="Lesezeichen" mobileOnly={true} />
 <div class="content-wrapper" data-sveltekit-preload-data="off">
-	<Tabs tabs={tabContent} isBelowHeaderMobile={true} padContent={true} />
+	<Tabs tabs={tabContent} isBelowHeaderMobile={true} />
 </div>

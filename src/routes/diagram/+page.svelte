@@ -147,8 +147,8 @@
 						<IconMap />
 					{/snippet}
 					{#snippet map()}
-						{#await import("$lib/components/leaflet/Leaflet.svelte") then Leaflet}
-							<Leaflet.default />
+						{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
+							<Leaflet />
 						{/await}
 					{/snippet}
 					<MiniTabs
@@ -228,6 +228,7 @@
 
 	.journey-preview {
 		position: relative;
+		padding: 0 1rem;
 	}
 
 	/*

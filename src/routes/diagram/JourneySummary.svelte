@@ -213,7 +213,7 @@
 		bind:showModal={$page.state.showLegModal}
 		title={`${modalLeg.name} → ${modalLeg.direction}`}
 	>
-		<div class="modal-content">
+		<div class="padded-top-bottom">
 			{#each modalLeg.info.statuses as status}
 				<Warning color="red">{status}</Warning>
 			{/each}
@@ -229,7 +229,7 @@
 <style>
 	.actions {
 		position: sticky;
-		right: 0.25rem;
+		right: 0.5rem;
 		align-self: start;
 		align-items: start;
 		padding: 4px 0 0.5rem;
@@ -256,10 +256,9 @@
 		}
 	}
 
-	#journey-summary,
-	:global(.titleless-header:has(#journey-summary) .transition) {
+	#journey-summary {
 		padding: 0 var(--line-width);
-		margin: 0 calc(-1 * var(--line-width));
+		margin: 0 calc(-1 * var(--line-width) + 1rem);
 	}
 
 	#journey-summary {
@@ -455,9 +454,5 @@
 
 	.station--selected .times--journey {
 		visibility: visible;
-	}
-
-	.modal-content {
-		padding: 0.5rem 1rem 0.5rem;
 	}
 </style>

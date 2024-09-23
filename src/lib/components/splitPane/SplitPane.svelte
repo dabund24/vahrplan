@@ -138,8 +138,7 @@
 
 	.pane > :global(*) {
 		width: 100%;
-		height: 100%;
-		overflow: auto;
+		min-height: 100%;
 		box-sizing: border-box;
 	}
 
@@ -220,11 +219,14 @@
 	}
 
 	@media screen and (min-width: 1000px) {
+		.pane {
+			width: calc(100% - var(--sp-thickness) / 2);
+		}
 		.pane:first-child {
-			padding-right: calc(var(--sp-thickness) / 2);
+			margin-right: calc(var(--sp-thickness) / 2);
 		}
 		.pane:nth-child(2) {
-			padding-left: calc(var(--sp-thickness) / 2);
+			margin-left: calc(var(--sp-thickness) / 2);
 		}
 	}
 

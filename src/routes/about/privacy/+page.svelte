@@ -16,7 +16,7 @@
 </svelte:head>
 
 <Header title={"Datenschutzerklärung"} mobileOnly={true} />
-<div class="content-wrapper">
+<div class="content-wrapper padded-top-bottom">
 	<h1 class="desktop-only">Datenschutz&shy;erkl&auml;rung</h1>
 	<h2>1. Datenschutz auf einen Blick</h2>
 	<h3>Allgemeine Hinweise</h3>
@@ -348,10 +348,6 @@
 </div>
 
 <style>
-	.content-wrapper {
-        padding: 0.5rem 1rem;
-	}
-
 	ul {
 		list-style: initial;
 		padding-left: 1rem;

@@ -2,17 +2,13 @@
 	import {page} from "$app/stores";
 </script>
 
-<div class="content-wrapper">
+<div class="content-wrapper padded-top-bottom">
 	<h1>Fehler {$page.status}</h1>
 	<div class="line--regular line--accent"></div>
 	<p>{$page.error?.message}</p>
 </div>
 
 <style>
-	.content-wrapper {
-		padding: .5rem 1rem;
-	}
-
 	.line--accent {
 		width: var(--line-length);
 	}

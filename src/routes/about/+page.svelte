@@ -12,7 +12,7 @@
 </svelte:head>
 
 <Header title={"Über diese Seite"} mobileOnly={true} />
-<div class="content-wrapper">
+<div class="content-wrapper padded-top-bottom">
 	<h1>Name</h1>
 	Vahrplan steht für
 	<i
@@ -127,10 +127,6 @@
 </div>
 
 <style>
-	.content-wrapper {
-		padding: 0.5rem 1rem;
-	}
-
 	h1 {
 		font-size: 1.2rem;
 	}

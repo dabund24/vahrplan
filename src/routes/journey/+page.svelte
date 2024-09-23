@@ -120,13 +120,11 @@
 {/snippet}
 {#snippet journeyOverview()}
 	{#if formData === undefined && $displayedFormData === undefined}
-		<div class="content-wrapper">
-			<Warning
-				>Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
-				Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird
-				dann hier angezeigt.
-			</Warning>
-		</div>
+		<Warning>
+			Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
+			Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
+			hier angezeigt.
+		</Warning>
 	{/if}
 	<Journeys />
 {/snippet}
@@ -156,7 +154,7 @@
 	</MiniTabs>
 {:else}
 	<div class="columns">
-		<section class="journeys">
+		<section class="journeys content-wrapper">
 			<TitlelessHeader>
 				{#if allSelected && $selectedJourneys.length > 0}
 					<div class="flex-row journey-actions--buttons">
@@ -187,12 +185,9 @@
 {/if}
 
 <style>
-	.content-wrapper {
-		padding: 0.5rem 1rem;
-	}
 	.columns {
 		display: grid;
-		grid-template-columns: 30rem 1fr;
+		grid-template-columns: max-content 1fr;
 		height: 100%;
 	}
 	.journeys {

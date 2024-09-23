@@ -16,7 +16,7 @@
 </svelte:head>
 
 <Header title="Impressum" mobileOnly={true} />
-<div class="content-wrapper">
+<div class="content-wrapper padded-top-bottom">
 	<h1 class="desktop-only">Impressum</h1>
 	<p>
 		Daniel Bund<br />
@@ -29,9 +29,3 @@
 		Telefon: {PUBLIC_PHONE_NUMBER}
 	</p>
 </div>
-
-<style>
-	.content-wrapper {
-		padding: 0.5rem 1rem;
-	}
-</style>

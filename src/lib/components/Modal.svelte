@@ -47,7 +47,9 @@
 				<IconClose />
 			</button>
 		</Header>
-		{@render children()}
+		<div class="content-wrapper">
+			{@render children()}
+		</div>
 	</div>
 </dialog>
 

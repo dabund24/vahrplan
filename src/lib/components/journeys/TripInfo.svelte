@@ -102,7 +102,7 @@
 
 <style>
 	ul {
-		padding: 0.5rem 1rem;
+		padding: 0.5rem 0;
 	}
 	@supports (align-self: anchor-center) {
 		button {
