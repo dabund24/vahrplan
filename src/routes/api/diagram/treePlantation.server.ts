@@ -15,7 +15,7 @@ import { getFirstAndLastTime } from "$lib/util";
 import recommendVias from "./viaRecommendations.server";
 
 const MAX_DATE = 8_640_000_000_000_000;
-const SEARCH_MAX_THRESHOLD = 3;
+const SEARCH_MAX_THRESHOLD = 2;
 
 type FromToOpt = {
 	from: string | Station | Stop | Location;
@@ -51,7 +51,7 @@ export async function getJourneyTree(
 	opt: JourneysOptions,
 	transitType: TransitType
 ): Promise<ZugResponse<Diagram>> {
-	opt.routingMode = "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
+	opt.routingMode = transitType === "departure" ? "REALTIME" : "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
 	opt.stopovers = true;
 	opt.polylines = true;
 	opt.startWithWalking = true;
@@ -152,7 +152,8 @@ async function findJourneysUntil(
 	// repeat finding process until limit is exceeded or `SEARCH_MAX_THRESHOLD` times
 	while (
 		!journeysExceedLimit[limit.type](lastJourneysWithRef.journeys, limit.date) &&
-		remainingSearches > 0
+		remainingSearches > 0 &&
+		(lastJourneysWithRef[`${timeComparisonPrefix}Ref`] ?? "") !== "" // this may if the journey is further in the future!
 	) {
 		fromToOpt.opt[`${timeComparisonPrefix}Than`] =
 			lastJourneysWithRef[`${timeComparisonPrefix}Ref`];
@@ -165,9 +166,10 @@ async function findJourneysUntil(
 		remainingSearches--;
 	}
 
-	// sorting is necessary because of hybrid routing
-	journeys.sort((a, b) => a.departureTime.time.getTime() - b.departureTime.time.getTime());
-
+	if (limit.type === "arrival") {
+		// sorting is necessary because of hybrid routing
+		journeys.sort((a, b) => a.departureTime.time.getTime() - b.departureTime.time.getTime());
+	}
 	return journeys;
 }
 
