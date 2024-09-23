@@ -37,7 +37,9 @@
 	}
 
 	.time {
-		border: transparent solid 1px;
+		border-width: 1px calc(var(--line-width) / 2);
+        border-color: transparent;
+        border-style: solid;
 		padding: 0 8px;
 	}
 
@@ -46,7 +48,7 @@
 		margin: 0 calc(-1 * var(--line-width));
 		height: fit-content;
 		border-radius: 50vh;
-		padding: 4px 0;
+		padding: var(--line-width) 0;
 		text-align: center;
 		align-items: stretch;
 		border: transparent var(--line-width) solid;
@@ -76,20 +78,20 @@
 
 	:global(:root[data-theme="dark"]) {
 		.time {
-			border: transparent solid 2px;
+			border-width: calc(var(--line-width) / 2);
 		}
 		.leg {
-			border: var(--border-color) solid 2px;
+			border-width: calc(var(--line-width) / 2);
 		}
 	}
 
 	@media (prefers-color-scheme: dark) {
 		:global(:root[data-theme="system"]) {
 			.time {
-				border: transparent solid 2px;
+				border-width: calc(var(--line-width) / 2);
 			}
 			.leg {
-				border: var(--border-color) solid 2px;
+				border-width: calc(var(--line-width) / 2);
 			}
 		}
 	}

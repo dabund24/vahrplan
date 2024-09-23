@@ -68,7 +68,9 @@
 
 <style>
 	.time {
-		border: transparent solid 1px;
+		border-width: 1px calc(var(--line-width) / 2);
+        border-color: transparent;
+        border-style: solid;
 		padding: 0 8px;
 	}
 
@@ -77,7 +79,7 @@
 		margin: 0 calc(-1 * var(--line-width));
 		height: fit-content;
 		border-radius: 50vh;
-		padding: 4px 0;
+        padding: var(--line-width) 0;
 		text-align: center;
 		align-items: stretch;
 		transition: border-radius 0.4s;
@@ -103,29 +105,6 @@
 		border-bottom-left-radius: 0;
 		border-left-color: transparent;
 	}
-
-	:global(:root[data-theme="dark"]) {
-        .time {
-            border-width: 2px;
-        }
-		.leg {
-            background-color: var(--background-color);
-            border-width: 2px;
-        }
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :global(:root[data-theme="system"]) {
-            .time {
-                border-width: 2px;
-            }
-            .leg {
-                background-color: var(--background-color);
-                border-width: 2px;
-            }
-        }
-
-    }
 
 	.legs {
 		width: 100%;
@@ -178,4 +157,27 @@
 			display: none;
 		}
 	}
+
+    :global(:root[data-theme="dark"]) {
+        .time {
+            border-width: calc(var(--line-width) / 2);
+        }
+        .leg {
+            background-color: var(--background-color);
+            border-width: calc(var(--line-width) / 2);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :global(:root[data-theme="system"]) {
+            .time {
+                border-width: calc(var(--line-width) / 2);
+            }
+            .leg {
+                background-color: var(--background-color);
+                border-width: calc(var(--line-width) / 2);
+            }
+        }
+
+    }
 </style>

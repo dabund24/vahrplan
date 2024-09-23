@@ -262,7 +262,7 @@
 	}
 
 	#journey-summary {
-		--beginning-end-offset: 1.5em;
+		--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
 		word-break: break-word;
 	}
 
