@@ -8,10 +8,11 @@
 		buttonContent: Snippet;
 		children: Snippet;
 		modalTitle: string;
+		modalHeight?: string;
 		showModalKey: Exclude<keyof App.PageState, "showTripInfoModal">;
 	};
 
-	let { buttonContent, children, modalTitle, showModalKey }: Props = $props();
+	let { buttonContent, children, modalTitle, modalHeight, showModalKey }: Props = $props();
 
 	function handleButtonClick(): void {
 		pushState("", {
@@ -25,7 +26,7 @@
 </button>
 
 {#if $page.state[showModalKey]}
-	<Modal title={modalTitle} showModal={$page.state[showModalKey]}>
+	<Modal title={modalTitle} showModal={$page.state[showModalKey]} height={modalHeight}>
 		{@render children()}
 	</Modal>
 {/if}

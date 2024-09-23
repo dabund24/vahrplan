@@ -1,0 +1,99 @@
+<script lang="ts">
+	import Tabs from "$lib/components/Tabs.svelte";
+	import ButtonModal from "$lib/ButtonModal.svelte";
+	import { products, settings } from "$lib/stores/settingStore";
+	import type { ComponentProps } from "svelte";
+	import Setting from "$lib/components/Setting.svelte";
+
+	const modalTabContent: ComponentProps<Tabs>["tabs"] = [
+		{
+			title: "Allgemein",
+			content: generalFilter
+		},
+		{
+			title: "Verkehrsmittel",
+			content: meansFilter
+		}
+	];
+</script>
+
+<ButtonModal showModalKey="showFilterModal" modalTitle="Verbindungsfilter" modalHeight="30rem">
+	{#snippet buttonContent()}
+		<div class="button-content"> Filter </div>
+	{/snippet}
+	<Tabs
+		tabs={modalTabContent}
+		isBelowHeaderMobile={true}
+		isBelowHeaderDesktop={true}
+	/>
+</ButtonModal>
+
+{#snippet generalFilter()}
+	<Setting
+		settingName="Fahrradmitnahme"
+		bind:setting={$settings.journeysOptions.bike}
+		settingInfo={{ type: "boolean" }}
+	/>
+	<Setting
+		settingName="Barrierefreiheit"
+		bind:setting={$settings.journeysOptions.accessibility}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: "none", name: "ignorieren" },
+				{ value: "partial", name: "bevorzugen" },
+				{ value: "complete", name: "strikt" }
+			]
+		}}
+	/>
+	<Setting
+		settingName="Maximale Umstiegsanzahl"
+		bind:setting={$settings.journeysOptions.transfers}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: 0, name: "0" },
+				{ value: 1, name: "1" },
+				{ value: 2, name: "2" },
+				{ value: 3, name: "3" },
+				{ value: 4, name: "4" },
+				{ value: 5, name: "5" },
+				{ value: -1, name: "beliebig" }
+			]
+		}}
+	/>
+	<Setting
+		settingName="Mindestumsteigezeit"
+		bind:setting={$settings.journeysOptions.transferTime}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: 0, name: "0min" },
+				{ value: 2, name: "2min" },
+				{ value: 5, name: "5min" },
+				{ value: 10, name: "10min" },
+				{ value: 15, name: "15min" },
+				{ value: 20, name: "20min" },
+				{ value: 30, name: "30min" },
+				{ value: 40, name: "40min" },
+				{ value: 50, name: "50min" },
+				{ value: 60, name: "1h" }
+			]
+		}}
+	/>
+{/snippet}
+{#snippet meansFilter()}
+	{#each Object.entries(products) as [product, productName]}
+		<Setting
+			settingName={productName}
+			bind:setting={$settings.journeysOptions.products[product]}
+			settingInfo={{ type: "boolean" }}
+		/>
+	{/each}
+{/snippet}
+
+<style>
+	.button-content {
+		padding: 0.5rem 0.25rem;
+	}
+</style>

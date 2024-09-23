@@ -8,20 +8,17 @@
 	} from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import Modal from "$lib/components/Modal.svelte";
-	import Tabs from "$lib/components/Tabs.svelte";
 	import Setting from "$lib/components/Setting.svelte";
-	import { products, settings } from "$lib/stores/settingStore";
-	import { goto, pushState } from "$app/navigation";
-	import { page } from "$app/stores";
+	import { settings } from "$lib/stores/settingStore";
+	import { goto } from "$app/navigation";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { get } from "svelte/store";
-	import type { ComponentProps } from "svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import { toast } from "$lib/stores/toastStore";
 	import { getCurrentGeolocation } from "$lib/geolocation.svelte";
 	import IconPlus from "$lib/components/icons/IconPlus.svelte";
+	import FilterModal from "./FilterModal.svelte";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -132,88 +129,7 @@
 		}
 		return true;
 	}
-
-	function showFilterModal(): void {
-		pushState("", {
-			showFilterModal: true
-		});
-	}
-
-	const modalTabContent: ComponentProps<Tabs>["tabs"] = [
-		{
-			title: "Allgemein",
-			content: generalFilter
-		},
-		{
-			title: "Verkehrsmittel",
-			content: meansFilter
-		}
-	];
 </script>
-
-{#snippet generalFilter()}
-	<Setting
-		settingName="Fahrradmitnahme"
-		bind:setting={$settings.journeysOptions.bike}
-		settingInfo={{ type: "boolean" }}
-	/>
-	<Setting
-		settingName="Barrierefreiheit"
-		bind:setting={$settings.journeysOptions.accessibility}
-		settingInfo={{
-			type: "options",
-			options: [
-				{ value: "none", name: "ignorieren" },
-				{ value: "partial", name: "bevorzugen" },
-				{ value: "complete", name: "strikt" }
-			]
-		}}
-	/>
-	<Setting
-		settingName="Maximale Umstiegsanzahl"
-		bind:setting={$settings.journeysOptions.transfers}
-		settingInfo={{
-			type: "options",
-			options: [
-				{ value: 0, name: "0" },
-				{ value: 1, name: "1" },
-				{ value: 2, name: "2" },
-				{ value: 3, name: "3" },
-				{ value: 4, name: "4" },
-				{ value: 5, name: "5" },
-				{ value: -1, name: "beliebig" }
-			]
-		}}
-	/>
-	<Setting
-		settingName="Mindestumsteigezeit"
-		bind:setting={$settings.journeysOptions.transferTime}
-		settingInfo={{
-			type: "options",
-			options: [
-				{ value: 0, name: "0min" },
-				{ value: 2, name: "2min" },
-				{ value: 5, name: "5min" },
-				{ value: 10, name: "10min" },
-				{ value: 15, name: "15min" },
-				{ value: 20, name: "20min" },
-				{ value: 30, name: "30min" },
-				{ value: 40, name: "40min" },
-				{ value: 50, name: "50min" },
-				{ value: 60, name: "1h" }
-			]
-		}}
-	/>
-{/snippet}
-{#snippet meansFilter()}
-	{#each Object.entries(products) as [product, productName]}
-		<Setting
-			settingName={productName}
-			bind:setting={$settings.journeysOptions.products[product]}
-			settingInfo={{ type: "boolean" }}
-		/>
-	{/each}
-{/snippet}
 
 <form class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
 	<div class="location-inputs--outer flex-row">
@@ -313,24 +229,7 @@
 			{/if}
 		</div>
 		<div class="filter-submit">
-			<button
-				class="hoverable hoverable--visible padded-top-bottom"
-				onclick={showFilterModal}
-				type="button"
-				title="Verbindungen filtern"
-			>
-				Filter
-			</button>
-			{#if $page.state.showFilterModal}
-				<Modal title="Filter" height={"32rem"} bind:showModal={$page.state.showFilterModal}>
-					<Tabs
-						tabs={modalTabContent}
-						isBelowHeaderMobile={true}
-						isBelowHeaderDesktop={true}
-						padContent={true}
-					/>
-				</Modal>
-			{/if}
+			<FilterModal />
 			<button
 				class="hoverable hoverable--accent padded-top-bottom"
 				type="submit"
