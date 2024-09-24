@@ -149,7 +149,9 @@
 					<Options id={"journey"} {options} />
 				{/if}
 			</Header>
-			{@render tabContent()}
+			<div class="content-wrapper padded-top-bottom">
+				{@render tabContent()}
+			</div>
 		{/snippet}
 	</MiniTabs>
 {:else}
