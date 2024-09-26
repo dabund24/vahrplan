@@ -29,6 +29,7 @@
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
 	import ViaRecommendations from "./ViaRecommendations.svelte";
+	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 
 	type Props = {
 		allSelected: boolean;
@@ -163,9 +164,19 @@
 							</div>
 							<div class="lines flex-row">
 								{#each journeyInfo[i].legs as leg (leg.blockKey)}
-									<div in:scale={{}} animate:flip={{ duration: 400 }}>
+									<div class="leg-container flex-row" in:scale animate:flip={{ duration: 400 }}>
+										<TrainProgressIndicator
+											orientation="horizontal"
+											product={leg.product}
+											departureTime={new Date(
+												leg.departureData.time.departure?.time ?? 0
+											).getTime()}
+											arrivalTime={new Date(
+												leg.arrivalData.time.arrival?.time ?? 0
+											).getTime()}
+										/>
 										<button
-											class="desktop-line-container hoverable"
+											class="line-container hoverable"
 											onclick={() => void showLegModal(leg)}
 											title={leg.name}
 										>
@@ -256,7 +267,7 @@
 		}
 	}
 
-	#journey-summary {
+	#journey-summary, :global(.transition) {
 		padding: 0 var(--line-width);
 		margin: 0 calc(-1 * var(--line-width));
 	}
@@ -370,8 +381,10 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			& > * {
+			.leg-container {
 				width: 100%;
+				align-items: center;
+				position: relative;
 			}
 		}
 		& .intermediate-stations {
@@ -388,7 +401,8 @@
 		& > .station-icon-container {
 			left: 50%;
 		}
-		& .desktop-line-container {
+		& .line-container {
+			position: relative;
 			align-self: center;
 			height: 100%;
 			width: calc(100% + 32px);
@@ -398,7 +412,6 @@
 			margin: 0 -16px;
 			padding: 0 12px;
 			&:hover {
-				position: relative;
 				z-index: 1;
 			}
 			& .line--product {

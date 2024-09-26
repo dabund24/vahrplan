@@ -50,7 +50,6 @@
 <style>
 	.indicator-container {
 		position: absolute;
-		box-sizing: border-box;
 		translate: 0 -50%;
 		z-index: 10;
 		visibility: hidden;
