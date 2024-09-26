@@ -32,7 +32,7 @@
 			<Time time={block.arrivalData.time} />
 		</div>
 	</div>
-	<div class="line-container flex-column">
+	<div class="line-container flex-column" class:hide-progress={isCompact}>
 		<TrainProgressIndicator
 			departureTime={new Date(block.departureData.time.departure?.time ?? 0).getTime()}
 			arrivalTime={new Date(block.arrivalData.time.arrival?.time ?? 0).getTime()}
@@ -109,7 +109,8 @@
 		margin: 1.5rem 0.5rem;
 		align-items: center;
 	}
-	.leg:has(details[open]) .line-container > :global(:first-child) {
+	.leg:has(details[open]) .line-container > :global(:first-child),
+	.line-container.hide-progress > :global(:first-child) {
 		display: none;
 	}
 	.line__station-icon {
