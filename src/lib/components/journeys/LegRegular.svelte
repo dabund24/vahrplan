@@ -6,6 +6,7 @@
 	import type { LegBlock } from "$lib/types";
 	import Duration from "$lib/components/Duration.svelte";
 	import JourneyInfo from "$lib/components/journeys/TripInfo.svelte";
+	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 
 	type Props = {
 		block: LegBlock;
@@ -31,18 +32,28 @@
 			<Time time={block.arrivalData.time} />
 		</div>
 	</div>
-	<div class="desktop-line-container flex-column">
-		<IconStationLocation
-			color="product"
-			iconType="station"
-			isCancelled={block.departureData.attribute === "cancelled"}
+	<div class="line-container flex-column">
+		<TrainProgressIndicator
+			departureTime={new Date(block.departureData.time.departure?.time ?? 0).getTime()}
+			arrivalTime={new Date(block.arrivalData.time.arrival?.time ?? 0).getTime()}
+			product={block.product}
+			orientation="vertical"
 		/>
+		<div class="line__station-icon">
+			<IconStationLocation
+				color="product"
+				iconType="station"
+				isCancelled={block.departureData.attribute === "cancelled"}
+			/>
+		</div>
 		<div class="line--product line--vertical"></div>
-		<IconStationLocation
-			color="product"
-			iconType="station"
-			isCancelled={block.arrivalData.attribute === "cancelled"}
-		/>
+		<div class="line__station-icon">
+			<IconStationLocation
+				color="product"
+				iconType="station"
+				isCancelled={block.arrivalData.attribute === "cancelled"}
+			/>
+		</div>
 	</div>
 	<div class="right-to-line flex-column">
 		<div class="top-or-bottom flex-row">
@@ -93,12 +104,17 @@
 		height: 3rem;
 		align-items: center;
 	}
-	.desktop-line-container {
-		padding: calc(1.5rem - var(--height--icon--small) / 2) 0;
-		margin: 0 0.5rem;
+	.line-container {
+		position: relative;
+		margin: 1.5rem 0.5rem;
+		align-items: center;
 	}
-	.line--vertical {
-		margin: calc(var(--height--icon--small) / -2) auto;
+	.leg:has(details[open]) .line-container > :global(:first-child) {
+		display: none;
+	}
+	.line__station-icon {
+		margin: -8px 0;
+		z-index: 1;
 	}
 	.right-to-line {
 		width: 100%;
@@ -146,13 +162,13 @@
 
 	.hide-top {
 		& .top-or-bottom:first-child,
-		& .desktop-line-container > :global(:first-child) {
+		& .line-container > :global(:first-child) {
 			opacity: 0;
 		}
 	}
 	.hide-bottom {
 		& .top-or-bottom:last-child,
-		& .desktop-line-container > :global(:last-child) {
+		& .line-container > :global(:last-child) {
 			opacity: 0;
 		}
 	}
