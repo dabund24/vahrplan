@@ -21,6 +21,7 @@
 		currentPositionData,
 		setupCurrentPositionData
 	} from "$lib/geolocation.svelte.js";
+	import IconTrainLocation from "$lib/components/IconTrainLocation.svelte";
 
 	let map: L.Map | undefined = $state();
 	let mapElement: HTMLElement;
@@ -88,7 +89,7 @@
 			];
 		}
 		map.fitBounds(L.latLngBounds(coordinates), {
-			padding: [10, 100],
+			padding: [10, 100]
 		});
 	}
 </script>
@@ -143,21 +144,7 @@
 								platformData: null
 							}}
 						>
-							<svg
-								width="16px"
-								height="16px"
-								xmlns="http://www.w3.org/2000/svg"
-								class="product--{block.product}"
-							>
-								<circle
-									cx="8"
-									cy="8"
-									r="5.5"
-									fill="var(--background-color)"
-									stroke="var(--foreground-color)"
-								/>
-								<circle cx="8" cy="8" r="3" fill="var(--product-color)" />
-							</svg>
+							<IconTrainLocation product={block.product} />
 						</Marker>
 					{/if}
 				{:else if block.type === "transfer"}
