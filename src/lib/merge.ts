@@ -9,6 +9,7 @@ import type {
 	WalkingBlock
 } from "$lib/types";
 import { dateDifference, getRawLocationBlock, mergeTransitData } from "$lib/util";
+import type { Product } from "$lib/stores/settingStore";
 
 /**
  * Figures out how to merge two journeys by returning a merging block
@@ -179,9 +180,9 @@ function mergingWalkToBlock(
 
 export function transferToBlock(
 	arrivalData: TransitData,
-	arrivalProduct: string,
+	arrivalProduct: Product,
 	departureData: TransitData,
-	departureProduct: string,
+	departureProduct: Product,
 	isStopover: boolean
 ): TransferBlock {
 	return {
