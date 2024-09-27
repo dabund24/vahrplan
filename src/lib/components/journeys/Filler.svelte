@@ -5,6 +5,7 @@
 	import Time from "$lib/components/Time.svelte";
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
+	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 
 	type Props = {
 		block: FillerBlock;
@@ -42,11 +43,22 @@
 			<Duration {duration} isAlignedRight={true} />
 		{/if}
 	</div>
-	<div class="icon-container flex-row">
+	<div
+		class="icon-container flex-row"
+		class:stopover={block.type === "transfer" && block.isStopover}
+	>
 		{#if block.type === "transfer" && block.isStopover}
+			{@const arrivalTime = new Date(block.transitData.time.arrival?.time ?? 0).getTime()}
+			{@const departureTime = new Date(block.transitData.time.departure?.time ?? 0).getTime()}
 			<IconStationLocation color={"product"} isSmallIcon={true} iconType={"station"} />
+			<TrainProgressIndicator
+				departureTime={arrivalTime}
+				arrivalTime={departureTime}
+				orientation="vertical"
+				product={block.arrivalProduct}
+			/>
 		{:else}
-			<IconFiller type={block.type} />
+			<IconFiller type={block.type} isSmallIcon={false} />
 		{/if}
 	</div>
 	{#if block.type === "walk"}
@@ -91,5 +103,9 @@
 	}
 	.icon-container {
 		align-items: center;
+		position: relative;
+		&.stopover {
+            height: 0;
+        }
 	}
 </style>

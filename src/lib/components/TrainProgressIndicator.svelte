@@ -17,7 +17,14 @@
 
 	let indicatorContainer: HTMLElement;
 
-	onMount(() => document.addEventListener("visibilitychange", synchronizeAnimation));
+	onMount(() => {
+		document.addEventListener("visibilitychange", synchronizeAnimation);
+
+		// This ensures that the animation starts even if the element is child of a collapsed details node
+		indicatorContainer.style.animation = "none";
+		indicatorContainer.offsetHeight;
+		indicatorContainer.style.animation = "";
+	});
 
 	onDestroy(() => document.removeEventListener("visibilitychange", synchronizeAnimation));
 

@@ -90,9 +90,9 @@ export type TransitData = {
 };
 
 export type Diagram = {
-	recommendedVias: ParsedLocation[][]
-	tree: TreeNode[]
-}
+	recommendedVias: ParsedLocation[][];
+	tree: TreeNode[];
+};
 
 export type TreeNode = JourneyNode | EmptyNode;
 
@@ -187,10 +187,10 @@ export type TransferBlock = {
 	type: "transfer";
 	transferTime: number;
 	transitData: TransitData;
-	arrivalProduct: string;
-	departureProduct: string;
+	arrivalProduct: Product;
+	departureProduct: Product;
 	isStopover: boolean;
-} & { [K in TransitType as `${K}Product`]: string };
+};
 
 export type LocationBlock = {
 	type: "location";
@@ -227,8 +227,8 @@ export type PopupDataLine = {
 export type PopupDataStation = {
 	type: "station";
 	transitData: TransitData;
-	product1?: string;
-	product2?: string;
+	product1?: Product;
+	product2?: Product;
 };
 
 export type PopupDataOnwardJourney = {

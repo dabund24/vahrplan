@@ -10,14 +10,15 @@
 
 	type Props = {
 		info: LegBlock["info"];
-		tripId: string;
+		blockKey: string;
+		departureTime: number;
 	};
 
-	let { info, tripId }: Props = $props();
+	let { info, blockKey, departureTime }: Props = $props();
 
 	function showInfoModal(): void {
 		pushState("", {
-			showTripInfoModal: { [tripId]: true }
+			showTripInfoModal: { [blockKey]: true }
 		});
 	}
 
@@ -77,7 +78,8 @@
 		title="Fahrtinformationen anzeigen"
 		class="hoverable hoverable--visible"
 		onclick={showInfoModal}
-		style="position-anchor: --anchor-{tripId};"
+		style:right="anchor(--leg--{blockKey} right)"
+		style:position-anchor="--leg--{blockKey}{departureTime}__stopovers-summary"
 	>
 		<IconInfo color={info.statuses.length > 0 ? "red" : undefined} />
 	</button>
@@ -89,10 +91,10 @@
 	{#snippet modalHeaderItems()}
 		{@render miniTabs()}
 	{/snippet}
-	{#if $page.state.showTripInfoModal?.[tripId]}
+	{#if $page.state.showTripInfoModal?.[blockKey]}
 		<Modal
 			title="Fahrtinformationen"
-			bind:showModal={$page.state.showTripInfoModal[tripId]}
+			bind:showModal={$page.state.showTripInfoModal[blockKey]}
 			headerItems={modalHeaderItems}
 			height="20rem"
 			children={tabContent}
@@ -108,7 +110,6 @@
 		button {
 			position: absolute;
 			align-self: anchor-center;
-			right: 0;
 		}
 	}
 </style>

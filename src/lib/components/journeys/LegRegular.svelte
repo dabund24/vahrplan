@@ -14,12 +14,18 @@
 	};
 
 	let { block, isCompact = false }: Props = $props();
+
+	const departureTime = $derived(
+		new Date(block.departureData.time.departure?.time ?? 0).getTime()
+	);
+	const arrivalTime = $derived(new Date(block.arrivalData.time.arrival?.time ?? 0).getTime());
 </script>
 
 <div
 	class="flex-row leg product--{block.product}"
 	class:hide-top={block.precededBy === "stopover" && !isCompact}
 	class:hide-bottom={block.succeededBy === "stopover" && !isCompact}
+	style:anchor-name="--leg--{block.blockKey}"
 >
 	<div class="flex-column">
 		<div class="top-or-bottom flex-column">
@@ -34,12 +40,15 @@
 	</div>
 	<div class="line-container flex-column" class:hide-progress={isCompact}>
 		<TrainProgressIndicator
-			departureTime={new Date(block.departureData.time.departure?.time ?? 0).getTime()}
-			arrivalTime={new Date(block.arrivalData.time.arrival?.time ?? 0).getTime()}
+			{departureTime}
+			{arrivalTime}
 			product={block.product}
 			orientation="vertical"
 		/>
-		<div class="line__station-icon">
+		<div
+			class="line__station-icon"
+			style="anchor-name: --leg--{block.blockKey}{departureTime}-icon--0;"
+		>
 			<IconStationLocation
 				color="product"
 				iconType="station"
@@ -47,7 +56,11 @@
 			/>
 		</div>
 		<div class="line--product line--vertical"></div>
-		<div class="line__station-icon">
+		<div
+			class="line__station-icon"
+			style:anchor-name="--leg--{block.blockKey}{departureTime}-icon--{block.stopovers
+				.length + 1}"
+		>
 			<IconStationLocation
 				color="product"
 				iconType="station"
@@ -61,12 +74,18 @@
 		</div>
 		<div class="middle padded-top-bottom flex-row">
 			{#if isCompact}
-				<Stopovers stopovers={block.stopovers} />
+				<Stopovers
+					stopovers={block.stopovers}
+					blockKey={block.blockKey}
+					{departureTime}
+					{arrivalTime}
+					product={block.product}
+				/>
 			{:else}
 				<details>
 					<summary
 						class="hoverable flex-row"
-						style="anchor-name: --anchor-{block.blockKey}"
+						style="anchor-name: --leg--{block.blockKey}{departureTime}__stopovers-summary"
 					>
 						<span class="limit-lines">{block.name} &rightarrow; {block.direction}</span>
 						<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
@@ -82,10 +101,16 @@
 						</svg>
 					</summary>
 					<div>
-						<Stopovers stopovers={block.stopovers} />
+						<Stopovers
+							stopovers={block.stopovers}
+							blockKey={block.blockKey}
+							{departureTime}
+							{arrivalTime}
+							product={block.product}
+						/>
 					</div>
 				</details>
-				<JourneyInfo info={block.info} tripId={block.blockKey} />
+				<JourneyInfo info={block.info} blockKey={block.blockKey} {departureTime} />
 			{/if}
 		</div>
 		<div class="flex-row top-or-bottom">
@@ -98,7 +123,7 @@
 	.middle {
 		margin: auto 0;
 		align-items: start;
-		position: relative;
+		z-index: 10;
 	}
 	.top-or-bottom {
 		height: 3rem;
@@ -111,7 +136,7 @@
 	}
 	.leg:has(details[open]) .line-container > :global(:first-child),
 	.line-container.hide-progress > :global(:first-child) {
-		display: none;
+		opacity: 0;
 	}
 	.line__station-icon {
 		margin: -8px 0;
@@ -163,13 +188,13 @@
 
 	.hide-top {
 		& .top-or-bottom:first-child,
-		& .line-container > :global(:first-child) {
+		& .line-container > .line__station-icon:nth-child(2) {
 			opacity: 0;
 		}
 	}
 	.hide-bottom {
 		& .top-or-bottom:last-child,
-		& .line-container > :global(:last-child) {
+		& .line-container > .line__station-icon:last-child {
 			opacity: 0;
 		}
 	}
