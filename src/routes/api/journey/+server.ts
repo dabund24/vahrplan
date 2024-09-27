@@ -2,7 +2,7 @@ import { json, type RequestHandler } from "@sveltejs/kit";
 import { hafasClient } from "$lib/server/setup";
 import { journeyToBlocks } from "$lib/server/parse/parse";
 import { getSuccessResponse, getZugError, getZugErrorFromHafasError } from "$lib/server/responses";
-import type { JourneyBlock, ZugResponse } from "$lib/types";
+import type { JourneyBlock, LegBlock, ZugResponse } from "$lib/types";
 import type { Journey } from "hafas-client";
 
 export const GET: RequestHandler = async function ({ url }) {
@@ -49,8 +49,34 @@ async function getJourneyByTokens(tokens: string[]): Promise<ZugResponse<Journey
 			})
 		);
 		const blocks = hafasJourneys.map(journeyToBlocks);
-		return getSuccessResponse(blocks);
+		return getSuccessResponse(setMergingPrpoerties(blocks));
 	} catch (e) {
 		return getZugErrorFromHafasError(e);
 	}
+}
+
+function setMergingPrpoerties(subJourneys: JourneyBlock[][]): JourneyBlock[][] {
+	for (let i = 1; i < subJourneys.length; i++) {
+		const arrivingSubJourneyBlock = subJourneys[i - 1].at(-1);
+		const departungSubJourneyBlock = subJourneys[i].at(0);
+		if (arrivingSubJourneyBlock?.type !== "leg" || departungSubJourneyBlock?.type !== "leg") {
+			// do nothing
+		} else if (arrivingSubJourneyBlock.blockKey === departungSubJourneyBlock.blockKey) {
+			arrivingSubJourneyBlock.succeededBy = "stopover";
+			departungSubJourneyBlock.precededBy = "stopover";
+		} else if (legsHaveSameLocations(arrivingSubJourneyBlock, departungSubJourneyBlock)) {
+			arrivingSubJourneyBlock.succeededBy = "transfer";
+			departungSubJourneyBlock.precededBy = "transfer";
+		}
+	}
+	return subJourneys;
+}
+
+function legsHaveSameLocations(arrivingLeg: LegBlock, departingLeg: LegBlock): boolean {
+	return (
+		arrivingLeg.arrivalData.location.position.lng ===
+			departingLeg.departureData.location.position.lng &&
+		arrivingLeg.arrivalData.location.position.lat ===
+			departingLeg.departureData.location.position.lat
+	);
 }
