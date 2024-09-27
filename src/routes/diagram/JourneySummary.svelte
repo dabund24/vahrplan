@@ -267,7 +267,7 @@
 		}
 	}
 
-	#journey-summary, :global(.transition) {
+	#journey-summary, #journey-summary ~ :global(.transition) {
 		padding: 0 var(--line-width);
 		margin: 0 calc(-1 * var(--line-width));
 	}
