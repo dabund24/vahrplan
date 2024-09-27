@@ -143,14 +143,10 @@
 						</div>
 						<div class="visuals--selected">
 							<div class="intermediate-stations flex-row">
-								<!--
-						TODO change transition after https://github.com/sveltejs/svelte/issues/10251 is resolved
-						-->
 								{#each journeyInfo[i].legs.slice(1) as leg (leg.departureData.location.requestParameter)}
 									<div
 										class="station-icon-container"
-										in:scale
-										out:scale
+										transition:scale
 										animate:flip={{ duration: 400 }}
 									>
 										<SummaryStationIcon
@@ -164,7 +160,11 @@
 							</div>
 							<div class="lines flex-row">
 								{#each journeyInfo[i].legs as leg (leg.blockKey)}
-									<div class="leg-container flex-row" in:scale animate:flip={{ duration: 400 }}>
+									<div
+										class="leg-container flex-row"
+										in:scale
+										animate:flip={{ duration: 400 }}
+									>
 										<TrainProgressIndicator
 											orientation="horizontal"
 											product={leg.product}
@@ -267,7 +267,8 @@
 		}
 	}
 
-	#journey-summary, #journey-summary ~ :global(.transition) {
+	#journey-summary,
+	#journey-summary ~ :global(.transition) {
 		padding: 0 var(--line-width);
 		margin: 0 calc(-1 * var(--line-width));
 	}
