@@ -60,6 +60,7 @@
 
 	small {
 		position: fixed;
+		z-index: 1000;
 		left: 0;
 		bottom: 0;
 		font-size: 0.75rem;
