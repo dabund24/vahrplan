@@ -313,7 +313,8 @@ h3 {
 }
 
 .content-wrapper {
-	max-width: 30rem;
+	width: 30rem;
+	max-width: 100%;
 	box-sizing: border-box;
 	margin: 0 auto;
 	padding: 0 1rem 0.5rem;
