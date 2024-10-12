@@ -77,6 +77,7 @@
 	.diagram-element {
 		width: calc(var(--connection-width) + 2 * var(--line-width));
 		margin: 0 calc(-1 * var(--line-width));
+		position: relative;
 		height: fit-content;
 		border-radius: 50vh;
         padding: var(--line-width) 0;

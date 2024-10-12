@@ -4,7 +4,7 @@
 
 	type Props = {
 		nodes: TreeNode[];
-	}
+	};
 
 	let { nodes }: Props = $props();
 </script>
@@ -34,6 +34,6 @@
 		width: var(--connection-width);
 	}
 	.empty-node + :global(.diagram-column .diagram-element) {
-        opacity: .5;
+		opacity: 0.5;
 	}
 </style>

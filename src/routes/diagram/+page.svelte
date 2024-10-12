@@ -214,6 +214,18 @@
 	.diagram {
 		margin: 0 auto;
 		gap: 0.5rem;
+		/* vertical lines separating sub-journeys */
+		background-image: linear-gradient(
+			to right,
+			var(--foreground-color--very-transparent) 1px,
+			var(--background-color) 1px calc(100% - 1px),
+			var(--foreground-color--very-transparent) calc(100% - 1px)
+		);
+		background-size: calc(var(--connection-width)) 100%;
+		background-repeat: repeat;
+		/* cover vertical lines at very right and at very left */
+		outline: var(--background-color) solid 4px;
+		outline-offset: -3px;
 	}
 	.split-container {
 		height: 100%;
