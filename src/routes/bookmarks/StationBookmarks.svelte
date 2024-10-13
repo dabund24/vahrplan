@@ -50,7 +50,7 @@
 
 {#if bookmarks.length === 0}
 	<Warning
-		>Gemerkte Stationen werden in den Eigabefeldern auf der Startseite als erstes angezeigt</Warning
+		>Gemerkte Stationen werden in den Eingabefeldern auf der Startseite als erstes angezeigt.</Warning
 	>
 {:else}
 	<ul class="flex-column">
