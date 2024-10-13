@@ -25,17 +25,17 @@
 
 	const modalTabContent: ComponentProps<Tabs>["tabs"] = [
 		{
-			title: "Allgemein",
-			content: generalFilter
-		},
-		{
 			title: "Verkehrsmittel",
 			content: meansFilter
+		},
+		{
+			title: "Sonstiges",
+			content: generalFilter
 		}
 	];
 </script>
 
-<ButtonModal showModalKey="showFilterModal" modalTitle="Verbindungsfilter" modalHeight="30rem">
+<ButtonModal showModalKey="showFilterModal" modalTitle="Verbindungsfilter" modalHeight="35rem">
 	{#snippet buttonContent()}
 		<div class="button-content"> Filter </div>
 	{/snippet}
