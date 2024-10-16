@@ -15,7 +15,7 @@ jobs:
 
       - name: Copy file and rename
         run: |
-          cp ./.env.example ./.env
+          cp "${GITHUB_WORKSPACE}/.env.example" "${GITHUB_WORKSPACE}/.env"
 
   test-build:
     name: Test build
