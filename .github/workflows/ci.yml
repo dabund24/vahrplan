@@ -6,18 +6,21 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  PUBLIC_PAYPAL_LINK: _
-  PUBLIC_IMPRINT_EMAIL_ADDRESS: _
-  PUBLIC_IMPRINT_STREET: _
-  PUBLIC_IMPRINT_TOWN: _
-  PUBLIC_PHONE_NUMBER: _
-  PUBLIC_UMAMI_SCRIPT: _
-
 jobs:
+  setup:
+    name: Create env file with empty variables
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy file and rename
+        run: |
+          cp ./.env.example ./.env
+
   test-build:
     name: Test build
     runs-on: ubuntu-latest
+    needs: setup
     steps:
       - uses: actions/checkout@v3
 
