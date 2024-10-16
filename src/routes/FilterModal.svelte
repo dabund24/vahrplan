@@ -30,7 +30,7 @@
 		},
 		{
 			title: "Sonstiges",
-			content:
+			content: generalFilter
 		}
 	];
 </script>
