@@ -18,7 +18,6 @@ jobs:
   test-build:
     name: Test build
     runs-on: ubuntu-latest
-    needs: setup
     steps:
       - uses: actions/checkout@v3
 
