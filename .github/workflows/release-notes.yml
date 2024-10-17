@@ -1,4 +1,4 @@
-name: release-notes.yml
+name: Release Notes
 on:
     pull_request:
         branches: [master]
