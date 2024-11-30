@@ -1,18 +1,15 @@
-import { hafasClient } from "$lib/server/setup";
+import { journeyDataService } from "$lib/server/setup";
 import type { JourneysOptions, Location, Station, Stop } from "hafas-client";
 import type {
 	Diagram,
-	JourneyBlock,
 	JourneyNode,
-	ParsedTime,
 	TransitType,
 	TreeNode,
 	ZugResponse
 } from "$lib/types";
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
-import { journeyToBlocks } from "$lib/server/parse/parse";
-import { getFirstAndLastTime } from "$lib/util";
 import recommendVias from "./viaRecommendations.server";
+import type {FetchedJourney} from "$lib/server/journeyData/JourneyDataService";
 
 const MAX_DATE = 8_640_000_000_000_000;
 const SEARCH_MAX_THRESHOLD = 2;
@@ -26,19 +23,6 @@ type FromToOpt = {
 type TimeLimit = {
 	type: TransitType;
 	date: Date;
-};
-
-type FetchedJourney = {
-	refreshToken: string;
-	blocks: JourneyBlock[];
-	arrivalTime: NonNullable<ParsedTime["arrival"]>;
-	departureTime: NonNullable<ParsedTime["departure"]>;
-};
-
-type JourneyNodesWithRefs = {
-	journeys: FetchedJourney[];
-	earlierRef: string;
-	laterRef: string;
 };
 
 type RecursionInfo = {
@@ -143,7 +127,11 @@ async function findJourneysUntil(
 	const timeComparisonPrefix = limit.type === "departure" ? "later" : "earlier";
 
 	// find first journeys
-	let lastJourneysWithRef = await findJourneys(fromToOpt);
+	let lastJourneysWithRef = await journeyDataService.journeys(
+		fromToOpt.from,
+		fromToOpt.to,
+		fromToOpt.opt
+	);
 	journeys.push(...lastJourneysWithRef.journeys);
 
 	// find remaining journeys
@@ -153,11 +141,15 @@ async function findJourneysUntil(
 	while (
 		!journeysExceedLimit[limit.type](lastJourneysWithRef.journeys, limit.date) &&
 		remainingSearches > 0 &&
-		(lastJourneysWithRef[`${timeComparisonPrefix}Ref`] ?? "") !== "" // this may if the journey is further in the future!
+		(lastJourneysWithRef[`${timeComparisonPrefix}Ref`] ?? "") !== "" // this may happen if the journey is further in the future!
 	) {
 		fromToOpt.opt[`${timeComparisonPrefix}Than`] =
 			lastJourneysWithRef[`${timeComparisonPrefix}Ref`];
-		lastJourneysWithRef = await findJourneys(fromToOpt);
+		lastJourneysWithRef = await journeyDataService.journeys(
+			fromToOpt.from,
+			fromToOpt.to,
+			fromToOpt.opt
+		);
 		if (limit.type === "departure") {
 			journeys.push(...lastJourneysWithRef.journeys);
 		} else {
@@ -186,30 +178,6 @@ const journeysExceedLimit: {
 		(journeys.at(-1)?.departureTime.time.getTime() ?? MAX_DATE) > time.getTime(),
 	arrival: (journeys, time) => (journeys.at(0)?.arrivalTime.time.getTime() ?? 0) < time.getTime()
 };
-
-/**
- * returns journeyNodes with earlierRef and laterRef
- * @param fromToOpt origin, destination and options
- */
-async function findJourneys(fromToOpt: FromToOpt): Promise<JourneyNodesWithRefs> {
-	return hafasClient.journeys(fromToOpt.from, fromToOpt.to, fromToOpt.opt).then((journeys) => {
-		return {
-			journeys:
-				journeys.journeys?.map((journey): FetchedJourney => {
-					const blocks = journeyToBlocks(journey);
-					const { arrival, departure } = getFirstAndLastTime(blocks);
-					return {
-						refreshToken: journey.refreshToken ?? "",
-						blocks,
-						arrivalTime: arrival.arrival ?? { time: new Date(0) },
-						departureTime: departure.departure ?? { time: new Date(0) }
-					};
-				}) ?? [],
-			earlierRef: journeys.earlierRef ?? "",
-			laterRef: journeys.laterRef ?? ""
-		};
-	});
-}
 
 /**
  * recursively turn array of journeys into a tree fulfilling the constraints described in the readme
