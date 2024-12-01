@@ -22,7 +22,7 @@
 
 		// This ensures that the animation starts even if the element is child of a collapsed details node
 		indicatorContainer.style.animation = "none";
-		indicatorContainer.offsetHeight;
+		const _ = indicatorContainer.offsetHeight;
 		indicatorContainer.style.animation = "";
 	});
 
@@ -36,7 +36,7 @@
 			departureTime = departureTime + 1;
 			departureTime = departureTime - 1; // update animation start by invalidating departure time
 			indicatorContainer.style.animation = "none"; // set animation to none
-			indicatorContainer.offsetHeight; // element reflow
+			const _ = indicatorContainer.offsetHeight; // element reflow
 			indicatorContainer.style.animation = ""; // re-apply css animation
 		}
 	}

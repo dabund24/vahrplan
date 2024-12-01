@@ -46,9 +46,9 @@
 	let journeyInfo = $derived([
 		...$selectedJourneys.map((selectedJourney) => {
 			return {
-				legs: selectedJourney.blocks.filter<LegBlock>(isLeg),
-				departure: { departure: { time: selectedJourney.departure.departure?.time } },
-				arrival: { arrival: { time: selectedJourney.arrival.arrival?.time } }
+				legs: selectedJourney.subJourney.blocks.filter<LegBlock>(isLeg),
+				departure: { departure: { time: selectedJourney.subJourney.departureTime?.time } },
+				arrival: { arrival: { time: selectedJourney.subJourney.arrivalTime?.time } }
 			};
 		}),
 		{ legs: [], departure: {}, arrival: {} }

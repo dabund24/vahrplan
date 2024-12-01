@@ -1,15 +1,8 @@
 import type { JourneysOptions } from "hafas-client";
-import type { JourneyBlock, ParsedLocation, ParsedTime, ZugResponse } from "$lib/types";
-
-export type FetchedJourney = {
-	refreshToken: string;
-	blocks: JourneyBlock[];
-	arrivalTime: NonNullable<ParsedTime["arrival"]>;
-	departureTime: NonNullable<ParsedTime["departure"]>;
-};
+import type { ParsedLocation, SubJourney, ZugResponse } from "$lib/types";
 
 export type JourneyNodesWithRefs = {
-	journeys: FetchedJourney[];
+	journeys: SubJourney[];
 	earlierRef: string;
 	laterRef: string;
 };
@@ -31,7 +24,7 @@ export interface JourneyDataService {
 	 * get a journey consisting of multiple sub-journeys
 	 * @param tokens refresh tokens of the sub-journeys
 	 */
-	refresh: (tokens: string[]) => Promise<ZugResponse<JourneyBlock[][]>>;
+	refresh: (tokens: string[]) => Promise<ZugResponse<SubJourney[]>>;
 
 	/**
 	 * suggest locations based on a string. Can be used for autocomplete inputs

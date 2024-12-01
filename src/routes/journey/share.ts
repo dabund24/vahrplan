@@ -1,5 +1,5 @@
-import type { KeylessDatabaseEntry, ParsedTime } from "$lib/types";
-import { getFirstAndLastTime, putApiData } from "$lib/util";
+import type { KeylessDatabaseEntry } from "$lib/types";
+import { putApiData } from "$lib/util";
 import { type SelectedJourney } from "$lib/stores/journeyStores";
 import { toast } from "$lib/stores/toastStore";
 import { get } from "svelte/store";
@@ -40,9 +40,7 @@ export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Prom
 async function generateJourneyShortUrl(
 	selectedSubJourneys: SelectedJourney[]
 ): Promise<string | undefined> {
-	const { departure }: ParsedTime = getFirstAndLastTime(selectedSubJourneys[0].blocks)[
-		"departure"
-	];
+	const departure = selectedSubJourneys[0].subJourney.departureTime;
 
 	if (departure === null || departure === undefined) {
 		return undefined;
@@ -50,7 +48,7 @@ async function generateJourneyShortUrl(
 
 	const keylessDatabaseEntry: KeylessDatabaseEntry<string[]> = {
 		type: "journey",
-		value: selectedSubJourneys.map((journey) => journey.refreshToken),
+		value: selectedSubJourneys.map((journey) => journey.subJourney.refreshToken),
 		expirationDate: new Date(departure.time).getTime() + 604_800_000 // 7 days
 	};
 

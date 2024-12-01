@@ -1,11 +1,11 @@
 import type {
-	FetchedJourney,
 	JourneyDataService,
 	JourneyNodesWithRefs
 } from "$lib/server/journeyData/JourneyDataService";
 import {
 	createClient as createHafasClient,
 	type HafasClient,
+	type Journey,
 	type JourneysOptions,
 	type JourneyWithRealtimeData
 } from "hafas-client";
@@ -16,7 +16,7 @@ import {
 	getZugErrorFromHafasError,
 	throwHafasQuotaError
 } from "$lib/server/responses";
-import type { JourneyBlock, LegBlock, ParsedLocation, ZugResponse } from "$lib/types";
+import type { LegBlock, ParsedLocation, SubJourney, ZugResponse } from "$lib/types";
 import { version } from "$app/environment";
 import {
 	journeyToBlocks,
@@ -59,19 +59,13 @@ export class HafasClientDataService implements JourneyDataService {
 		to: ParsedLocation["requestParameter"],
 		options: JourneysOptions
 	): Promise<JourneyNodesWithRefs> {
+		options.tickets = true;
 		const hafasJourneys = await this.client.journeys(from, to, options);
 
 		const fetchedJourneys = // convert to vahrplan format
-			hafasJourneys.journeys?.map((journey): FetchedJourney => {
-				const blocks = journeyToBlocks(journey);
-				const { arrival, departure } = getFirstAndLastTime(blocks);
-				return {
-					refreshToken: journey.refreshToken ?? "",
-					blocks,
-					arrivalTime: arrival.arrival ?? { time: new Date(0) },
-					departureTime: departure.departure ?? { time: new Date(0) }
-				};
-			}) ?? [];
+			hafasJourneys.journeys?.map((journey) =>
+				HafasClientDataService.hafasJourneyToSubJourney(journey)
+			) ?? [];
 
 		return {
 			journeys: fetchedJourneys,
@@ -80,7 +74,7 @@ export class HafasClientDataService implements JourneyDataService {
 		};
 	}
 
-	async refresh(tokens: string[]): Promise<ZugResponse<JourneyBlock[][]>> {
+	async refresh(tokens: string[]): Promise<ZugResponse<SubJourney[]>> {
 		try {
 			const hafasJourneys = await Promise.all(
 				tokens.map(
@@ -92,11 +86,35 @@ export class HafasClientDataService implements JourneyDataService {
 						}) ?? { journey: { type: "journey", legs: [] } }
 				)
 			);
-			const blocks = hafasJourneys.map((journeys) => journeys.journey).map(journeyToBlocks);
+			const blocks = hafasJourneys.map((journeys) =>
+				HafasClientDataService.hafasJourneyToSubJourney(journeys.journey)
+			);
 			return getSuccessResponse(HafasClientDataService.setMergingProperties(blocks));
 		} catch (e) {
 			return getZugErrorFromHafasError(e);
 		}
+	}
+
+	private static hafasJourneyToSubJourney(journey: Journey): SubJourney {
+		const blocks = journeyToBlocks(journey);
+		const { arrival, departure } = getFirstAndLastTime(blocks);
+		const result: SubJourney = {
+			refreshToken: journey.refreshToken ?? "",
+			blocks,
+			arrivalTime: arrival.arrival ?? { time: new Date(0) },
+			departureTime: departure.departure ?? { time: new Date(0) }
+		};
+		if (journey.price === undefined) {
+			return result;
+		}
+
+		result.ticketData = {
+			minPrice: journey.price.amount,
+			currency: journey.price.currency,
+			hint: journey.price.hint ?? "",
+			url: ""
+		};
+		return result;
 	}
 
 	/**
@@ -104,10 +122,10 @@ export class HafasClientDataService implements JourneyDataService {
 	 * @param subJourneys the sub-journeys to modify
 	 * @private
 	 */
-	private static setMergingProperties(subJourneys: JourneyBlock[][]): JourneyBlock[][] {
+	private static setMergingProperties(subJourneys: SubJourney[]): SubJourney[] {
 		for (let i = 1; i < subJourneys.length; i++) {
-			const arrivingSubJourneyBlock = subJourneys[i - 1].at(-1);
-			const departungSubJourneyBlock = subJourneys[i].at(0);
+			const arrivingSubJourneyBlock = subJourneys[i - 1].blocks.at(-1);
+			const departungSubJourneyBlock = subJourneys[i].blocks.at(0);
 			if (
 				arrivingSubJourneyBlock?.type !== "leg" ||
 				departungSubJourneyBlock?.type !== "leg"
