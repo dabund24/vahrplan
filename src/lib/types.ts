@@ -93,9 +93,9 @@ export type SubJourney = {
 	refreshToken: string;
 	blocks: JourneyBlock[];
 	ticketData?: {
-		minPrice: number;
+		minPrice?: number;
 		currency: string;
-		hint: string;
+		hint?: string;
 		url: string;
 	};
 } & { [K in TransitType as `${K}Time`]: ParsedTime[K] };

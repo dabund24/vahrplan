@@ -22,7 +22,7 @@ import {
 	journeyToBlocks,
 	parseStationStopLocation
 } from "$lib/server/journeyData/hafasClient/parse/parse";
-import { getFirstAndLastTime } from "$lib/util";
+import { getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
 
 export class HafasClientDataService implements JourneyDataService {
 	client: HafasClient;
@@ -108,11 +108,23 @@ export class HafasClientDataService implements JourneyDataService {
 			return result;
 		}
 
+		// generation of ticket links stolen from https://gitlab.com/bahnvorhersage/bahnvorhersage_frontend/-/blob/main/src/components/BuyTicketButton.vue
+		const startName = getBlockStart(blocks.at(0))?.name ?? "";
+		const endName = getBlockEnd(blocks.at(-1))?.name ?? "";
+		const ticketUrl = new URL("https://www.bahn.de/buchung/start#sts=true");
+		ticketUrl.searchParams.set("so", startName);
+		ticketUrl.searchParams.set("zo", endName);
+		ticketUrl.searchParams.set("soid", `O=${startName}`);
+		ticketUrl.searchParams.set("zoid", `O=${endName}`);
+		ticketUrl.searchParams.set("cbs", "true");
+		ticketUrl.searchParams.set("hd", result.departureTime?.time.toISOString() ?? "");
+		ticketUrl.searchParams.set("gh", result.refreshToken);
+
 		result.ticketData = {
-			minPrice: journey.price.amount,
+			minPrice: journey.price.amount > 0 ? journey.price.amount : undefined,
 			currency: journey.price.currency,
-			hint: journey.price.hint ?? "",
-			url: ""
+			hint: journey.price.hint,
+			url: ticketUrl.href
 		};
 		return result;
 	}
