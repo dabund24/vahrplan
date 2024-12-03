@@ -79,11 +79,20 @@ self.addEventListener("fetch", (event) => {
  * @returns {boolean} `true` if caching is preferred to be handled by the service worker, `false` if the node server decides on caching
  */
 function urlIsCachedByServiceWorker(url) {
-	return !(
-		(
-			url.includes("/api/") || // api requests are always handled by the server
-			url.includes("/diagram?") || // loading diagrams with data includes api requests, so they are handled by the server
-			url.includes("/journey?")
-		) // loading a specific journey includes an api request, so it's handled by the server
-	);
+	if (url.includes("/api/")) {
+		// api requests are always handled by the server
+		return false;
+	}
+
+	if (url.includes("/diagram?")) {
+		// loading diagrams with data includes api requests, so they are handled by the server
+		return false;
+	}
+	if (url.includes("/journey?")) {
+		// loading a specific journey includes an api request, so it's handled by the server
+		return false;
+	}
+
+	// all static pages remain
+	return true;
 }
