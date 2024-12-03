@@ -25,6 +25,7 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { dateToString, timeToString } from "$lib/util.js";
 	import { settings } from "$lib/stores/settingStore";
+	import TicketModal from "$lib/components/TicketModal.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -69,7 +70,7 @@
 		journeyBookmarks = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
 	}
 
-	const options: ComponentProps<Options>["options"] = [
+	const options: ComponentProps<typeof Options>["options"] = [
 		{
 			name: "Aktualisieren",
 			icon: iconRefresh,
@@ -160,6 +161,7 @@
 			<TitlelessHeader>
 				{#if allSelected && $selectedJourneys.length > 0}
 					<div class="flex-row journey-actions--buttons">
+						<TicketModal />
 						<button
 							class="hoverable hoverable--visible"
 							onclick={() => void shareJourney($selectedJourneys)}
