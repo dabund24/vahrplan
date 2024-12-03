@@ -122,7 +122,7 @@
 
 	<footer class="flex-column">
 		<small>Vahrplan {version}</small>
-		<small>Daniel Bund, 2023-{new Date().getFullYear()}</small>
+		<small>Daniel Bund, 2023-2024</small>
 	</footer>
 </div>
 
