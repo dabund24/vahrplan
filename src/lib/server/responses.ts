@@ -23,8 +23,8 @@ export function getZugErrorFromHafasError(
 			// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
 			return getZugError("QUOTA_EXCEEDED");
 		}
-		description = `Hafas: ${error.hafasDescription ?? ""}`;
-		errorType = `HAFAS_${error.code}`;
+		description = `Hafas: ${error.hafasDescription ?? "Hafas-Fehler"}`;
+		errorType = `HAFAS_${error.code ?? "SERVER_ERROR"}`;
 	}
 	return {
 		isError: true,
