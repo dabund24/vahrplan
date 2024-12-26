@@ -7,7 +7,6 @@
 	import Duration from "$lib/components/Duration.svelte";
 	import Time from "$lib/components/Time.svelte";
 	import Options from "$lib/components/Options.svelte";
-	import { goto } from "$app/navigation";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { scale } from "svelte/transition";
@@ -33,14 +32,16 @@
 		bookmarks = getBookmarks("journey");
 	});
 
-	function getOptions(bookmark: JourneyBookmark): ComponentProps<Options>["options"] {
+	function getOptions(bookmark: JourneyBookmark): ComponentProps<typeof Options>["options"] {
 		return [
 			{
+				type: "link",
 				name: "Verbindung anzeigen",
-				onClick: () => goto(bookmark.link),
+				url: bookmark.link,
 				icon: iconRightArrow
 			},
 			{
+				type: "function",
 				name: "Lesezeichen löschen",
 				onClick: (): void => {
 					const bookmarkIndex = bookmarks.findIndex((b) => b.link === bookmark.link);

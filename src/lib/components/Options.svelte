@@ -1,14 +1,30 @@
 <script lang="ts">
 	import IconOptions from "$lib/components/icons/IconOptions.svelte";
-	import type { Snippet } from "svelte";
+	import type { ComponentProps, Snippet } from "svelte";
+	import ButtonModal from "$lib/ButtonModal.svelte";
+
+	type OptionElement = {
+		name: string;
+		icon: Snippet;
+	} & (OptionElementLink | OptionElementFunction | OptionElementModal);
+
+	type OptionElementLink = {
+		type: "link";
+		url: string;
+	};
+
+	type OptionElementFunction = {
+		type: "function";
+		onClick: () => void;
+	};
+
+	type OptionElementModal = {
+		type: "modal";
+	} & ComponentProps<typeof ButtonModal>;
 
 	type Props = {
 		id: string;
-		options: {
-			name: string;
-			icon: Snippet;
-			onClick: () => void;
-		}[];
+		options: OptionElement[];
 	};
 
 	let { id, options }: Props = $props();
@@ -33,16 +49,33 @@
 	</button>
 	{#snippet optionsContent()}
 		{#each options as option}
+			{#snippet buttonContent()}
+				<span>
+					{option.name}
+				</span>
+				{@render option.icon()}
+			{/snippet}
 			<li>
-				<button
-					onclick={() => void handleOptionClick(option.onClick)}
-					class="flex-row padded-top-bottom option-button"
-				>
-					<span>
-						{option.name}
-					</span>
-					{@render option.icon()}
-				</button>
+				{#if option.type === "link"}
+					<a href={option.url} class="flex-row padded-top-bottom option-button">
+						{@render buttonContent()}
+					</a>
+				{:else if option.type === "function"}
+					<button
+						onclick={() => void handleOptionClick(option.onClick)}
+						class="flex-row padded-top-bottom option-button"
+					>
+						{@render buttonContent()}
+					</button>
+				{:else}
+					<ButtonModal
+						showModalKey={option.showModalKey}
+						modalTitle={option.modalTitle}
+						{buttonContent}
+						children={option.children}
+						modalHeight={option.modalHeight}
+					/>
+				{/if}
 			</li>
 		{/each}
 	{/snippet}
@@ -85,7 +118,7 @@
 		padding: 0;
 	}
 
-	button:hover, button:active {
+	li > :global(:where(button, a):where(:hover, :active)) {
 		background-color: var(--foreground-color--very-transparent);
 	}
 
@@ -106,6 +139,17 @@
 		[popover]:popover-open {
 			animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 		}
+	}
+
+	li > :global(:where(button, a)) {
+		padding: 0.5rem;
+		gap: 1rem;
+		width: 100%;
+		min-width: max-content;
+		justify-content: space-between;
+		align-items: center;
+		box-sizing: border-box;
+		text-decoration: none;
 	}
 
 	/*
@@ -130,7 +174,7 @@
 
 		.close-button {
 			width: 100%;
-            display: flex;
+			display: flex;
 			justify-content: center;
 		}
 
@@ -147,8 +191,8 @@
 			padding: 0 0 calc(0.5rem + env(safe-area-inset-bottom));
 		}
 
-		.options :global(button) {
-			padding: .5rem 1rem;
+		li > :global(:where(button, a)) {
+			padding: 0.5rem 1rem;
 		}
 
 		@media screen and (min-width: 500px) {
@@ -161,15 +205,6 @@
 				left: calc(50vw - 10rem);
 			}
 		}
-	}
-
-	.option-button {
-		padding: 0.5rem;
-		gap: 1rem;
-		width: 100%;
-		min-width: max-content;
-		justify-content: space-between;
-		align-items: center;
 	}
 
 	@keyframes zoom {

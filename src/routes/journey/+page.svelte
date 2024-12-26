@@ -72,16 +72,19 @@
 
 	const options: ComponentProps<typeof Options>["options"] = [
 		{
+			type: "function",
 			name: "Aktualisieren",
 			icon: iconRefresh,
 			onClick: refreshJourney
 		},
 		{
+			type: "function",
 			name: "Teilen",
 			icon: iconShare,
 			onClick: () => shareJourney($selectedJourneys)
 		},
 		{
+			type: "function",
 			name: "Merken",
 			icon: iconBookmark,
 			onClick: handleJourneyBookmarkClick
