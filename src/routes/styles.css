@@ -575,8 +575,10 @@ h3 {
 	}
 }
 
-.desktop-only {
-	display: none;
+@media screen and (max-width: 999px) {
+	.desktop-only {
+		display: none;
+	}
 }
 
 @media screen and (min-width: 1000px) {
@@ -587,9 +589,6 @@ h3 {
 	body {
 		margin: 0;
 		overscroll-behavior: none;
-	}
-	.desktop-only {
-		display: unset;
 	}
 	.mobile-only {
 		display: none;

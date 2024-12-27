@@ -5,9 +5,10 @@
 	type Props = {
 		children: Snippet;
 		showModalKey: keyof App.PageState;
+		title?: string;
 	};
 
-	let { children, showModalKey }: Props = $props();
+	let { children, showModalKey, title }: Props = $props();
 
 	function handleButtonClick(): void {
 		pushState("", {
@@ -16,7 +17,7 @@
 	}
 </script>
 
-<button type="button" class="hoverable hoverable--visible" onclick={handleButtonClick}>
+<button type="button" {title} class="hoverable hoverable--visible" onclick={handleButtonClick}>
 	{@render children()}
 </button>
 

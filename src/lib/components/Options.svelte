@@ -34,7 +34,7 @@
 
 	function handleOptionClick(optionFun: () => void): void {
 		optionFun();
-		//popoverElement.hidePopover();
+		popoverElement.hidePopover();
 	}
 </script>
 
@@ -88,7 +88,7 @@
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="options-container" onclick={(e) => void e.stopPropagation()}>
 			<!-- TODO Remove this button once anchor positioning is widely supported! -->
-			<button class="close-button padded-top-bottom" popovertarget="{id}-popover">
+			<button title="Optionen schließen" class="close-button padded-top-bottom" popovertarget="{id}-popover">
 				<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
 					<polyline
 						points="2,6 10,14 18,6"
