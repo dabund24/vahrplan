@@ -4,7 +4,8 @@
 		type DisplayedFormData,
 		displayedFormData,
 		displayedDiagram,
-		setDisplayedFormDataAndTree
+		setDisplayedFormDataAndTree,
+		selectedJourneys
 	} from "$lib/stores/journeyStores";
 	import MainForm from "../MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
@@ -73,6 +74,8 @@
 		const pageData = $page.data;
 		pageData.formData = undefined;
 	}
+
+	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 <svelte:head>
