@@ -3,6 +3,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { type ParsedLocation } from "$lib/types";
+	import Warning from "$lib/components/Warning.svelte";
 
 	let locations = $derived($displayedFormData?.locations.map((l) => l.value) ?? []);
 	let ticketData = $derived($selectedJourneys.map((j) => j.subJourney.ticketData));
@@ -36,6 +37,12 @@
 		{/each}
 		{@render locationRow(locations[locations.length - 1])}
 	</div>
+	<Warning>
+		Hinweis bei Teilstreckentickets: Wenn nur für einen Abschnitt der Reise ein Ticket benötigt
+		wird, können Start- und Zielbahnhof dieser Teilstrecke als Zwischenstationen festgelegt
+		werden. So lässt sich vermeiden, Tickets für Strecken zu kaufen, die bereits durch andere
+		Tickets (z. B. Deutschlandticket) abgedeckt sind.
+	</Warning>
 </Modal>
 
 <style>
