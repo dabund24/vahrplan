@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
-	import ButtonModal from "$lib/ButtonModal.svelte";
+	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import { products, settings } from "$lib/stores/settingStore";
 	import type { ComponentProps } from "svelte";
 	import Setting from "$lib/components/Setting.svelte";
+	import Modal from "$lib/components/Modal.svelte";
 
 	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
 		settings.update((settings) => {
@@ -23,7 +24,7 @@
 		});
 	}
 
-	const modalTabContent: ComponentProps<Tabs>["tabs"] = [
+	const modalTabContent: ComponentProps<typeof Tabs>["tabs"] = [
 		{
 			title: "Verkehrsmittel",
 			content: meansFilter
@@ -35,12 +36,12 @@
 	];
 </script>
 
-<ButtonModal showModalKey="showFilterModal" modalTitle="Verbindungsfilter" modalHeight="35rem">
-	{#snippet buttonContent()}
-		<div class="button-content"> Filter </div>
-	{/snippet}
+<ModalToggle showModalKey="showFilterModal">
+	<div class="button-content">Filter</div>
+</ModalToggle>
+<Modal showModalKey="showFilterModal" title="Verbindungsfilter" height="35rem">
 	<Tabs tabs={modalTabContent} isBelowHeaderMobile={true} isBelowHeaderDesktop={true} />
-</ButtonModal>
+</Modal>
 
 {#snippet generalFilter()}
 	<Setting

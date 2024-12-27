@@ -28,7 +28,7 @@
 	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI Variable Text",
 		"Segoe UI", system-ui, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif,
 		"Apple Color Emoji", "Segoe UI Symbol", "Symbola";
-	--external-ref-icon: url('data:image/svg+xml;charset=UTF-8,<svg width="0.8em" height="0.8em" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"> <g stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"> <polyline points="9,3 3,3 3,13 13,13 13,7" /> <line x1="8" y1="8" x2="15" y2="1" /> <polyline points="11,1 15,1 15,5" /> </g> </svg>');
+	--external-ref-icon--light: url('data:image/svg+xml;charset=UTF-8,<svg width="0.8em" height="0.8em" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"> <g stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"> <polyline points="9,3 3,3 3,13 13,13 13,7" /> <line x1="8" y1="8" x2="15" y2="1" /> <polyline points="11,1 15,1 15,5" /> </g> </svg>');
 	--external-ref-icon--dark: url('data:image/svg+xml;charset=UTF-8,<svg width="0.8em" height="0.8em" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"> <g stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"> <polyline points="9,3 3,3 3,13 13,13 13,7" /> <line x1="8" y1="8" x2="15" y2="1" /> <polyline points="11,1 15,1 15,5" /> </g> </svg>');
 	font-size: 100%;
 
@@ -112,6 +112,9 @@
 	--foreground-color--very-transparent: var(--foreground-color--very-transparent--light);
 	--product-color: var(--foreground-color);
 
+	--external-ref-icon: var(--external-ref-icon--light);
+	--external-ref-icon--inverse: var(--external-ref-icon--dark);
+
 	--accent-color: var(--accent--light);
 	--accent--red: var(--accent--red--light);
 	--accent--yellow: var(--accent--yellow--light);
@@ -155,6 +158,7 @@
 
 [data-theme="dark"] {
 	color-scheme: dark;
+	--external-ref-icon--inverse: var(--external-ref-icon--light);
 	--external-ref-icon: var(--external-ref-icon--dark);
 
 	--background-color: var(--background-color--dark);
@@ -185,6 +189,7 @@
 	:root:not([data-theme]),
 	[data-theme="system"] {
 		color-scheme: dark;
+		--external-ref-icon--inverse: var(--external-ref-icon--light);
 		--external-ref-icon: var(--external-ref-icon--dark);
 
 		--background-color: var(--background-color--dark);
@@ -290,6 +295,11 @@ a {
 		display: inline-flex;
 		vertical-align: middle;
 		padding: 0 0.2em;
+		flex-shrink: 0;
+	}
+	.hoverable--accent&[href^="http"]:not([href*="vahrplan.de"], [href*="http://localhost:"])::after
+	{
+		content: " " var(--external-ref-icon--inverse);
 	}
 }
 
@@ -565,8 +575,10 @@ h3 {
 	}
 }
 
-.desktop-only {
-	display: none;
+@media screen and (max-width: 999px) {
+	.desktop-only {
+		display: none;
+	}
 }
 
 @media screen and (min-width: 1000px) {
@@ -577,9 +589,6 @@ h3 {
 	body {
 		margin: 0;
 		overscroll-behavior: none;
-	}
-	.desktop-only {
-		display: unset;
 	}
 	.mobile-only {
 		display: none;

@@ -10,8 +10,8 @@
 	import type { JourneyBlock, LegBlock, TransferBlock, WalkingBlock } from "$lib/types";
 	import Warning from "$lib/components/Warning.svelte";
 
-	let selectedDeparture = $derived($selectedJourneys.at(0)?.departure.departure?.time);
-	let selectedArrival = $derived($selectedJourneys.at(-1)?.arrival.arrival?.time);
+	let selectedDeparture = $derived($selectedJourneys.at(0)?.subJourney.departureTime?.time);
+	let selectedArrival = $derived($selectedJourneys.at(-1)?.subJourney.arrivalTime?.time);
 
 	let flatBlocks = $derived($displayedJourneys.flatMap((journey) => journey.value));
 
@@ -52,7 +52,8 @@
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
 	{#if $selectedJourneys.some((j) => j.selectedBy === -1)}
-		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning>
+		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning
+		>
 	{/if}
 	<DateDuration
 		date={selectedDeparture}
@@ -76,6 +77,6 @@
 <style>
 	.journeys-wrapper {
 		max-width: 30rem;
-        margin: auto;
+		margin: auto;
 	}
 </style>

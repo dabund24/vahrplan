@@ -15,7 +15,6 @@
 	import { dateDifference } from "$lib/util";
 	import Duration from "$lib/components/Duration.svelte";
 	import DateDuration from "$lib/components/DateDuration.svelte";
-	import { page } from "$app/stores";
 	import { pushState } from "$app/navigation";
 	import Warning from "$lib/components/Warning.svelte";
 	import { shareDiagram } from "./share";
@@ -46,9 +45,9 @@
 	let journeyInfo = $derived([
 		...$selectedJourneys.map((selectedJourney) => {
 			return {
-				legs: selectedJourney.blocks.filter<LegBlock>(isLeg),
-				departure: { departure: { time: selectedJourney.departure.departure?.time } },
-				arrival: { arrival: { time: selectedJourney.arrival.arrival?.time } }
+				legs: selectedJourney.subJourney.blocks.filter<LegBlock>(isLeg),
+				departure: { departure: { time: selectedJourney.subJourney.departureTime?.time } },
+				arrival: { arrival: { time: selectedJourney.subJourney.arrivalTime?.time } }
 			};
 		}),
 		{ legs: [], departure: {}, arrival: {} }
@@ -219,11 +218,8 @@
 		</div>
 	</div>
 </TitlelessHeader>
-{#if $page.state.showLegModal && modalLeg}
-	<Modal
-		bind:showModal={$page.state.showLegModal}
-		title={`${modalLeg.name} → ${modalLeg.direction}`}
-	>
+{#if modalLeg}
+	<Modal showModalKey="showLegModal" title={`${modalLeg.name} → ${modalLeg.direction}`}>
 		<div class="padded-top-bottom">
 			{#each modalLeg.info.statuses as status}
 				<Warning color="red">{status}</Warning>

@@ -5,7 +5,6 @@
 	import { type ComponentProps, onMount } from "svelte";
 	import Options from "$lib/components/Options.svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
-	import { goto } from "$app/navigation";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
@@ -29,14 +28,16 @@
 		bookmarks = getBookmarks("diagram");
 	});
 
-	function getOptions(bookmark: DiagramBookmark): ComponentProps<Options>["options"] {
+	function getOptions(bookmark: DiagramBookmark): ComponentProps<typeof Options>["options"] {
 		return [
 			{
+				type: "link",
 				name: "Diagramm anzeigen",
-				onClick: () => goto(bookmark.link),
+				url: bookmark.link,
 				icon: iconRightArrow
 			},
 			{
+				type: "function",
 				name: "Lesezeichen löschen",
 				onClick: (): void => {
 					const bookmarkIndex = bookmarks.findIndex((b) => b.link === bookmark.link);

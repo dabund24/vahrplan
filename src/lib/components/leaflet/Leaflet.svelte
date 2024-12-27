@@ -68,7 +68,7 @@
 		let coordinates: L.LatLngLiteral[];
 		if (selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
 			coordinates = selectedJourneys
-				.flatMap((j) => j.blocks)
+				.flatMap((j) => j.subJourney.blocks)
 				.filter<DefiningBlock>(isTimeDefined)
 				.flatMap((block) =>
 					block.type === "leg"

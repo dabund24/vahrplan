@@ -1,17 +1,14 @@
-import { hafasClient } from "$lib/server/setup";
+import { journeyDataService } from "$lib/server/setup";
 import type { JourneysOptions, Location, Station, Stop } from "hafas-client";
 import type {
 	Diagram,
-	JourneyBlock,
 	JourneyNode,
-	ParsedTime,
+	SubJourney,
 	TransitType,
 	TreeNode,
 	ZugResponse
 } from "$lib/types";
 import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
-import { journeyToBlocks } from "$lib/server/parse/parse";
-import { getFirstAndLastTime } from "$lib/util";
 import recommendVias from "./viaRecommendations.server";
 
 const MAX_DATE = 8_640_000_000_000_000;
@@ -26,19 +23,6 @@ type FromToOpt = {
 type TimeLimit = {
 	type: TransitType;
 	date: Date;
-};
-
-type FetchedJourney = {
-	refreshToken: string;
-	blocks: JourneyBlock[];
-	arrivalTime: NonNullable<ParsedTime["arrival"]>;
-	departureTime: NonNullable<ParsedTime["departure"]>;
-};
-
-type JourneyNodesWithRefs = {
-	journeys: FetchedJourney[];
-	earlierRef: string;
-	laterRef: string;
 };
 
 type RecursionInfo = {
@@ -87,13 +71,13 @@ async function getJourneyArrays(
 	stops: (string | Station | Stop | Location)[],
 	opt: JourneysOptions,
 	transitType: TransitType
-): Promise<ZugResponse<FetchedJourney[][]>> {
+): Promise<ZugResponse<SubJourney[][]>> {
 	// if `transitType` is `arrival`, the journeys have to be searched in reverse order
 	const reverseOrder = transitType === "arrival";
 	const complimentaryTransitType = reverseOrder ? "departure" : "arrival";
 	const fallbackDate = new Date(transitType === "departure" ? 0 : MAX_DATE);
 
-	const journeyss: FetchedJourney[][] = [];
+	const journeyss: SubJourney[][] = [];
 	const timeLimit: TimeLimit = {
 		type: transitType,
 		date: fallbackDate
@@ -126,7 +110,7 @@ async function getJourneyArrays(
 			fallbackDate;
 	}
 
-	return getSuccessResponse<FetchedJourney[][]>(journeyss);
+	return getSuccessResponse<SubJourney[][]>(journeyss);
 }
 
 /**
@@ -134,16 +118,17 @@ async function getJourneyArrays(
  * @param fromToOpt origin, destination and options
  * @param limit when to stop looking for more journeys
  */
-async function findJourneysUntil(
-	fromToOpt: FromToOpt,
-	limit: TimeLimit
-): Promise<FetchedJourney[]> {
+async function findJourneysUntil(fromToOpt: FromToOpt, limit: TimeLimit): Promise<SubJourney[]> {
 	fromToOpt.opt = { ...fromToOpt.opt };
-	const journeys: FetchedJourney[] = [];
+	const journeys: SubJourney[] = [];
 	const timeComparisonPrefix = limit.type === "departure" ? "later" : "earlier";
 
 	// find first journeys
-	let lastJourneysWithRef = await findJourneys(fromToOpt);
+	let lastJourneysWithRef = await journeyDataService.journeys(
+		fromToOpt.from,
+		fromToOpt.to,
+		fromToOpt.opt
+	);
 	journeys.push(...lastJourneysWithRef.journeys);
 
 	// find remaining journeys
@@ -153,11 +138,15 @@ async function findJourneysUntil(
 	while (
 		!journeysExceedLimit[limit.type](lastJourneysWithRef.journeys, limit.date) &&
 		remainingSearches > 0 &&
-		(lastJourneysWithRef[`${timeComparisonPrefix}Ref`] ?? "") !== "" // this may if the journey is further in the future!
+		(lastJourneysWithRef[`${timeComparisonPrefix}Ref`] ?? "") !== "" // this may happen if the journey is further in the future!
 	) {
 		fromToOpt.opt[`${timeComparisonPrefix}Than`] =
 			lastJourneysWithRef[`${timeComparisonPrefix}Ref`];
-		lastJourneysWithRef = await findJourneys(fromToOpt);
+		lastJourneysWithRef = await journeyDataService.journeys(
+			fromToOpt.from,
+			fromToOpt.to,
+			fromToOpt.opt
+		);
 		if (limit.type === "departure") {
 			journeys.push(...lastJourneysWithRef.journeys);
 		} else {
@@ -168,7 +157,10 @@ async function findJourneysUntil(
 
 	if (limit.type === "arrival") {
 		// sorting is necessary because of hybrid routing
-		journeys.sort((a, b) => a.departureTime.time.getTime() - b.departureTime.time.getTime());
+		journeys.sort(
+			(a, b) =>
+				(a.departureTime?.time.getTime() ?? 0) - (b.departureTime?.time.getTime() ?? 0)
+		);
 	}
 	return journeys;
 }
@@ -180,51 +172,27 @@ async function findJourneysUntil(
  * - `arrival` compares the limit with the last arrival of the given nodes
  */
 const journeysExceedLimit: {
-	[K in TransitType]: (journeys: FetchedJourney[], time: Date) => boolean;
+	[K in TransitType]: (subJourneys: SubJourney[], time: Date) => boolean;
 } = {
 	departure: (journeys, time) =>
-		(journeys.at(-1)?.departureTime.time.getTime() ?? MAX_DATE) > time.getTime(),
-	arrival: (journeys, time) => (journeys.at(0)?.arrivalTime.time.getTime() ?? 0) < time.getTime()
+		(journeys.at(-1)?.departureTime?.time.getTime() ?? MAX_DATE) > time.getTime(),
+	arrival: (journeys, time) => (journeys.at(0)?.arrivalTime?.time.getTime() ?? 0) < time.getTime()
 };
 
 /**
- * returns journeyNodes with earlierRef and laterRef
- * @param fromToOpt origin, destination and options
- */
-async function findJourneys(fromToOpt: FromToOpt): Promise<JourneyNodesWithRefs> {
-	return hafasClient.journeys(fromToOpt.from, fromToOpt.to, fromToOpt.opt).then((journeys) => {
-		return {
-			journeys:
-				journeys.journeys?.map((journey): FetchedJourney => {
-					const blocks = journeyToBlocks(journey);
-					const { arrival, departure } = getFirstAndLastTime(blocks);
-					return {
-						refreshToken: journey.refreshToken ?? "",
-						blocks,
-						arrivalTime: arrival.arrival ?? { time: new Date(0) },
-						departureTime: departure.departure ?? { time: new Date(0) }
-					};
-				}) ?? [],
-			earlierRef: journeys.earlierRef ?? "",
-			laterRef: journeys.laterRef ?? ""
-		};
-	});
-}
-
-/**
  * recursively turn array of journeys into a tree fulfilling the constraints described in the readme
- * @param journeyss each element contains the journeys of one subsection of the entire trip
+ * @param subJourneyss each element contains the journeys of one subsection of the entire trip
  * @param includeUntil every returned journey starts before this time
  * @param recursionInfo stores current recursion depth and progress for each depth
  */
 function getTreeFromNodeArrays(
-	journeyss: FetchedJourney[][],
+	subJourneyss: SubJourney[][],
 	includeUntil: Date,
 	recursionInfo: RecursionInfo
 ): TreeNode[] {
 	const depth = recursionInfo.depth;
 	const progressInDepths = recursionInfo.progressInDepths;
-	if (depth === journeyss.length) {
+	if (depth === subJourneyss.length) {
 		// base case
 		return [];
 	}
@@ -234,12 +202,12 @@ function getTreeFromNodeArrays(
 	// include nodes until no more nodes are left over or the next journey starts after `includeUntil`
 	while (
 		progressInDepths[depth] < 0 ||
-		(progressInDepths[depth] < journeyss[depth].length &&
-			journeyss[depth][progressInDepths[depth]].departureTime.time.getTime() <
-				includeUntil.getTime())
+		(progressInDepths[depth] < subJourneyss[depth].length &&
+			(subJourneyss[depth][progressInDepths[depth]].departureTime?.time.getTime() ??
+				MAX_DATE) < includeUntil.getTime())
 	) {
 		const nextArrival =
-			journeyss[depth].at(progressInDepths[depth] + 1)?.arrivalTime.time ??
+			subJourneyss[depth].at(progressInDepths[depth] + 1)?.arrivalTime?.time ??
 			new Date(MAX_DATE);
 
 		let nodeToBeIncluded: TreeNode;
@@ -247,10 +215,10 @@ function getTreeFromNodeArrays(
 			// completely unreachable journeys are put into an empty node
 			nodeToBeIncluded = { type: "emptyNode", children: [] };
 		} else {
-			const nodeJourney = journeyss[depth][progressInDepths[depth]];
+			const nodeJourney = subJourneyss[depth][progressInDepths[depth]];
 			nodeToBeIncluded = fetchedJourneyToNode(nodeJourney, recursionInfo);
 		}
-		nodeToBeIncluded.children = getTreeFromNodeArrays(journeyss, nextArrival, {
+		nodeToBeIncluded.children = getTreeFromNodeArrays(subJourneyss, nextArrival, {
 			depth: depth + 1,
 			progressInDepths: progressInDepths
 		});
@@ -261,19 +229,16 @@ function getTreeFromNodeArrays(
 }
 
 /**
- * turns a FetchedJourney object into a JourneyNode object
- * @param journey
+ * turns a SubJourney object into a JourneyNode object
+ * @param subJourney
  * @param recursionInfo
  */
-function fetchedJourneyToNode(journey: FetchedJourney, recursionInfo: RecursionInfo): JourneyNode {
+function fetchedJourneyToNode(subJourney: SubJourney, recursionInfo: RecursionInfo): JourneyNode {
 	return {
 		type: "journeyNode",
-		blocks: journey.blocks,
-		children: [],
-		refreshToken: journey.refreshToken,
+		subJourney: subJourney,
 		depth: recursionInfo.depth,
 		idInDepth: recursionInfo.progressInDepths[recursionInfo.depth],
-		arrival: { arrival: journey.arrivalTime },
-		departure: { departure: journey.departureTime }
+		children: []
 	};
 }

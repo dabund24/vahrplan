@@ -6,11 +6,11 @@ import type {
 	JourneyNode,
 	KeyedItem,
 	ParsedLocation,
-	ParsedTime,
+	SubJourney,
 	TransitType,
 	TreeNode
 } from "$lib/types";
-import { getApiData, getFirstAndLastTime, getRawLocationBlock } from "$lib/util";
+import { getApiData, getRawLocationBlock } from "$lib/util";
 import { getMergingBlock } from "$lib/merge";
 import { getApiRefreshUrl, getApiJourneysUrl, getDiagramUrlFromFormData } from "$lib/urls";
 import type { Settings } from "$lib/stores/settingStore";
@@ -26,11 +26,8 @@ export type DisplayedFormData = {
 };
 
 export type SelectedJourney = {
-	blocks: JourneyBlock[];
 	selectedBy: number;
-	refreshToken: string;
-	arrival: ParsedTime;
-	departure: ParsedTime;
+	subJourney: SubJourney;
 };
 
 export const displayedFormData = writable<DisplayedFormData | undefined>(undefined);
@@ -59,10 +56,7 @@ export function initializeSharedData(
 	);
 	journeyNodes.forEach((node) => {
 		const selectedJourney: SelectedJourney = {
-			blocks: node.blocks,
-			refreshToken: node.refreshToken,
-			arrival: node.arrival,
-			departure: node.departure,
+			subJourney: node.subJourney,
 			selectedBy: 0
 		};
 		selectJourneyBlocks(selectedJourney, node.depth);
@@ -160,11 +154,13 @@ function resetSelectedJourneys(formData: DisplayedFormData | undefined): void {
 	selectedJourneys.set(
 		Array.from({ length: formData.locations.length - 1 }, (_v, i) => {
 			return {
-				blocks: [{ type: "unselected" }],
 				selectedBy: -1,
-				refreshToken: `${i}`,
-				arrival: {},
-				departure: {}
+				subJourney: {
+					blocks: [{ type: "unselected" }],
+					refreshToken: `${i}`,
+					arrivalTime: undefined,
+					departureTime: undefined
+				}
 			};
 		})
 	);
@@ -194,8 +190,8 @@ function calculateDisplayedJourneys(
 					key: `-${i}`
 				}
 			: {
-					value: selected[~~(i / 2)].blocks,
-					key: selected[~~(i / 2)].refreshToken
+					value: selected[~~(i / 2)].subJourney.blocks,
+					key: selected[~~(i / 2)].subJourney.refreshToken
 				};
 	}) as KeyedItem<JourneyBlock[], string>[];
 }
@@ -218,12 +214,12 @@ async function calculateDiagram(formData: DisplayedFormData | undefined): Promis
 export function selectJourneyBlocks(selectedJourney: SelectedJourney, depth: number): void {
 	selectedJourneys.update((journeys) => {
 		// transition from previous journey
-		const previousJourney = depth > 0 ? journeys[depth - 1] : undefined;
-		const nextJourney = journeys.at(depth + 1);
+		const previousJourney = depth > 0 ? journeys[depth - 1].subJourney : undefined;
+		const nextJourney = journeys.at(depth + 1)?.subJourney;
 		updateMergingBlocks(
 			previousJourney,
-			selectedJourney.blocks.at(0) ?? { type: "unselected" },
-			selectedJourney.blocks.at(-1) ?? { type: "unselected" },
+			selectedJourney.subJourney.blocks.at(0) ?? { type: "unselected" },
+			selectedJourney.subJourney.blocks.at(-1) ?? { type: "unselected" },
 			nextJourney,
 			depth
 		);
@@ -239,8 +235,8 @@ export function selectJourneyBlocks(selectedJourney: SelectedJourney, depth: num
  */
 export function unselectJourneyBlocks(depth: number): void {
 	selectedJourneys.update((journeys) => {
-		const previousJourney = depth > 0 ? journeys[depth - 1] : undefined;
-		const nextJourney = journeys.at(depth + 1);
+		const previousJourney = depth > 0 ? journeys[depth - 1].subJourney : undefined;
+		const nextJourney = journeys.at(depth + 1)?.subJourney;
 		updateMergingBlocks(
 			previousJourney,
 			{ type: "unselected" },
@@ -250,21 +246,23 @@ export function unselectJourneyBlocks(depth: number): void {
 		);
 
 		journeys[depth] = {
-			blocks: [{ type: "unselected" }],
 			selectedBy: -1,
-			refreshToken: depth.toString(),
-			arrival: {},
-			departure: {}
+			subJourney: {
+				blocks: [{ type: "unselected" }],
+				refreshToken: `${depth}`,
+				arrivalTime: undefined,
+				departureTime: undefined
+			}
 		};
 		return journeys;
 	});
 }
 
 function updateMergingBlocks(
-	previousJourney: SelectedJourney | undefined,
+	previousJourney: SubJourney | undefined,
 	startingBlock: JourneyBlock,
 	endingBlock: JourneyBlock,
-	nextJourney: SelectedJourney | undefined,
+	nextJourney: SubJourney | undefined,
 	index: number
 ): void {
 	mergingBlocks.update((mergingBlocks) => {
@@ -298,10 +296,10 @@ function updateMergingBlocks(
 export async function refreshJourney(): Promise<void> {
 	let idsInDepth: number[];
 	const tokens = get(selectedJourneys).map((journey) =>
-		journey.refreshToken.length > 5 ? journey.refreshToken : null
+		journey.subJourney.refreshToken.length > 5 ? journey.subJourney.refreshToken : null
 	);
 	const url = getApiRefreshUrl(tokens);
-	const response = await getApiData<JourneyBlock[][]>(url, 3);
+	const response = await getApiData<SubJourney[]>(url, 3);
 	if (response.isError) {
 		return;
 	}
@@ -310,7 +308,7 @@ export async function refreshJourney(): Promise<void> {
 	selectedJourneys.update((selectedJourneys) => {
 		idsInDepth = selectedJourneys.map((journey) => journey.selectedBy);
 		for (let i = 0; i < selectedJourneys.length; i++) {
-			selectedJourneys[i].blocks = refreshedJourneys[i];
+			selectedJourneys[i].subJourney = refreshedJourneys[i];
 		}
 		return selectedJourneys;
 	});
@@ -327,24 +325,21 @@ export async function refreshJourney(): Promise<void> {
 /**
  * traverses current journey tree and replaces passed journeys in tree
  * @param tree journey tree where journeys should be replaced
- * @param journeys new journeys, journey at index i lands in depth i
+ * @param subJourneys new journeys, journey at index i lands in depth i
  * @param idsInDepth id at index i stands for id in depth i
  */
 function replaceJourneysInTree(
 	tree: TreeNode[],
-	journeys: JourneyBlock[][],
+	subJourneys: SubJourney[],
 	idsInDepth: number[]
 ): TreeNode[] {
 	for (const node of tree) {
 		if (node.type === "journeyNode" && node.idInDepth === idsInDepth[0]) {
-			node.blocks = journeys[0];
-			const firstAndLastTime = getFirstAndLastTime(journeys[0]);
-			node.arrival = firstAndLastTime.arrival;
-			node.departure = firstAndLastTime.departure;
+			node.subJourney = subJourneys[0];
 		}
 		node.children = replaceJourneysInTree(
 			node.children,
-			journeys.slice(1),
+			subJourneys.slice(1),
 			idsInDepth.slice(1)
 		);
 	}

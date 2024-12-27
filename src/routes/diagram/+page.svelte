@@ -4,8 +4,8 @@
 		type DisplayedFormData,
 		displayedFormData,
 		displayedDiagram,
-		refreshJourney,
-		setDisplayedFormDataAndTree
+		setDisplayedFormDataAndTree,
+		selectedJourneys
 	} from "$lib/stores/journeyStores";
 	import MainForm from "../MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
@@ -14,22 +14,17 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
-	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls.js";
-	import { onMount, type Snippet } from "svelte";
+	import { getDiagramUrlFromFormData } from "$lib/urls.js";
+	import { type Snippet } from "svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
-	import { selectedJourneys } from "$lib/stores/journeyStores";
-	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
-	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
-	import { scale } from "svelte/transition";
-	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
-	import IconShare from "$lib/components/icons/IconShare.svelte";
-	import { shareJourney } from "../journey/share";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { dateToString } from "$lib/util";
 	import { timeToString } from "$lib/util.js";
 	import { settings } from "$lib/stores/settingStore";
+	import JourneyOptions from "../journey/JourneyOptions.svelte";
+	import TicketModal from "$lib/components/TicketModal.svelte";
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
 		const formData = $page.data.formData ?? $displayedFormData;
@@ -80,21 +75,7 @@
 		pageData.formData = undefined;
 	}
 
-	let journeyBookmarks: JourneyBookmark[] = $state([]);
-	onMount(() => (journeyBookmarks = getBookmarks("journey")));
-
-	let isBookmarked = $derived(
-		browser &&
-			journeyBookmarks.some(
-				(bookmark) => bookmark.link === getJourneyUrl($selectedJourneys).href
-			)
-	);
-
 	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
-
-	function handleJourneyBookmarkClick(): void {
-		journeyBookmarks = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
-	}
 </script>
 
 <svelte:head>
@@ -168,31 +149,8 @@
 							<TitlelessHeader>
 								<div class="flex-row journey-actions">
 									{@render miniTabSelector()}
-									{#if allSelected}
-										<div
-											class="flex-row journey-actions--buttons"
-											transition:scale
-										>
-											<button
-												class="hoverable hoverable--visible"
-												onclick={() => void shareJourney($selectedJourneys)}
-											>
-												<IconShare />
-											</button>
-											<button
-												class="hoverable hoverable--visible"
-												onclick={handleJourneyBookmarkClick}
-											>
-												<IconBookmark {isBookmarked} />
-											</button>
-											<button
-												class="hoverable hoverable--visible"
-												onclick={refreshJourney}
-											>
-												<IconRefresh />
-											</button>
-										</div>
-									{/if}
+									<JourneyOptions />
+									<TicketModal />
 								</div>
 							</TitlelessHeader>
 							{@render tabContent()}
@@ -272,10 +230,6 @@
 	.journey-actions {
 		padding: var(--line-width) 0.75rem;
 		justify-content: space-between;
-	}
-
-	.journey-actions--buttons {
-		gap: var(--line-width);
 	}
 
 	@media screen and (min-width: 1000px) {

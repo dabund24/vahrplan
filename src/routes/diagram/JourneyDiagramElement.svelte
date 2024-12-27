@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { JourneyBlock, ParsedTime } from "$lib/types";
+	import type { SubJourney } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import {
 		selectedJourneys,
@@ -8,17 +8,14 @@
 	} from "$lib/stores/journeyStores";
 
 	type Props = {
-		blocks: JourneyBlock[];
+		subJourney: SubJourney;
 		depth: number;
 		index: number;
-		refreshToken: string;
-		departure: ParsedTime;
-		arrival: ParsedTime;
 	};
 
-	let { blocks, depth, index, refreshToken, departure, arrival }: Props = $props();
+	let { subJourney, depth, index }: Props = $props();
 
-	let displayedBlocks = $derived(blocks.filter((block) => block.type === "leg"));
+	let displayedBlocks = $derived(subJourney.blocks.filter((block) => block.type === "leg"));
 
 	let isSelected = $derived(index === $selectedJourneys.at(depth)?.selectedBy);
 
@@ -26,10 +23,7 @@
 		if (isSelected) {
 			unselectJourneyBlocks(depth);
 		} else {
-			selectJourneyBlocks(
-				{ selectedBy: index, blocks, arrival, departure, refreshToken },
-				depth
-			);
+			selectJourneyBlocks({ subJourney, selectedBy: index }, depth);
 		}
 	}
 
@@ -46,7 +40,7 @@
 	title="Verbindung aus-/abwählen"
 >
 	<span class="time">
-		<Time time={departure} />
+		<Time time={{ departure: subJourney.departureTime }} />
 	</span>
 	<span class="flex-row legs">
 		{#each displayedBlocks as block}
@@ -62,15 +56,15 @@
 		{/each}
 	</span>
 	<span class="time">
-		<Time time={arrival} />
+		<Time time={{ arrival: subJourney.arrivalTime }} />
 	</span>
 </button>
 
 <style>
 	.time {
 		border-width: 1px calc(var(--line-width) / 2);
-        border-color: transparent;
-        border-style: solid;
+		border-color: transparent;
+		border-style: solid;
 		padding: 0 8px;
 	}
 
@@ -80,7 +74,7 @@
 		position: relative;
 		height: fit-content;
 		border-radius: 50vh;
-        padding: var(--line-width) 0;
+		padding: var(--line-width) 0;
 		text-align: center;
 		align-items: stretch;
 		transition: border-radius 0.4s;
@@ -159,26 +153,25 @@
 		}
 	}
 
-    :global(:root[data-theme="dark"]) {
-        .time {
-            border-width: calc(var(--line-width) / 2);
-        }
-        .leg {
-            background-color: var(--background-color);
-            border-width: calc(var(--line-width) / 2);
-        }
-    }
+	:global(:root[data-theme="dark"]) {
+		.time {
+			border-width: calc(var(--line-width) / 2);
+		}
+		.leg {
+			background-color: var(--background-color);
+			border-width: calc(var(--line-width) / 2);
+		}
+	}
 
-    @media (prefers-color-scheme: dark) {
-        :global(:root[data-theme="system"]) {
-            .time {
-                border-width: calc(var(--line-width) / 2);
-            }
-            .leg {
-                background-color: var(--background-color);
-                border-width: calc(var(--line-width) / 2);
-            }
-        }
-
-    }
+	@media (prefers-color-scheme: dark) {
+		:global(:root[data-theme="system"]) {
+			.time {
+				border-width: calc(var(--line-width) / 2);
+			}
+			.leg {
+				background-color: var(--background-color);
+				border-width: calc(var(--line-width) / 2);
+			}
+		}
+	}
 </style>

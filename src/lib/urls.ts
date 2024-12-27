@@ -68,7 +68,7 @@ export function getApiRefreshUrl(tokens: (string | null)[]): URL {
 }
 
 export function getJourneyUrl(journey: SelectedJourney[]): URL {
-	const tokens = journey.map((subJourney) => subJourney.refreshToken);
+	const tokens = journey.map((subJourney) => subJourney.subJourney.refreshToken);
 	const url = new URL("/journey", location.origin);
 	url.searchParams.set("journey", encodeURIComponent(JSON.stringify(tokens)));
 	return url;

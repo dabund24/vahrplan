@@ -5,19 +5,11 @@
 		type DisplayedFormData,
 		displayedFormData,
 		initializeSharedData,
-		refreshJourney,
 		selectedJourneys
 	} from "$lib/stores/journeyStores";
-	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
-	import { shareJourney } from "./share";
-	import IconShare from "$lib/components/icons/IconShare.svelte";
-	import { type ComponentProps, onMount, type Snippet } from "svelte";
-	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
-	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
-	import { getJourneyUrl } from "$lib/urls";
-	import Options from "$lib/components/Options.svelte";
+	import { type Snippet } from "svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
@@ -25,6 +17,8 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { dateToString, timeToString } from "$lib/util.js";
 	import { settings } from "$lib/stores/settingStore";
+	import TicketModal from "$lib/components/TicketModal.svelte";
+	import JourneyOptions from "./JourneyOptions.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -53,50 +47,7 @@
 	let clientWidth: number = $state(0);
 
 	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
-
-	let journeyBookmarks: JourneyBookmark[] = $state([]);
-
-	onMount(() => (journeyBookmarks = getBookmarks("journey")));
-
-	let isBookmarked = $derived(
-		browser &&
-			journeyBookmarks.some(
-				(bookmark) => bookmark.link === getJourneyUrl($selectedJourneys).href
-			)
-	);
-
-	function handleJourneyBookmarkClick(): void {
-		journeyBookmarks = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
-	}
-
-	const options: ComponentProps<Options>["options"] = [
-		{
-			name: "Aktualisieren",
-			icon: iconRefresh,
-			onClick: refreshJourney
-		},
-		{
-			name: "Teilen",
-			icon: iconShare,
-			onClick: () => shareJourney($selectedJourneys)
-		},
-		{
-			name: "Merken",
-			icon: iconBookmark,
-			onClick: handleJourneyBookmarkClick
-		}
-	];
 </script>
-
-{#snippet iconRefresh()}
-	<IconRefresh />
-{/snippet}
-{#snippet iconBookmark()}
-	<IconBookmark {isBookmarked} />
-{/snippet}
-{#snippet iconShare()}
-	<IconShare />
-{/snippet}
 
 <svelte:head>
 	<title>Vahrplan - Reisedetails{pageTitle.length > 0 ? ": " : ""}{pageTitle}</title>
@@ -133,6 +84,7 @@
 		<Leaflet />
 	{/await}
 {/snippet}
+<TicketModal />
 
 {#if clientWidth < 1000}
 	<MiniTabs
@@ -145,9 +97,7 @@
 		{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
 			<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} mobileOnly={true}>
 				{@render miniTabSelector()}
-				{#if allSelected && $selectedJourneys.length > 0}
-					<Options id={"journey"} {options} />
-				{/if}
+				<JourneyOptions />
 			</Header>
 			<div class="content-wrapper padded-top-bottom">
 				{@render tabContent()}
@@ -158,25 +108,9 @@
 	<div class="columns">
 		<section class="journeys content-wrapper">
 			<TitlelessHeader>
-				{#if allSelected && $selectedJourneys.length > 0}
-					<div class="flex-row journey-actions--buttons">
-						<button
-							class="hoverable hoverable--visible"
-							onclick={() => void shareJourney($selectedJourneys)}
-						>
-							<IconShare />
-						</button>
-						<button
-							class="hoverable hoverable--visible"
-							onclick={handleJourneyBookmarkClick}
-						>
-							<IconBookmark {isBookmarked} />
-						</button>
-						<button class="hoverable hoverable--visible" onclick={refreshJourney}>
-							<IconRefresh />
-						</button>
-					</div>
-				{/if}
+				<div class="journey-options">
+					<JourneyOptions />
+				</div>
 			</TitlelessHeader>
 			{@render journeyOverview()}
 		</section>
@@ -204,9 +138,7 @@
 		max-height: 100%;
 		overflow: auto;
 	}
-	.journey-actions--buttons {
+	.journey-options {
 		padding: var(--line-width) 0.75rem 0;
-		gap: var(--line-width);
-		justify-content: end;
 	}
 </style>

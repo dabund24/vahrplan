@@ -15,7 +15,7 @@ import type {
 import { dateDifference } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
 import type { Product } from "$lib/stores/settingStore";
-import { parseLegInfo } from "$lib/server/parse/parseLegInfo";
+import { parseLegInfo } from "$lib/server/journeyData/hafasClient/parse/parseLegInfo";
 
 export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 	if (journey?.legs === undefined) {

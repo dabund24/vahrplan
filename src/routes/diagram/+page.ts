@@ -1,6 +1,6 @@
 import type { PageLoad } from "./$types";
 import { displayedFormData, type DisplayedFormData } from "$lib/stores/journeyStores";
-import type { KeyedItem, ParsedLocation, TransitType, ZugResponse } from "$lib/types";
+import type { KeyedItem, ParsedLocation, ZugResponse } from "$lib/types";
 import {
 	getDiagramUrlFromFormData,
 	getDiagramUrlFromRequestData,
@@ -74,7 +74,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 	const formData: DisplayedFormData = {
 		locations: stopObjects,
 		time: requestData.time,
-		timeRole: requestData.timeRole as TransitType,
+		timeRole: requestData.timeRole,
 		options: requestData.options,
 		geolocationDate: new Date()
 	};

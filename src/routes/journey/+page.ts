@@ -1,6 +1,6 @@
 import type { PageLoad } from "./$types";
-import type { JourneyBlock, JourneyNode, KeyedItem, ParsedLocation, ZugResponse } from "$lib/types";
-import { getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
+import type { JourneyNode, KeyedItem, ParsedLocation, SubJourney, ZugResponse } from "$lib/types";
+import { getBlockEnd, getBlockStart } from "$lib/util";
 import { error } from "@sveltejs/kit";
 import { browser } from "$app/environment";
 import { getJourneyUrl } from "$lib/urls";
@@ -54,7 +54,7 @@ export const load: PageLoad = async function ({ url, fetch }) {
 		`/api/journey?tokens=${encodeURIComponent(JSON.stringify(tokens))}`
 	)
 		.then((res) => res.json())
-		.catch(() => undefined)) as ZugResponse<JourneyBlock[][]> | undefined;
+		.catch(() => undefined)) as ZugResponse<SubJourney[]> | undefined;
 	if (subjourneysResponse === undefined) {
 		if (browser) {
 			toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
@@ -69,14 +69,13 @@ export const load: PageLoad = async function ({ url, fetch }) {
 
 	// prepare data to be served to client
 	const locations = getKeyedLocationsFromJourney(subjourneys);
-	const departure = getFirstAndLastTime(subjourneys[0]).departure;
-	const treeNodes = subjourneysToTreeNodes(subjourneys, tokens);
+	const treeNodes = subjourneysToTreeNodes(subjourneys);
 
 	return {
 		treeNodes: treeNodes,
 		formData: {
 			locations,
-			time: departure.departure?.time ?? new Date(),
+			time: subjourneys.at(0)?.departureTime?.time ?? new Date(),
 			options: {},
 			timeRole: "departure"
 		}
@@ -88,17 +87,15 @@ export const load: PageLoad = async function ({ url, fetch }) {
  * @param journey the sub-journeys
  * @returns the sub-stops with a key
  */
-function getKeyedLocationsFromJourney(
-	journey: JourneyBlock[][]
-): KeyedItem<ParsedLocation, number>[] {
+function getKeyedLocationsFromJourney(journey: SubJourney[]): KeyedItem<ParsedLocation, number>[] {
 	const locations = journey.map((subjourney) => {
-		const startLocation = getBlockStart(subjourney[0]);
+		const startLocation = getBlockStart(subjourney.blocks[0]);
 		if (startLocation === undefined) {
 			error(404);
 		}
 		return startLocation;
 	});
-	const lastLocation = getBlockEnd(journey.at(-1)?.at(-1));
+	const lastLocation = getBlockEnd(journey.at(-1)?.blocks.at(-1));
 	if (lastLocation === undefined) {
 		error(404);
 	}
@@ -111,18 +108,13 @@ function getKeyedLocationsFromJourney(
 /**
  * turns an array of sub-journeys into an array of unconnected journey nodes
  * @param subJourneys
- * @param tokens the tokens for each sub-journey. This array should be evenly long as the subjourneys array
  */
-function subjourneysToTreeNodes(subJourneys: JourneyBlock[][], tokens: string[]): JourneyNode[] {
-	return subJourneys.map((subJourney, i) => {
-		return {
-			type: "journeyNode" as const,
-			depth: i,
-			idInDepth: 0,
-			refreshToken: tokens[i],
-			blocks: subJourney,
-			...getFirstAndLastTime(subJourney),
-			children: []
-		};
-	});
+function subjourneysToTreeNodes(subJourneys: SubJourney[]): JourneyNode[] {
+	return subJourneys.map((subJourney, i) => ({
+		type: "journeyNode" as const,
+		depth: i,
+		idInDepth: 0,
+		subJourney,
+		children: []
+	}));
 }

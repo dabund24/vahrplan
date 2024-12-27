@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TreeNode } from "$lib/types";
+	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import JourneyDiagramElement from "./JourneyDiagramElement.svelte";
 
 	type Props = {
@@ -14,17 +15,14 @@
 		<div class="flex-row diagram-box">
 			{#if node.type === "journeyNode"}
 				<JourneyDiagramElement
-					blocks={node.blocks}
+					subJourney={node.subJourney}
 					depth={node.depth}
 					index={node.idInDepth}
-					refreshToken={node.refreshToken}
-					departure={node.departure}
-					arrival={node.arrival}
 				/>
 			{:else}
 				<div class="empty-node"></div>
 			{/if}
-			<svelte:self nodes={node.children} />
+			<JourneyDiagram nodes={node.children} />
 		</div>
 	{/each}
 </div>

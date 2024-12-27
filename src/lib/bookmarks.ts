@@ -144,8 +144,8 @@ export function toggleJourneyBookmark(
 			type: formData.locations.at(-1)?.value.type ?? "station",
 			name: formData.locations.at(-1)?.value.name ?? ""
 		},
-		departure: journey.at(0)?.departure.departure?.time ?? new Date(0),
-		arrival: journey.at(-1)?.arrival.arrival?.time ?? new Date(0),
+		departure: journey.at(0)?.subJourney.departureTime?.time ?? new Date(0),
+		arrival: journey.at(-1)?.subJourney.arrivalTime?.time ?? new Date(0),
 		link: journeyUrlHref
 	};
 	bookmarks.push(bookmark);
