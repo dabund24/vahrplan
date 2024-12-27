@@ -3,7 +3,6 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import IconInfo from "$lib/components/icons/IconInfo.svelte";
-	import { page } from "$app/stores";
 	import { pushState } from "$app/navigation";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import type { ComponentProps, Snippet } from "svelte";
@@ -18,11 +17,13 @@
 
 	function showInfoModal(): void {
 		pushState("", {
-			showTripInfoModal: { [blockKey]: true }
+			[`showTripInfoModal${blockKey}`]: true
 		});
 	}
 
-	let tabs: ComponentProps<MiniTabs>["tabs"] = (Object.keys(info) as (keyof LegBlock["info"])[])
+	let tabs: ComponentProps<typeof MiniTabs>["tabs"] = (
+		Object.keys(info) as (keyof LegBlock["info"])[]
+	)
 		.filter((key) => info[key].length > 0)
 		.map(
 			(key) =>
@@ -91,15 +92,13 @@
 	{#snippet modalHeaderItems()}
 		{@render miniTabs()}
 	{/snippet}
-	{#if $page.state.showTripInfoModal?.[blockKey]}
-		<Modal
-			title="Fahrtinformationen"
-			bind:showModal={$page.state.showTripInfoModal[blockKey]}
-			headerItems={modalHeaderItems}
-			height="20rem"
-			children={tabContent}
-		/>
-	{/if}
+	<Modal
+		title="Fahrtinformationen"
+		showModalKey={`showTripInfoModal${blockKey}`}
+		headerItems={modalHeaderItems}
+		height="20rem"
+		children={tabContent}
+	/>
 {/snippet}
 
 <style>

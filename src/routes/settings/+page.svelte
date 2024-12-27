@@ -2,9 +2,10 @@
 	import Setting from "$lib/components/Setting.svelte";
 	import { settings } from "$lib/stores/settingStore";
 	import Header from "$lib/components/Header.svelte";
-	import ButtonModal from "$lib/ButtonModal.svelte";
+	import ButtonModal from "$lib/components/ModalToggle.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
+	import Modal from "$lib/components/Modal.svelte";
 </script>
 
 <svelte:head>
@@ -68,13 +69,7 @@
 	/>
 	<h1>Generierung von Kurzlinks beim Teilen</h1>
 	<div class="button-modal-container">
-		<ButtonModal
-			modalTitle="Datenschutzhinweis Kurzlinks"
-			showModalKey={"showPrivacyLinkModal"}
-		>
-			{#snippet buttonContent()}
-				<Warning>Datenschutzhinweis</Warning>
-			{/snippet}
+		<Modal title="Datenschutzhinweis Kurzlinks" showModalKey="showPrivacyLinkModal">
 			<div class="inline-icons">
 				<p>
 					Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
@@ -90,6 +85,9 @@
 					nicht gespeichert.
 				</p>
 			</div>
+		</Modal>
+		<ButtonModal showModalKey="showPrivacyLinkModal">
+			<Warning>Datenschutzhinweis</Warning>
 		</ButtonModal>
 	</div>
 	<Setting
@@ -104,13 +102,7 @@
 	/>
 	<h1>Dauerhaftes Speichern von Einstellungen</h1>
 	<div class="button-modal-container">
-		<ButtonModal
-			modalTitle="Datenschutzhinweis Local Storage"
-			showModalKey={"showPrivacyStoreModal"}
-		>
-			{#snippet buttonContent()}
-				<Warning>Datenschutzhinweis</Warning>
-			{/snippet}
+		<Modal title="Datenschutzhinweis Local Storage" showModalKey="showPrivacyStoreModal">
 			<div class="inline-icons">
 				<p>
 					Wird eine der folgenden beiden Einstellungen aktiviert, werden die
@@ -127,6 +119,9 @@
 					>.
 				</p>
 			</div>
+		</Modal>
+		<ButtonModal showModalKey="showPrivacyStoreModal">
+			<Warning>Datenschutzhinweis</Warning>
 		</ButtonModal>
 	</div>
 	<Setting

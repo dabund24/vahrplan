@@ -6,10 +6,11 @@
 		updateDisplayedLocations
 	} from "$lib/stores/journeyStores";
 	import type { KeyedItem } from "$lib/types.js";
-	import ButtonModal from "$lib/ButtonModal.svelte";
+	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import Warning from "$lib/components/Warning.svelte";
+	import Modal from "$lib/components/Modal.svelte";
 
 	type Props = {
 		recommendedVias: ParsedLocation[][];
@@ -77,12 +78,7 @@
 </script>
 
 {#if suggestedLocations.length > 2}
-	<ButtonModal modalTitle="Auswahl Zwischenstationen" showModalKey="showRecommendationModal">
-		{#snippet buttonContent()}
-			<div class="padded-top-bottom" class:hide={suggestedLocations.length <= 2}>
-				<IconStationLocation iconType="station" color="foreground" />
-			</div>
-		{/snippet}
+	<Modal title="Auswahl Zwischenstationen" showModalKey="showRecommendationModal">
 		<form onsubmit={handleFormSubmit}>
 			{#if recommendedVias.flat().length > 0}
 				<Warning>
@@ -122,7 +118,12 @@
 				<button class="hoverable hoverable--accent" type="submit">Übernehmen</button>
 			</div>
 		</form>
-	</ButtonModal>
+	</Modal>
+	<ModalToggle showModalKey="showRecommendationModal">
+		<div class="padded-top-bottom" class:hide={suggestedLocations.length <= 2}>
+			<IconStationLocation iconType="station" color="foreground" />
+		</div>
+	</ModalToggle>
 {/if}
 
 <style>

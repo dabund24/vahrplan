@@ -26,6 +26,7 @@
 	import { dateToString, timeToString } from "$lib/util.js";
 	import { settings } from "$lib/stores/settingStore";
 	import TicketModal from "$lib/components/TicketModal.svelte";
+	import IconTickets from "$lib/components/icons/IconTickets.svelte";
 
 	const { formData, treeNodes } = $page.data;
 
@@ -88,6 +89,12 @@
 			name: "Merken",
 			icon: iconBookmark,
 			onClick: handleJourneyBookmarkClick
+		},
+		{
+			type: "modal",
+			name: "Tickets",
+			icon: iconTickets,
+			showModalKey: "showTicketModal"
 		}
 	];
 </script>
@@ -100,6 +107,9 @@
 {/snippet}
 {#snippet iconShare()}
 	<IconShare />
+{/snippet}
+{#snippet iconTickets()}
+	<IconTickets />
 {/snippet}
 
 <svelte:head>
@@ -137,6 +147,7 @@
 		<Leaflet />
 	{/await}
 {/snippet}
+<TicketModal />
 
 {#if clientWidth < 1000}
 	<MiniTabs

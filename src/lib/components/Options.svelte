@@ -1,7 +1,7 @@
 <script lang="ts">
 	import IconOptions from "$lib/components/icons/IconOptions.svelte";
-	import type { ComponentProps, Snippet } from "svelte";
-	import ButtonModal from "$lib/ButtonModal.svelte";
+	import type { Snippet } from "svelte";
+	import ModalToggle from "$lib/components/ModalToggle.svelte";
 
 	type OptionElement = {
 		name: string;
@@ -20,7 +20,8 @@
 
 	type OptionElementModal = {
 		type: "modal";
-	} & ComponentProps<typeof ButtonModal>;
+		showModalKey: keyof App.PageState;
+	};
 
 	type Props = {
 		id: string;
@@ -33,7 +34,7 @@
 
 	function handleOptionClick(optionFun: () => void): void {
 		optionFun();
-		popoverElement.hidePopover();
+		//popoverElement.hidePopover();
 	}
 </script>
 
@@ -68,13 +69,7 @@
 						{@render buttonContent()}
 					</button>
 				{:else}
-					<ButtonModal
-						showModalKey={option.showModalKey}
-						modalTitle={option.modalTitle}
-						{buttonContent}
-						children={option.children}
-						modalHeight={option.modalHeight}
-					/>
+					<ModalToggle showModalKey={option.showModalKey} children={buttonContent} />
 				{/if}
 			</li>
 		{/each}
@@ -82,7 +77,7 @@
 
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-	<dialog
+	<div
 		id="{id}-popover"
 		popover="auto"
 		style="position-anchor: --{id}-popover-anchor"
@@ -109,17 +104,13 @@
 				{@render optionsContent()}
 			</ul>
 		</div>
-	</dialog>
+	</div>
 </div>
 
 <style>
 	[popover] {
 		background-color: transparent;
 		padding: 0;
-	}
-
-	li > :global(:where(button, a):where(:hover, :active)) {
-		background-color: var(--foreground-color--very-transparent);
 	}
 
 	@supports (left: anchor(right)) {
@@ -150,6 +141,13 @@
 		align-items: center;
 		box-sizing: border-box;
 		text-decoration: none;
+		border: none;
+		border-radius: 0;
+		background-color: transparent;
+		&:hover, &:active {
+			border: none;
+			background-color: var(--foreground-color--very-transparent);
+		}
 	}
 
 	/*

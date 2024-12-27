@@ -1,19 +1,12 @@
 <script lang="ts">
 	import { displayedFormData, selectedJourneys } from "$lib/stores/journeyStores";
-	import ButtonModal from "$lib/ButtonModal.svelte";
-	import IconTickets from "$lib/components/icons/IconTickets.svelte";
+	import Modal from "$lib/components/Modal.svelte";
 
 	let locationNames = $derived($displayedFormData?.locations.map((l) => l.value.name) ?? []);
 	let ticketData = $derived($selectedJourneys.map((j) => j.subJourney.ticketData));
 </script>
 
-{#snippet icon()}
-	<div class="padded-top-bottom">
-		<IconTickets />
-	</div>
-{/snippet}
-
-<ButtonModal buttonContent={icon} modalTitle="Tickets" showModalKey="showTicketModal">
+<Modal title="Tickets" showModalKey="showTicketModal">
 	<div class="padded-top-bottom flex-column">
 		{#each ticketData as data, i}
 			<div class="padded-top-bottom">
@@ -24,9 +17,9 @@
 					<a href={data.url} target="_blank" class="hoverable hoverable--accent">
 						Tickets {data.minPrice !== undefined
 							? `ab ${new Intl.NumberFormat("de-DE", {
-								style: "currency",
-								currency: data.currency
-							}).format(data.minPrice)}`
+									style: "currency",
+									currency: data.currency
+								}).format(data.minPrice)}`
 							: ""}
 					</a>
 				{/if}
@@ -36,12 +29,11 @@
 			{locationNames.at(-1) ?? ""}
 		</strong>
 	</div>
-
-</ButtonModal>
+</Modal>
 
 <style>
 	a {
-		padding: .5rem 1rem;
+		padding: 0.5rem 1rem;
 		width: fit-content;
 	}
 </style>

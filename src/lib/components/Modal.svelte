@@ -1,30 +1,23 @@
-<!-- shamelessly stolen from https://svelte.dev/examples/modal -->
-
 <script lang="ts">
 	import Header from "$lib/components/Header.svelte";
 	import type { Snippet } from "svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import { page } from "$app/stores";
 
 	type Props = {
-		showModal: boolean;
 		title: string;
 		height?: string;
 		children: Snippet;
 		headerItems?: Snippet;
+		showModalKey: keyof App.PageState;
 	};
 
-	let {
-		showModal = $bindable(),
-		title,
-		height = "fit-content",
-		children,
-		headerItems
-	}: Props = $props();
+	let { title, height = "fit-content", children, headerItems, showModalKey }: Props = $props();
 
-	let dialog: HTMLDialogElement;
+	let dialog: HTMLDialogElement | undefined = $state();
 
 	$effect(() => {
-		if (dialog && showModal) {
+		if (dialog) {
 			dialog.showModal();
 		}
 	});
@@ -32,26 +25,31 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-
-<dialog bind:this={dialog} onclick={() => void dialog.close()} onclose={() => void history.back()}>
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div onclick={(e) => void e.stopPropagation()} style:height>
-		<Header {title}>
-			{@render headerItems?.()}
-			<button
-				onclick={() => void dialog.close()}
-				class="hoverable"
-				type="button"
-				title="Dialog schließen"
-			>
-				<IconClose />
-			</button>
-		</Header>
-		<div class="content-wrapper">
-			{@render children()}
+{#if $page.state[showModalKey]}
+	<dialog
+		bind:this={dialog}
+		onclick={() => void dialog?.close()}
+		onclose={() => void history.back()}
+	>
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div onclick={(e) => void e.stopPropagation()} style:height>
+			<Header {title}>
+				{@render headerItems?.()}
+				<button
+					onclick={() => void dialog?.close()}
+					class="hoverable"
+					type="button"
+					title="Dialog schließen"
+				>
+					<IconClose />
+				</button>
+			</Header>
+			<div class="content-wrapper">
+				{@render children()}
+			</div>
 		</div>
-	</div>
-</dialog>
+	</dialog>
+{/if}
 
 <style>
 	dialog {
