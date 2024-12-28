@@ -122,7 +122,8 @@
 	}
 
 	@media (prefers-color-scheme: dark) {
-		:global(:root:not([data-theme])) select, :global([data-theme="system"]) select {
+		:global(:root:not([data-theme])) select,
+		:global([data-theme="system"]) select {
 			background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg"><polyline points="4,7 8,11, 12,7" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>');
 		}
 	}

@@ -42,7 +42,7 @@
 	}
 
 	.toast {
-		padding: .5rem 1rem;
+		padding: 0.5rem 1rem;
 		border-radius: var(--border-radius--large);
 		border: var(--border);
 		width: min(25rem, 100vw - 1.5rem);
@@ -56,16 +56,16 @@
 	}
 
 	.line--regular {
-		margin: 0 -.5rem calc(-1 * var(--line-width));
+		margin: 0 -0.5rem calc(-1 * var(--line-width));
 		width: calc(100% + 1rem);
 		translate: 0 0.5rem;
 		transition: width 3s var(--cubic-bezier);
 		background-color: var(--color);
 	}
 
-    @starting-style {
-        .line--regular {
-            width: 0;
-        }
-    }
+	@starting-style {
+		.line--regular {
+			width: 0;
+		}
+	}
 </style>

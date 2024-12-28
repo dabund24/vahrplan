@@ -40,9 +40,8 @@
 		Ja. Vahrplan ist als sogenannte <a href="https://de.wikipedia.org/wiki/Progressive_Web_App"
 			>Progressive Web App</a
 		>
-		verfügbar. Die Installation erfolgt über den Browser und ist nicht browserübergreifend
-		einheitlich. Es handelt sich aber in der Regel um den Klick auf einen Button mit der
-		Aufschrift
+		verfügbar. Die Installation erfolgt über den Browser und ist nicht browserübergreifend einheitlich.
+		Es handelt sich aber in der Regel um den Klick auf einen Button mit der Aufschrift
 		<q>Zum Home-Bildschirm hinzufügen</q>
 		oder <q>Installieren</q> im Browser-Menü.
 	</AccordionElement>

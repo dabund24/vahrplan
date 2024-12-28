@@ -13,11 +13,7 @@
 		}[];
 	};
 
-	const {
-		isBelowHeaderMobile = false,
-		isBelowHeaderDesktop = false,
-		tabs
-	}: Props = $props();
+	const { isBelowHeaderMobile = false, isBelowHeaderDesktop = false, tabs }: Props = $props();
 
 	let activeTab = $state(0);
 </script>

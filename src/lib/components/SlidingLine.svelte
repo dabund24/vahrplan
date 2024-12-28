@@ -9,15 +9,14 @@
 
 	let position = $state(newPosition);
 	let oldPosition = $state(newPosition);
-	$effect(() => updatePosition(newPosition))
+	$effect(() => updatePosition(newPosition));
 	function updatePosition(newPosition: number): void {
 		if (newPosition === position) {
-			return
+			return;
 		}
 		oldPosition = position;
 		position = newPosition;
 	}
-
 </script>
 
 <div
@@ -33,21 +32,19 @@
 		margin: calc(var(--line-width) * -1) calc(100% - var(--position) - var(--line-length) / 2) 0
 			calc(var(--position) - var(--line-length) / 2);
 		height: var(--line-width);
-        transition:
-                background-color 0.4s var(--cubic-bezier),
-                margin-left 0.4s var(--cubic-bezier),
-                margin-right 0.4s var(--cubic-bezier) 0.1s;
-
-    }
-    .line--accent.slides-to-right {
-        transition:
-                background-color 0.4s var(--cubic-bezier),
-                margin-left 0.4s var(--cubic-bezier) 0.1s,
-                margin-right 0.4s var(--cubic-bezier);
-    }
+		transition:
+			background-color 0.4s var(--cubic-bezier),
+			margin-left 0.4s var(--cubic-bezier),
+			margin-right 0.4s var(--cubic-bezier) 0.1s;
+	}
+	.line--accent.slides-to-right {
+		transition:
+			background-color 0.4s var(--cubic-bezier),
+			margin-left 0.4s var(--cubic-bezier) 0.1s,
+			margin-right 0.4s var(--cubic-bezier);
+	}
 
 	.short {
 		--line-length: 1rem;
 	}
-
 </style>

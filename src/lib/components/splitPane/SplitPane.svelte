@@ -105,11 +105,7 @@
 		<div class="pane">
 			{@render rightPane()}
 		</div>
-		<div
-			class="divider"
-			class:disabled
-			class:dragging
-			use:drag={(e) => void update(e.clientX)}
+		<div class="divider" class:disabled class:dragging use:drag={(e) => void update(e.clientX)}
 		></div>
 	{/if}
 </div>

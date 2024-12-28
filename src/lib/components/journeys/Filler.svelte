@@ -105,7 +105,7 @@
 		align-items: center;
 		position: relative;
 		&.stopover {
-            height: 0;
-        }
+			height: 0;
+		}
 	}
 </style>
