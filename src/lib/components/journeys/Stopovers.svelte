@@ -22,7 +22,7 @@
 </script>
 
 {#snippet trainProgressIndicatior(
-	i1: number,
+	i1,
 	progressDepartureTime: number,
 	i2: number,
 	progressArrivalTime: number

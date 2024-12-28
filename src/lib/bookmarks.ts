@@ -55,7 +55,7 @@ export function getBookmarks<T extends BookmarkType>(type: T): Bookmarks<T>["boo
  * @param bookmarks the bookmarks to be stored
  */
 export function setBookmarks<T extends BookmarkType>(bookmarks: Bookmarks<T>): void {
-	let sortedBookmarks: Bookmarks<T>["bookmarks"];
+	let sortedBookmarks: any;
 	// sort bookmarks based on type
 	switch (bookmarks.type) {
 		case "diagram":
