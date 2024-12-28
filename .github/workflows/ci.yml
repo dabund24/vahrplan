@@ -27,3 +27,12 @@ jobs:
 
             - name: Build
               run: npm run build
+
+            - name: Format check
+              run: npm run format
+
+            - name: Linter check
+              run: npm run lint
+
+            - name: Svelte check
+              run: npm run check
