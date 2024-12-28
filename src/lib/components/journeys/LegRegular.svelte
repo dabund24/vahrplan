@@ -157,6 +157,7 @@
 		padding: 0.5rem;
 		.limit-lines {
 			-webkit-line-clamp: 2;
+			line-clamp: 2;
 		}
 	}
 

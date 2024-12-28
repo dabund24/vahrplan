@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Header from "$lib/components/Header.svelte";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
 	import { PUBLIC_PAYPAL_LINK, PUBLIC_IMPRINT_EMAIL_ADDRESS } from "$env/static/public";
@@ -33,7 +33,7 @@
 	<a href="https://github.com/dabund24/vahrplan">auf Github</a>
 	einsehbar.
 	<h1>FAQ</h1>
-	{#snippet tool(useCase, name, link)}
+	{#snippet tool(useCase: string, name: string, link: string)}
 		<li>{useCase}: <a href={link}>{name}</a></li>
 	{/snippet}
 	<AccordionElement title="Lässt sich das Programm irgendwie als App installieren?">

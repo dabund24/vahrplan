@@ -363,6 +363,7 @@
 		text-overflow: ellipsis;
 		text-wrap: balance;
 		-webkit-line-clamp: 3;
+		line-clamp: 3;
 	}
 
 	/* rules for everything between name and time data */

@@ -136,6 +136,7 @@
 	strong {
 		margin-left: 0.5rem;
 		-webkit-line-clamp: 3;
+		line-clamp: 3;
 	}
 
 	.stop {
