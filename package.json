@@ -33,7 +33,7 @@
 		"leaflet": "^1.9.4",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.3.2",
-		"svelte": "^5.1.15",
+		"svelte": "^5.16.0",
 		"svelte-check": "^4.0.5",
 		"tslib": "^2.6.3",
 		"typescript": "^5.7.2",
