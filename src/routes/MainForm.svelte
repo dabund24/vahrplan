@@ -184,6 +184,7 @@
 						type="button"
 						onclick={reverseStops}
 						title="Stationsreihenfolge tauschen"
+						aria-label="Stationsreihenfolge tauschen"
 					>
 						<svg width="16px" height="16px">
 							<g

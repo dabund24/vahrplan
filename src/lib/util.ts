@@ -33,7 +33,6 @@ export async function getApiData<T extends Fetchable>(
 		loadingId = startLoading(loadingEst);
 	}
 	if (window.umami !== undefined) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
 		void window.umami.track((props) => ({ ...props, url: `GET ${url.pathname}` }));
 	}
 
@@ -74,7 +73,6 @@ export async function putApiData<R, T>(
 		loadingId = startLoading(loadingEst);
 	}
 	if (window.umami !== undefined) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
 		void window.umami.track((props) => ({ ...props, url: `PUT ${url.pathname}` }));
 	}
 
@@ -105,7 +103,7 @@ export function isTimeDefined(block: JourneyBlock): block is DefiningBlock {
 	return block.type === "leg" || block.type === "location";
 }
 
-export function getFirstAndLastTime(blocks: JourneyBlock[]): { [K in TransitType]: ParsedTime } {
+export function getFirstAndLastTime(blocks: JourneyBlock[]): Record<TransitType, ParsedTime> {
 	const departureBlock = blocks.find<DefiningBlock>(isTimeDefined);
 	const arrivalBlock = blocks.findLast<DefiningBlock>(isTimeDefined);
 	return {

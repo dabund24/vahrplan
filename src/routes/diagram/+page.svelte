@@ -60,7 +60,9 @@
 
 	let showSplitPane = $derived(windowWidth >= 1000);
 
-	$effect(() => resetDiagram($page.data.formData));
+	$effect(() => {
+		resetDiagram($page.data.formData);
+	});
 
 	function resetDiagram(initialFormData: DisplayedFormData | undefined): void {
 		if (

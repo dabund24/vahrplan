@@ -70,28 +70,31 @@ function getGeolocationErrorMessage(code: number): string {
  * @returns a cleanup function stopping the observation
  */
 async function watchDeviceOrientation(): Promise<() => void> {
-	//if (
-	//	typeof DeviceOrientationEvent !== "undefined" &&
-	//	typeof DeviceOrientationEvent.requestPermission === "function"
-	//) {
-	//	// ios
-	//	// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-	//	const permissionState = await DeviceOrientationEvent.requestPermission().catch(
-	//		console.error
-	//	);
-//
-	//	if (permissionState !== "granted") {
-	//		return () => {};
-	//	}
-//
-	//	const deviceOrientationEventListener = function (e: DeviceOrientationEvent): void {
-	//		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	//		currentPositionData.orientation = e.webkitCompassHeading;
-	//	};
-	//	window.addEventListener("deviceorientation", deviceOrientationEventListener);
-	//	return () =>
-	//		window.removeEventListener("deviceorientation", deviceOrientationEventListener);
-	//} else {
+	if (
+		typeof DeviceOrientationEvent !== "undefined" &&
+		// @ts-expect-error proprietary ios function `requestPermission()` is not recognized by typescript
+		typeof DeviceOrientationEvent.requestPermission === "function"
+	) {
+		// ios
+		// @ts-expect-error proprietary ios function `requestPermission()` is not recognized by typescript
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+		const permissionState = await DeviceOrientationEvent.requestPermission().catch(
+			console.error
+		);
+
+		if (permissionState !== "granted") {
+			return () => void {};
+		}
+
+		const deviceOrientationEventListener = function (e: DeviceOrientationEvent): void {
+			// @ts-expect-error proprietary ios property `webkitCompassHeading` is not recognized by typescript
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			currentPositionData.orientation = e.webkitCompassHeading;
+		};
+		window.addEventListener("deviceorientation", deviceOrientationEventListener);
+		return () =>
+			window.removeEventListener("deviceorientation", deviceOrientationEventListener);
+	} else {
 		// rest of world
 		const deviceOrientationEventListener = function (e: DeviceOrientationEvent): void {
 			if (e.alpha === null || !e.absolute) {
@@ -103,7 +106,7 @@ async function watchDeviceOrientation(): Promise<() => void> {
 		window.addEventListener("deviceorientationabsolute", deviceOrientationEventListener);
 		return () =>
 			window.removeEventListener("deviceorientationabsolute", deviceOrientationEventListener);
-	////}
+	}
 }
 
 export function cleanupCurrentPositionData(): void {

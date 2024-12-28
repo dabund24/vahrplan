@@ -87,15 +87,19 @@
 			.diagram-box:has(
 					> .diagram-column > :first-child > .diagram-element[aria-current="true"]
 				)
-		) > .diagram-element[aria-current="true"] {
+		)
+		> .diagram-element[aria-current="true"] {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-right-color: transparent;
 	}
 
 	:global(
-			.diagram-box:has(> .diagram-element[aria-current="true"]) > .diagram-column	> :first-child
-		) > .diagram-element[aria-current="true"] {
+			.diagram-box:has(> .diagram-element[aria-current="true"])
+				> .diagram-column
+				> :first-child
+		)
+		> .diagram-element[aria-current="true"] {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
 		border-left-color: transparent;

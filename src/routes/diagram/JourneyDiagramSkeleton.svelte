@@ -38,8 +38,8 @@
 
 	.time {
 		border-width: 1px calc(var(--line-width) / 2);
-        border-color: transparent;
-        border-style: solid;
+		border-color: transparent;
+		border-style: solid;
 		padding: 0 8px;
 	}
 

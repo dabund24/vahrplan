@@ -17,7 +17,7 @@ export function getZugErrorFromHafasError(
 	station2?: number
 ): ZugError {
 	let errorType: ZugErrorType = "ERROR";
-	let description: string = "Server-Fehler";
+	let description = "Server-Fehler";
 	if (isHafasError(error)) {
 		if (error.code === "QUOTA_EXCEEDED") {
 			// handle this in a special way since this error is not thrown by hafas/hafas-client!!!

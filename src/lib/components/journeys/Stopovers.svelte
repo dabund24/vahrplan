@@ -21,7 +21,12 @@
 	}
 </script>
 
-{#snippet trainProgressIndicatior(i1, progressDepartureTime, i2, progressArrivalTime)}
+{#snippet trainProgressIndicatior(
+	i1: number,
+	progressDepartureTime: number,
+	i2: number,
+	progressArrivalTime: number
+)}
 	<div
 		class="train-progress-container"
 		style:top="anchor(--leg--{blockKey}{departureTime}-icon--{i1} center)"

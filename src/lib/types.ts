@@ -28,7 +28,7 @@ export type ZugError = {
 export type ZugErrorType = `HAFAS_${HafasError["code"]}` | "NOT_FOUND" | "ERROR" | "QUOTA_EXCEEDED";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
-export type HafasError = {
+export type HafasError = Error & {
 	isHafasError: true;
 	code: "ACCESS_DENIED" | "INVALID_REQUEST" | "NOT_FOUND" | "SERVER_ERROR" | "QUOTA_EXCEEDED";
 	isCausedByServer: boolean;
@@ -45,13 +45,16 @@ export type TransitAttribute = "cancelled" | "additional" | undefined;
  * Usually, both are shown vertically next to each other.
  * This type represents such a time pair and can be used universally
  */
-export type ParsedTime = {
-	[K in TransitType]?: {
-		time: Date;
-		status?: "on-time" | "delayed" | "cancelled";
-		delay?: number;
-	} | null;
-};
+export type ParsedTime = Partial<
+	Record<
+		TransitType,
+		{
+			time: Date;
+			status?: "on-time" | "delayed" | "cancelled";
+			delay?: number;
+		} | null
+	>
+>;
 
 export type ParsedLocation =
 	| {

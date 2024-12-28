@@ -171,13 +171,13 @@ async function findJourneysUntil(fromToOpt: FromToOpt, limit: TimeLimit): Promis
  * - `departure` compares the limit with the first departure of the given nodes
  * - `arrival` compares the limit with the last arrival of the given nodes
  */
-const journeysExceedLimit: {
-	[K in TransitType]: (subJourneys: SubJourney[], time: Date) => boolean;
-} = {
-	departure: (journeys, time) =>
-		(journeys.at(-1)?.departureTime?.time.getTime() ?? MAX_DATE) > time.getTime(),
-	arrival: (journeys, time) => (journeys.at(0)?.arrivalTime?.time.getTime() ?? 0) < time.getTime()
-};
+const journeysExceedLimit: Record<TransitType, (subJourneys: SubJourney[], time: Date) => boolean> =
+	{
+		departure: (journeys, time) =>
+			(journeys.at(-1)?.departureTime?.time.getTime() ?? MAX_DATE) > time.getTime(),
+		arrival: (journeys, time) =>
+			(journeys.at(0)?.arrivalTime?.time.getTime() ?? 0) < time.getTime()
+	};
 
 /**
  * recursively turn array of journeys into a tree fulfilling the constraints described in the readme

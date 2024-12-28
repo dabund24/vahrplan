@@ -32,6 +32,7 @@
 			border-bottom-color 0.4s var(--cubic-bezier);
 		& > strong {
 			-webkit-line-clamp: 2;
+			line-clamp: 2;
 		}
 	}
 

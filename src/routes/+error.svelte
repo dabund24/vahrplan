@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {page} from "$app/stores";
+	import { page } from "$app/stores";
 </script>
 
 <div class="content-wrapper padded-top-bottom">

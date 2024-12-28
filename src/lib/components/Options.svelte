@@ -76,7 +76,7 @@
 	{/snippet}
 
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
 		id="{id}-popover"
 		popover="auto"
@@ -88,7 +88,12 @@
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="options-container" onclick={(e) => void e.stopPropagation()}>
 			<!-- TODO Remove this button once anchor positioning is widely supported! -->
-			<button title="Optionen schließen" class="close-button padded-top-bottom" popovertarget="{id}-popover">
+			<button
+				title="Optionen schließen"
+				aria-label="Optionen schließen"
+				class="close-button padded-top-bottom"
+				popovertarget="{id}-popover"
+			>
 				<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
 					<polyline
 						points="2,6 10,14 18,6"
@@ -144,7 +149,8 @@
 		border: none;
 		border-radius: 0;
 		background-color: transparent;
-		&:hover, &:active {
+		&:hover,
+		&:active {
 			border: none;
 			background-color: var(--foreground-color--very-transparent);
 		}

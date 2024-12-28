@@ -162,5 +162,6 @@
 	}
 	.limit-lines {
 		-webkit-line-clamp: 2;
+		line-clamp: 2;
 	}
 </style>

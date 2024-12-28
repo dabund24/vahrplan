@@ -7,18 +7,18 @@ import type { JourneyNode } from "$lib/types";
 /**
  * can be used for modals showing trip info. suffix is id of block
  */
-interface TripInfoModalKeys {
-	[key: `${"showTripInfoModal"}${string}`]: boolean | undefined;
-}
+type TripInfoModalKeys = Record<`${"showTripInfoModal"}${string}`, boolean | undefined>;
 
 declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
+		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageData {
 			formData?: DisplayedFormData | undefined;
 			treeNodes?: JourneyNode[] | undefined;
 		}
+		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageState extends TripInfoModalKeys {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;

@@ -6,7 +6,7 @@
 	import StationBookmarks from "./StationBookmarks.svelte";
 	import type { ComponentProps } from "svelte";
 
-	const tabContent: ComponentProps<Tabs>["tabs"] = [
+	const tabContent: ComponentProps<typeof Tabs>["tabs"] = [
 		{
 			title: "Diagramme",
 			content: diagramBookmarks
@@ -21,6 +21,7 @@
 		}
 	];
 </script>
+
 <svelte:head>
 	<title>Vahrplan - Lesezeichen</title>
 	<meta name="title" content="Vahrplan - Lesezeichen" />

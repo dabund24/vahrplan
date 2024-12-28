@@ -178,6 +178,7 @@
 											class="line-container hoverable"
 											onclick={() => void showLegModal(leg)}
 											title={leg.name}
+											aria-label={leg.name}
 										>
 											<span class="line--product product--{leg.product}"
 											></span>
@@ -362,6 +363,7 @@
 		text-overflow: ellipsis;
 		text-wrap: balance;
 		-webkit-line-clamp: 3;
+		line-clamp: 3;
 	}
 
 	/* rules for everything between name and time data */

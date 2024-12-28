@@ -1,6 +1,6 @@
 name: Release Notes
 on:
-    pull_request:
+    push:
         branches: [master]
 
 permissions:

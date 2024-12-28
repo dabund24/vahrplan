@@ -18,7 +18,7 @@
 	.flex-row {
 		align-items: center;
 		gap: 0.5rem;
-        width: 100%;
+		width: 100%;
 		& > :global(:first-child) {
 			flex-shrink: 0;
 		}

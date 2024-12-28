@@ -7,7 +7,7 @@ export type JourneyNodesWithRefs = {
 	laterRef: string;
 };
 
-export interface JourneyDataService {
+export type JourneyDataService = {
 	/**
 	 * get journeys between two stations
 	 * @param from the location to start from
@@ -37,4 +37,4 @@ export interface JourneyDataService {
 	 * @param token the request token of the location
 	 */
 	location: (token: ParsedLocation["requestParameter"]) => Promise<ZugResponse<ParsedLocation>>;
-}
+};
