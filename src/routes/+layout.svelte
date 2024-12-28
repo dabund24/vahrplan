@@ -26,6 +26,7 @@
 </script>
 
 <svelte:head>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html PUBLIC_UMAMI_SCRIPT}
 </svelte:head>
 
@@ -49,7 +50,7 @@
 
 <style>
 	dialog {
-        z-index: 1000;
+		z-index: 1000;
 	}
 	.app {
 		display: grid;

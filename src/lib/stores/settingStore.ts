@@ -20,9 +20,7 @@ export type Settings = {
 	journeysOptions: JourneysOptions & {
 		accessibility: "none" | "partial" | "complete";
 		bike: boolean;
-		products: {
-			[product in Product]: boolean;
-		};
+		products: Record<Product, boolean>;
 		transfers: -1 | 0 | 1 | 2 | 3 | 4 | 5;
 		transferTime: number;
 	};
@@ -35,7 +33,7 @@ export type Settings = {
 		mapGeolocation: boolean;
 		isMapAlwaysLight: boolean;
 	};
-	storage: { [Key in Exclude<keyof Settings, "storage">]: boolean };
+	storage: Record<Exclude<keyof Settings, "storage">, boolean>;
 };
 
 export const settings = writable<Settings>({

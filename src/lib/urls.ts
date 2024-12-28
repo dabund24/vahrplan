@@ -54,7 +54,7 @@ export function parseApiJourneysUrl(url: URL): DiagramRequestData | undefined {
 				decodeURIComponent(url.searchParams.get("options") ?? "")
 			) as Settings["journeysOptions"],
 			timeRole: url.searchParams.get("timeRole") as TransitType,
-			time: new Date(url.searchParams.get("time") as string)
+			time: new Date(url.searchParams.get("time")!)
 		};
 	} catch {
 		return undefined;
