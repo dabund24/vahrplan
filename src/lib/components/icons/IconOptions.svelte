@@ -1,7 +1,7 @@
-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+<svg width="1rem" height="1rem" viewBox="0 0 16 16">
 	<g fill="var(--foreground-color)">
-		<circle r="2" cx="8" cy="2" />
-		<circle r="2" cx="8" cy="8" />
-		<circle r="2" cx="8" cy="14" />
+		<circle r="1.5" cx="8" cy="2" />
+		<circle r="1.5" cx="8" cy="8" />
+		<circle r="1.5" cx="8" cy="14" />
 	</g>
 </svg>

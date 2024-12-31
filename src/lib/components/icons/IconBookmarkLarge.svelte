@@ -1,4 +1,4 @@
-<svg width="26px" height="26px" xmlns="http://www.w3.org/2000/svg">
+<svg width="1.625rem" height="1.625rem" viewBox="0 0 26 26">
 	<title>Lesezeichen</title>
 	<mask id="bookmark-mask">
 		<g stroke-width="8">

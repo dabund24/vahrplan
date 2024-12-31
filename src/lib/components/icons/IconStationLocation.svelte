@@ -19,7 +19,7 @@
 	}: Props = $props();
 </script>
 
-<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" class="skeleton-text station-icon">
+<svg width="16" height="16" class="skeleton-text station-icon">
 	{#if iconType === "station" && !isSmallIcon && secondaryProduct === undefined}
 		<circle
 			cx="8"

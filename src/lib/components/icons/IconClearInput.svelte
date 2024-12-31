@@ -1,6 +1,6 @@
-<svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg">
+<svg width="1.25rem" height="1.25rem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 	<g
-		stroke-width="3"
+		stroke-width="2"
 		stroke="var(--foreground-color)"
 		stroke-linejoin="round"
 		stroke-linecap="round"

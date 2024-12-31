@@ -9,7 +9,7 @@
 	let { type, isSmallIcon }: Props = $props();
 </script>
 
-<svg width="16" height={isSmallIcon ? 20 : 32} xmlns="http://www.w3.org/2000/svg">
+<svg width="16" height={isSmallIcon ? 20 : 32}>
 	<g stroke="var(--foreground-color)" stroke-linecap="round" stroke-linejoin="round">
 		{#if type === "transfer"}
 			<line x1="8" y1="2" x2="8" y2="30" stroke-width="4" />

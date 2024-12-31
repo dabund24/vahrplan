@@ -4,16 +4,10 @@
 	let { isBookmarked }: Props = $props();
 </script>
 
-<svg
-	class:bookmarked={isBookmarked}
-	width="16px"
-	height="16px"
-	viewBox="0 0 20 20"
-	xmlns="http://www.w3.org/2000/svg"
->
+<svg class:bookmarked={isBookmarked} width="1rem" height="1rem" viewBox="0 0 16 16">
 	<polyline
-		points="5,2 15,2 15,18 10,13 5,18 5,2"
-		stroke-width="3"
+		points="4,1 12,1 12,15 8,10 4,15 4,1"
+		stroke-width="2"
 		stroke="var(--foreground-color)"
 		stroke-linejoin="round"
 		stroke-linecap="round"

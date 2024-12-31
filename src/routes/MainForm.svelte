@@ -19,6 +19,7 @@
 	import { getCurrentGeolocation } from "$lib/geolocation.svelte";
 	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 	import FilterModal from "./FilterModal.svelte";
+	import IconSwap from "$lib/components/icons/IconSwap.svelte";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -183,21 +184,10 @@
 						class="hoverable hoverable--visible switch-button"
 						type="button"
 						onclick={reverseStops}
-						title="Stationsreihenfolge tauschen"
-						aria-label="Stationsreihenfolge tauschen"
+						title="Stationsreihenfolge umkehren"
+						aria-label="Stationsreihenfolge umkehren"
 					>
-						<svg width="16px" height="16px">
-							<g
-								stroke="var(--foreground-color)"
-								stroke-width="3"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								fill="none"
-							>
-								<polyline points="5.5,2 5.5,14 1.5,10" />
-								<polyline points="10.5,14 10.5,2 14.5,6" />
-							</g>
-						</svg>
+						<IconSwap />
 					</button>
 				</div>
 			{/each}

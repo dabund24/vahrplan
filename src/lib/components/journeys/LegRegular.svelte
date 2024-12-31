@@ -7,6 +7,7 @@
 	import Duration from "$lib/components/Duration.svelte";
 	import JourneyInfo from "$lib/components/journeys/TripInfo.svelte";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
+	import IconExpand from "$lib/components/icons/IconExpand.svelte";
 
 	type Props = {
 		block: LegBlock;
@@ -88,17 +89,7 @@
 						style="anchor-name: --leg--{block.blockKey}{departureTime}__stopovers-summary"
 					>
 						<span class="limit-lines">{block.name} &rightarrow; {block.direction}</span>
-						<svg width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
-							<g
-								stroke="var(--foreground-color)"
-								stroke-width="3"
-								fill="none"
-								stroke-linecap="round"
-							>
-								<line class="expand-line--left" x1="8" y1="11" x2="4" y2="7" />
-								<line class="expand-line--right" x1="8" y1="11" x2="12" y2="7" />
-							</g>
-						</svg>
+						<IconExpand />
 					</summary>
 					<div>
 						<Stopovers
@@ -170,12 +161,7 @@
 		}
 	}
 
-	svg {
-		perspective: 3rem;
-		flex-shrink: 0;
-	}
-
-	details[open] svg {
+	details[open] summary > :global(svg) {
 		transform: scaleY(-1);
 	}
 

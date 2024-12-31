@@ -1,4 +1,4 @@
-<svg width="26px" height="26px" xmlns="http://www.w3.org/2000/svg">
+<svg width="1.625rem" height="1.625rem" viewBox="0 0 26 26">
 	<title>Verbindungsdetails</title>
 	<g stroke="var(--foreground-color)" stroke-width="3" fill="none" stroke-linecap="round">
 		<line x1="5" y1="5" x2="17" y2="5" />
