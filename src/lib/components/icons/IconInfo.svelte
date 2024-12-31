@@ -6,15 +6,16 @@
 	const { color }: Props = $props();
 </script>
 
-<svg width="16px" height="16px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<svg width="1rem" height="1rem" viewBox="0 0 16 16">
 	<g
 		stroke={color === undefined ? "var(--foreground-color)" : `var(--accent--${color})`}
-		stroke-width="3"
+		stroke-width="2"
 		stroke-linecap="round"
 		fill="none"
 	>
-		<circle cx="10" cy="10" r="8.5" />
-		<line x1="10" y1="12" x2="10" y2="14" stroke-width="4" />
-		<line x1="10" y1="6.5" x2="10" y2="6.5" stroke-width="4" />
+		<circle cx="8" cy="8" r="7" />
+		<line x1="8" y1="8" x2="8" y2="11.5" />
+		<line x1="8" y1="4.5" x2="8" y2="4.5" />
+		<circle cx="8" cy="4.5" r="0" />
 	</g>
 </svg>
