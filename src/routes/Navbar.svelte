@@ -112,7 +112,7 @@
 
 	@media screen and (min-width: 1000px) {
 		.line-container {
-			translate: calc(100% / -10 + var(--line-width) + 1.25rem + 13px);
+			translate: calc(100% / -10 + var(--line-width) + 1.25rem + 0.8125rem);
 		}
 		li {
 			margin: 0 0.25rem;
