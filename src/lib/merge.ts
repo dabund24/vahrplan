@@ -48,11 +48,9 @@ export function getMergingBlock(
 			succeedingBlock?.type !== "leg" &&
 			succeedingBlock?.type !== "location")
 	) {
-		console.error(precedingBlock?.type);
-		console.error(succeedingBlock?.type);
 		// this should not happen at normal instances
 		// since first and last blocks of journeys are expected to be of type DefiningBlock!
-		return undefined;
+		throw new Error();
 	} else if (precedingBlock.type === "unselected" && succeedingBlock.type === "unselected") {
 		return getRawLocationBlock(location);
 	} else if (precedingBlock.type === "unselected" || succeedingBlock.type === "unselected") {

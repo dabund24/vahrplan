@@ -12,7 +12,5 @@ export let valkeyClient: Awaited<ReturnType<typeof createRedisClient>>;
 if (!building) {
 	valkeyClient = await createRedisClient({
 		url: process.env.DATABASE_URL ?? "redis://localhost:6379"
-	})
-		.on("error", (err) => console.error(err))
-		.connect();
+	}).connect();
 }
