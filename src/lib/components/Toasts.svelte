@@ -5,9 +5,10 @@
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import IconInfo from "$lib/components/icons/IconInfo.svelte";
 	import IconCheckmark from "$lib/components/icons/IconCheckmark.svelte";
+	import ServiceWorkerUpdates from "$lib/components/ServiceWorkerUpdates.svelte";
 </script>
 
-<div class="toasts flex-column">
+<div popover="manual" class="toasts flex-column">
 	{#each $toasts as toast (toast.id)}
 		<div
 			class="toast"
@@ -28,26 +29,34 @@
 			<div class="line--regular line--{toast.color}"></div>
 		</div>
 	{/each}
+	<ServiceWorkerUpdates />
 </div>
 
 <style>
 	.toasts {
 		position: fixed;
 		z-index: 800;
+		inset: unset;
 		bottom: calc(max(var(--navbar-space--bottom), env(safe-area-inset-bottom)) + 0.5rem);
+		border: none;
 		left: 50%;
 		width: 0;
 		align-items: center;
 		gap: 0.5rem;
+		overflow: visible;
+		padding: 0;
 	}
 
-	.toast {
+	.toasts > :global(*) {
 		padding: 0.5rem 1rem;
 		border-radius: var(--border-radius--large);
 		border: var(--border);
-		width: min(25rem, 100vw - 1.5rem);
 		background-color: var(--background-color--transparent);
 		box-sizing: border-box;
+	}
+
+	.toast {
+		width: min(25rem, 100vw - 1.5rem);
 	}
 
 	.flex-row {
