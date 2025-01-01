@@ -26,7 +26,7 @@
 		let formData1: DisplayedFormData;
 		if (formData !== undefined) {
 			formData1 = formData;
-		} else if ($displayedFormData !== undefined && allSelected) {
+		} else if ($displayedFormData !== undefined && isAllSelected) {
 			formData1 = $displayedFormData;
 		} else {
 			return {
@@ -46,7 +46,7 @@
 
 	let clientWidth: number = $state(0);
 
-	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
+	let isAllSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 <svelte:head>
@@ -95,7 +95,7 @@
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	>
 		{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
-			<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} mobileOnly={true}>
+			<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} isMobileOnly={true}>
 				{@render miniTabSelector()}
 				<JourneyOptions />
 			</Header>

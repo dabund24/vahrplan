@@ -17,10 +17,10 @@
 			// ignore requests to other domains
 			return;
 		}
-		const loadingID = startLoading(2);
+		const loadingId = startLoading(2);
 		navigation.complete.then(
-			() => stopLoading(loadingID, false),
-			() => stopLoading(loadingID, true)
+			() => stopLoading(loadingId, false),
+			() => stopLoading(loadingId, true)
 		);
 	});
 </script>

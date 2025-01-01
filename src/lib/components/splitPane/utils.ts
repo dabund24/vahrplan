@@ -13,20 +13,20 @@ export function constrain(
 	if (element === undefined) {
 		return "100%";
 	}
-	let min_px = normalize(min, element, size);
-	let max_px = normalize(max, element, size);
-	let pos_px = normalize(pos, element, size);
+	let minPx = normalize(min, element, size);
+	let maxPx = normalize(max, element, size);
+	let posPx = normalize(pos, element, size);
 
-	if (min_px < 0) min_px += size;
-	if (max_px < 0) max_px += size;
-	if (pos_px < 0) pos_px += size;
+	if (minPx < 0) minPx += size;
+	if (maxPx < 0) maxPx += size;
+	if (posPx < 0) posPx += size;
 
-	pos_px =
+	posPx =
 		priority === "min"
-			? Math.max(min_px, Math.min(max_px, pos_px))
-			: Math.min(max_px, Math.max(min_px, pos_px));
+			? Math.max(minPx, Math.min(maxPx, posPx))
+			: Math.min(maxPx, Math.max(minPx, posPx));
 
-	return pos.endsWith("%") ? (size ? `${(100 * pos_px) / size}%` : "0%") : `${pos_px}px`;
+	return pos.endsWith("%") ? (size ? `${(100 * posPx) / size}%` : "0%") : `${posPx}px`;
 }
 
 function normalize(str: string, element: HTMLElement, size: number): number {

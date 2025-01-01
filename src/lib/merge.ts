@@ -77,15 +77,15 @@ export function getMergingBlock(
 				succeedingBlock.departureData.location.position
 			)
 		) {
-			const mergeWithStopover = precedingBlock.blockKey === succeedingBlock.blockKey;
-			precedingBlock.succeededBy = mergeWithStopover ? "stopover" : "transfer";
-			succeedingBlock.precededBy = mergeWithStopover ? "stopover" : "transfer";
+			const isMergeWithStopover = precedingBlock.blockKey === succeedingBlock.blockKey;
+			precedingBlock.succeededBy = isMergeWithStopover ? "stopover" : "transfer";
+			succeedingBlock.precededBy = isMergeWithStopover ? "stopover" : "transfer";
 			return transferToBlock(
 				precedingBlock.arrivalData,
 				precedingBlock.product ?? "",
 				succeedingBlock.departureData,
 				succeedingBlock.product ?? "",
-				mergeWithStopover
+				isMergeWithStopover
 			);
 		} else {
 			precedingBlock.succeededBy = undefined;

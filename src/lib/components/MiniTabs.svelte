@@ -3,7 +3,7 @@
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 
 	type Props = {
-		padContent?: boolean;
+		isContentPadded?: boolean;
 		tabs: {
 			title: string; // for accessibility
 			icon: Snippet; // the icon used
@@ -14,7 +14,7 @@
 		startingTab?: number;
 	};
 
-	const { padContent = false, tabs, tabEnvironment, startingTab = 0 }: Props = $props();
+	const { isContentPadded = false, tabs, tabEnvironment, startingTab = 0 }: Props = $props();
 	const tabsWithType: ComponentProps<SingleSelect<"icon">>["titles"] = tabs.map((tab) => ({
 		title: tab.title,
 		icon: tab.icon,
@@ -29,7 +29,7 @@
 {/snippet}
 
 {#snippet tabContent()}
-	<div class:pad-content={padContent} class:full-height={tabs[activeTab].isFullHeight}>
+	<div class:pad-content={isContentPadded} class:full-height={tabs[activeTab].isFullHeight}>
 		{@render tabs[activeTab].content()}
 	</div>
 {/snippet}

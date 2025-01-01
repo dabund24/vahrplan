@@ -28,7 +28,7 @@
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
 	let focused = $state(0);
-	let blurredInputWithSelection = $state(true);
+	let isInputBlurredBySelection = $state(true);
 
 	let bookmarkedLocations: ParsedLocation[] = $state([]);
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
@@ -59,7 +59,7 @@
 	 * selects the first suggested location if the user leaves the input without a selection
 	 */
 	function handleInputBlur(): void {
-		blurredInputWithSelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
+		isInputBlurredBySelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
 			if (inputText.trim().length === 0) {
 				// the user probably intended to remove the station previously selected here
@@ -67,7 +67,7 @@
 				return;
 			}
 			if (
-				!blurredInputWithSelection && // no suggestion was selected
+				!isInputBlurredBySelection && // no suggestion was selected
 				inputText.trim() !== selectedLocation?.name // the selected location isn't what the user typed in
 			) {
 				// select the first suggested location
@@ -106,7 +106,7 @@
 		selectedLocation = suggestion;
 		inputText = isSimpleInput ? "" : suggestion.name;
 		focused = 0;
-		blurredInputWithSelection = true;
+		isInputBlurredBySelection = true;
 	}
 
 	function handleInputKeydown(ev: KeyboardEvent): void {
@@ -157,7 +157,7 @@
 				bind:value={inputText}
 				onkeydown={handleInputKeydown}
 				onblur={handleInputBlur}
-				onfocus={() => void (blurredInputWithSelection = false)}
+				onfocus={() => void (isInputBlurredBySelection = false)}
 			/>
 			{#if inputText !== ""}
 				<button

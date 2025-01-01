@@ -13,7 +13,7 @@
 	<meta name="description" content="Einstellungen für Vahrplan" />
 </svelte:head>
 
-<Header title={"Einstellungen"} mobileOnly={true} />
+<Header title={"Einstellungen"} isMobileOnly={true} />
 <div class="content-wrapper">
 	<h1>Farben</h1>
 	<Setting

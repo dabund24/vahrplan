@@ -12,7 +12,7 @@
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import ResponsiveOptions from "$lib/components/ResponsiveOptions.svelte";
 
-	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
+	let isAllSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 
 	let journeyBookmarks: JourneyBookmark[] = $state([]);
 
@@ -70,6 +70,6 @@
 	<IconTickets />
 {/snippet}
 
-{#if allSelected && $selectedJourneys.length > 0}
+{#if isAllSelected && $selectedJourneys.length > 0}
 	<ResponsiveOptions id="journey-options" {options} />
 {/if}

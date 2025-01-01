@@ -38,7 +38,7 @@
 	<StationBookmarks />
 {/snippet}
 
-<Header title="Lesezeichen" mobileOnly={true} />
+<Header title="Lesezeichen" isMobileOnly={true} />
 <div class="content-wrapper" data-sveltekit-preload-data="off">
 	<Tabs tabs={tabContent} isBelowHeaderMobile={true} />
 </div>

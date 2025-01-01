@@ -15,7 +15,7 @@
 	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
-<Header title={"Datenschutzerklärung"} mobileOnly={true} />
+<Header title={"Datenschutzerklärung"} isMobileOnly={true} />
 <div class="content-wrapper padded-top-bottom">
 	<h1 class="desktop-only">Datenschutz&shy;erkl&auml;rung</h1>
 	<h2>1. Datenschutz auf einen Blick</h2>

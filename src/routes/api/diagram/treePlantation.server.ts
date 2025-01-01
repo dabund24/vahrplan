@@ -73,8 +73,8 @@ async function getJourneyArrays(
 	transitType: TransitType
 ): Promise<ZugResponse<SubJourney[][]>> {
 	// if `transitType` is `arrival`, the journeys have to be searched in reverse order
-	const reverseOrder = transitType === "arrival";
-	const complimentaryTransitType = reverseOrder ? "departure" : "arrival";
+	const isReverseOrder = transitType === "arrival";
+	const complimentaryTransitType = isReverseOrder ? "departure" : "arrival";
 	const fallbackDate = new Date(transitType === "departure" ? 0 : MAX_DATE);
 
 	const journeyss: SubJourney[][] = [];
@@ -88,10 +88,10 @@ async function getJourneyArrays(
 		opt
 	};
 
-	const start = reverseOrder ? stops.length - 2 : 0;
-	const step = reverseOrder ? -1 : 1;
+	const start = isReverseOrder ? stops.length - 2 : 0;
+	const step = isReverseOrder ? -1 : 1;
 
-	for (let i = start; reverseOrder ? i >= 0 : i < stops.length - 1; i += step) {
+	for (let i = start; isReverseOrder ? i >= 0 : i < stops.length - 1; i += step) {
 		fromToOpt.from = stops[i];
 		fromToOpt.to = stops[i + 1];
 		let depthJourneys;
@@ -101,12 +101,12 @@ async function getJourneyArrays(
 			return getZugErrorFromHafasError(e, i, i + 1);
 		}
 		fromToOpt.opt[transitType] =
-			depthJourneys.at(reverseOrder ? -1 : 0)?.[`${complimentaryTransitType}Time`]?.time ??
+			depthJourneys.at(isReverseOrder ? -1 : 0)?.[`${complimentaryTransitType}Time`]?.time ??
 			fallbackDate;
 
 		journeyss[i] = depthJourneys;
 		timeLimit.date =
-			depthJourneys.at(reverseOrder ? 0 : -1)?.[`${complimentaryTransitType}Time`]?.time ??
+			depthJourneys.at(isReverseOrder ? 0 : -1)?.[`${complimentaryTransitType}Time`]?.time ??
 			fallbackDate;
 	}
 

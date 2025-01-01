@@ -9,6 +9,7 @@ import { hash } from "node:crypto";
 export async function setDatabaseEntry<T>(entry: DatabaseEntry<T>): Promise<void> {
 	const key = `${entry.type}:${entry.key}`;
 	const value = JSON.stringify(entry.value);
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	await valkeyClient.set(key, value, { PXAT: entry.expirationDate });
 }
 

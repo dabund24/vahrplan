@@ -37,8 +37,8 @@ export const load: PageLoad = async ({ url, fetch }) => {
 			error(requestDataResponse.code, requestDataResponse.description);
 		}
 
-		const diagramURL = getDiagramUrlFromRequestData(requestDataResponse.content);
-		redirect(303, diagramURL);
+		const diagramUrl = getDiagramUrlFromRequestData(requestDataResponse.content);
+		redirect(303, diagramUrl);
 	}
 
 	if (url.searchParams.size === 0) {

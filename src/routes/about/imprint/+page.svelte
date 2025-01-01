@@ -15,7 +15,7 @@
 	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
-<Header title="Impressum" mobileOnly={true} />
+<Header title="Impressum" isMobileOnly={true} />
 <div class="content-wrapper padded-top-bottom">
 	<h1 class="desktop-only">Impressum</h1>
 	<p>

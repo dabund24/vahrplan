@@ -53,30 +53,41 @@ export function getSuccessResponse<T>(content: T): ZugSuccess<T> {
 }
 
 function getErrorCodeFromErrorType(type: ZugErrorType): ZugError["code"] {
-	return {
-		HAFAS_ACCESS_DENIED: 403,
-		HAFAS_INVALID_REQUEST: 400,
-		HAFAS_NOT_FOUND: 404,
-		HAFAS_SERVER_ERROR: 500,
-		NOT_FOUND: 404,
-		ERROR: 500,
-		QUOTA_EXCEEDED: 429,
-		HAFAS_QUOTA_EXCEEDED: 429
-	}[type] as ZugError["code"];
+	switch (type) {
+		case "HAFAS_INVALID_REQUEST":
+			return 400;
+		case "HAFAS_ACCESS_DENIED":
+			return 403;
+		case "HAFAS_NOT_FOUND":
+		case "NOT_FOUND":
+			return 404;
+		case "QUOTA_EXCEEDED":
+		case "HAFAS_QUOTA_EXCEEDED":
+			return 429;
+		case "ERROR":
+		case "HAFAS_SERVER_ERROR":
+			return 500;
+	}
 }
 
 function getDescriptionFromErrorType(type: ZugErrorType): string {
-	return {
-		HAFAS_ACCESS_DENIED: "Hafas: Zugriff verweigert.",
-		HAFAS_INVALID_REQUEST: "Hafas: ungültige Anfrage.",
-		HAFAS_NOT_FOUND: "Hafas: Ressource nicht gefunden.",
-		HAFAS_SERVER_ERROR: "Hafas: Server-Fehler.",
-		NOT_FOUND: "Ressource nicht gefunden.",
-		ERROR: "Server-Fehler.",
-		QUOTA_EXCEEDED: "Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut.",
-		HAFAS_QUOTA_EXCEEDED:
-			"Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut."
-	}[type];
+	switch (type) {
+		case "HAFAS_INVALID_REQUEST":
+			return "Hafas: ungültige Anfrage.";
+		case "HAFAS_ACCESS_DENIED":
+			return "Hafas: Zugriff verweigert.";
+		case "HAFAS_NOT_FOUND":
+			return "Hafas: Ressource nicht gefunden."
+		case "NOT_FOUND":
+			return "Ressource nicht gefunden.";
+		case "QUOTA_EXCEEDED":
+		case "HAFAS_QUOTA_EXCEEDED":
+			return "Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut.";
+		case "ERROR":
+			return "Server-Fehler."
+		case "HAFAS_SERVER_ERROR":
+			return "Hafas: Server-Fehler.";
+	}
 }
 
 /**
