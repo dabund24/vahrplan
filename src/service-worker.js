@@ -1,4 +1,10 @@
 /// <reference types="@sveltejs/kit" />
+/// <reference no-default-lib="true"/>
+/// <reference lib="esnext" />
+/// <reference lib="webworker" />
+
+const sw = /** @type { ServiceWorkerGlobalScope } */ (/** @type { unknown } */ (self));
+
 import { build, files, version } from "$service-worker";
 
 // Create a unique cache name for this deployment
@@ -9,7 +15,11 @@ const ASSETS = [
 	...files // everything in `static`
 ];
 
-self.addEventListener("install", (event) => {
+sw.addEventListener("message", (event) => {
+	if (event.data === "skipWaiting") return skipWaiting();
+});
+
+sw.addEventListener("install", (event) => {
 	// Create a new cache and add all files to it
 	async function addFilesToCache() {
 		const cache = await caches.open(CACHE);
@@ -19,7 +29,7 @@ self.addEventListener("install", (event) => {
 	event.waitUntil(addFilesToCache());
 });
 
-self.addEventListener("activate", (event) => {
+sw.addEventListener("activate", (event) => {
 	// Remove previous cached data from disk
 	async function deleteOldCaches() {
 		for (const key of await caches.keys()) {
@@ -30,7 +40,7 @@ self.addEventListener("activate", (event) => {
 	event.waitUntil(deleteOldCaches());
 });
 
-self.addEventListener("fetch", (event) => {
+sw.addEventListener("fetch", (event) => {
 	// ignore api calls and POST requests etc
 	if (!urlIsCachedByServiceWorker(event.request.url)) return;
 

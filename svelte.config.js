@@ -20,6 +20,9 @@ const config = {
 		adapter: adapter(),
 		version: {
 			name: pkg.version
+		},
+		serviceWorker: {
+			register: false
 		}
 	},
 
