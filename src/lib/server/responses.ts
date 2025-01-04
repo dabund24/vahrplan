@@ -77,14 +77,14 @@ function getDescriptionFromErrorType(type: ZugErrorType): string {
 		case "HAFAS_ACCESS_DENIED":
 			return "Hafas: Zugriff verweigert.";
 		case "HAFAS_NOT_FOUND":
-			return "Hafas: Ressource nicht gefunden."
+			return "Hafas: Ressource nicht gefunden.";
 		case "NOT_FOUND":
 			return "Ressource nicht gefunden.";
 		case "QUOTA_EXCEEDED":
 		case "HAFAS_QUOTA_EXCEEDED":
 			return "Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut.";
 		case "ERROR":
-			return "Server-Fehler."
+			return "Server-Fehler.";
 		case "HAFAS_SERVER_ERROR":
 			return "Hafas: Server-Fehler.";
 	}
