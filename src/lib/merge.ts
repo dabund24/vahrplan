@@ -48,11 +48,9 @@ export function getMergingBlock(
 			succeedingBlock?.type !== "leg" &&
 			succeedingBlock?.type !== "location")
 	) {
-		console.error(precedingBlock?.type);
-		console.error(succeedingBlock?.type);
 		// this should not happen at normal instances
 		// since first and last blocks of journeys are expected to be of type DefiningBlock!
-		return undefined;
+		throw new Error();
 	} else if (precedingBlock.type === "unselected" && succeedingBlock.type === "unselected") {
 		return getRawLocationBlock(location);
 	} else if (precedingBlock.type === "unselected" || succeedingBlock.type === "unselected") {
@@ -77,15 +75,15 @@ export function getMergingBlock(
 				succeedingBlock.departureData.location.position
 			)
 		) {
-			const mergeWithStopover = precedingBlock.blockKey === succeedingBlock.blockKey;
-			precedingBlock.succeededBy = mergeWithStopover ? "stopover" : "transfer";
-			succeedingBlock.precededBy = mergeWithStopover ? "stopover" : "transfer";
+			const isMergeWithStopover = precedingBlock.blockKey === succeedingBlock.blockKey;
+			precedingBlock.succeededBy = isMergeWithStopover ? "stopover" : "transfer";
+			succeedingBlock.precededBy = isMergeWithStopover ? "stopover" : "transfer";
 			return transferToBlock(
 				precedingBlock.arrivalData,
 				precedingBlock.product ?? "",
 				succeedingBlock.departureData,
 				succeedingBlock.product ?? "",
-				mergeWithStopover
+				isMergeWithStopover
 			);
 		} else {
 			precedingBlock.succeededBy = undefined;

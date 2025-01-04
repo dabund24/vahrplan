@@ -10,7 +10,7 @@
 		min?: Length;
 		max?: Length;
 		priority?: "min" | "max";
-		disabled?: boolean;
+		isDisabled?: boolean;
 		leftPane: Snippet;
 		rightPane: Snippet;
 	};
@@ -21,14 +21,14 @@
 		min = "0%",
 		max = "100%",
 		priority = "min",
-		disabled = false,
+		isDisabled = false,
 		leftPane,
 		rightPane
 	}: Props = $props();
 
 	let container: HTMLElement | undefined;
 
-	let dragging = $state(false);
+	let isDragging = $state(false);
 	let size = $state(0);
 
 	let desiredPosition = $state(pos);
@@ -40,13 +40,13 @@
 	onMount(() => setTimeout(() => (isLoading = false), 400));
 
 	function update(x: number): void {
-		if (disabled || container === undefined) return;
+		if (isDisabled || container === undefined) return;
 
 		const { left } = container.getBoundingClientRect();
 
-		const pos_px = x - left;
+		const posPx = x - left;
 
-		desiredPosition = pos.endsWith("%") ? `${(100 * pos_px) / size}%` : `${pos_px}px`;
+		desiredPosition = pos.endsWith("%") ? `${(100 * posPx) / size}%` : `${posPx}px`;
 	}
 
 	function drag(
@@ -64,10 +64,10 @@
 
 			event.preventDefault();
 
-			dragging = true;
+			isDragging = true;
 
 			const onpointerup = (): void => {
-				dragging = false;
+				isDragging = false;
 
 				node.setPointerCapture(event.pointerId);
 
@@ -101,16 +101,20 @@
 		{@render leftPane()}
 	</div>
 
-	{#if !disabled}
+	{#if !isDisabled}
 		<div class="pane">
 			{@render rightPane()}
 		</div>
-		<div class="divider" class:disabled class:dragging use:drag={(e) => void update(e.clientX)}
+		<div
+			class="divider"
+			class:disabled={isDisabled}
+			class:dragging={isDragging}
+			use:drag={(e) => void update(e.clientX)}
 		></div>
 	{/if}
 </div>
 
-{#if dragging}
+{#if isDragging}
 	<div class="mousecatcher"></div>
 {/if}
 

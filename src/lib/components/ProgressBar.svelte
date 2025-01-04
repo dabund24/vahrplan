@@ -1,23 +1,23 @@
 <script lang="ts">
 	import { type LoadingStatus, loadingStatus } from "$lib/stores/loadingStore";
 
-	let resetWidth = $state(false);
+	let isWidthReset = $state(false);
 
 	$effect(() => resetLoadingBar($loadingStatus));
 
 	function resetLoadingBar(loadingStatus: LoadingStatus): void {
 		if (loadingStatus.status === "loading") {
-			resetWidth = true;
-			setTimeout(() => (resetWidth = false), 100);
+			isWidthReset = true;
+			setTimeout(() => (isWidthReset = false), 100);
 		}
 	}
 </script>
 
 <div
 	class="progress {$loadingStatus.status}"
-	class:reset-width={resetWidth}
+	class:reset-width={isWidthReset}
 	style:--loading-est={$loadingStatus.status === "loading" ? $loadingStatus.estimatedDuration : 0}
-	style:width={resetWidth ? 0 : ""}
+	style:width={isWidthReset ? 0 : ""}
 ></div>
 
 <style>

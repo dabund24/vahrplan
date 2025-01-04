@@ -58,7 +58,7 @@
 
 	let windowWidth: number = $state(0);
 
-	let showSplitPane = $derived(windowWidth >= 1000);
+	let isShowSplitPane = $derived(windowWidth >= 1000);
 
 	$effect(() => {
 		resetDiagram($page.data.formData);
@@ -77,7 +77,7 @@
 		pageData.formData = undefined;
 	}
 
-	let allSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
+	let isAllSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 <svelte:head>
@@ -89,9 +89,9 @@
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
 		min="360px"
-		max={showSplitPane ? "-360px" : "100%"}
-		pos={showSplitPane ? "-30rem" : "100%"}
-		disabled={!showSplitPane}
+		max={isShowSplitPane ? "-360px" : "100%"}
+		pos={isShowSplitPane ? "-30rem" : "100%"}
+		isDisabled={!isShowSplitPane}
 	>
 		{#snippet leftPane()}
 			<div
@@ -103,7 +103,7 @@
 				</section>
 				<section class="diagram">
 					{#if $displayedFormData !== undefined}
-						<JourneySummary {allSelected} />
+						<JourneySummary {isAllSelected} />
 						{#await $displayedDiagram}
 							<JourneyDiagramSkeleton
 								depth={$displayedFormData.locations.length - 1}
@@ -119,7 +119,7 @@
 		{/snippet}
 		{#snippet rightPane()}
 			<div class="journey-preview">
-				{#if showSplitPane}
+				{#if isShowSplitPane}
 					{#snippet detailsIcon()}
 						<IconJourneyInfo />
 					{/snippet}

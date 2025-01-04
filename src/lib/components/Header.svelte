@@ -3,13 +3,13 @@
 
 	type Props = {
 		title: string;
-		mobileOnly?: boolean;
+		isMobileOnly?: boolean;
 		children?: Snippet;
 	};
-	let { title, mobileOnly = false, children }: Props = $props();
+	let { title, isMobileOnly = false, children }: Props = $props();
 </script>
 
-<header class="flex-row" class:mobile-only={mobileOnly}>
+<header class="flex-row" class:mobile-only={isMobileOnly}>
 	<strong class="limit-lines">{title}</strong>
 	<div class="buttons flex-row">
 		{@render children?.()}

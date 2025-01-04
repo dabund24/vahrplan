@@ -43,7 +43,7 @@
 	});
 
 	let departureArrivalSelection: 0 | 1 = $state(0);
-	let timeIsNow = $state(true);
+	let isTimeNow = $state(true);
 	let time = $state(dateToInputDate(new Date()));
 
 	$effect.pre(() => initTimeInputs(initialFormData));
@@ -51,13 +51,13 @@
 	function initTimeInputs(displayedFormData: DisplayedFormData | undefined): void {
 		if (displayedFormData === undefined) {
 			departureArrivalSelection = 0;
-			timeIsNow = true;
+			isTimeNow = true;
 			time = dateToInputDate(new Date());
 			return;
 		}
 
 		departureArrivalSelection = displayedFormData.timeRole === "arrival" ? 1 : 0;
-		timeIsNow =
+		isTimeNow =
 			~~(new Date().getTime() / 60000) === ~~(displayedFormData.time.getTime() / 60000);
 		time = dateToInputDate(displayedFormData.time);
 	}
@@ -86,7 +86,7 @@
 		if (!verifyUserInput(stopsToBeDisplayed.map((s) => s.value))) {
 			return;
 		}
-		const journeyTime = timeIsNow ? new Date() : new Date(time);
+		const journeyTime = isTimeNow ? new Date() : new Date(time);
 		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
 		const timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
 		const options = get(settings).journeysOptions;
@@ -193,7 +193,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="time-filter-submit" class:time-is-now={timeIsNow}>
+	<div class="time-filter-submit" class:time-is-now={isTimeNow}>
 		<div class="flex-row">
 			<SingleSelect
 				titles={[
@@ -204,12 +204,12 @@
 			/>
 			<Setting
 				settingName="jetzt"
-				bind:setting={timeIsNow}
+				bind:setting={isTimeNow}
 				settingInfo={{ type: "boolean" }}
 			/>
 		</div>
 		<div class="time-input-container">
-			{#if timeIsNow !== undefined && !timeIsNow}
+			{#if isTimeNow !== undefined && !isTimeNow}
 				<input
 					transition:scale
 					class="hoverable hoverable--visible"

@@ -22,8 +22,9 @@ export default [
 	// ts config
 	{
 		rules: {
-			"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 			"logical-assignment-operators": "error",
+			"no-console": "error",
+			"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 			"@typescript-eslint/explicit-function-return-type": [
 				"error",
 				{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }
@@ -39,7 +40,40 @@ export default [
 					caughtErrorsIgnorePattern: "^_"
 				}
 			],
-			"@typescript-eslint/restrict-template-expressions": "error"
+			"@typescript-eslint/restrict-template-expressions": "error",
+			"@typescript-eslint/naming-convention": [
+				"error",
+				{
+					selector: "default",
+					format: ["strictCamelCase"],
+					leadingUnderscore: "allow",
+					trailingUnderscore: "allow"
+				},
+				{
+					selector: "import",
+					format: ["camelCase", "PascalCase"]
+				},
+				{
+					selector: "variable",
+					modifiers: ["const", "global"],
+					format: ["strictCamelCase", "UPPER_CASE"]
+				},
+				{
+					selector: "property",
+					modifiers: ["readonly"],
+					format: ["strictCamelCase", "UPPER_CASE"]
+				},
+				{
+					selector: "variable",
+					types: ["boolean"],
+					format: ["PascalCase"],
+					prefix: ["is", "has"]
+				},
+				{
+					selector: "typeLike",
+					format: ["PascalCase"]
+				}
+			]
 		}
 	},
 	{

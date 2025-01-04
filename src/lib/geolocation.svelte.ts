@@ -77,10 +77,8 @@ async function watchDeviceOrientation(): Promise<() => void> {
 	) {
 		// ios
 		// @ts-expect-error proprietary ios function `requestPermission()` is not recognized by typescript
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-		const permissionState = await DeviceOrientationEvent.requestPermission().catch(
-			console.error
-		);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
+		const permissionState = await DeviceOrientationEvent.requestPermission();
 
 		if (permissionState !== "granted") {
 			return () => void {};

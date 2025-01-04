@@ -31,10 +31,10 @@
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 
 	type Props = {
-		allSelected: boolean;
+		isAllSelected: boolean;
 	};
 
-	let { allSelected }: Props = $props();
+	let { isAllSelected }: Props = $props();
 
 	type JourneyInfo = {
 		legs: LegBlock[];
@@ -88,7 +88,7 @@
 
 <TitlelessHeader --header-width="calc(var(--diagram-width) - 2rem">
 	<div id="journey-summary" class="flex-column summary-background">
-		<div class="flex-row actions" class:all-selected={allSelected}>
+		<div class="flex-row actions" class:all-selected={isAllSelected}>
 			{#await $displayedDiagram then { recommendedVias }}
 				<ViaRecommendations {recommendedVias} />
 			{/await}
@@ -106,7 +106,7 @@
 			>
 				<IconBookmark {isBookmarked} />
 			</button>
-			{#if allSelected}
+			{#if isAllSelected}
 				<a
 					href={getJourneyUrl($selectedJourneys).href}
 					class="hoverable hoverable--accent"

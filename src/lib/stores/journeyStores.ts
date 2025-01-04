@@ -105,9 +105,6 @@ export function updateDisplayedLocations(
 		}
 
 		const locations = updateLocationsFn(formData);
-		if (formData.locations === locations) {
-			console.log("SAME");
-		}
 		if (locations.length < 2) {
 			toast("Mindestens zwei Stationen sind notwendig.", "red");
 			return formData;
@@ -202,10 +199,9 @@ async function calculateDiagram(formData: DisplayedFormData | undefined): Promis
 	}
 	const url = getApiJourneysUrl(formData);
 	const loadingEst = formData.locations.length * 3;
-	return getApiData<Diagram>(url, loadingEst).then((response) => {
-		console.log(response);
-		return response.isError ? { recommendedVias: [], tree: [] } : response.content;
-	});
+	return getApiData<Diagram>(url, loadingEst).then((response) =>
+		response.isError ? { recommendedVias: [], tree: [] } : response.content
+	);
 }
 
 /**
