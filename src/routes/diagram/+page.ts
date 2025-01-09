@@ -1,6 +1,6 @@
 import type { PageLoad } from "./$types";
 import { displayedFormData, type DisplayedFormData } from "$lib/stores/journeyStores";
-import type { KeyedItem, ParsedLocation, ZugResponse } from "$lib/types";
+import type { KeyedItem, ParsedLocation } from "$lib/types";
 import {
 	getDiagramUrlFromFormData,
 	getDiagramUrlFromRequestData,
@@ -11,6 +11,7 @@ import { get } from "svelte/store";
 import { error, redirect } from "@sveltejs/kit";
 import type { DiagramRequestData } from "$lib/types";
 import { toast } from "$lib/stores/toastStore";
+import type { VahrplanResult } from "$lib/VahrplanResult";
 
 export const load: PageLoad = async ({ url, fetch }) => {
 	if (browser && getDiagramUrlFromFormData(get(displayedFormData)).href === url.href) {
@@ -25,7 +26,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		// short token is used, redirect to proper page
 		const requestDataResponse = (await fetch(`/api/diagram/shorturl?token=${shortToken}`)
 			.then((res) => res.json())
-			.catch(() => undefined)) as ZugResponse<DiagramRequestData> | undefined;
+			.catch(() => undefined)) as VahrplanResult<DiagramRequestData> | undefined;
 		if (requestDataResponse === undefined) {
 			if (browser) {
 				toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
@@ -34,7 +35,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 			error(500, "Server-Fehler.");
 		}
 		if (requestDataResponse.isError) {
-			error(requestDataResponse.code, requestDataResponse.description);
+			error(requestDataResponse.code, requestDataResponse.message);
 		}
 
 		const diagramUrl = getDiagramUrlFromRequestData(requestDataResponse.content);
@@ -56,14 +57,14 @@ export const load: PageLoad = async ({ url, fetch }) => {
 						description: "Interner Fehler",
 						code: browser ? 400 : 500
 					};
-				})) as ZugResponse<ParsedLocation>;
+				})) as VahrplanResult<ParsedLocation>;
 			if (!response.isError) {
 				return {
 					key: Math.random(),
 					value: response.content
 				};
 			}
-			error(response.code, response.description);
+			error(response.code, response.message);
 		})
 	);
 

@@ -1,15 +1,9 @@
 import { journeyDataService } from "$lib/server/setup";
 import type { JourneysOptions, Location, Station, Stop } from "hafas-client";
-import type {
-	Diagram,
-	JourneyNode,
-	SubJourney,
-	TransitType,
-	TreeNode,
-	ZugResponse
-} from "$lib/types";
-import { getSuccessResponse, getZugErrorFromHafasError } from "$lib/server/responses";
+import type { Diagram, JourneyNode, SubJourney, TransitType, TreeNode } from "$lib/types";
 import recommendVias from "./viaRecommendations.server";
+import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
+import { VahrplanError } from "$lib/VahrplanError";
 
 const MAX_DATE = 8_640_000_000_000_000;
 const SEARCH_MAX_THRESHOLD = 2;
@@ -34,10 +28,10 @@ export async function getJourneyTree(
 	stops: (string | Station | Stop | Location)[],
 	opt: JourneysOptions,
 	transitType: TransitType
-): Promise<ZugResponse<Diagram>> {
-	opt.routingMode = transitType === "departure" ? "REALTIME" : "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
+): Promise<VahrplanResult<Diagram>> {
+	//opt.routingMode = transitType === "departure" ? "REALTIME" : "HYBRID"; // https://github.com/public-transport/hafas-client/issues/282
 	opt.stopovers = true;
-	opt.polylines = true;
+	//opt.polylines = true;
 	opt.startWithWalking = true;
 
 	// find all journeys of the tree
@@ -58,7 +52,7 @@ export async function getJourneyTree(
 		recommendVias(subJourney.map((subJourney) => subJourney.blocks))
 	);
 
-	return getSuccessResponse({ recommendedVias, tree });
+	return new VahrplanSuccess({ recommendedVias, tree });
 }
 
 /**
@@ -71,7 +65,7 @@ async function getJourneyArrays(
 	stops: (string | Station | Stop | Location)[],
 	opt: JourneysOptions,
 	transitType: TransitType
-): Promise<ZugResponse<SubJourney[][]>> {
+): Promise<VahrplanResult<SubJourney[][]>> {
 	// if `transitType` is `arrival`, the journeys have to be searched in reverse order
 	const isReverseOrder = transitType === "arrival";
 	const complimentaryTransitType = isReverseOrder ? "departure" : "arrival";
@@ -94,12 +88,12 @@ async function getJourneyArrays(
 	for (let i = start; isReverseOrder ? i >= 0 : i < stops.length - 1; i += step) {
 		fromToOpt.from = stops[i];
 		fromToOpt.to = stops[i + 1];
-		let depthJourneys;
-		try {
-			depthJourneys = await findJourneysUntil({ ...fromToOpt }, timeLimit);
-		} catch (e) {
-			return getZugErrorFromHafasError(e, i, i + 1);
+		const depthJourneysResult = await findJourneysUntil({ ...fromToOpt }, timeLimit);
+		if (depthJourneysResult.isError) {
+			return depthJourneysResult;
 		}
+		const depthJourneys = depthJourneysResult.content;
+
 		fromToOpt.opt[transitType] =
 			depthJourneys.at(isReverseOrder ? -1 : 0)?.[`${complimentaryTransitType}Time`]?.time ??
 			fallbackDate;
@@ -110,7 +104,7 @@ async function getJourneyArrays(
 			fallbackDate;
 	}
 
-	return getSuccessResponse<SubJourney[][]>(journeyss);
+	return new VahrplanSuccess(journeyss);
 }
 
 /**
@@ -118,17 +112,27 @@ async function getJourneyArrays(
  * @param fromToOpt origin, destination and options
  * @param limit when to stop looking for more journeys
  */
-async function findJourneysUntil(fromToOpt: FromToOpt, limit: TimeLimit): Promise<SubJourney[]> {
+async function findJourneysUntil(
+	fromToOpt: FromToOpt,
+	limit: TimeLimit
+): Promise<VahrplanResult<SubJourney[]>> {
 	fromToOpt.opt = { ...fromToOpt.opt };
 	const journeys: SubJourney[] = [];
 	const timeComparisonPrefix = limit.type === "departure" ? "later" : "earlier";
 
 	// find first journeys
-	let lastJourneysWithRef = await journeyDataService.journeys(
+	const firstJourneysResult = await journeyDataService.journeys(
 		fromToOpt.from,
 		fromToOpt.to,
 		fromToOpt.opt
 	);
+	if (firstJourneysResult.isError) {
+		return firstJourneysResult;
+	}
+	let lastJourneysWithRef = firstJourneysResult.content;
+	if (lastJourneysWithRef.journeys.length === 0) {
+		return VahrplanError.withMessage("HAFAS_NOT_FOUND", "Keine Verbindungen gefunden.");
+	}
 	journeys.push(...lastJourneysWithRef.journeys);
 
 	// find remaining journeys
@@ -142,11 +146,18 @@ async function findJourneysUntil(fromToOpt: FromToOpt, limit: TimeLimit): Promis
 	) {
 		fromToOpt.opt[`${timeComparisonPrefix}Than`] =
 			lastJourneysWithRef[`${timeComparisonPrefix}Ref`];
-		lastJourneysWithRef = await journeyDataService.journeys(
+
+		const nextJourneyResult = await journeyDataService.journeys(
 			fromToOpt.from,
 			fromToOpt.to,
 			fromToOpt.opt
 		);
+		if (nextJourneyResult.isError) {
+			// probably nothing more found
+			break;
+		}
+		lastJourneysWithRef = nextJourneyResult.content;
+
 		if (limit.type === "departure") {
 			journeys.push(...lastJourneysWithRef.journeys);
 		} else {
@@ -162,7 +173,7 @@ async function findJourneysUntil(fromToOpt: FromToOpt, limit: TimeLimit): Promis
 				(a.departureTime?.time.getTime() ?? 0) - (b.departureTime?.time.getTime() ?? 0)
 		);
 	}
-	return journeys;
+	return new VahrplanSuccess(journeys);
 }
 
 /**

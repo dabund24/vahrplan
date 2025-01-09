@@ -1,5 +1,5 @@
-import type { ZugResponse } from "$lib/types";
-import { getSuccessResponse, getZugError } from "$lib/server/responses";
+import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
+import { VahrplanError } from "$lib/VahrplanError";
 
 /**
  * A utility class allowing to rate-limit access to a limited resource
@@ -18,13 +18,13 @@ export class RateLimiter {
 		setInterval(() => this.RECENT_REQUESTS_COUNTS.clear(), interval * 1000);
 	}
 
-	accessResource<T>(accessor: string, resourceFn: () => T): ZugResponse<T> {
+	accessResource<T>(accessor: string, resourceFn: () => T): VahrplanResult<T> {
 		const accessorAccesses = this.RECENT_REQUESTS_COUNTS.get(accessor) ?? 0;
 		if (accessorAccesses < this.RATE_LIMIT_THRESHOLD) {
 			// allow access
 			this.RECENT_REQUESTS_COUNTS.set(accessor, accessorAccesses + 1);
-			return getSuccessResponse(resourceFn());
+			return new VahrplanSuccess(resourceFn());
 		}
-		return getZugError("QUOTA_EXCEEDED");
+		return new VahrplanError("QUOTA_EXCEEDED");
 	}
 }

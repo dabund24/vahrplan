@@ -1,11 +1,9 @@
 import type {
-	Fetchable,
 	JourneyBlock,
 	DefiningBlock,
 	LocationBlock,
 	ParsedLocation,
 	TransitData,
-	ZugResponse,
 	KeyedItem,
 	TransitType,
 	ParsedTime,
@@ -13,6 +11,9 @@ import type {
 } from "$lib/types";
 import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 import { toast } from "$lib/stores/toastStore";
+import type { VahrplanResult } from "$lib/VahrplanResult";
+import { VahrplanError } from "$lib/VahrplanError";
+import type { Fetchable } from "$lib/server/journeyData/JourneyDataService";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -27,7 +28,7 @@ export function valueIsDefined<T, K extends number | string>(
 export async function getApiData<T extends Fetchable>(
 	url: URL,
 	loadingEst: number | undefined
-): Promise<ZugResponse<T>> {
+): Promise<VahrplanResult<T>> {
 	let loadingId: number | undefined = undefined;
 	if (loadingEst !== undefined) {
 		loadingId = startLoading(loadingEst);
@@ -36,23 +37,16 @@ export async function getApiData<T extends Fetchable>(
 		void window.umami.track((props) => ({ ...props, url: `GET ${url.pathname}` }));
 	}
 
-	const result: ZugResponse<T> = await fetch(url)
-		.then((res: Response) => res.json() as Promise<ZugResponse<T>>)
-		.catch(() => {
-			return {
-				isError: true,
-				type: "ERROR",
-				code: 400,
-				station1: undefined,
-				station2: undefined,
-				description: "Verbindung zum Server fehlgeschlagen."
-			};
-		});
+	const result: VahrplanResult<T> = await fetch(url)
+		.then((res: Response) => res.json() as Promise<VahrplanResult<T>>)
+		.catch(() =>
+			VahrplanError.withMessage("ERROR", "Verbindung zum Server ist fehlgeschlagen.")
+		);
 	if (loadingId !== undefined) {
 		stopLoading(loadingId, result.isError);
 	}
 	if (result.isError) {
-		toast(result.description, "red");
+		toast(result.message, "red");
 	}
 	return result;
 }
@@ -67,7 +61,7 @@ export async function putApiData<R, T>(
 	url: URL,
 	body: KeylessDatabaseEntry<R>,
 	loadingEst: number | undefined
-): Promise<ZugResponse<T>> {
+): Promise<VahrplanResult<T>> {
 	let loadingId: number | undefined = undefined;
 	if (loadingEst !== undefined) {
 		loadingId = startLoading(loadingEst);
@@ -77,24 +71,17 @@ export async function putApiData<R, T>(
 	}
 
 	const stringifiedBody = JSON.stringify(body);
-	const result: ZugResponse<T> = await fetch(url, { method: "PUT", body: stringifiedBody })
-		.then((res: Response) => res.json() as Promise<ZugResponse<T>>)
-		.catch(() => {
-			return {
-				isError: true,
-				type: "ERROR",
-				code: 400,
-				station1: undefined,
-				station2: undefined,
-				description: "Verbindung zum Server fehlgeschlagen."
-			};
-		});
+	const result: VahrplanResult<T> = await fetch(url, { method: "PUT", body: stringifiedBody })
+		.then((res: Response) => res.json() as Promise<VahrplanResult<T>>)
+		.catch(() =>
+			VahrplanError.withMessage("ERROR", "Verbindung zum Server ist fehlgeschlagen")
+		);
 
 	if (loadingId !== undefined) {
 		stopLoading(loadingId, result.isError);
 	}
 	if (result.isError) {
-		toast(result.description, "red");
+		toast(result.message, "red");
 	}
 	return result;
 }

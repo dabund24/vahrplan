@@ -37,7 +37,7 @@ function parseStaticLegHints(leg: Leg): string[] {
 	}
 
 	// operator:
-	if (leg.line?.operator !== undefined) {
+	if (leg.line?.operator?.name !== undefined) {
 		hints.push(`Betreiber: ${leg.line.operator.name}`);
 	}
 
