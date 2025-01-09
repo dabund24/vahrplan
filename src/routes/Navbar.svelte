@@ -69,7 +69,7 @@
 			<li aria-current={currentPage === 4 ? "page" : undefined}>
 				<a href="/about" class="hoverable flex-row">
 					<IconAbout />
-					<span>Über</span>
+					<span>Über Vahrplan</span>
 				</a>
 			</li>
 		</ul>

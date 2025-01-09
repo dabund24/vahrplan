@@ -11,7 +11,7 @@
 	<meta name="description" content="Weiterführende Informationen über Vahrplan" />
 </svelte:head>
 
-<Header title={"Über diese Seite"} isMobileOnly={true} />
+<Header title={"Über Vahrplan"} isMobileOnly={true} />
 <div class="content-wrapper padded-top-bottom">
 	<h1>Name</h1>
 	Vahrplan steht für
