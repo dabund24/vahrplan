@@ -1,11 +1,11 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
 import { journeyDataService } from "$lib/server/setup";
-import { getZugError } from "$lib/server/responses";
+import { VahrplanError } from "$lib/VahrplanError";
 
 export const GET: RequestHandler = async function ({ url }) {
 	const hafasTokens = getHafasTokensFromUrl(url);
 	if (hafasTokens === undefined) {
-		return json(getZugError("NOT_FOUND"), { status: 404 });
+		return json(VahrplanError.withMessage("NOT_FOUND", "URL ist fehlerhaft."), { status: 404 });
 	}
 	const result = await journeyDataService.refresh(hafasTokens);
 	return json(result, { status: result.isError ? result.code : 200 });

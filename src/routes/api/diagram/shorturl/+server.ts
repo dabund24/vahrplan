@@ -6,25 +6,26 @@ import {
 	setDatabaseEntry
 } from "$lib/server/serverUtils";
 import type { DiagramRequestData } from "$lib/types";
-import { getSuccessResponse, getZugError } from "$lib/server/responses";
+import { VahrplanSuccess } from "$lib/VahrplanResult";
+import { VahrplanError } from "$lib/VahrplanError";
 
 export const PUT: RequestHandler = async function ({ request }) {
 	const keylessEntryData = (await request.json()) as KeylessDatabaseEntry<DiagramRequestData>;
 	const entryData = generateHashedDatabaseEntry(keylessEntryData);
 	await setDatabaseEntry(entryData);
-	return json(getSuccessResponse(entryData.key));
+	return json(new VahrplanSuccess(entryData.key));
 };
 
 export const GET: RequestHandler = async function ({ url }) {
 	const shortToken = url.searchParams.get("token");
 	if (shortToken === null) {
 		// no token
-		return json(getZugError("NOT_FOUND"), { status: 404 });
+		return json(VahrplanError.withMessage("NOT_FOUND", "URL ist fehlerhaft"), { status: 404 });
 	}
 	const diagramData = await getDatabaseEntry<DiagramRequestData>("journeys", shortToken);
 	if (diagramData === undefined) {
 		// invalid token
-		return json(getZugError("NOT_FOUND"), { status: 404 });
+		return json(VahrplanError.withMessage("NOT_FOUND", "URL ist fehlerhaft."), { status: 404 });
 	}
-	return json(getSuccessResponse(diagramData), { status: 200 });
+	return json(new VahrplanSuccess(diagramData), { status: 200 });
 };

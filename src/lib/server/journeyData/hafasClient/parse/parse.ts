@@ -7,15 +7,51 @@ import type {
 	ParsedGeolocation,
 	ParsedLocation,
 	ParsedTime,
+	SubJourney,
 	TransitAttribute,
 	TransitData,
 	TransitType,
 	WalkingBlock
 } from "$lib/types";
-import { dateDifference } from "$lib/util";
+import { dateDifference, getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
 import type { Product } from "$lib/stores/settingStore";
 import { parseLegInfo } from "$lib/server/journeyData/hafasClient/parse/parseLegInfo";
+
+/**
+ * parse a sub-journey from hafas
+ * @param journey
+ */
+export function parseSubJourney(journey: Journey): SubJourney {
+	const blocks = journeyToBlocks(journey);
+	const { arrival, departure } = getFirstAndLastTime(blocks);
+	const result: SubJourney = {
+		refreshToken: journey.refreshToken ?? "",
+		blocks,
+		arrivalTime: arrival.arrival ?? { time: new Date(0) },
+		departureTime: departure.departure ?? { time: new Date(0) }
+	};
+
+	// generation of ticket links stolen from https://gitlab.com/bahnvorhersage/bahnvorhersage_frontend/-/blob/main/src/components/BuyTicketButton.vue
+	const startName = getBlockStart(blocks.at(0))?.name ?? "";
+	const endName = getBlockEnd(blocks.at(-1))?.name ?? "";
+	const ticketUrl = new URL("https://www.bahn.de/buchung/start#sts=true");
+	ticketUrl.searchParams.set("so", startName);
+	ticketUrl.searchParams.set("zo", endName);
+	ticketUrl.searchParams.set("soid", `O=${startName}`);
+	ticketUrl.searchParams.set("zoid", `O=${endName}`);
+	ticketUrl.searchParams.set("cbs", "true");
+	ticketUrl.searchParams.set("hd", result.departureTime?.time.toISOString() ?? "");
+	ticketUrl.searchParams.set("gh", result.refreshToken);
+
+	result.ticketData = {
+		minPrice: (journey.price?.amount ?? -1) > 0 ? journey.price?.amount : undefined,
+		currency: journey.price?.currency ?? "EUR",
+		hint: journey.price?.hint,
+		url: ticketUrl.href
+	};
+	return result;
+}
 
 export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 	if (journey?.legs === undefined) {
@@ -85,7 +121,7 @@ export function journeyToBlocks(journey: Journey | undefined): JourneyBlock[] {
 function legToBlock(leg: Leg): LegBlock {
 	const departurePlatform = leg.departurePlatform ?? undefined;
 	const arrivalPlatform = leg.arrivalPlatform ?? undefined;
-	return {
+	const block: LegBlock = {
 		type: "leg",
 		tripId: leg.tripId ?? "",
 		blockKey:
@@ -134,6 +170,12 @@ function legToBlock(leg: Leg): LegBlock {
 				feature.geometry.coordinates[0]
 			]) ?? []
 	};
+	if (block.polyline.length === 0) {
+		block.polyline = [block.departureData, ...block.stopovers, block.arrivalData].map(
+			(stop) => [stop.location.position.lat, stop.location.position.lng]
+		);
+	}
+	return block;
 }
 
 function getLegCurrentLocation(leg: Leg): ParsedGeolocation | undefined {

@@ -1,9 +1,18 @@
 import { createClient as createRedisClient } from "redis";
-import { building } from "$app/environment";
+import { building, version } from "$app/environment";
+import { JourneyDataService } from "$lib/server/journeyData/JourneyDataService";
+// @ts-expect-error no types for db-vendo-client yet
+import { createClient as createHafasClient } from "db-vendo-client";
+// @ts-expect-error no types for db-vendo-client yet
+import { profile as dbProfile } from "db-vendo-client/p/dbnav";
+import type { HafasClient } from "hafas-client";
 import { HafasClientDataService } from "$lib/server/journeyData/hafasClient/HafasClientDataService";
-import type { JourneyDataService } from "$lib/server/journeyData/JourneyDataService";
 
-export const journeyDataService: JourneyDataService = new HafasClientDataService();
+const userAgent = `https://vahrplan.de ${version}`;
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+const hafasClient = createHafasClient(dbProfile, userAgent) as HafasClient;
+export const journeyDataService: JourneyDataService = new HafasClientDataService(hafasClient);
 
 // Valkey stuff
 

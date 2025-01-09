@@ -1,36 +1,40 @@
-import type {
+import {
 	JourneyDataService,
-	JourneyNodesWithRefs
+	type JourneyNodesWithRefs
 } from "$lib/server/journeyData/JourneyDataService";
 import {
-	createClient as createHafasClient,
 	type HafasClient,
-	type Journey,
+	type Journeys,
 	type JourneysOptions,
 	type JourneyWithRealtimeData
 } from "hafas-client";
-import { profile as dbProfile } from "hafas-client/p/db";
 import { RateLimiter } from "$lib/server/RateLimiter";
+import type { ParsedLocation, SubJourney } from "$lib/types";
 import {
-	getSuccessResponse,
-	getZugErrorFromHafasError,
-	throwHafasQuotaError
-} from "$lib/server/responses";
-import type { LegBlock, ParsedLocation, SubJourney, ZugResponse } from "$lib/types";
-import { version } from "$app/environment";
-import {
-	journeyToBlocks,
-	parseStationStopLocation
+	parseStationStopLocation,
+	parseSubJourney
 } from "$lib/server/journeyData/hafasClient/parse/parse";
-import { getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
+import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
+import { VahrplanError } from "$lib/VahrplanError";
 
-export class HafasClientDataService implements JourneyDataService {
+// see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
+export type HafasError = Error & {
+	isHafasError: true;
+	code: "ACCESS_DENIED" | "INVALID_REQUEST" | "NOT_FOUND" | "SERVER_ERROR" | "QUOTA_EXCEEDED";
+	isCausedByServer: boolean;
+	hafasCode: string;
+	hafasDescription: string;
+};
+
+export class HafasClientDataService extends JourneyDataService {
 	client: HafasClient;
 
-	constructor() {
-		const userAgent = `https://vahrplan.de ${version}`;
-
-		const hafasClientRaw = createHafasClient(dbProfile, userAgent);
+	/**
+	 * Create a JourneyDataService from a HafasClient
+	 * @param client hafas-client
+	 */
+	constructor(client: HafasClient) {
+		super();
 
 		const rateLimiterIntervalSeconds = 60;
 		const rateLimiterAccessThreshold = 200;
@@ -45,154 +49,116 @@ export class HafasClientDataService implements JourneyDataService {
 				const result = hafasGlobalRateLimiter.accessResource("global", () => target[prop]);
 				if (result.isError) {
 					// Pretend as if hafas client threw an error
-					return async () => Promise.resolve(throwHafasQuotaError());
+					return async () =>
+						Promise.resolve(HafasClientDataService.throwHafasQuotaError());
 				}
 				return result.content;
 			}
 		};
 
-		this.client = new Proxy(hafasClientRaw, hafasClientHandler);
+		this.client = new Proxy(client, hafasClientHandler);
 	}
 
 	async journeys(
 		from: ParsedLocation["requestParameter"],
 		to: ParsedLocation["requestParameter"],
 		options: JourneysOptions
-	): Promise<JourneyNodesWithRefs> {
-		options.tickets = true;
-		const hafasJourneys = await this.client.journeys(from, to, options);
+	): Promise<VahrplanResult<JourneyNodesWithRefs>> {
+		const parseResponseCallback = (hafasJourneys: Journeys): JourneyNodesWithRefs => {
+			const fetchedJourneys = // convert to vahrplan format
+				hafasJourneys.journeys?.map((journey) => parseSubJourney(journey)) ?? [];
 
-		const fetchedJourneys = // convert to vahrplan format
-			hafasJourneys.journeys?.map((journey) =>
-				HafasClientDataService.hafasJourneyToSubJourney(journey)
-			) ?? [];
-
-		return {
-			journeys: fetchedJourneys,
-			earlierRef: hafasJourneys.earlierRef ?? "",
-			laterRef: hafasJourneys.laterRef ?? ""
+			return {
+				journeys: fetchedJourneys,
+				earlierRef: hafasJourneys.earlierRef ?? "",
+				laterRef: hafasJourneys.laterRef ?? ""
+			};
 		};
+
+		return this.performRequest(
+			() => this.client.journeys(from, to, options),
+			parseResponseCallback
+		);
 	}
 
-	async refresh(tokens: string[]): Promise<ZugResponse<SubJourney[]>> {
-		try {
-			const hafasJourneys = await Promise.all(
-				tokens.map(
-					async (token): Promise<JourneyWithRealtimeData> =>
-						this.client.refreshJourney?.(token, {
-							stopovers: true,
-							language: "de",
-							polylines: true
-						}) ?? { journey: { type: "journey", legs: [] } }
-				)
-			);
-			const blocks = hafasJourneys.map((journeys) =>
-				HafasClientDataService.hafasJourneyToSubJourney(journeys.journey)
-			);
-			return getSuccessResponse(HafasClientDataService.setMergingProperties(blocks));
-		} catch (e) {
-			return getZugErrorFromHafasError(e);
-		}
-	}
-
-	private static hafasJourneyToSubJourney(journey: Journey): SubJourney {
-		const blocks = journeyToBlocks(journey);
-		const { arrival, departure } = getFirstAndLastTime(blocks);
-		const result: SubJourney = {
-			refreshToken: journey.refreshToken ?? "",
-			blocks,
-			arrivalTime: arrival.arrival ?? { time: new Date(0) },
-			departureTime: departure.departure ?? { time: new Date(0) }
-		};
-		if (journey.price === undefined) {
-			return result;
-		}
-
-		// generation of ticket links stolen from https://gitlab.com/bahnvorhersage/bahnvorhersage_frontend/-/blob/main/src/components/BuyTicketButton.vue
-		const startName = getBlockStart(blocks.at(0))?.name ?? "";
-		const endName = getBlockEnd(blocks.at(-1))?.name ?? "";
-		const ticketUrl = new URL("https://www.bahn.de/buchung/start#sts=true");
-		ticketUrl.searchParams.set("so", startName);
-		ticketUrl.searchParams.set("zo", endName);
-		ticketUrl.searchParams.set("soid", `O=${startName}`);
-		ticketUrl.searchParams.set("zoid", `O=${endName}`);
-		ticketUrl.searchParams.set("cbs", "true");
-		ticketUrl.searchParams.set("hd", result.departureTime?.time.toISOString() ?? "");
-		ticketUrl.searchParams.set("gh", result.refreshToken);
-
-		result.ticketData = {
-			minPrice: journey.price.amount > 0 ? journey.price.amount : undefined,
-			currency: journey.price.currency,
-			hint: journey.price.hint,
-			url: ticketUrl.href
-		};
-		return result;
-	}
-
-	/**
-	 * sets `precededBy` and `succeededBy` properties of sub-journeys
-	 * @param subJourneys the sub-journeys to modify
-	 * @private
-	 */
-	private static setMergingProperties(subJourneys: SubJourney[]): SubJourney[] {
-		for (let i = 1; i < subJourneys.length; i++) {
-			const arrivingSubJourneyBlock = subJourneys[i - 1].blocks.at(-1);
-			const departungSubJourneyBlock = subJourneys[i].blocks.at(0);
-			if (
-				arrivingSubJourneyBlock?.type !== "leg" ||
-				departungSubJourneyBlock?.type !== "leg"
-			) {
-				// do nothing
-			} else if (arrivingSubJourneyBlock.blockKey === departungSubJourneyBlock.blockKey) {
-				arrivingSubJourneyBlock.succeededBy = "stopover";
-				departungSubJourneyBlock.precededBy = "stopover";
-			} else if (
-				HafasClientDataService.legsHaveSameLocations(
-					arrivingSubJourneyBlock,
-					departungSubJourneyBlock
-				)
-			) {
-				arrivingSubJourneyBlock.succeededBy = "transfer";
-				departungSubJourneyBlock.precededBy = "transfer";
+	async refresh(tokens: string[]): Promise<VahrplanResult<SubJourney[]>> {
+		return this.performRequest(
+			() =>
+				Promise.all(
+					tokens.map(
+						async (token): Promise<JourneyWithRealtimeData> =>
+							this.client.refreshJourney?.(token, {
+								stopovers: true,
+								language: "de",
+								polylines: true
+							}) ?? { journey: { type: "journey", legs: [] } }
+					)
+				),
+			(hafasJourneys) => {
+				const blocks = hafasJourneys.map((journeys) => parseSubJourney(journeys.journey));
+				return JourneyDataService.setMergingProperties(blocks);
 			}
-		}
-		return subJourneys;
-	}
-
-	/**
-	 * returns whether the destination and origin of two legs are the same
-	 * @param arrivingLeg the leg with the destination to check
-	 * @param departingLeg the leg with the origin to check
-	 * @private
-	 */
-	private static legsHaveSameLocations(arrivingLeg: LegBlock, departingLeg: LegBlock): boolean {
-		return (
-			arrivingLeg.arrivalData.location.position.lng ===
-				departingLeg.departureData.location.position.lng &&
-			arrivingLeg.arrivalData.location.position.lat ===
-				departingLeg.departureData.location.position.lat
 		);
 	}
 
 	async location(
 		token: ParsedLocation["requestParameter"]
-	): Promise<ZugResponse<ParsedLocation>> {
+	): Promise<VahrplanResult<ParsedLocation>> {
 		if (typeof token !== "string") {
 			// token is location object
-			return Promise.resolve(getSuccessResponse(parseStationStopLocation(token)));
+			return Promise.resolve(new VahrplanSuccess(parseStationStopLocation(token)));
 		}
-		return this.client
-			.stop(token, {})
-			.then((location) => getSuccessResponse(parseStationStopLocation(location)))
-			.catch(getZugErrorFromHafasError);
+
+		return this.performRequest(() => this.client.stop(token, {}), parseStationStopLocation);
 	}
 
-	async locations(name: string): Promise<ZugResponse<ParsedLocation[]>> {
-		try {
-			const locations = await this.client.locations(name, { results: 10 });
-			return getSuccessResponse(locations.map(parseStationStopLocation));
-		} catch (error) {
-			return getZugErrorFromHafasError(error);
+	async locations(name: string): Promise<VahrplanResult<ParsedLocation[]>> {
+		return this.performRequest(
+			() => this.client.locations(name, { results: 10 }),
+			(locations) => locations.map(parseStationStopLocation)
+		);
+	}
+
+	parseError(err: unknown): VahrplanError {
+		let errorType: VahrplanError["type"] = "ERROR";
+		let message = "Hafas: Fehler beim Beantworten der Anfrage.";
+		if (HafasClientDataService.isHafasError(err)) {
+			if (err.code === "QUOTA_EXCEEDED") {
+				// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
+				return new VahrplanError("QUOTA_EXCEEDED");
+			}
+			message = `Hafas: ${err.hafasDescription ?? "Hafas-Fehler"}`;
+			errorType = `HAFAS_${err.code ?? "SERVER_ERROR"}`;
 		}
+		return VahrplanError.withMessage(errorType, message);
+	}
+
+	/**
+	 * Checks if a given error is an instance of HafasError
+	 * @param error
+	 * @private
+	 */
+	private static isHafasError(error: unknown): error is HafasError {
+		return (
+			typeof error === "object" &&
+			error !== null &&
+			"isHafasError" in error &&
+			error.isHafasError === true
+		);
+	}
+
+	/**
+	 * always throws an error indicating error 429
+	 * @throws HafasError
+	 * @private
+	 */
+	private static throwHafasQuotaError(): never {
+		throw {
+			isHafasError: true,
+			code: "QUOTA_EXCEEDED",
+			isCausedByServer: true,
+			hafasCode: "",
+			hafasDescription: ""
+		} as HafasError;
 	}
 }

@@ -1,5 +1,4 @@
 import type { Location, Station, Stop } from "hafas-client";
-import type { NumericRange } from "@sveltejs/kit";
 import type { Product, Settings } from "$lib/stores/settingStore";
 
 export type KeyedItem<T, K extends number | string> = {
@@ -7,34 +6,13 @@ export type KeyedItem<T, K extends number | string> = {
 	key: K;
 };
 
-export type Fetchable = Diagram | SubJourney[] | ParsedLocation[] | ParsedLocation;
-
-export type ZugResponse<T> = ZugSuccess<T> | ZugError;
-
-export type ZugSuccess<T> = {
-	isError: false;
-	content: T;
-};
-
-export type ZugError = {
-	isError: true;
-	code: NumericRange<400, 599>;
-	type: ZugErrorType;
-	description: string;
-	station1?: number;
-	station2?: number;
-};
-
-export type ZugErrorType = `HAFAS_${HafasError["code"]}` | "NOT_FOUND" | "ERROR" | "QUOTA_EXCEEDED";
-
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
-export type HafasError = Error & {
-	isHafasError: true;
-	code: "ACCESS_DENIED" | "INVALID_REQUEST" | "NOT_FOUND" | "SERVER_ERROR" | "QUOTA_EXCEEDED";
-	isCausedByServer: boolean;
-	hafasCode: string;
-	hafasDescription: string;
-};
+export type HafasErrorCode =
+	| "ACCESS_DENIED"
+	| "INVALID_REQUEST"
+	| "NOT_FOUND"
+	| "SERVER_ERROR"
+	| "QUOTA_EXCEEDED";
 
 export type TransitType = "arrival" | "departure";
 
