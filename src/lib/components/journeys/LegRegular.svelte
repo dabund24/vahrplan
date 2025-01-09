@@ -141,7 +141,7 @@
 	}
 
 	summary {
-		margin: 0 calc(3 * var(--line-width) + 1rem + 16px) 0 calc(-0.5rem - var(--line-width));
+		margin: 0 var(--line-width) 0 calc(-0.5rem - var(--line-width));
 		width: fit-content;
 		align-items: center;
 		gap: 0.5rem;
@@ -152,13 +152,8 @@
 		}
 	}
 
-	@supports not (align-self: anchor-center) {
-		summary {
-			margin-right: var(--line-width);
-		}
-		details:not(:last-child) > *:not(summary) {
-			margin-right: calc(-16px - 1rem - 2 * var(--line-width));
-		}
+	details:not(:last-child) > *:not(summary) {
+		margin-right: calc(-16px - 1rem - 2 * var(--line-width));
 	}
 
 	details[open] summary > :global(svg) {

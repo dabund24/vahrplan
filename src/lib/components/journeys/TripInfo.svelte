@@ -13,7 +13,7 @@
 		departureTime: number;
 	};
 
-	let { info, blockKey, departureTime }: Props = $props();
+	let { info, blockKey }: Props = $props();
 
 	function showInfoModal(): void {
 		pushState("", {
@@ -79,8 +79,6 @@
 		title="Fahrtinformationen anzeigen"
 		class="hoverable hoverable--visible"
 		onclick={showInfoModal}
-		style:right="anchor(--leg--{blockKey} right)"
-		style:position-anchor="--leg--{blockKey}{departureTime}__stopovers-summary"
 	>
 		<IconInfo color={info.statuses.length > 0 ? "red" : undefined} />
 	</button>
@@ -104,11 +102,5 @@
 <style>
 	ul {
 		padding: 0.5rem 0;
-	}
-	@supports (align-self: anchor-center) {
-		button {
-			position: absolute;
-			align-self: anchor-center;
-		}
 	}
 </style>

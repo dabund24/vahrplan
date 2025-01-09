@@ -121,7 +121,7 @@ export class HafasClientDataService extends JourneyDataService {
 
 	parseError(err: unknown): VahrplanError {
 		let errorType: VahrplanError["type"] = "ERROR";
-		let message = "Hafas: Fehler beim Beantworten der Anfrage.";
+		let message = "Hafas: Server-Fehler. Die Anfrage ist möglicherweise ungültig.";
 		if (HafasClientDataService.isHafasError(err)) {
 			if (err.code === "QUOTA_EXCEEDED") {
 				// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
