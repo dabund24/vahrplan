@@ -28,11 +28,47 @@ jobs:
             - name: Build
               run: npm run build
 
+    format:
+        name: Test formatting
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22.x"
+
             - name: Format check
               run: npm run format
 
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22.x"
+
             - name: Linter check
               run: npm run lint
+
+    svelte-check:
+        name: Test build
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22.x"
 
             - name: Svelte check
               run: npm run check
