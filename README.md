@@ -39,7 +39,7 @@ Instructions:
 - Copy `.env.example` to `.env`
 - Run `docker compose up --build`
 
-The app should now run on [`http://localhost:3000`](http://localhost:3000) and Umami runs on [`http://localhost:3001`](http://localhost:3001). Consult the [Umami Docs](https://umami.is/docs/login) for further instructions on how to get analytics. The environment variable `PUBLIC_UMAMI_SCRIPT` in `.env` can be used to insert the tracking script.
+The app should now run on [`http://localhost:3000`](http://localhost:3000)
 
 ### Build with npm
 

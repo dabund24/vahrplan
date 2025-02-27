@@ -33,9 +33,10 @@ export async function getApiData<T extends Fetchable>(
 	if (loadingEst !== undefined) {
 		loadingId = startLoading(loadingEst);
 	}
-	if (window.umami !== undefined) {
-		void window.umami.track((props) => ({ ...props, url: `GET ${url.pathname}` }));
-	}
+
+	// @ts-expect-error plausible
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+	plausible?.(`GET ${url.pathname}`);
 
 	const result: VahrplanResult<T> = await fetch(url)
 		.then((res: Response) => res.json() as Promise<VahrplanResult<T>>)
@@ -66,9 +67,10 @@ export async function putApiData<R, T>(
 	if (loadingEst !== undefined) {
 		loadingId = startLoading(loadingEst);
 	}
-	if (window.umami !== undefined) {
-		void window.umami.track((props) => ({ ...props, url: `PUT ${url.pathname}` }));
-	}
+
+	// @ts-expect-error plausible
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+	plausible?.(`PUT ${url.pathname}`);
 
 	const stringifiedBody = JSON.stringify(body);
 	const result: VahrplanResult<T> = await fetch(url, { method: "PUT", body: stringifiedBody })

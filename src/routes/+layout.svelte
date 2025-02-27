@@ -6,7 +6,7 @@
 	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
 	import type { Snippet } from "svelte";
-	import { PUBLIC_UMAMI_SCRIPT } from "$env/static/public";
+	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
 
 	type Props = { children: Snippet };
 
@@ -27,7 +27,7 @@
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html PUBLIC_UMAMI_SCRIPT}
+	{@html PUBLIC_ANALYTICS_SCRIPT}
 </svelte:head>
 
 <div class="app">
