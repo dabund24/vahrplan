@@ -323,14 +323,15 @@
 	<h3>Cookies</h3>
 	<p>Cookies werden auf dieser Website nicht eingesetzt.</p>
 	<h2>5. Analyse-Tools</h2>
-	<h3>Umami</h3> <p>Diese Website benutzt das Open Source Webanalysetool Umami.</p>
+	<h3>Plausible</h3>
+	<p>Diese Website benutzt das Open Source Webanalysetool Plausible (Community Edition).</p>
 	<p
-		>Mit Hilfe von Umami sind wir in der Lage Daten &uuml;ber die Nutzung unserer Website durch
-		die Websitebesucher zu erfassen und zu analysieren. Hierdurch k&ouml;nnen wir u.&nbsp;a.
-		herausfinden, wann welche Seitenaufrufe get&auml;tigt wurden und aus welcher Region sie
-		kommen. Au&szlig;erdem erfassen wir verschiedene Logdateien (z.&nbsp;B. IP-Adresse,
-		Referrer, verwendete Browser und Betriebssysteme) und k&ouml;nnen messen, ob unsere
-		Websitebesucher bestimmte Aktionen durchf&uuml;hren (z.&nbsp;B. Klicks u. &Auml;.).</p
+		>Mit Hilfe von Plausible sind wir in der Lage Daten &uuml;ber die Nutzung unserer Website
+		durch die Websitebesucher zu erfassen und zu analysieren. Hierdurch k&ouml;nnen wir
+		u.&nbsp;a. herausfinden, wann welche Seitenaufrufe get&auml;tigt wurden und aus welcher
+		Region sie kommen. Au&szlig;erdem erfassen wir verschiedene Logdateien (z.&nbsp;B. Referrer,
+		verwendete Browser und Betriebssysteme) und k&ouml;nnen messen, ob unsere Websitebesucher
+		bestimmte Aktionen durchf&uuml;hren (z.&nbsp;B. Klicks u. &Auml;.).</p
 	>
 	<p
 		>Die Nutzung dieses Analyse-Tools erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der
@@ -338,11 +339,11 @@
 		Webangebot zu optimieren.</p
 	>
 	<h4>Cookielose Analyse</h4>
-	<p>Umami nutzt keine Cookies oder ähnliche Technologien bei der Analyse.</p>
+	<p>Plausible nutzt keine Cookies oder ähnliche Technologien bei der Analyse.</p>
 	<h4>Hosting</h4>
 	<p
-		>Wir hosten Umami ausschlie&szlig;lich auf unseren eigenen Servern, sodass alle Analysedaten
-		bei uns verbleiben und nicht weitergegeben werden.</p
+		>Wir hosten Plausible ausschlie&szlig;lich auf unseren eigenen Servern, sodass alle
+		Analysedaten bei uns verbleiben und nicht weitergegeben werden.</p
 	>
 	<p>Quelle: <a href="https://www.e-recht24.de">https://www.e-recht24.de</a></p>
 </div>

@@ -88,7 +88,7 @@
 		<ul>
 			{@render tool("Cloud-Hosting", "Hetzner", "https://www.hetzner.com/cloud/")}
 			{@render tool("Reverse-Proxy", "nginx", "https://nginx.org/")}
-			{@render tool("Analytics", "Umami", "https://umami.is/")}
+			{@render tool("Analytics", "Plausible (Communtiy Edition)", "https://plausible.io/")}
 			{@render tool("Mail-Server", "mailcow", "https://mailcow.email/")}
 		</ul>
 	</AccordionElement>
