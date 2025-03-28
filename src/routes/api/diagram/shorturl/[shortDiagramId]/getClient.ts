@@ -33,7 +33,7 @@ export class GetDiagramShortUrlApiClient extends NonApiUsable<string, ResT>()(
 	protected override requestEventFromUrl(url: URL): RequestEvent {
 		return {
 			url,
-			params: { shortDiagramId: url.pathname.substring(url.pathname.lastIndexOf("/")) }
+			params: { shortDiagramId: url.pathname.substring(url.pathname.lastIndexOf("/") + 1) }
 		} as RequestEvent;
 	}
 }
