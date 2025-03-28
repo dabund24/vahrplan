@@ -16,6 +16,11 @@ export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
 
+/**
+ * An abstract utility class simplifying the process of making fetch requests in Vahrplan.
+ *
+ * Can be extended with mixins
+ */
 export abstract class ApiClient<
 	ReqT,
 	ResT,

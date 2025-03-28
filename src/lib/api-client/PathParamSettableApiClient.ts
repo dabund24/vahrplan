@@ -8,9 +8,7 @@ import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { RequestEvent } from "@sveltejs/kit";
 
 /**
- * Mixin adding
- * @mixin
- * @constructor
+ * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export function PathParamSettable<ReqT, ResT>() {

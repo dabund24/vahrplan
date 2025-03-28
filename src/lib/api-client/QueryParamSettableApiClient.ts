@@ -7,6 +7,9 @@ import {
 import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { RequestEvent } from "@sveltejs/kit";
 
+/**
+ * @mixin QueryParamSettable Lets {@linkcode ApiClient}s pass information through query parameters
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export function QueryParamSettable<ReqT, ResT>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type

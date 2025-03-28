@@ -3,6 +3,9 @@ import type { RequestEvent } from "@sveltejs/kit";
 
 type NonBodyfulHttpMethod = Exclude<HttpMethod, "POST" | "PUT">;
 
+/**
+ * @mixin NonApiUsable Provides methods in {@linkcode ApiClient}s for parsing and formatting urls in non-api context
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
 export function NonApiUsable<ReqT, ResT>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type

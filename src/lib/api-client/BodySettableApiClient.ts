@@ -9,6 +9,9 @@ import type { RequestEvent } from "@sveltejs/kit";
 
 type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
 
+/**
+ * @mixin BodySettable Lets {@linkcode ApiClient}s pass information through the request body
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
 export function BodySettable<ReqT, ResT>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
