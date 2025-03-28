@@ -6,6 +6,8 @@
 	import Setting from "$lib/components/Setting.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 
+	const productKeys = Object.keys(products) as (keyof typeof products)[];
+
 	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
 		settings.update((settings) => {
 			settings.journeysOptions.products = {
@@ -116,9 +118,9 @@
 			Nur Fernverkehr
 		</button>
 	</div>
-	{#each Object.entries(products) as [product, productName]}
+	{#each productKeys as product}
 		<Setting
-			settingName={productName}
+			settingName={products[product]}
 			bind:setting={$settings.journeysOptions.products[product]}
 			settingInfo={{ type: "boolean" }}
 		/>

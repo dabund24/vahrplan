@@ -12,20 +12,23 @@ type TripInfoModalKeys = Record<`${"showTripInfoModal"}${string}`, boolean | und
 
 declare global {
 	namespace App {
-		type Error = VahrplanError;
+		// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/consistent-type-definitions
+		interface Error extends VahrplanError {}
 		// interface Locals {}
-		type PageData = {
+		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+		interface PageData {
 			formData?: DisplayedFormData | undefined;
 			diagramData?: DiagramData;
-		};
-		type PageState = TripInfoModalKeys & {
+		}
+		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+		interface PageState extends TripInfoModalKeys {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showRecommendationModal?: boolean;
 			showTicketModal?: boolean;
 			showPrivacyLinkModal?: boolean;
 			showPrivacyStoreModal?: boolean;
-		};
+		}
 		// interface Platform {}
 	}
 }

@@ -15,8 +15,6 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType>()(
 	protected override readonly methodType = "GET";
 	protected override readonly route = "/api/journey";
 	protected override readonly isLoadingAnimated = true;
-	protected override readonly estimatedUpstreamCalls = (reqContent: string[]): number =>
-		reqContent.length - 1;
 	protected override readonly cacheMaxAge = 30;
 	protected override readonly queryParamNames = {
 		tokens: "tokens"
@@ -31,6 +29,10 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType>()(
 
 	override parse(reqEvent: RequestEvent): string[] {
 		return this.readArrayQueryParameter(reqEvent.url.searchParams, this.queryParamNames.tokens);
+	}
+
+	protected override estimateUpstreamCalls(reqContent: string[]): number {
+		return reqContent.length - 1;
 	}
 
 	override formatNonApiUrl(content: string[]): URL {

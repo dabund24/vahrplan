@@ -24,7 +24,6 @@ export abstract class ApiClient<
 > {
 	protected abstract readonly methodType: MethodT;
 	protected abstract readonly route: RequestEventT["route"]["id"];
-	protected readonly estimatedUpstreamCalls: number | ((reqContent: ReqT) => number) = 1;
 	protected abstract readonly cacheMaxAge: number;
 	protected abstract readonly isLoadingAnimated: boolean;
 
@@ -76,7 +75,7 @@ export abstract class ApiClient<
 		{ url, requestInit }: RequestData,
 		fetchFn?: typeof fetch
 	): Promise<VahrplanResult<ResT>> {
-		const estimatedUpstreamCalls = this.getEstimatedUpstreamCalls(_content);
+		const estimatedUpstreamCalls = this.estimateUpstreamCalls(_content);
 		let loadingId: number | undefined = undefined;
 		if (browser && this.isLoadingAnimated) {
 			loadingId = untrack(() => startLoading(estimatedUpstreamCalls));
@@ -117,11 +116,15 @@ export abstract class ApiClient<
 		return result;
 	}
 
-	private getEstimatedUpstreamCalls(reqContent: ReqT): number {
-		if (typeof this.estimatedUpstreamCalls === "number") {
-			return this.estimatedUpstreamCalls;
-		}
-		return this.estimatedUpstreamCalls(reqContent);
+	/**
+	 * estimate how many upstream requests have to be made for the passed content.
+	 *
+	 * Override in client implementation if this is not trivially one
+	 * @param _reqContent
+	 * @protected
+	 */
+	protected estimateUpstreamCalls(_reqContent: ReqT): number {
+		return 1;
 	}
 
 	/**

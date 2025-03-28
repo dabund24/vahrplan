@@ -26,8 +26,6 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData>()(
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "/api/diagram";
-	protected override readonly estimatedUpstreamCalls = (reqContent: ReqType): number =>
-		1 + (reqContent.stops.length - 2) * DIAGRAM_COLUMN_MAX_REQUESTS; // first column is always one request
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = 120;
 	protected override readonly queryParamNames = {
@@ -138,6 +136,10 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData>()(
 				minTransferTime: Number(url.searchParams.get(this.queryParamNames.minTransferTime))
 			}
 		};
+	}
+
+	protected override estimateUpstreamCalls(reqContent: ReqType): number {
+		return 1 + (reqContent.stops.length - 2) * DIAGRAM_COLUMN_MAX_REQUESTS; // first column is always one request
 	}
 
 	public override formatNonApiUrl(content: ReqType): URL {
