@@ -1,12 +1,17 @@
 <script lang="ts">
-	import { displayedFormData, selectedJourneys } from "$lib/stores/journeyStores";
 	import Modal from "$lib/components/Modal.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { type ParsedLocation } from "$lib/types";
 	import Warning from "$lib/components/Warning.svelte";
+	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 
-	let locations = $derived($displayedFormData?.locations.map((l) => l.value) ?? []);
-	let ticketData = $derived($selectedJourneys.map((j) => j.subJourney.ticketData));
+	const displayedFormData = $derived(getDisplayedFormData());
+	let locations = $derived(displayedFormData?.locations.map((l) => l.value) ?? []);
+
+	const ticketData = $derived(
+		getDisplayedJourney().selectedSubJourneys.map((j) => j?.ticketData)
+	);
 </script>
 
 {#snippet locationRow(location: ParsedLocation)}

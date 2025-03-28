@@ -12,7 +12,7 @@
 			{#each { length: depth } as _}
 				<div class="flex-row diagram-element">
 					<span class="time">
-						<Time time={{ departure: { time: new Date(0) } }} />
+						<Time time={{ departure: { time: new Date(0).toISOString() } }} />
 					</span>
 					<span class="flex-row legs">
 						{#each { length: Math.floor(Math.random() * 5) + 1 } as _}
@@ -23,7 +23,7 @@
 						{/each}
 					</span>
 					<span class="time">
-						<Time time={{ arrival: { time: new Date(0) } }} />
+						<Time time={{ arrival: { time: new Date(0).toISOString() } }} />
 					</span>
 				</div>
 			{/each}

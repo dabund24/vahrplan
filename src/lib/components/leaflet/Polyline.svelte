@@ -29,7 +29,7 @@
 			return {
 				type: "walk",
 				duration: block.transferTime,
-				walkingTime: block.walkingTime,
+				walkingTime: block.travelTime,
 				distance: block.distance
 			};
 		}

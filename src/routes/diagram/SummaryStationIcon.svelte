@@ -2,9 +2,12 @@
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { fade, fly } from "svelte/transition";
 	import type { ParsedLocation } from "$lib/types";
-	import { addDisplayedLocation, removeDisplayedLocation } from "$lib/stores/journeyStores";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import IconPlus from "$lib/components/icons/IconPlus.svelte";
+	import {
+		addDisplayedLocation,
+		removeDisplayedLocation
+	} from "$lib/state/displayedFormData.svelte.js";
 
 	type Props = {
 		location: ParsedLocation;

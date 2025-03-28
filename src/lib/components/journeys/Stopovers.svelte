@@ -2,9 +2,8 @@
 	import Time from "$lib/components/Time.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
-	import type { TransitData, TransitType } from "$lib/types";
+	import type { Product, TransitData, TransitType } from "$lib/types";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
-	import type { Product } from "$lib/stores/settingStore";
 
 	type Props = {
 		stopovers: TransitData[];

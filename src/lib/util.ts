@@ -6,14 +6,8 @@ import type {
 	TransitData,
 	KeyedItem,
 	TransitType,
-	ParsedTime,
-	KeylessDatabaseEntry
+	ParsedTime
 } from "$lib/types";
-import { startLoading, stopLoading } from "$lib/stores/loadingStore";
-import { toast } from "$lib/stores/toastStore";
-import type { VahrplanResult } from "$lib/VahrplanResult";
-import { VahrplanError } from "$lib/VahrplanError";
-import type { Fetchable } from "$lib/server/journeyData/JourneyDataService";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -23,69 +17,6 @@ export function valueIsDefined<T, K extends number | string>(
 	keyedItem: KeyedItem<T | undefined, K>
 ): keyedItem is KeyedItem<T, K> {
 	return keyedItem.value !== undefined;
-}
-
-export async function getApiData<T extends Fetchable>(
-	url: URL,
-	loadingEst: number | undefined
-): Promise<VahrplanResult<T>> {
-	let loadingId: number | undefined = undefined;
-	if (loadingEst !== undefined) {
-		loadingId = startLoading(loadingEst);
-	}
-
-	// @ts-expect-error plausible
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-	plausible?.(`GET ${url.pathname}`);
-
-	const result: VahrplanResult<T> = await fetch(url)
-		.then((res: Response) => res.json() as Promise<VahrplanResult<T>>)
-		.catch(() =>
-			VahrplanError.withMessage("ERROR", "Verbindung zum Server ist fehlgeschlagen.")
-		);
-	if (loadingId !== undefined) {
-		stopLoading(loadingId, result.isError);
-	}
-	if (result.isError) {
-		toast(result.message, "red");
-	}
-	return result;
-}
-
-/**
- * perform a put request to an api endpoint
- * @param url url of the endpoint
- * @param body data to be stored
- * @param loadingEst estimated client waiting time in seconds
- */
-export async function putApiData<R, T>(
-	url: URL,
-	body: KeylessDatabaseEntry<R>,
-	loadingEst: number | undefined
-): Promise<VahrplanResult<T>> {
-	let loadingId: number | undefined = undefined;
-	if (loadingEst !== undefined) {
-		loadingId = startLoading(loadingEst);
-	}
-
-	// @ts-expect-error plausible
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-	plausible?.(`PUT ${url.pathname}`);
-
-	const stringifiedBody = JSON.stringify(body);
-	const result: VahrplanResult<T> = await fetch(url, { method: "PUT", body: stringifiedBody })
-		.then((res: Response) => res.json() as Promise<VahrplanResult<T>>)
-		.catch(() =>
-			VahrplanError.withMessage("ERROR", "Verbindung zum Server ist fehlgeschlagen")
-		);
-
-	if (loadingId !== undefined) {
-		stopLoading(loadingId, result.isError);
-	}
-	if (result.isError) {
-		toast(result.message, "red");
-	}
-	return result;
 }
 
 export function isTimeDefined(block: JourneyBlock): block is DefiningBlock {
@@ -172,7 +103,7 @@ export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
 	};
 }
 
-export function timeToString(time: Date | undefined): string {
+export function timeToString(time: string | undefined): string {
 	if (time === undefined || time === null) {
 		return "−−:−−";
 	}
@@ -183,7 +114,7 @@ export function timeToString(time: Date | undefined): string {
 	});
 }
 
-export function dateToString(date: Date | undefined): string {
+export function dateToString(date: string | undefined): string {
 	if (date === undefined) {
 		return "";
 	}
@@ -195,7 +126,8 @@ export function dateToString(date: Date | undefined): string {
 	});
 }
 
-export function dateToInputDate(dateObject: Date): string {
+export function dateToInputDate(date: string): string {
+	const dateObject = new Date(date);
 	const timezoneOffset = dateObject.getTimezoneOffset() * 60000;
 	const timeIsoString = new Date(dateObject.getTime() - timezoneOffset).toISOString();
 	return timeIsoString.substring(0, timeIsoString.indexOf("T") + 6);

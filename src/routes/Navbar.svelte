@@ -6,9 +6,18 @@
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import IconDetails from "$lib/components/icons/IconDetails.svelte";
 	import { browser } from "$app/environment";
-	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
-	import { displayedFormData, selectedJourneys } from "$lib/stores/journeyStores";
 	import IconBookmarkLarge from "$lib/components/icons/IconBookmarkLarge.svelte";
+	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import { apiClient } from "$lib/api-client/apiClientFactory";
+	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+
+	const displayedFormData = $derived(getDisplayedFormData());
+	const selectedData = $derived(getSelectedData());
+	const displayedJourney = $derived(getDisplayedJourney());
+
+	const diagramApiClient = apiClient("GET", "/api/diagram");
+	const journeyApiClient = apiClient("GET", "/api/journey");
 
 	let currentPage = $derived(getCurrentPageIndex($page.url.pathname));
 
@@ -20,19 +29,21 @@
 		else return 4;
 	}
 
-	let diagramUrl = $derived(
-		browser && $displayedFormData !== undefined
-			? getDiagramUrlFromFormData($displayedFormData).href
-			: "/"
-	);
+	let diagramUrl = $derived.by(() => {
+		if (browser && displayedFormData !== undefined) {
+			const reqData = diagramApiClient.formDataToRequestData(displayedFormData);
+			return diagramApiClient.formatNonApiUrl(reqData).href;
+		}
+		return "/";
+	});
 
-	let journeyUrl = $derived(
-		browser &&
-			$selectedJourneys.length > 0 &&
-			$selectedJourneys.every((j) => j.selectedBy !== -1)
-			? getJourneyUrl($selectedJourneys).href
-			: "/journey"
-	);
+	let journeyUrl = $derived.by(() => {
+		if (browser && selectedData.isFullJourneySelected) {
+			const tokens = displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
+			return journeyApiClient.formatNonApiUrl(tokens).href;
+		}
+		return "/journey";
+	});
 </script>
 
 <nav>
@@ -42,7 +53,7 @@
 				<a href={diagramUrl} class="hoverable flex-row">
 					<IconLogo />
 					<span
-						>{browser && $displayedFormData !== undefined
+						>{browser && displayedFormData !== undefined
 							? "Diagramm"
 							: "Startseite"}</span
 					>

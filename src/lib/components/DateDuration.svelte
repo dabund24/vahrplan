@@ -2,7 +2,7 @@
 	import Duration from "$lib/components/Duration.svelte";
 
 	type Props = {
-		date: Date | undefined;
+		date: string | undefined;
 		duration: number | undefined;
 	};
 

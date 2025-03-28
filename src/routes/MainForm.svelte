@@ -1,25 +1,21 @@
 <script lang="ts">
 	import StationInput from "./StationInput.svelte";
-	import { type KeyedItem, type ParsedLocation, type TransitType } from "$lib/types.js";
+	import { type KeyedItem, type ParsedLocation, type RelativeTimeType } from "$lib/types.js";
 	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
-	import {
-		type DisplayedFormData,
-		setDisplayedFormDataAndTree
-	} from "$lib/stores/journeyStores.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import Setting from "$lib/components/Setting.svelte";
-	import { settings } from "$lib/stores/settingStore";
-	import { goto } from "$app/navigation";
+	import { settings } from "$lib/state/settingStore";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
-	import { getDiagramUrlFromFormData } from "$lib/urls";
 	import { get } from "svelte/store";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
-	import { toast } from "$lib/stores/toastStore";
+	import { toast } from "$lib/state/toastStore";
 	import { getCurrentGeolocation } from "$lib/geolocation.svelte";
 	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 	import FilterModal from "./FilterModal.svelte";
 	import IconSwap from "$lib/components/icons/IconSwap.svelte";
+	import { searchDiagram, type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { DIAGRAM_MAX_COLUMNS } from "$lib/constants";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -35,16 +31,19 @@
 		if (initialFormData === undefined) {
 			stops = [
 				{ value: undefined, key: Math.random() },
-				{ value: undefined, key: Math.random() }
+				{
+					value: undefined,
+					key: Math.random()
+				}
 			];
-		} else {
-			stops = initialFormData.locations;
+			return;
 		}
+		stops = initialFormData.locations;
 	});
 
 	let departureArrivalSelection: 0 | 1 = $state(0);
 	let isTimeNow = $state(true);
-	let time = $state(dateToInputDate(new Date()));
+	let time = $state(dateToInputDate(new Date().toISOString()));
 
 	$effect.pre(() => initTimeInputs(initialFormData));
 
@@ -52,22 +51,24 @@
 		if (displayedFormData === undefined) {
 			departureArrivalSelection = 0;
 			isTimeNow = true;
-			time = dateToInputDate(new Date());
+			time = dateToInputDate(new Date().toISOString());
 			return;
 		}
 
-		departureArrivalSelection = displayedFormData.timeRole === "arrival" ? 1 : 0;
+		departureArrivalSelection =
+			displayedFormData.timeData.scrollDirection === "earlier" ? 1 : 0;
 		isTimeNow =
-			~~(new Date().getTime() / 60000) === ~~(displayedFormData.time.getTime() / 60000);
-		time = dateToInputDate(displayedFormData.time);
+			~~(new Date().getTime() / 60000) ===
+			~~(new Date(displayedFormData.timeData.time).getTime() / 60000);
+		time = dateToInputDate(displayedFormData.timeData.time);
 	}
 
 	function removeVia(index: number): void {
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
 	}
 	function addVia(index: number): void {
-		if (stops.length >= 7) {
-			toast("Es sind maximal fünf Zwischenstationen möglich.", "red");
+		if (stops.length - 1 > DIAGRAM_MAX_COLUMNS) {
+			toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS} Zwischenstationen möglich.`, "red");
 			return;
 		}
 		stops = [
@@ -88,12 +89,12 @@
 		}
 		const journeyTime = isTimeNow ? new Date() : new Date(time);
 		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
-		const timeRole: TransitType = departureArrivalSelection === 0 ? "departure" : "arrival";
+		const scrollDirection: RelativeTimeType =
+			departureArrivalSelection === 0 ? "later" : "earlier";
 		const options = get(settings).journeysOptions;
 		const formData: DisplayedFormData = {
 			locations: stopsToBeDisplayed.map((stop) => ({ ...stop })), // important, unwanted dom updates would happen otherwise later on!
-			time: journeyTime,
-			timeRole,
+			timeData: { type: "absolute", scrollDirection, time: journeyTime.toISOString() },
 			options,
 			geolocationDate: new Date()
 		};
@@ -112,9 +113,7 @@
 			});
 		}
 
-		void goto(getDiagramUrlFromFormData(formData));
-
-		setDisplayedFormDataAndTree(formData);
+		void searchDiagram(formData);
 	}
 
 	function verifyUserInput(stops: ParsedLocation[]): boolean {

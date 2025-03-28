@@ -9,7 +9,7 @@ import type {
 	WalkingBlock
 } from "$lib/types";
 import { dateDifference, getRawLocationBlock, mergeTransitData } from "$lib/util";
-import type { Product } from "$lib/stores/settingStore";
+import type { Product } from "./types";
 
 /**
  * Figures out how to merge two journeys by returning a merging block
@@ -171,7 +171,7 @@ function mergingWalkToBlock(
 		originLocation: departureLocation,
 		destinationLocation: arrivalLocation,
 		distance: 0,
-		walkingTime: undefined,
+		travelTime: undefined,
 		transferTime: dateDifference(departureTime.arrival?.time, arrivalTime.departure?.time) ?? 0
 	};
 }

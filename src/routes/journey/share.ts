@@ -1,25 +1,35 @@
 import type { KeylessDatabaseEntry } from "$lib/types";
-import { putApiData } from "$lib/util";
-import { type SelectedJourney } from "$lib/stores/journeyStores";
-import { toast } from "$lib/stores/toastStore";
+import { toast } from "$lib/state/toastStore";
 import { get } from "svelte/store";
-import { settings } from "$lib/stores/settingStore";
-import { getJourneyUrl } from "$lib/urls";
+import { settings } from "$lib/state/settingStore";
+import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
+import type { SelectedData } from "$lib/state/selectedData.svelte";
+import { apiClient } from "$lib/api-client/apiClientFactory";
 
 /**
  * shares a journey if no sub-journey is unselected and shows the share dialog if supported.
  * Generates a short url if enabled in the settings.
- * @param selectedSubJourneys all selected sub-journeys
+ * @param displayedJourney
+ * @param selectedData
  */
-export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Promise<void> {
-	if (selectedSubJourneys.length === 0 || selectedSubJourneys.some((j) => j.selectedBy === -1)) {
+export async function shareJourney(
+	displayedJourney: DisplayedJourney,
+	selectedData: SelectedData
+): Promise<void> {
+	const selectedSubJourneys = displayedJourney.selectedSubJourneys;
+	if (selectedSubJourneys.length === 0 || !selectedData.isFullJourneySelected) {
 		return;
 	}
 
-	const urlHref: string = get(settings).general.shortLinksJourneys
-		? ((await generateJourneyShortUrl(selectedSubJourneys)) ??
-			getJourneyUrl(selectedSubJourneys).href)
-		: getJourneyUrl(selectedSubJourneys).href;
+	const tokens = selectedSubJourneys.map((subJourney) => subJourney?.refreshToken ?? "");
+	const journeyDeparture = displayedJourney?.departure ?? new Date(0).toISOString();
+
+	let urlHref: string | undefined;
+	if (get(settings).general.shortLinksJourneys) {
+		urlHref = (await generateJourneyShortUrl(tokens, journeyDeparture))?.href;
+	}
+
+	urlHref ??= apiClient("GET", "/api/journey").formatNonApiUrl(tokens).href;
 
 	if (navigator.share) {
 		void navigator.share({
@@ -35,31 +45,25 @@ export async function shareJourney(selectedSubJourneys: SelectedJourney[]): Prom
 
 /**
  * generates a short url for a given journey
- * @param selectedSubJourneys
+ * @param tokens
+ * @param departure
  */
 async function generateJourneyShortUrl(
-	selectedSubJourneys: SelectedJourney[]
-): Promise<string | undefined> {
-	const departure = selectedSubJourneys[0].subJourney.departureTime;
-
-	if (departure === null || departure === undefined) {
-		return undefined;
-	}
-
+	tokens: string[],
+	departure: string
+): Promise<URL | undefined> {
 	const keylessDatabaseEntry: KeylessDatabaseEntry<string[]> = {
 		type: "journey",
-		value: selectedSubJourneys.map((journey) => journey.subJourney.refreshToken),
-		expirationDate: new Date(departure.time).getTime() + 604_800_000 // 7 days
+		value: tokens,
+		expirationDate: new Date(departure).getTime() + 604_800_000 // 7 days
 	};
 
-	const requestUrl = new URL("/api/journey/shorturl", location.origin);
-	const keyResponse = await putApiData<string[], string>(requestUrl, keylessDatabaseEntry, 2);
-	if (keyResponse.isError) {
+	const response = await apiClient("PUT", "/api/journey/shorturl").request(keylessDatabaseEntry);
+	if (response.isError) {
 		toast("Kurzlink konnte nicht generiert werden.", "red");
 		return;
 	}
-	const url = new URL(`/journey`, location.origin);
-	url.searchParams.set("j", keyResponse.content);
-
-	return url.href;
+	return apiClient("GET", "/api/journey/shorturl/[shortJourneyId]").formatNonApiUrl(
+		response.content
+	);
 }

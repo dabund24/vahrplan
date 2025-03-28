@@ -1,7 +1,7 @@
 <script lang="ts">
 	import IconTrainLocation from "$lib/components/IconTrainLocation.svelte";
-	import type { Product } from "$lib/stores/settingStore";
 	import { onDestroy, onMount } from "svelte";
+	import type { Product } from "$lib/types";
 
 	type Props = {
 		departureTime: number; // Unix timestamp of departure

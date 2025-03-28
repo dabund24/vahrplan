@@ -1,26 +1,42 @@
-import { json, type RequestHandler } from "@sveltejs/kit";
-import { getJourneyTree } from "./treePlantation.server";
-import { parseApiJourneysUrl } from "$lib/urls";
+import type { RequestHandler } from "./$types";
+import { buildTree, subJourneyToNodeData } from "./treePlantation.server";
 import { VahrplanError } from "$lib/VahrplanError";
+import { apiClient } from "$lib/api-client/apiClientFactory";
+import { fetchJourneys } from "./fetchJourneys.server";
+import { VahrplanSuccess } from "$lib/VahrplanResult";
+import recommendVias from "./viaRecommendations.server";
+import type { DiagramData } from "$lib/state/diagramData.svelte";
 
-export const GET: RequestHandler = async function ({ url }) {
-	const diagramData = parseApiJourneysUrl(url);
+export const GET: RequestHandler = async function (reqEvent) {
+	const client = apiClient("GET", reqEvent.route.id);
+	const diagramData = client.parse(reqEvent);
 
 	if (diagramData === undefined) {
-		return json(new VahrplanError("NOT_FOUND"), { status: 404 });
+		return client.formatResponse(new VahrplanError("NOT_FOUND"));
 	}
 
-	const { stops, timeRole, options } = diagramData;
+	const journeyColumns = await fetchJourneys(
+		diagramData.stops,
+		diagramData.timeData,
+		diagramData.options
+	);
 
-	if (stops.length > 7) {
-		return json(new VahrplanError("ERROR"), { status: 500 });
+	if (journeyColumns.isError) {
+		return client.formatResponse(journeyColumns);
 	}
 
-	options[timeRole] = diagramData.time;
-	options.results = 10;
-	options.language = "de";
-	const result = await getJourneyTree(stops, options, timeRole).catch(() => {
-		return VahrplanError.withMessage("ERROR", "Diagramm konnte nicht generiert werden");
-	});
-	return json(result, { status: result.isError ? result.code : 200 });
+	const timeData = journeyColumns.content.map((column) =>
+		column.journeys.map(subJourneyToNodeData)
+	);
+
+	const tree = buildTree(timeData);
+
+	const recommendedVias = journeyColumns.content.map((j) => recommendVias(j.journeys));
+
+	const result: DiagramData = {
+		columns: journeyColumns.content,
+		tree,
+		recommendedVias
+	};
+	return client.formatResponse(new VahrplanSuccess(result));
 };

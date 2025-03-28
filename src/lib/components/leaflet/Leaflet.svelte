@@ -1,20 +1,12 @@
 <script lang="ts">
 	import "leaflet/dist/leaflet.css";
 	import "./map.css";
-	import {
-		displayedJourneys,
-		type DisplayedFormData,
-		displayedFormData,
-		type SelectedJourney,
-		selectedJourneys
-	} from "$lib/stores/journeyStores";
 	import { onDestroy, onMount, setContext } from "svelte";
-	import type { DefiningBlock } from "$lib/types";
 	import { isTimeDefined } from "$lib/util";
 	import Polyline from "$lib/components/leaflet/Polyline.svelte";
 	import Marker from "$lib/components/leaflet/Marker.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { settings } from "$lib/stores/settingStore";
+	import { settings } from "$lib/state/settingStore";
 	import L from "leaflet";
 	import {
 		cleanupCurrentPositionData,
@@ -22,6 +14,13 @@
 		setupCurrentPositionData
 	} from "$lib/geolocation.svelte.js";
 	import IconTrainLocation from "$lib/components/IconTrainLocation.svelte";
+	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { type DisplayedJourney, getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { getSelectedData, type SelectedData } from "$lib/state/selectedData.svelte";
+
+	const displayedFormData = $derived(getDisplayedFormData());
+	const displayedJourney = $derived(getDisplayedJourney());
+	const selectedData = $derived(getSelectedData());
 
 	let map: L.Map | undefined = $state();
 	let mapElement: HTMLElement;
@@ -57,19 +56,26 @@
 		}).addTo(map);
 	}
 
-	$effect(() => setMapContent(map, $selectedJourneys, $displayedFormData));
+	$effect(() =>
+		setMapContent(map, {
+			selectedData,
+			displayedJourney
+		})
+	);
 
 	function setMapContent(
 		map: L.Map | undefined,
-		selectedJourneys: SelectedJourney[],
-		displayedLocations: DisplayedFormData | undefined
+		{
+			selectedData,
+			displayedJourney
+		}: { selectedData: SelectedData; displayedJourney: DisplayedJourney }
 	): void {
 		if (map === undefined) return;
 		let coordinates: L.LatLngLiteral[];
-		if (selectedJourneys.filter((j) => j.selectedBy !== -1).length !== 0) {
-			coordinates = selectedJourneys
-				.flatMap((j) => j.subJourney.blocks)
-				.filter<DefiningBlock>(isTimeDefined)
+		if (!selectedData.isNoneSelected) {
+			coordinates = displayedJourney.blocks
+				.flatMap((j) => j.value)
+				.filter(isTimeDefined)
 				.flatMap((block) =>
 					block.type === "leg"
 						? [
@@ -79,8 +85,8 @@
 							]
 						: block.location.position
 				);
-		} else if (displayedLocations !== undefined) {
-			coordinates = displayedLocations.locations.map((location) => location.value.position);
+		} else if (displayedFormData !== undefined) {
+			coordinates = displayedJourney.locations.map((location) => location.value.position);
 		} else {
 			// fit germany
 			coordinates = [
@@ -100,8 +106,8 @@
 	data-theme={$settings.general.isMapAlwaysLight ? "light" : $settings.general.colorScheme}
 >
 	{#if map !== undefined}
-		{#each $displayedJourneys as journey (journey.key)}
-			{#each journey.value as block}
+		{#each displayedJourney.blocks as subJourneyBlocks (subJourneyBlocks.key)}
+			{#each subJourneyBlocks.value as block}
 				{#if block.type === "leg"}
 					<Polyline {block} />
 					{#if block.precededBy === undefined}
@@ -189,7 +195,7 @@
 						position: currentPositionData.position,
 						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
 						name: "Live-Standort",
-						requestParameter: { type: "location" }
+						requestParameter: JSON.stringify({ type: "location" })
 					},
 					time: {},
 					platformData: null

@@ -1,30 +1,24 @@
 <script lang="ts">
 	import type { SubJourney } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
-	import {
-		selectedJourneys,
-		selectJourneyBlocks,
-		unselectJourneyBlocks
-	} from "$lib/stores/journeyStores";
+	import { getSelectedData, toggleJourneySelection } from "$lib/state/selectedData.svelte.js";
 
 	type Props = {
 		subJourney: SubJourney;
-		depth: number;
-		index: number;
+		columnIndex: number;
+		rowIndex: number;
 	};
 
-	let { subJourney, depth, index }: Props = $props();
+	let { subJourney, columnIndex, rowIndex }: Props = $props();
+
+	const selectedData = $derived(getSelectedData());
 
 	let displayedBlocks = $derived(subJourney.blocks.filter((block) => block.type === "leg"));
 
-	let isSelected = $derived(index === $selectedJourneys.at(depth)?.selectedBy);
+	let isSelected = $derived(rowIndex === selectedData.selectedJourneys[columnIndex]);
 
 	function handleDiagramElementClick(): void {
-		if (isSelected) {
-			unselectJourneyBlocks(depth);
-		} else {
-			selectJourneyBlocks({ subJourney, selectedBy: index }, depth);
-		}
+		toggleJourneySelection(columnIndex, rowIndex);
 	}
 
 	function getLegWidth(duration: number): number {

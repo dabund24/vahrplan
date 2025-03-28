@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
-	import { getApiData } from "$lib/util";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { getApiLocationsUrl } from "$lib/urls";
 	import { getBookmarks } from "$lib/bookmarks";
 	import { onMount } from "svelte";
 	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
 	import { getParsedGeolocation } from "$lib/geolocation.svelte";
+	import { apiClient } from "$lib/api-client/apiClientFactory";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -89,10 +88,9 @@
 			// don't show suggestions for input of length 1 or 0 since they're bullshit
 			return Promise.resolve([]);
 		}
-		const url = getApiLocationsUrl(input);
-		return getApiData<ParsedLocation[]>(url, undefined).then((response) =>
-			response.isError ? [] : response.content
-		);
+		return apiClient("GET", "/api/locations/[name]")
+			.request(input)
+			.then((res) => (res.isError ? [] : res.content));
 	}
 
 	function handleSuggestionClick(suggestion: ParsedLocation | undefined): void {

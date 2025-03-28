@@ -1,10 +1,9 @@
-import type { DiagramRequestData, KeylessDatabaseEntry } from "$lib/types";
-import type { DisplayedFormData } from "$lib/stores/journeyStores";
-import { putApiData } from "$lib/util";
-import { toast } from "$lib/stores/toastStore";
-import { settings } from "$lib/stores/settingStore";
+import type { KeylessDatabaseEntry } from "$lib/types";
+import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+import { toast } from "$lib/state/toastStore";
+import { settings } from "$lib/state/settingStore";
 import { get } from "svelte/store";
-import { getDiagramUrlFromFormData } from "$lib/urls";
+import { apiClient } from "$lib/api-client/apiClientFactory";
 
 /**
  * shares a diagram and shows the share dialog if supported.
@@ -16,18 +15,24 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 		return;
 	}
 
-	const diagramUrl = get(settings).general.shortLinksDiagrams
-		? ((await generateDiagramShortUrl(formData)) ?? getDiagramUrlFromFormData(formData))
-		: getDiagramUrlFromFormData(formData);
+	let urlHref: string | undefined;
+	if (get(settings).general.shortLinksDiagrams) {
+		urlHref = (await generateDiagramShortUrl(formData))?.href;
+	}
+
+	const diagramApiClient = apiClient("GET", "/api/diagram");
+	urlHref ??= diagramApiClient.formatNonApiUrl(
+		diagramApiClient.formDataToRequestData(formData)
+	).href;
 
 	if (navigator.share) {
 		void navigator.share({
 			title: document.title,
-			url: diagramUrl.href
+			url: urlHref
 		});
 	} else {
 		void navigator.clipboard
-			.writeText(diagramUrl.href)
+			.writeText(urlHref)
 			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
 	}
 }
@@ -37,31 +42,21 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
  * @param formData
  */
 async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL | undefined> {
-	const diagramRequestData: DiagramRequestData = {
-		stops: formData.locations.map((location) => location.value.requestParameter),
-		options: formData.options,
-		timeRole: formData.timeRole,
-		time: formData.time
-	};
+	const diagramRequestData = apiClient("GET", "/api/diagram").formDataToRequestData(formData);
 
-	const keylessDatabaseEntry: KeylessDatabaseEntry<DiagramRequestData> = {
+	const keylessDatabaseEntry: KeylessDatabaseEntry<typeof diagramRequestData> = {
 		type: "journeys",
 		value: diagramRequestData,
-		expirationDate: formData.time.getTime() + 604_800_000 // 7 days
+		expirationDate: new Date(formData.timeData.time).getTime() + 604_800_000 // 7 days
 	};
 
-	const requestUrl = new URL("/api/diagram/shorturl", location.origin);
-	const keyResponse = await putApiData<DiagramRequestData, string>(
-		requestUrl,
-		keylessDatabaseEntry,
-		2
-	);
-	if (keyResponse.isError) {
+	const response = await apiClient("PUT", "/api/diagram/shorturl").request(keylessDatabaseEntry);
+	if (response.isError) {
 		toast("Kurzlink konnte nicht generiert werden.", "red");
 		return undefined;
 	}
 
-	const shortUrl = new URL(`/diagram`, location.origin);
-	shortUrl.searchParams.set("d", keyResponse.content);
-	return shortUrl;
+	return apiClient("GET", "/api/diagram/shorturl/[shortDiagramId]").formatNonApiUrl(
+		response.content
+	);
 }

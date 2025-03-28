@@ -1,12 +1,5 @@
 <script lang="ts">
 	import JourneyDiagram from "./JourneyDiagram.svelte";
-	import {
-		type DisplayedFormData,
-		displayedFormData,
-		displayedDiagram,
-		setDisplayedFormDataAndTree,
-		selectedJourneys
-	} from "$lib/stores/journeyStores";
 	import MainForm from "../MainForm.svelte";
 	import SplitPane from "$lib/components/splitPane/SplitPane.svelte";
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
@@ -14,7 +7,6 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/stores";
 	import { browser } from "$app/environment";
-	import { getDiagramUrlFromFormData } from "$lib/urls.js";
 	import { type Snippet } from "svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
@@ -22,12 +14,21 @@
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { dateToString } from "$lib/util";
 	import { timeToString } from "$lib/util.js";
-	import { settings } from "$lib/stores/settingStore";
+	import { settings } from "$lib/state/settingStore";
 	import JourneyOptions from "../journey/JourneyOptions.svelte";
 	import TicketModal from "$lib/components/TicketModal.svelte";
+	import {
+		getDisplayedFormData,
+		searchDiagram,
+		type DisplayedFormData
+	} from "$lib/state/displayedFormData.svelte.js";
+	import { getDiagramData } from "$lib/state/diagramData.svelte";
+
+	let displayedFormData = $derived($page.data.formData ?? getDisplayedFormData());
+	const diagramData = $derived(getDiagramData());
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
-		const formData = $page.data.formData ?? $displayedFormData;
+		const formData = $page.data.formData ?? getDisplayedFormData();
 		if (formData === undefined) {
 			return {
 				pageTitle: "Diagramm",
@@ -52,7 +53,7 @@
 					.reduce((acc, name) => `${acc} – ${name}`),
 			pageDescription:
 				`Verbindungsdiagramm für eine Fahrt von ${formData.locations[0].value.name}${viaString} nach ${formData.locations.at(-1)?.value.name}` +
-				` am ${dateToString(formData.time)} mit ${formData.timeRole === "arrival" ? "Ankunft" : "Abfahrt"} ${timeToString(formData.time)} Uhr`
+				` am ${dateToString(formData.timeData.time)} mit ${formData.timeData.scrollDirection === "earlier" ? "Ankunft" : "Abfahrt"} ${timeToString(formData.timeData.time)} Uhr`
 		};
 	});
 
@@ -60,24 +61,16 @@
 
 	let isShowSplitPane = $derived(windowWidth >= 1000);
 
-	$effect(() => {
-		resetDiagram($page.data.formData);
-	});
+	$effect.pre(() => resetDiagram($page.data.formData));
 
 	function resetDiagram(initialFormData: DisplayedFormData | undefined): void {
-		if (
-			browser &&
-			initialFormData !== undefined &&
-			location.href !== getDiagramUrlFromFormData($displayedFormData).href
-		) {
-			// this happens when the user navigates here without the app context
-			setDisplayedFormDataAndTree(initialFormData);
+		if (browser && initialFormData !== undefined) {
+			const pageData = $page.data;
+			pageData.formData = undefined;
+			// initialize the diagram
+			void searchDiagram(initialFormData);
 		}
-		const pageData = $page.data;
-		pageData.formData = undefined;
 	}
-
-	let isAllSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 <svelte:head>
@@ -96,20 +89,20 @@
 		{#snippet leftPane()}
 			<div
 				class="main-application flex-column"
-				style:--connection-count={($displayedFormData?.locations.length ?? 1) - 1}
+				style:--connection-count={(displayedFormData?.locations.length ?? 1) - 1}
 			>
 				<section class="form">
-					<MainForm initialFormData={$displayedFormData} />
+					<MainForm initialFormData={displayedFormData} />
 				</section>
 				<section class="diagram">
-					{#if $displayedFormData !== undefined}
-						<JourneySummary {isAllSelected} />
-						{#await $displayedDiagram}
+					{#if displayedFormData !== undefined}
+						<JourneySummary />
+						{#await diagramData}
 							<JourneyDiagramSkeleton
-								depth={$displayedFormData.locations.length - 1}
+								depth={displayedFormData.locations.length - 1}
 							/>
-						{:then { tree }}
-							<JourneyDiagram nodes={tree} />
+						{:then { tree, columns }}
+							<JourneyDiagram nodes={tree} {columns} />
 						{:catch err}
 							{err}
 						{/await}

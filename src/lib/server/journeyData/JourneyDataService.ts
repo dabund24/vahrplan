@@ -1,5 +1,5 @@
 import type { JourneysOptions } from "hafas-client";
-import type { LegBlock, ParsedLocation, SubJourney } from "$lib/types";
+import type { LegBlock, ParsedLocation, SubJourney, TimeData } from "$lib/types";
 import type { VahrplanError } from "$lib/VahrplanError";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 
@@ -31,13 +31,13 @@ export type Fetchable = ExtractResultType<
 export abstract class JourneyDataService {
 	/**
 	 * get journeys between two stations
-	 * @param from the location to start from
-	 * @param to the location to go to
+	 * @param stops where to start and where to go
+	 * @param timeData when to depart or when to arrive
 	 * @param options additional options
 	 */
 	abstract journeys(
-		from: ParsedLocation["requestParameter"],
-		to: ParsedLocation["requestParameter"],
+		stops: { from: string; to: string },
+		timeData: TimeData,
 		options: JourneysOptions
 	): Promise<VahrplanResult<JourneyNodesWithRefs>>;
 

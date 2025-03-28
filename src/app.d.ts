@@ -1,8 +1,9 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
-import type { DisplayedFormData } from "$lib/stores/journeyStores";
-import type { JourneyNode } from "$lib/types";
+import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+import type { DiagramData } from "$lib/state/diagramData.svelte";
+import { type VahrplanError } from "$lib/VahrplanError";
 
 /**
  * can be used for modals showing trip info. suffix is id of block
@@ -11,22 +12,20 @@ type TripInfoModalKeys = Record<`${"showTripInfoModal"}${string}`, boolean | und
 
 declare global {
 	namespace App {
-		// interface Error {}
+		type Error = VahrplanError;
 		// interface Locals {}
-		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-		interface PageData {
+		type PageData = {
 			formData?: DisplayedFormData | undefined;
-			treeNodes?: JourneyNode[] | undefined;
-		}
-		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-		interface PageState extends TripInfoModalKeys {
+			diagramData?: DiagramData;
+		};
+		type PageState = TripInfoModalKeys & {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showRecommendationModal?: boolean;
 			showTicketModal?: boolean;
 			showPrivacyLinkModal?: boolean;
 			showPrivacyStoreModal?: boolean;
-		}
+		};
 		// interface Platform {}
 	}
 }
