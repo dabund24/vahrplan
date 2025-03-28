@@ -64,6 +64,11 @@ export default [
 					format: ["strictCamelCase", "UPPER_CASE"]
 				},
 				{
+					selector: "objectLiteralProperty",
+					modifiers: ["requiresQuotes"],
+					format: null
+				},
+				{
 					selector: "variable",
 					types: ["boolean"],
 					format: ["PascalCase"],
