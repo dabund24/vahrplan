@@ -23,22 +23,23 @@
 		type DisplayedFormData
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
+	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 
 	let displayedFormData = $derived($page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
-		const formData = $page.data.formData ?? getDisplayedFormData();
-		if (formData === undefined) {
+		const { departure, locations } = getDisplayedJourney();
+		if (locations.length === 0) {
 			return {
 				pageTitle: "Diagramm",
 				pageDescription: "Verbindungsdiagramm in Vahrplan"
 			};
 		}
 		const viaString =
-			formData.locations.length <= 2
+			locations.length <= 2
 				? ""
-				: ` über ${formData.locations
+				: ` über ${locations
 						.slice(1, -1)
 						.map((location) => location.value.name)
 						.reduce(
@@ -48,12 +49,12 @@
 		return {
 			pageTitle:
 				"Diagramm: " +
-				formData.locations
+				locations
 					.map((location) => location.value.name)
 					.reduce((acc, name) => `${acc} – ${name}`),
 			pageDescription:
-				`Verbindungsdiagramm für eine Fahrt von ${formData.locations[0].value.name}${viaString} nach ${formData.locations.at(-1)?.value.name}` +
-				` am ${dateToString(formData.timeData.time)} mit ${formData.timeData.scrollDirection === "earlier" ? "Ankunft" : "Abfahrt"} ${timeToString(formData.timeData.time)} Uhr`
+				`Verbindungsdiagramm für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
+				` am ${dateToString(departure)} mit Abfahrt ${timeToString(departure)} Uhr`
 		};
 	});
 

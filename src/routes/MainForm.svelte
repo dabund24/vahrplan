@@ -31,10 +31,7 @@
 		if (initialFormData === undefined) {
 			stops = [
 				{ value: undefined, key: Math.random() },
-				{
-					value: undefined,
-					key: Math.random()
-				}
+				{ value: undefined, key: Math.random() }
 			];
 			return;
 		}
