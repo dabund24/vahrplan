@@ -4,7 +4,7 @@ services:
             context: .
             dockerfile: Dockerfile
         ports:
-            - "3000:3000"
+            - "${APP_PORT:-3000}:3000"
         depends_on:
             - valkey
         environment:
@@ -16,7 +16,7 @@ services:
         volumes:
             - valkey_data:/var/lib/valkey
         ports:
-            - "6379:6379"
+            - "${DB_PORT:-6379}:6379"
         restart: unless-stopped
 
 volumes:

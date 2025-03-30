@@ -14,4 +14,4 @@ EXPOSE 3000
 
 USER node:node
 
-CMD ["node", "build/index.js"]
+CMD ["npm", "start"]
