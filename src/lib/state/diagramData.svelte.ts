@@ -107,7 +107,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 
 	const tokens = columns.map((c) => c[`${scrollDirection}Ref`]);
 	if (displayedFormData === undefined || tokens.some((token) => token === "")) {
-		toast("Suche nach mehr Verbindungen ist nicht möglich.", "red")
+		toast("Suche nach mehr Verbindungen ist nicht möglich.", "red");
 		return;
 	}
 	const stops = displayedFormData.locations.map((l) => l.value.requestParameter);

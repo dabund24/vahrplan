@@ -84,7 +84,7 @@
 
 	@keyframes highlight-new-journey {
 		0% {
-            background-color: var(--foreground-color--transparent);
+			background-color: var(--foreground-color--transparent);
 		}
 		60% {
 			background-color: var(--foreground-color--transparent);
