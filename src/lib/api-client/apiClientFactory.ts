@@ -1,6 +1,7 @@
 import type { RequestEvent } from "@sveltejs/kit";
 import { ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
 import { GetDiagramApiClient } from "../../routes/api/diagram/getClient";
+import { PostDiagramScrollApiClient } from "../../routes/api/diagram/scroll/[scrollDirection]/postClient";
 import { GetDiagramShortUrlApiClient } from "../../routes/api/diagram/shorturl/[shortDiagramId]/getClient";
 import { GetJourneyApiClient } from "../../routes/api/journey/getClient";
 import { GetJourneyShortUrlApiClient } from "../../routes/api/journey/shorturl/[shortJourneyId]/getClient";
@@ -11,6 +12,7 @@ import { PutJourneyShortUrlApiClient } from "../../routes/api/journey/shorturl/p
 
 const routes = {
 	diagram: "/api/diagram",
+	diagramScroll: "/api/diagram/scroll/[scrollDirection]",
 	diagramShortUrl: "/api/diagram/shorturl",
 	diagramShortUrlId: "/api/diagram/shorturl/[shortDiagramId]",
 	journey: "/api/journey",
@@ -28,6 +30,9 @@ const clients = {
 		[routes.journeyShortUrlId]: new GetJourneyShortUrlApiClient(),
 		[routes.location]: new GetLocationApiClient(),
 		[routes.locations]: new GetLocationsApiClient()
+	},
+	["POST"]: {
+		[routes.diagramScroll]: new PostDiagramScrollApiClient()
 	},
 	["PUT"]: {
 		[routes.diagramShortUrl]: new PutDiagramShortApiClient(),

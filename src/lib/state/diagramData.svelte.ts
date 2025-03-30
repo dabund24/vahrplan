@@ -1,8 +1,15 @@
 import type { JourneyNodesWithRefs } from "$lib/server/journeyData/JourneyDataService";
-import type { ParsedLocation, SubJourney, TreeNode } from "$lib/types";
-import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+import type { ParsedLocation, RelativeTimeType, SubJourney, TreeNode } from "$lib/types";
+import {
+	type DisplayedFormData,
+	getDisplayedFormData
+} from "$lib/state/displayedFormData.svelte.js";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import type { SelectedData } from "$lib/state/selectedData.svelte";
+import {
+	getSelectedData,
+	type SelectedData,
+	setSelectedData
+} from "$lib/state/selectedData.svelte";
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
 
@@ -10,6 +17,7 @@ export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
 	tree: TreeNode[];
 	recommendedVias: ParsedLocation[][];
+	isNew: boolean[][];
 };
 
 /**
@@ -32,7 +40,8 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 			journeys: []
 		})),
 		tree: [],
-		recommendedVias: Array.from({ length: columnCount }, () => [])
+		recommendedVias: Array.from({ length: columnCount }, () => []),
+		isNew: Array.from({ length: columnCount }, () => [])
 	};
 }
 
@@ -84,6 +93,61 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
 		setJourney(subJourney, columnIndex, selectedBy.selectedJourneys[columnIndex]);
 	}
 	toast("Reisedaten aktualisiert.", "green");
+}
+
+/**
+ * find earlier or later journeys and update the diagramData accordingly
+ * @param scrollDirection
+ */
+export async function scrollDiagramData(scrollDirection: RelativeTimeType): Promise<void> {
+	const scrollApiClient = apiClient("POST", "/api/diagram/scroll/[scrollDirection]");
+	const oldDiagramData = diagramData;
+	const { columns, tree, recommendedVias } = await oldDiagramData;
+	const displayedFormData = getDisplayedFormData();
+
+	const tokens = columns.map((c) => c[`${scrollDirection}Ref`]);
+	if (displayedFormData === undefined || tokens.some((token) => token === "")) {
+		toast("Suche nach mehr Verbindungen ist nicht möglich.", "red")
+		return;
+	}
+	const stops = displayedFormData.locations.map((l) => l.value.requestParameter);
+
+	const res = await scrollApiClient.request({
+		scrollDirection,
+		tokens,
+		stops,
+		tree,
+		recommendedVias,
+		options: displayedFormData.options
+	});
+
+	if (res.isError || oldDiagramData !== diagramData) {
+		return;
+	}
+
+	columns.forEach((column, columnIndex) => {
+		column.journeys[scrollDirection === "earlier" ? "unshift" : "push"](
+			...res.content.columns[columnIndex].journeys
+		);
+		column[`${scrollDirection}Ref`] = res.content.columns[columnIndex][`${scrollDirection}Ref`];
+	});
+
+	if (scrollDirection === "earlier") {
+		const updatedSelection = getSelectedData().selectedJourneys.map((rowIndex, columnIndex) => {
+			if (rowIndex === -1) {
+				return -1;
+			}
+			return rowIndex + res.content.columns[columnIndex].journeys.length;
+		});
+		setSelectedData(updatedSelection);
+	}
+
+	diagramData = Promise.resolve({
+		columns,
+		tree: res.content.tree,
+		recommendedVias: res.content.recommendedVias,
+		isNew: res.content.isNew
+	});
 }
 
 async function getJourney(columnIndex: number, rowIndex: number): Promise<SubJourney> {

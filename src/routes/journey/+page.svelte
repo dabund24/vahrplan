@@ -17,7 +17,7 @@
 		getDisplayedFormData,
 		setDisplayedFormData
 	} from "$lib/state/displayedFormData.svelte.js";
-	import { getSelectedData, resetJourneySelection } from "$lib/state/selectedData.svelte";
+	import { getSelectedData, setSelectedData } from "$lib/state/selectedData.svelte";
 	import { getDiagramData, setDiagramData } from "$lib/state/diagramData.svelte";
 	import { browser } from "$app/environment";
 
@@ -48,8 +48,7 @@
 
 	if (browser && formData !== undefined && diagramData !== undefined) {
 		setDisplayedFormData(formData);
-		const selectedRowIndex = 0;
-		resetJourneySelection(diagramData.columns.length, selectedRowIndex);
+		setSelectedData(Array.from({ length: diagramData.columns.length }, () => 0));
 		setDiagramData(Promise.resolve(diagramData));
 	}
 

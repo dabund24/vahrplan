@@ -83,8 +83,12 @@ export function subJourneyToNodeData(subJourney: SubJourney): Record<TransitType
 	};
 }
 
-export function unfoldTree(tree: TreeNode[]): Record<TransitType, string>[][] {
-	return unfoldTreeRec(tree, 0, []);
+export function unfoldTree(tree: TreeNode[], columnCount: number): Record<TransitType, string>[][] {
+	return unfoldTreeRec(
+		tree,
+		0,
+		Array.from({ length: columnCount }, () => [])
+	);
 }
 
 /**
@@ -102,9 +106,7 @@ function unfoldTreeRec(
 		if (node.type === "journeyNode") {
 			columns[depth].push(node.timeData);
 		}
-		if (node.children.length > 0) {
-			columns = unfoldTreeRec(tree, depth + 1, columns);
-		}
+		columns = unfoldTreeRec(node.children, depth + 1, columns);
 	}
 	return columns;
 }

@@ -5,11 +5,12 @@
 
 	type Props = {
 		subJourney: SubJourney;
+		isNew: boolean;
 		columnIndex: number;
 		rowIndex: number;
 	};
 
-	let { subJourney, columnIndex, rowIndex }: Props = $props();
+	let { subJourney, isNew, columnIndex, rowIndex }: Props = $props();
 
 	const selectedData = $derived(getSelectedData());
 
@@ -29,6 +30,7 @@
 <button
 	type="button"
 	class="flex-row diagram-element hoverable"
+	class:is-new={isNew}
 	aria-current={isSelected}
 	onclick={handleDiagramElementClick}
 	title="Verbindung aus-/abwählen"
@@ -74,6 +76,21 @@
 		transition: border-radius 0.4s;
 		&[aria-current="true"] {
 			border-color: var(--accent-color);
+		}
+		&.is-new {
+			animation: 10s highlight-new-journey;
+		}
+	}
+
+	@keyframes highlight-new-journey {
+		0% {
+            background-color: var(--foreground-color--transparent);
+		}
+		60% {
+			background-color: var(--foreground-color--transparent);
+		}
+		100% {
+			background-color: transparent;
 		}
 	}
 

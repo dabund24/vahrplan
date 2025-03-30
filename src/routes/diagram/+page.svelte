@@ -24,6 +24,7 @@
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import ScrollButton from "./ScrollButton.svelte";
 
 	let displayedFormData = $derived($page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -99,11 +100,21 @@
 					{#if displayedFormData !== undefined}
 						<JourneySummary />
 						{#await diagramData}
+							<ScrollButton isClickable={false} scrollDirection="earlier" />
 							<JourneyDiagramSkeleton
 								depth={displayedFormData.locations.length - 1}
 							/>
-						{:then { tree, columns }}
-							<JourneyDiagram nodes={tree} {columns} />
+							<ScrollButton isClickable={false} scrollDirection="later" />
+						{:then { tree, columns, isNew }}
+							<ScrollButton
+								isClickable={(columns[0]?.earlierRef ?? "") !== ""}
+								scrollDirection="earlier"
+							/>
+							<JourneyDiagram nodes={tree} {columns} {isNew} />
+							<ScrollButton
+								isClickable={(columns[0]?.laterRef ?? "") !== ""}
+								scrollDirection="later"
+							/>
 						{:catch err}
 							{err}
 						{/await}

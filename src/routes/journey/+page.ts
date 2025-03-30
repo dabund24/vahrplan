@@ -60,7 +60,8 @@ async function diagramDataFromTokens(
 			laterRef: ""
 		})),
 		tree: journeyNodesToPathGraph(subJourneys, 0),
-		recommendedVias: []
+		recommendedVias: [],
+		isNew: Array.from({ length: subJourneys.length }, () => [false])
 	});
 }
 

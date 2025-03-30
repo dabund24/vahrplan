@@ -33,10 +33,13 @@ export const GET: RequestHandler = async function (reqEvent) {
 
 	const recommendedVias = journeyColumns.content.map((j) => recommendVias(j.journeys));
 
+	const isNew = journeyColumns.content.map((column) => column.journeys.map((_) => false));
+
 	const result: DiagramData = {
 		columns: journeyColumns.content,
 		tree,
-		recommendedVias
+		recommendedVias,
+		isNew
 	};
 	return client.formatResponse(new VahrplanSuccess(result));
 };

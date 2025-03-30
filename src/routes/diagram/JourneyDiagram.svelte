@@ -3,13 +3,15 @@
 	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import JourneyDiagramElement from "./JourneyDiagramElement.svelte";
 	import type { JourneyNodesWithRefs } from "$lib/server/journeyData/JourneyDataService";
+	import type { DiagramData } from "$lib/state/diagramData.svelte";
 
 	type Props = {
 		columns: JourneyNodesWithRefs[];
 		nodes: TreeNode[];
+		isNew: DiagramData["isNew"];
 	};
 
-	let { columns, nodes }: Props = $props();
+	let { columns, nodes, isNew }: Props = $props();
 </script>
 
 <div class="flex-column diagram-column">
@@ -17,15 +19,17 @@
 		<div class="flex-row diagram-box">
 			{#if node.type === "journeyNode"}
 				{@const subJourney = columns[node.columnIndex].journeys[node.rowIndex]}
+				{@const isNewElement = isNew[node.columnIndex][node.rowIndex]}
 				<JourneyDiagramElement
 					{subJourney}
 					columnIndex={node.columnIndex}
 					rowIndex={node.rowIndex}
+					isNew={isNewElement}
 				/>
 			{:else}
 				<div class="empty-node"></div>
 			{/if}
-			<JourneyDiagram {columns} nodes={node.children} />
+			<JourneyDiagram {columns} nodes={node.children} {isNew} />
 		</div>
 	{/each}
 </div>

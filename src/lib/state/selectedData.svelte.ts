@@ -22,6 +22,13 @@ export function getSelectedData(): SelectedData {
 	return selectedData;
 }
 
+export function setSelectedData(rowIndices: number[]): void {
+	selectedData.selectedJourneys = rowIndices;
+	selectedData.isFullJourneySelected =
+		rowIndices.length > 0 && rowIndices.every((rowIndex) => rowIndex !== -1);
+	selectedData.isNoneSelected = rowIndices.every((rowIndex) => rowIndex === -1);
+}
+
 /**
  * updates the {@linkcode selectedData}:
  * - if the row with the passed `rowindex` in the column with the passed `columnIndex` is selected, unselect it
@@ -47,15 +54,4 @@ export function toggleJourneySelection(columnIndex: number, rowIndex: number): b
 	);
 	selectedData.isNoneSelected = false;
 	return true;
-}
-
-/**
- * sets {@linkcode selectedData} to `columnCount` columns with selected row `initalValues`
- * @param columnCount
- * @param initalValues
- */
-export function resetJourneySelection(columnCount: number, initalValues: number): void {
-	selectedData.selectedJourneys = Array.from({ length: columnCount }, () => initalValues);
-	selectedData.isFullJourneySelected = columnCount > 0 && initalValues !== -1;
-	selectedData.isNoneSelected = initalValues === -1;
 }

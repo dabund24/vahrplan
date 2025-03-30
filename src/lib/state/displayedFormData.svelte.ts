@@ -1,5 +1,5 @@
 import { setDiagramDataFromFormData } from "$lib/state/diagramData.svelte";
-import { resetJourneySelection } from "$lib/state/selectedData.svelte";
+import { setSelectedData } from "$lib/state/selectedData.svelte";
 import { toast } from "$lib/state/toastStore";
 import type { JourneysOptions, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
 import { browser } from "$app/environment";
@@ -49,9 +49,7 @@ export async function searchDiagram(newFormData: DisplayedFormData): Promise<voi
 	}
 
 	void setDiagramDataFromFormData(newFormData);
-	const columnCount = newFormData.locations.length - 1;
-	const selectedJourneyIndex = -1;
-	resetJourneySelection(columnCount, selectedJourneyIndex);
+	setSelectedData(Array.from({ length: newFormData.locations.length - 1 }, () => -1)); // unselect every column
 }
 
 /**
