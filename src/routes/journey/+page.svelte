@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import { type Snippet } from "svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
@@ -26,7 +26,7 @@
 
 	$inspect(getDiagramData());
 
-	const { formData, diagramData } = $page.data;
+	const { formData, diagramData } = page.data;
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
 		let formData1: DisplayedFormData;

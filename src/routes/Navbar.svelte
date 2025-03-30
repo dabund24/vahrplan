@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import IconLogo from "$lib/components/icons/IconLogo.svelte";
 	import IconSettings from "$lib/components/icons/IconSettings.svelte";
 	import IconAbout from "$lib/components/icons/IconAbout.svelte";
@@ -19,7 +19,7 @@
 	const diagramApiClient = apiClient("GET", "/api/diagram");
 	const journeyApiClient = apiClient("GET", "/api/journey");
 
-	let currentPage = $derived(getCurrentPageIndex($page.url.pathname));
+	let currentPage = $derived(getCurrentPageIndex(page.url.pathname));
 
 	function getCurrentPageIndex(pathname: string): number {
 		if (pathname === "/" || pathname.startsWith("/diagram")) return 0;

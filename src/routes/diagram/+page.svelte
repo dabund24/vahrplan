@@ -5,7 +5,7 @@
 	import JourneyDiagramSkeleton from "./JourneyDiagramSkeleton.svelte";
 	import JourneySummary from "./JourneySummary.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import { browser } from "$app/environment";
 	import { type Snippet } from "svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
@@ -26,7 +26,7 @@
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import ScrollButton from "./ScrollButton.svelte";
 
-	let displayedFormData = $derived($page.data.formData ?? getDisplayedFormData());
+	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
@@ -63,11 +63,11 @@
 
 	let isShowSplitPane = $derived(windowWidth >= 1000);
 
-	$effect.pre(() => resetDiagram($page.data.formData));
+	$effect.pre(() => resetDiagram(page.data.formData));
 
 	function resetDiagram(initialFormData: DisplayedFormData | undefined): void {
 		if (browser && initialFormData !== undefined) {
-			const pageData = $page.data;
+			const pageData = page.data;
 			pageData.formData = undefined;
 			// initialize the diagram
 			void searchDiagram(initialFormData);

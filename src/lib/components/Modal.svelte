@@ -2,7 +2,7 @@
 	import Header from "$lib/components/Header.svelte";
 	import type { Snippet } from "svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 
 	type Props = {
 		title: string;
@@ -24,7 +24,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-{#if $page.state[showModalKey]}
+{#if page.state[showModalKey]}
 	<dialog
 		bind:this={dialog}
 		onclick={() => void dialog?.close()}
