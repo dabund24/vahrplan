@@ -1,16 +1,18 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
-	import { products, settings } from "$lib/stores/settingStore";
+	import { products, settings } from "$lib/state/settingStore";
 	import type { ComponentProps } from "svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 
+	const productKeys = Object.keys(products) as (keyof typeof products)[];
+
 	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
 		settings.update((settings) => {
 			settings.journeysOptions.products = {
-				nationalExpress: preset === "all" || preset === "longDistance",
-				national: preset === "all" || preset === "longDistance",
+				longDistanceExpress: preset === "all" || preset === "longDistance",
+				longDistance: preset === "all" || preset === "longDistance",
 				regionalExpress: preset === "all" || preset === "longDistance",
 				regional: preset === "all" || preset === "regional",
 				subway: preset === "all" || preset === "regional",
@@ -50,20 +52,15 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Barrierefreiheit"
-		bind:setting={$settings.journeysOptions.accessibility}
+		settingName="Barrierefreies Reisen"
+		bind:setting={$settings.journeysOptions.accessible}
 		settingInfo={{
-			type: "options",
-			options: [
-				{ value: "none", name: "ignorieren" },
-				{ value: "partial", name: "bevorzugen" },
-				{ value: "complete", name: "strikt" }
-			]
+			type: "boolean"
 		}}
 	/>
 	<Setting
 		settingName="Maximale Umstiegsanzahl"
-		bind:setting={$settings.journeysOptions.transfers}
+		bind:setting={$settings.journeysOptions.maxTransfers}
 		settingInfo={{
 			type: "options",
 			options: [
@@ -79,7 +76,7 @@
 	/>
 	<Setting
 		settingName="Mindestumsteigezeit"
-		bind:setting={$settings.journeysOptions.transferTime}
+		bind:setting={$settings.journeysOptions.minTransferTime}
 		settingInfo={{
 			type: "options",
 			options: [
@@ -121,9 +118,9 @@
 			Nur Fernverkehr
 		</button>
 	</div>
-	{#each Object.entries(products) as [product, productName]}
+	{#each productKeys as product}
 		<Setting
-			settingName={productName}
+			settingName={products[product]}
 			bind:setting={$settings.journeysOptions.products[product]}
 			settingInfo={{ type: "boolean" }}
 		/>

@@ -1,32 +1,35 @@
 <script lang="ts">
 	import { type ComponentProps, onMount } from "svelte";
 	import Options from "$lib/components/Options.svelte";
-	import { displayedFormData, refreshJourney, selectedJourneys } from "$lib/stores/journeyStores";
 	import { shareJourney } from "./share";
 	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
 	import { browser } from "$app/environment";
-	import { getJourneyUrl } from "$lib/urls";
 	import IconTickets from "$lib/components/icons/IconTickets.svelte";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import ResponsiveOptions from "$lib/components/ResponsiveOptions.svelte";
+	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { apiClient } from "$lib/api-client/apiClientFactory";
+	import { refreshDiagramData } from "$lib/state/diagramData.svelte";
 
-	let isAllSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
+	const selectedData = $derived(getSelectedData());
+	const displayedJourney = $derived(getDisplayedJourney());
 
 	let journeyBookmarks: JourneyBookmark[] = $state([]);
 
 	onMount(() => (journeyBookmarks = getBookmarks("journey")));
 
-	let isBookmarked = $derived(
-		browser &&
-			journeyBookmarks.some(
-				(bookmark) => bookmark.link === getJourneyUrl($selectedJourneys).href
-			)
-	);
+	const isBookmarked = $derived.by(() => {
+		const currentJourneyUrl = apiClient("GET", "/api/journey").formatNonApiUrl(
+			displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "")
+		).href;
+		return browser && journeyBookmarks.some((bookmark) => bookmark.link === currentJourneyUrl);
+	});
 
 	function handleJourneyBookmarkClick(): void {
-		journeyBookmarks = toggleJourneyBookmark($selectedJourneys, $displayedFormData);
+		journeyBookmarks = toggleJourneyBookmark(displayedJourney);
 	}
 
 	const options: ComponentProps<typeof Options>["options"] = [
@@ -34,13 +37,13 @@
 			type: "function",
 			name: "Aktualisieren",
 			icon: iconRefresh,
-			onClick: refreshJourney
+			onClick: () => refreshDiagramData(selectedData)
 		},
 		{
 			type: "function",
 			name: "Teilen",
 			icon: iconShare,
-			onClick: () => shareJourney($selectedJourneys)
+			onClick: async () => shareJourney(displayedJourney, selectedData)
 		},
 		{
 			type: "function",
@@ -70,6 +73,6 @@
 	<IconTickets />
 {/snippet}
 
-{#if isAllSelected && $selectedJourneys.length > 0}
+{#if selectedData.isFullJourneySelected}
 	<ResponsiveOptions id="journey-options" {options} />
 {/if}

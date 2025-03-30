@@ -63,7 +63,7 @@
 			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
 				<a href={bookmark.link} class="hoverable hoverable--visible flex-column">
 					<div class="time-data">
-						{bookmark.transitType === "departure" ? "Abfahrt" : "Ankunft"}: {dateToString(
+						{bookmark.scrollDirection === "later" ? "Abfahrt" : "Ankunft"}: {dateToString(
 							bookmark.time
 						)}, {timeToString(bookmark.time)}
 					</div>

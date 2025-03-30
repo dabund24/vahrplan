@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TransitData } from "$lib/types";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
-	import { displayedFormData } from "$lib/stores/journeyStores";
+	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 
 	type Props = {
 		transitData: TransitData;
@@ -10,6 +10,8 @@
 
 	let { transitData, hasStrongName = false }: Props = $props();
 
+	const displayedFormData = $derived(getDisplayedFormData());
+
 	let stationOuterTag = $derived(hasStrongName ? "strong" : "span");
 
 	let stationInnerTag = $derived(transitData.attribute === "cancelled" ? "s" : "span");
@@ -17,7 +19,7 @@
 	let asAt = $derived(
 		transitData.location.type === "currentLocation"
 			? transitData.location.asAt
-			: ($displayedFormData?.geolocationDate ?? new Date())
+			: (displayedFormData?.geolocationDate ?? new Date())
 	);
 
 	let locationName = $derived(

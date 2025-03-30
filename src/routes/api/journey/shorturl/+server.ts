@@ -1,30 +1,12 @@
-import {
-	generateHashedDatabaseEntry,
-	getDatabaseEntry,
-	setDatabaseEntry
-} from "$lib/server/serverUtils";
-import { json, type RequestHandler } from "@sveltejs/kit";
-import type { KeylessDatabaseEntry } from "$lib/types";
+import type { RequestHandler } from "./$types";
+import { generateHashedDatabaseEntry, setDatabaseEntry } from "$lib/server/serverUtils.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
-import { VahrplanError } from "$lib/VahrplanError";
+import { apiClient } from "$lib/api-client/apiClientFactory";
 
-export const PUT: RequestHandler = async function ({ request }) {
-	const keylessEntryData = (await request.json()) as KeylessDatabaseEntry<string[]>;
+export const PUT: RequestHandler = async function (reqEvent) {
+	const client = apiClient("PUT", reqEvent.route.id);
+	const keylessEntryData = await client.parse(reqEvent);
 	const entryData = generateHashedDatabaseEntry(keylessEntryData);
 	await setDatabaseEntry(entryData);
-	return json(new VahrplanSuccess(entryData.key));
-};
-
-export const GET: RequestHandler = async function ({ url }) {
-	const shortToken = url.searchParams.get("token");
-	if (shortToken === null) {
-		// no token
-		return json(VahrplanError.withMessage("NOT_FOUND", "URL ist fehlerhaft."), { status: 404 });
-	}
-	const hafasTokens = await getDatabaseEntry<string[]>("journey", shortToken);
-	if (hafasTokens === undefined) {
-		// invalid token
-		return json(VahrplanError.withMessage("NOT_FOUND", "URL ist fehlerhaft."), { status: 404 });
-	}
-	return json(new VahrplanSuccess(hafasTokens));
+	return client.formatResponse(new VahrplanSuccess(entryData.key));
 };

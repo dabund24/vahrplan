@@ -1,102 +1,111 @@
 import type { PageLoad } from "./$types";
-import type { JourneyNode, KeyedItem, ParsedLocation, SubJourney } from "$lib/types";
+import type { KeyedItem, ParsedLocation, SubJourney, TreeNode } from "$lib/types";
 import { getBlockEnd, getBlockStart } from "$lib/util";
 import { error } from "@sveltejs/kit";
 import { browser } from "$app/environment";
-import { getJourneyUrl } from "$lib/urls";
-import { get } from "svelte/store";
-import { selectedJourneys } from "$lib/stores/journeyStores";
-import { toast } from "$lib/stores/toastStore";
-import type { VahrplanResult } from "$lib/VahrplanResult";
+import { apiClient } from "$lib/api-client/apiClientFactory";
+import { type DisplayedJourney, getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+import type { DiagramData } from "$lib/state/diagramData.svelte";
+import { defaultJourneysOptions } from "$lib/state/settingStore";
+import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte";
+
+const journeyApiClient = apiClient("GET", "/api/journey");
 
 export const load: PageLoad = async function ({ url, fetch }) {
-	if (browser && getJourneyUrl(get(selectedJourneys)).href === url.href) {
+	if (browser && displayedJourneyMatchesUrl(url, getDisplayedJourney())) {
 		// no need to refetch the journey, displayed journey is already correct
 		return {
 			formData: undefined,
-			treeNodes: undefined
+			diagramData: undefined
 		};
 	}
 
-	const shortJourneyParam = url.searchParams.get("j");
-	const longJourneyParam = url.searchParams.get("journey");
-	if (shortJourneyParam === null && longJourneyParam === null) {
+	const tokens = await journeyApiClient.parseNonApiUrl(url);
+	if (tokens.length === 0) {
 		// use selected journey
-		return {
-			journey: undefined
-		};
-	}
-	// use journey params
-	let tokens: string[];
-
-	// figure out refresh tokens
-	if (longJourneyParam !== null) {
-		tokens = JSON.parse(decodeURIComponent(longJourneyParam)) as string[];
-	} else {
-		// get refresh tokens from short url
-		const tokensResponse = (await fetch(`/api/journey/shorturl?token=${shortJourneyParam}`)
-			.then((res) => res.json())
-			.catch(() => undefined)) as VahrplanResult<string[]> | undefined;
-		if (tokensResponse === undefined) {
-			if (browser) {
-				toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
-				return;
-			}
-			error(500, "Server-Fehler.");
-		}
-		if (tokensResponse.isError) {
-			error(404, "Token existiert nicht");
-		}
-		tokens = tokensResponse.content;
+		return;
 	}
 
 	// get journey from refresh tokens
-	const subjourneysResponse = (await fetch(
-		`/api/journey?tokens=${encodeURIComponent(JSON.stringify(tokens))}`
-	)
-		.then((res) => res.json())
-		.catch(() => undefined)) as VahrplanResult<SubJourney[]> | undefined;
-	if (subjourneysResponse === undefined) {
-		if (browser) {
-			toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
-			return;
-		}
-		error(500, "Server-Fehler.");
-	}
-	if (subjourneysResponse.isError) {
-		error(subjourneysResponse.code, subjourneysResponse.message);
-	}
-	const subjourneys = subjourneysResponse.content;
+	const diagramData = await diagramDataFromTokens(tokens, fetch);
+	const formData = formDataFromDiagramData(diagramData);
 
-	// prepare data to be served to client
-	const locations = getKeyedLocationsFromJourney(subjourneys);
-	const treeNodes = subjourneysToTreeNodes(subjourneys);
-
-	return {
-		treeNodes: treeNodes,
-		formData: {
-			locations,
-			time: subjourneys.at(0)?.departureTime?.time ?? new Date(),
-			options: {},
-			timeRole: "departure"
-		}
-	};
+	return { diagramData, formData };
 };
 
 /**
+ * checks if the passed form data matches the passed url
+ * @param url
+ * @param displayedJourney
+ */
+function displayedJourneyMatchesUrl(url: URL, displayedJourney: DisplayedJourney): boolean {
+	const currentTokens: string[] = displayedJourney.selectedSubJourneys.map(
+		(j) => j?.refreshToken ?? ""
+	);
+	return journeyApiClient.formatNonApiUrl(currentTokens).href === url.href;
+}
+
+async function diagramDataFromTokens(
+	tokens: string[],
+	fetchFn: typeof fetch
+): Promise<DiagramData> {
+	const journeysApiClient = apiClient("GET", "/api/journey");
+	const { content: response } = (await journeysApiClient.request(tokens, fetchFn)).throwIfError();
+
+	const subJourneys = response.subJourneys;
+	return Promise.resolve({
+		columns: subJourneys.map((j) => ({
+			journeys: [j],
+			earlierRef: "",
+			laterRef: ""
+		})),
+		tree: journeyNodesToPathGraph(subJourneys, 0),
+		recommendedVias: [],
+		isNew: Array.from({ length: subJourneys.length }, () => [false])
+	});
+}
+
+/**
+ * Arranges journey nodes to a path graph such that the i-th node points to the (i+1)-th node
+ * @param subJourneys the journeys to construct the graph from
+ * @param depth current recursion depth
+ * @returns the resulting path graph
+ */
+function journeyNodesToPathGraph(subJourneys: SubJourney[], depth: number): TreeNode[] {
+	if (subJourneys.length === 0) {
+		return [];
+	}
+	const node: TreeNode = {
+		type: "journeyNode",
+		columnIndex: depth,
+		rowIndex: 0,
+		timeData: {
+			departure: subJourneys[0].departureTime?.time ?? new Date(0).toISOString(),
+			arrival: subJourneys.at(-1)?.arrivalTime?.time ?? new Date(0).toISOString()
+		},
+		children: journeyNodesToPathGraph(subJourneys.slice(1), depth + 1)
+	};
+	return [node];
+}
+
+/**
  * determines all sub-stops for an array of sub-journeys
- * @param journey the sub-journeys
+ * @param diagramData the sub-journeys
  * @returns the sub-stops with a key
  */
-function getKeyedLocationsFromJourney(journey: SubJourney[]): KeyedItem<ParsedLocation, number>[] {
-	const locations = journey.map((subjourney) => {
-		const startLocation = getBlockStart(subjourney.blocks[0]);
+function getKeyedLocationsFromDiagramData(
+	diagramData: DiagramData
+): KeyedItem<ParsedLocation, number>[] {
+	const columns = diagramData.columns;
+	const locations = columns.map((column) => {
+		const subJourney = column.journeys[0];
+		const startLocation = getBlockStart(subJourney?.blocks[0]);
 		if (startLocation === undefined) {
 			error(404);
 		}
 		return startLocation;
 	});
-	const lastLocation = getBlockEnd(journey.at(-1)?.blocks.at(-1));
+	const lastLocation = getBlockEnd(columns?.at(-1)?.journeys.at(-1)?.blocks.at(-1));
 	if (lastLocation === undefined) {
 		error(404);
 	}
@@ -106,16 +115,15 @@ function getKeyedLocationsFromJourney(journey: SubJourney[]): KeyedItem<ParsedLo
 	});
 }
 
-/**
- * turns an array of sub-journeys into an array of unconnected journey nodes
- * @param subJourneys
- */
-function subjourneysToTreeNodes(subJourneys: SubJourney[]): JourneyNode[] {
-	return subJourneys.map((subJourney, i) => ({
-		type: "journeyNode" as const,
-		depth: i,
-		idInDepth: 0,
-		subJourney,
-		children: []
-	}));
+function formDataFromDiagramData(diagramData: DiagramData): DisplayedFormData {
+	return {
+		options: defaultJourneysOptions,
+		locations: getKeyedLocationsFromDiagramData(diagramData),
+		timeData: {
+			type: "absolute",
+			scrollDirection: "later",
+			time: diagramData.columns[0]?.journeys[0]?.departureTime?.time ?? ""
+		},
+		geolocationDate: new Date()
+	};
 }

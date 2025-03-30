@@ -1,5 +1,4 @@
-import type { Location, Station, Stop } from "hafas-client";
-import type { Product, Settings } from "$lib/stores/settingStore";
+import type { Settings } from "$lib/state/settingStore";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -16,6 +15,8 @@ export type HafasErrorCode =
 
 export type TransitType = "arrival" | "departure";
 
+export type RelativeTimeType = "earlier" | "later";
+
 export type TransitAttribute = "cancelled" | "additional" | undefined;
 
 /**
@@ -27,7 +28,7 @@ export type ParsedTime = Partial<
 	Record<
 		TransitType,
 		{
-			time: Date;
+			time: string;
 			status?: "on-time" | "delayed" | "cancelled";
 			delay?: number;
 		} | null
@@ -37,7 +38,7 @@ export type ParsedTime = Partial<
 export type ParsedLocation =
 	| {
 			name: string;
-			requestParameter: string | Station | Stop | Location;
+			requestParameter: string;
 			readonly type: "station" | "address" | "poi";
 			position: { lat: number; lng: number };
 	  }
@@ -45,7 +46,7 @@ export type ParsedLocation =
 
 export type ParsedGeolocation = {
 	name: string;
-	requestParameter: Location;
+	requestParameter: string;
 	readonly type: "currentLocation";
 	asAt: Date;
 	position: { lat: number; lng: number };
@@ -70,6 +71,32 @@ export type TransitData = {
 	} | null;
 };
 
+export type TimeData = {
+	type: "absolute" | "relative";
+	time: string;
+	scrollDirection: RelativeTimeType;
+};
+
+export type Product =
+	| "longDistanceExpress"
+	| "longDistance"
+	| "regionalExpress"
+	| "regional"
+	| "suburban"
+	| "subway"
+	| "tram"
+	| "bus"
+	| "taxi"
+	| "ferry";
+
+export type JourneysOptions = {
+	products: Record<Product, boolean>;
+	bike: boolean;
+	accessible: boolean;
+	maxTransfers: number;
+	minTransferTime: number;
+};
+
 export type SubJourney = {
 	refreshToken: string;
 	blocks: JourneyBlock[];
@@ -90,9 +117,9 @@ export type TreeNode = JourneyNode | EmptyNode;
 
 export type JourneyNode = {
 	type: "journeyNode";
-	depth: number;
-	idInDepth: number;
-	subJourney: SubJourney;
+	timeData: Record<TransitType, string>;
+	columnIndex: number;
+	rowIndex: number;
 	children: TreeNode[];
 };
 
@@ -140,9 +167,9 @@ export type LegBlock = {
 	blockKey: string;
 	attribute?: TransitAttribute;
 	duration: number;
-	direction: string;
-	name: string;
-	productName: string;
+	direction?: string;
+	name?: string;
+	productName?: string;
 	product: Product;
 	info: {
 		statuses: string[];
@@ -160,7 +187,7 @@ export type WalkingBlock = {
 	originLocation: ParsedLocation;
 	destinationLocation: ParsedLocation;
 	transferTime: number;
-	walkingTime?: number;
+	travelTime?: number;
 	distance: number;
 };
 
@@ -210,9 +237,9 @@ export type PopupDataWalk = {
 export type PopupDataLine = {
 	type: "line";
 	duration: number;
-	direction: string;
+	direction?: string;
 	product: Product;
-	name: string;
+	name?: string;
 };
 
 export type PopupDataStation = {
@@ -242,8 +269,8 @@ export type KeylessDatabaseEntry<T> = Omit<DatabaseEntry<T>, "key">;
 export type DatabaseEntryType = "journey" | "journeys";
 
 export type DiagramRequestData = {
-	stops: (string | Station | Stop | Location)[];
+	stops: string[];
 	timeRole: TransitType;
 	options: Settings["journeysOptions"];
-	time: Date;
+	time: string;
 };

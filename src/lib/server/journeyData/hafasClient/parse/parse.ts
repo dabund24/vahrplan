@@ -7,6 +7,7 @@ import type {
 	ParsedGeolocation,
 	ParsedLocation,
 	ParsedTime,
+	Product,
 	SubJourney,
 	TransitAttribute,
 	TransitData,
@@ -15,7 +16,6 @@ import type {
 } from "$lib/types";
 import { dateDifference, getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
-import type { Product } from "$lib/stores/settingStore";
 import { parseLegInfo } from "$lib/server/journeyData/hafasClient/parse/parseLegInfo";
 
 /**
@@ -28,8 +28,8 @@ export function parseSubJourney(journey: Journey): SubJourney {
 	const result: SubJourney = {
 		refreshToken: journey.refreshToken ?? "",
 		blocks,
-		arrivalTime: arrival.arrival ?? { time: new Date(0) },
-		departureTime: departure.departure ?? { time: new Date(0) }
+		arrivalTime: arrival.arrival ?? { time: new Date(0).toISOString() },
+		departureTime: departure.departure ?? { time: new Date(0).toISOString() }
 	};
 
 	// generation of ticket links stolen from https://gitlab.com/bahnvorhersage/bahnvorhersage_frontend/-/blob/main/src/components/BuyTicketButton.vue
@@ -41,7 +41,7 @@ export function parseSubJourney(journey: Journey): SubJourney {
 	ticketUrl.searchParams.set("soid", `O=${startName}`);
 	ticketUrl.searchParams.set("zoid", `O=${endName}`);
 	ticketUrl.searchParams.set("cbs", "true");
-	ticketUrl.searchParams.set("hd", result.departureTime?.time.toISOString() ?? "");
+	ticketUrl.searchParams.set("hd", result.departureTime?.time ?? "");
 	ticketUrl.searchParams.set("gh", result.refreshToken);
 
 	result.ticketData = {
@@ -157,10 +157,10 @@ function legToBlock(leg: Leg): LegBlock {
 				leg.departure ?? leg.plannedDeparture,
 				leg.arrival ?? leg.plannedArrival
 			) ?? 0,
-		direction: leg.direction ?? "n.a.",
-		name: leg.line?.name ?? leg.line?.productName ?? "n.a.",
-		productName: leg.line?.productName ?? leg.line?.name ?? "n.a.",
-		product: (leg.line?.product as Product | undefined) ?? "nationalExpress",
+		direction: leg.direction,
+		name: leg.line?.name ?? leg.line?.productName,
+		productName: leg.line?.productName ?? leg.line?.name,
+		product: (leg.line?.product as Product | undefined) ?? "longDistanceExpress",
 		info: parseLegInfo(leg),
 		currentLocation: getLegCurrentLocation(leg),
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
@@ -185,7 +185,7 @@ function getLegCurrentLocation(leg: Leg): ParsedGeolocation | undefined {
 	return {
 		type: "currentLocation",
 		name: `${leg.line?.name} → ${leg.direction}`,
-		requestParameter: { type: "location" },
+		requestParameter: JSON.stringify({ type: "location" } as Location),
 		position: {
 			lat: leg.currentLocation.latitude ?? 0,
 			lng: leg.currentLocation.longitude ?? 0
@@ -213,7 +213,7 @@ function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock
 		originLocation: parseStationStopLocation(walk.origin),
 		destinationLocation: parseStationStopLocation(walk.destination),
 		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
-		walkingTime: dateDifference(walk.departure, walk.arrival),
+		travelTime: dateDifference(walk.departure, walk.arrival),
 		distance: walk.distance ?? 0
 	};
 }
@@ -250,7 +250,7 @@ export function parseStationStopLocation(
 	if (location.type === "station" || location.type === "stop") {
 		return {
 			name: location.name ?? "undefined",
-			requestParameter: location.id ?? location,
+			requestParameter: location.id ?? JSON.stringify(location),
 			type: "station",
 			position: {
 				lat: location.location?.latitude ?? 0,
@@ -260,7 +260,7 @@ export function parseStationStopLocation(
 	} else if (location.poi) {
 		return {
 			name: location.name ?? "undefined",
-			requestParameter: location,
+			requestParameter: JSON.stringify(location),
 			type: "poi",
 			position: {
 				lat: location.latitude ?? 0,
@@ -270,7 +270,7 @@ export function parseStationStopLocation(
 	} else {
 		return {
 			name: location.address ?? "undefined",
-			requestParameter: location,
+			requestParameter: JSON.stringify(location),
 			type: "address",
 			position: {
 				lat: location.latitude ?? 0,

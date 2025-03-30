@@ -1,16 +1,16 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
-	import {
-		type DisplayedFormData,
-		displayedFormData,
-		updateDisplayedLocations
-	} from "$lib/stores/journeyStores";
 	import type { KeyedItem } from "$lib/types.js";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import Modal from "$lib/components/Modal.svelte";
+	import {
+		getDisplayedFormData,
+		type DisplayedFormData,
+		updateDisplayedLocations
+	} from "$lib/state/displayedFormData.svelte.js";
 
 	type Props = {
 		recommendedVias: ParsedLocation[][];
@@ -18,11 +18,13 @@
 
 	let { recommendedVias }: Props = $props();
 
+	const displayedFormData = $derived(getDisplayedFormData());
+
 	let suggestedLocations: {
 		location: KeyedItem<ParsedLocation, number>;
 		isDisplayed: boolean;
 		isSelected: boolean;
-	}[] = $derived(initSuggestedLocations($displayedFormData, recommendedVias));
+	}[] = $derived(initSuggestedLocations(displayedFormData, recommendedVias));
 
 	function initSuggestedLocations(
 		displayedFormData: DisplayedFormData | undefined,

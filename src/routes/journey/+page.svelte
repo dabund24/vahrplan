@@ -1,14 +1,7 @@
 <script lang="ts">
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import Header from "$lib/components/Header.svelte";
-	import {
-		type DisplayedFormData,
-		displayedFormData,
-		initializeSharedData,
-		selectedJourneys
-	} from "$lib/stores/journeyStores";
 	import { page } from "$app/stores";
-	import { browser } from "$app/environment";
 	import { type Snippet } from "svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
@@ -16,18 +9,31 @@
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import { dateToString, timeToString } from "$lib/util.js";
-	import { settings } from "$lib/stores/settingStore";
+	import { settings } from "$lib/state/settingStore";
 	import TicketModal from "$lib/components/TicketModal.svelte";
 	import JourneyOptions from "./JourneyOptions.svelte";
+	import {
+		type DisplayedFormData,
+		getDisplayedFormData,
+		setDisplayedFormData
+	} from "$lib/state/displayedFormData.svelte.js";
+	import { getSelectedData, setSelectedData } from "$lib/state/selectedData.svelte";
+	import { getDiagramData, setDiagramData } from "$lib/state/diagramData.svelte";
+	import { browser } from "$app/environment";
 
-	const { formData, treeNodes } = $page.data;
+	const displayedFormData = $derived(getDisplayedFormData());
+	const selectedData = $derived(getSelectedData());
+
+	$inspect(getDiagramData());
+
+	const { formData, diagramData } = $page.data;
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
 		let formData1: DisplayedFormData;
 		if (formData !== undefined) {
 			formData1 = formData;
-		} else if ($displayedFormData !== undefined && isAllSelected) {
-			formData1 = $displayedFormData;
+		} else if (displayedFormData !== undefined && selectedData.isFullJourneySelected) {
+			formData1 = displayedFormData;
 		} else {
 			return {
 				pageTitle: "",
@@ -36,17 +42,17 @@
 		}
 		return {
 			pageTitle: `${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
-			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.time)} mit Abfahrt ${timeToString(formData1.time)} Uhr`
+			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.timeData.time)} mit Abfahrt ${timeToString(formData1.timeData.time)} Uhr`
 		};
 	});
 
-	if (browser && formData !== undefined && treeNodes !== undefined) {
-		initializeSharedData(formData, treeNodes);
+	if (browser && formData !== undefined && diagramData !== undefined) {
+		setDisplayedFormData(formData);
+		setSelectedData(Array.from({ length: diagramData.columns.length }, () => 0));
+		setDiagramData(Promise.resolve(diagramData));
 	}
 
 	let clientWidth: number = $state(0);
-
-	let isAllSelected = $derived($selectedJourneys.every((journey) => journey.selectedBy !== -1));
 </script>
 
 <svelte:head>
@@ -70,7 +76,7 @@
 	<IconMap />
 {/snippet}
 {#snippet journeyOverview()}
-	{#if formData === undefined && $displayedFormData === undefined}
+	{#if formData === undefined && displayedFormData === undefined}
 		<Warning>
 			Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
 			Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann

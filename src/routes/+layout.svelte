@@ -3,10 +3,9 @@
 	import Navbar from "./Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { beforeNavigate } from "$app/navigation";
-	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
+	import { startLoading, stopLoading } from "$lib/state/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
 	import type { Snippet } from "svelte";
-	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
 
 	type Props = { children: Snippet };
 
@@ -27,7 +26,7 @@
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html PUBLIC_ANALYTICS_SCRIPT}
+	<!--{@html PUBLIC_ANALYTICS_SCRIPT}-->
 </svelte:head>
 
 <div class="app">

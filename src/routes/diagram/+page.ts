@@ -1,85 +1,80 @@
 import type { PageLoad } from "./$types";
-import { displayedFormData, type DisplayedFormData } from "$lib/stores/journeyStores";
 import type { KeyedItem, ParsedLocation } from "$lib/types";
-import {
-	getDiagramUrlFromFormData,
-	getDiagramUrlFromRequestData,
-	parseApiJourneysUrl
-} from "$lib/urls";
 import { browser } from "$app/environment";
-import { get } from "svelte/store";
 import { error, redirect } from "@sveltejs/kit";
-import type { DiagramRequestData } from "$lib/types";
-import { toast } from "$lib/stores/toastStore";
-import type { VahrplanResult } from "$lib/VahrplanResult";
+import { apiClient } from "$lib/api-client/apiClientFactory";
+import {
+	getDisplayedFormData,
+	type DisplayedFormData
+} from "$lib/state/displayedFormData.svelte.js";
+import type { GetDiagramApiClient } from "../api/diagram/getClient";
+import { VahrplanError } from "$lib/VahrplanError";
+
+const diagramApiClient = apiClient("GET", "/api/diagram");
 
 export const load: PageLoad = async ({ url, fetch }) => {
-	if (browser && getDiagramUrlFromFormData(get(displayedFormData)).href === url.href) {
-		// no need to refetch the tree, displayed tree is already correct
+	if (url.searchParams.size === 0) {
+		redirect(303, "/");
+	}
+
+	if (browser && formDataMatchesUrl(url, getDisplayedFormData())) {
+		// no need to re-fetch the diagram, displayed diagram is already correct
 		return {
 			formData: undefined
 		};
 	}
 
-	const shortToken = url.searchParams.get("d");
-	if (shortToken !== null) {
-		// short token is used, redirect to proper page
-		const requestDataResponse = (await fetch(`/api/diagram/shorturl?token=${shortToken}`)
-			.then((res) => res.json())
-			.catch(() => undefined)) as VahrplanResult<DiagramRequestData> | undefined;
-		if (requestDataResponse === undefined) {
-			if (browser) {
-				toast("Zum Server konnte keine Verbindung hergestellt werden.", "red");
-				return;
-			}
-			error(500, "Server-Fehler.");
-		}
-		if (requestDataResponse.isError) {
-			error(requestDataResponse.code, requestDataResponse.message);
-		}
-
-		const diagramUrl = getDiagramUrlFromRequestData(requestDataResponse.content);
-		redirect(303, diagramUrl);
-	}
-
-	if (url.searchParams.size === 0) {
-		redirect(303, "/");
-	}
-	const requestData = parseApiJourneysUrl(url) ?? error(404, "Fehlerhafte URL.");
-	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
-		requestData.stops.map(async (stopQuery) => {
-			const locationUrl = `/api/location?id=${encodeURIComponent(JSON.stringify(stopQuery))}`;
-			const response = (await fetch(locationUrl)
-				.then((res) => res.json())
-				.catch(() => {
-					return {
-						isError: true,
-						description: "Interner Fehler",
-						code: browser ? 400 : 500
-					};
-				})) as VahrplanResult<ParsedLocation>;
-			if (!response.isError) {
-				return {
-					key: Math.random(),
-					value: response.content
-				};
-			}
-			error(response.code, response.message);
-		})
-	);
-
-	if (stopObjects.length < 2) {
-		error(400, "Weniger als 2 Stationen angegeben.");
-	}
-
-	const formData: DisplayedFormData = {
-		locations: stopObjects,
-		time: requestData.time,
-		timeRole: requestData.timeRole,
-		options: requestData.options,
-		geolocationDate: new Date()
-	};
+	const requestData = await diagramApiClient.parseNonApiUrl(url);
+	const formData = await diagramRequestDataToFormData(requestData, fetch);
 	return {
 		formData
 	};
 };
+
+/**
+ * checks if the passed form data matches the passed url
+ * @param url
+ * @param formData
+ */
+function formDataMatchesUrl(url: URL, formData: DisplayedFormData | undefined): boolean {
+	if (formData === undefined) {
+		return false;
+	}
+
+	const currentDiagramData: Parameters<(typeof diagramApiClient)["formatNonApiUrl"]>[0] = {
+		stops: formData.locations.map((l) => l.value.requestParameter),
+		timeData: formData.timeData,
+		options: formData.options
+	};
+	return diagramApiClient.formatNonApiUrl(currentDiagramData).href === url.href;
+}
+
+async function diagramRequestDataToFormData(
+	diagramRequestData: Parameters<GetDiagramApiClient["formatNonApiUrl"]>[0],
+	fetchFn: typeof fetch
+): Promise<DisplayedFormData> {
+	const locationApiClient = apiClient("GET", "/api/location/[locationId]");
+	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
+		diagramRequestData.stops.map(async (stopQuery) => {
+			const location = (await locationApiClient.request(stopQuery, fetchFn)).throwIfError();
+			return {
+				key: Math.random(),
+				value: location.content
+			};
+		})
+	);
+
+	if (stopObjects.length < 2) {
+		error(
+			400,
+			VahrplanError.withMessage("HAFAS_INVALID_REQUEST", "Weniger als 2 Stationen angegeben")
+		);
+	}
+
+	return {
+		locations: stopObjects,
+		timeData: diagramRequestData.timeData,
+		options: diagramRequestData.options,
+		geolocationDate: new Date()
+	};
+}

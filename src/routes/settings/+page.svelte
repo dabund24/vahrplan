@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Setting from "$lib/components/Setting.svelte";
-	import { settings } from "$lib/stores/settingStore";
+	import { settings } from "$lib/state/settingStore";
 	import Header from "$lib/components/Header.svelte";
 	import ButtonModal from "$lib/components/ModalToggle.svelte";
 	import Warning from "$lib/components/Warning.svelte";

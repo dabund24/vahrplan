@@ -1,12 +1,6 @@
 <script lang="ts">
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import {
-		displayedDiagram,
-		displayedFormData,
-		mergingBlocks,
-		selectedJourneys
-	} from "$lib/stores/journeyStores.js";
 	import type { JourneyBlock, LegBlock, ParsedTime } from "$lib/types.js";
 	import Time from "$lib/components/Time.svelte";
 	import Modal from "$lib/components/Modal.svelte";
@@ -23,35 +17,49 @@
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { onMount } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
-	import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
 	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
 	import ViaRecommendations from "./ViaRecommendations.svelte";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
+	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
+	import { type DisplayedJourney, getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { getDiagramData } from "$lib/state/diagramData.svelte";
+	import { apiClient } from "$lib/api-client/apiClientFactory";
 
-	type Props = {
-		isAllSelected: boolean;
-	};
+	const selectedData = $derived(getSelectedData());
+	const displayedJourney = $derived(getDisplayedJourney());
+	const displayedFormData = $derived(getDisplayedFormData());
+	const diagramData = $derived(getDiagramData());
 
-	let { isAllSelected }: Props = $props();
-
-	type JourneyInfo = {
+	type SubJourneyInfo = {
 		legs: LegBlock[];
 		departure: ParsedTime;
 		arrival: ParsedTime;
 	};
 
-	let journeyInfo = $derived([
-		...$selectedJourneys.map((selectedJourney) => {
-			return {
-				legs: selectedJourney.subJourney.blocks.filter<LegBlock>(isLeg),
-				departure: { departure: { time: selectedJourney.subJourney.departureTime?.time } },
-				arrival: { arrival: { time: selectedJourney.subJourney.arrivalTime?.time } }
-			};
-		}),
-		{ legs: [], departure: {}, arrival: {} }
-	] as JourneyInfo[]);
+	const journeyInfo = $derived(computeJourneyInfo(displayedJourney));
+	function computeJourneyInfo(displayedJourney: DisplayedJourney): SubJourneyInfo[] {
+		return [
+			...displayedJourney.selectedSubJourneys.map((subJourney) => {
+				return {
+					legs: subJourney?.blocks.filter<LegBlock>(isLeg) ?? [],
+					departure: {
+						departure: {
+							time: subJourney?.departureTime?.time ?? new Date(0).toISOString()
+						}
+					},
+					arrival: {
+						arrival: {
+							time: subJourney?.arrivalTime?.time ?? new Date(0).toISOString()
+						}
+					}
+				};
+			}),
+			{ legs: [], departure: {}, arrival: {} }
+		];
+	}
 
 	function isLeg(block: JourneyBlock): block is LegBlock {
 		return block.type === "leg";
@@ -67,34 +75,43 @@
 		});
 	}
 
-	let areStopovers = $derived(
-		$mergingBlocks.map((block) => block?.type === "transfer" && block.isStopover)
-	);
+	const areStopovers = $derived(computeAreStopovers(displayedJourney));
+	function computeAreStopovers(displayedJourney: DisplayedJourney): boolean[] {
+		return displayedJourney.blocks
+			.filter((_, index) => index % 2 === 0)
+			.map((block) => block?.value[0]?.type === "transfer" && block.value[0].isStopover);
+	}
 
+	const diagramApiClient = apiClient("GET", "/api/diagram");
 	let diagramBookmarks: DiagramBookmark[] = $state([]);
 	let isBookmarked = $derived(
 		browser &&
+			displayedFormData !== undefined &&
 			diagramBookmarks.some(
-				(bookmark) => bookmark.link === getDiagramUrlFromFormData($displayedFormData).href
+				(bookmark) =>
+					bookmark.link ===
+					diagramApiClient.formatNonApiUrl(
+						diagramApiClient.formDataToRequestData(displayedFormData)
+					).href
 			)
 	);
 
 	onMount(() => (diagramBookmarks = getBookmarks("diagram")));
 
 	function handleDiagramBookmarkClick(): void {
-		diagramBookmarks = toggleDiagramBookmark($displayedFormData);
+		diagramBookmarks = toggleDiagramBookmark(displayedFormData);
 	}
 </script>
 
 <TitlelessHeader --header-width="calc(var(--diagram-width) - 2rem">
 	<div id="journey-summary" class="flex-column summary-background">
-		<div class="flex-row actions" class:all-selected={isAllSelected}>
-			{#await $displayedDiagram then { recommendedVias }}
+		<div class="flex-row actions" class:all-selected={selectedData.isFullJourneySelected}>
+			{#await diagramData then { recommendedVias }}
 				<ViaRecommendations {recommendedVias} />
 			{/await}
 			<button
 				class="hoverable hoverable--visible"
-				onclick={() => void shareDiagram($displayedFormData)}
+				onclick={() => void shareDiagram(displayedFormData)}
 				title="Diagramm teilen"
 			>
 				<IconShare />
@@ -106,9 +123,11 @@
 			>
 				<IconBookmark {isBookmarked} />
 			</button>
-			{#if isAllSelected}
+			{#if selectedData.isFullJourneySelected}
 				<a
-					href={getJourneyUrl($selectedJourneys).href}
+					href={apiClient("GET", "/api/journey").formatNonApiUrl(
+						displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "")
+					).href}
 					class="hoverable hoverable--accent"
 					title="Reisedetails anzeigen"
 					transition:scale
@@ -118,7 +137,7 @@
 			{/if}
 		</div>
 		<div class="flex-row">
-			{#each $displayedFormData?.locations ?? [] as location, i (location.key)}
+			{#each displayedJourney?.locations ?? [] as location, i (location.key)}
 				<div
 					class="summary-element flex-column"
 					class:station--selected={journeyInfo[i].legs.length > 0}
@@ -142,7 +161,7 @@
 						</div>
 						<div class="visuals--selected">
 							<div class="intermediate-stations flex-row">
-								{#each journeyInfo[i].legs.slice(1) as leg (leg.departureData.location.requestParameter)}
+								{#each journeyInfo[i]?.legs.slice(1) ?? [] as leg (leg.departureData.location.requestParameter)}
 									<div
 										class="station-icon-container"
 										transition:scale
@@ -158,7 +177,7 @@
 								{/each}
 							</div>
 							<div class="lines flex-row">
-								{#each journeyInfo[i].legs as leg (leg.blockKey)}
+								{#each journeyInfo[i]?.legs ?? [] as leg (leg.blockKey)}
 									<div
 										class="leg-container flex-row"
 										in:scale
@@ -197,19 +216,19 @@
 								<Duration
 									duration={dateDifference(
 										journeyInfo.at(i - 1)?.arrival.arrival?.time,
-										journeyInfo[i].departure.departure?.time
+										journeyInfo[i]?.departure.departure?.time
 									)}
 								/>
 							</span>
 							<span class="departure-time time">
-								<Time time={journeyInfo[i].departure ?? {}} />
+								<Time time={journeyInfo[i]?.departure ?? {}} />
 							</span>
 						</div>
 						<div class="times--journey flex-row">
 							<Duration
 								duration={dateDifference(
-									journeyInfo[i].departure.departure?.time,
-									journeyInfo[i].arrival.arrival?.time
+									journeyInfo[i]?.departure.departure?.time,
+									journeyInfo[i]?.arrival.arrival?.time
 								) ?? 0}
 							/>
 						</div>

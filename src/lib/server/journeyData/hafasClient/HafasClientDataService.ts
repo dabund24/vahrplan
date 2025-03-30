@@ -5,17 +5,20 @@ import {
 import {
 	type HafasClient,
 	type Journeys,
-	type JourneysOptions,
-	type JourneyWithRealtimeData
+	type JourneyWithRealtimeData,
+	type Location,
+	type Station,
+	type Stop
 } from "hafas-client";
 import { RateLimiter } from "$lib/server/RateLimiter";
-import type { ParsedLocation, SubJourney } from "$lib/types";
+import type { JourneysOptions, ParsedLocation, SubJourney, TimeData } from "$lib/types";
 import {
 	parseStationStopLocation,
 	parseSubJourney
 } from "$lib/server/journeyData/hafasClient/parse/parse";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
+import { formatOptions, formatStop } from "$lib/server/journeyData/hafasClient/formatOptions";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = Error & {
@@ -59,25 +62,30 @@ export class HafasClientDataService extends JourneyDataService {
 		this.client = new Proxy(client, hafasClientHandler);
 	}
 
+	private parseJourneysResponseCallback = (hafasJourneys: Journeys): JourneyNodesWithRefs => {
+		const fetchedJourneys = // convert to vahrplan format
+			hafasJourneys.journeys?.map((journey) => parseSubJourney(journey)) ?? [];
+
+		return {
+			journeys: fetchedJourneys,
+			earlierRef: hafasJourneys.earlierRef ?? "",
+			laterRef: hafasJourneys.laterRef ?? ""
+		};
+	};
+
 	async journeys(
-		from: ParsedLocation["requestParameter"],
-		to: ParsedLocation["requestParameter"],
+		{ from, to }: Parameters<JourneyDataService["journeys"]>[0],
+		timeData: TimeData,
 		options: JourneysOptions
 	): Promise<VahrplanResult<JourneyNodesWithRefs>> {
-		const parseResponseCallback = (hafasJourneys: Journeys): JourneyNodesWithRefs => {
-			const fetchedJourneys = // convert to vahrplan format
-				hafasJourneys.journeys?.map((journey) => parseSubJourney(journey)) ?? [];
-
-			return {
-				journeys: fetchedJourneys,
-				earlierRef: hafasJourneys.earlierRef ?? "",
-				laterRef: hafasJourneys.laterRef ?? ""
-			};
-		};
-
 		return this.performRequest(
-			() => this.client.journeys(from, to, options),
-			parseResponseCallback
+			() =>
+				this.client.journeys(
+					formatStop(from),
+					formatStop(to),
+					formatOptions(timeData, options)
+				),
+			this.parseJourneysResponseCallback
 		);
 	}
 
@@ -104,9 +112,13 @@ export class HafasClientDataService extends JourneyDataService {
 	async location(
 		token: ParsedLocation["requestParameter"]
 	): Promise<VahrplanResult<ParsedLocation>> {
-		if (typeof token !== "string") {
+		if (token.startsWith("{")) {
 			// token is location object
-			return Promise.resolve(new VahrplanSuccess(parseStationStopLocation(token)));
+			return Promise.resolve(
+				new VahrplanSuccess(
+					parseStationStopLocation(JSON.parse(token) as Station | Stop | Location)
+				)
+			);
 		}
 
 		return this.performRequest(() => this.client.stop(token, {}), parseStationStopLocation);

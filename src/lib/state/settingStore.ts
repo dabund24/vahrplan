@@ -1,29 +1,23 @@
 import { writable } from "svelte/store";
-import type { JourneysOptions } from "hafas-client";
 import { browser } from "$app/environment";
+import type { GetDiagramApiClient } from "../../routes/api/diagram/getClient";
+import type { JourneysOptions, Product } from "$lib/types";
 
-export const products = {
-	nationalExpress: "Intercity-Express",
-	national: "Intercity/Eurocity",
+export const products: Record<Product, string> = {
+	longDistanceExpress: "Intercity-Express",
+	longDistance: "Intercity/Eurocity",
 	regionalExpress: "sonst. Fernzug",
 	regional: "Regionalexpress/-bahn",
 	suburban: "S-Bahn",
 	subway: "U-Bahn",
 	tram: "Straßenbahn",
 	bus: "Bus",
-	ferry: "Fähre",
-	taxi: "Ruftaxi"
+	taxi: "Ruftaxi",
+	ferry: "Fähre"
 } as const;
-export type Product = keyof typeof products;
 
 export type Settings = {
-	journeysOptions: JourneysOptions & {
-		accessibility: "none" | "partial" | "complete";
-		bike: boolean;
-		products: Record<Product, boolean>;
-		transfers: -1 | 0 | 1 | 2 | 3 | 4 | 5;
-		transferTime: number;
-	};
+	journeysOptions: ReturnType<GetDiagramApiClient["parse"]>["options"];
 	general: {
 		colorScheme: "system" | "light" | "dark";
 		color: "red" | "yellow" | "green" | "blue" | "purple";
@@ -36,25 +30,27 @@ export type Settings = {
 	storage: Record<Exclude<keyof Settings, "storage">, boolean>;
 };
 
-export const settings = writable<Settings>({
-	journeysOptions: {
-		accessibility: "none",
-		bike: false,
-		products: {
-			bus: true,
-			ferry: true,
-			national: true,
-			nationalExpress: true,
-			regional: true,
-			regionalExpress: true,
-			suburban: true,
-			subway: true,
-			taxi: true,
-			tram: true
-		},
-		transfers: -1,
-		transferTime: 0
+export const defaultJourneysOptions: JourneysOptions = {
+	products: {
+		longDistanceExpress: true,
+		longDistance: true,
+		regionalExpress: true,
+		regional: true,
+		suburban: true,
+		subway: true,
+		tram: true,
+		bus: true,
+		taxi: true,
+		ferry: true
 	},
+	bike: false,
+	accessible: false,
+	maxTransfers: -1,
+	minTransferTime: 0
+};
+
+export const settings = writable<Settings>({
+	journeysOptions: defaultJourneysOptions,
 	general: {
 		colorScheme: "system",
 		color: "green",

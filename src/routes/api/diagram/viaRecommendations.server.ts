@@ -1,14 +1,14 @@
-import type { JourneyBlock, ParsedLocation } from "$lib/types";
+import type { ParsedLocation, SubJourney } from "$lib/types";
 
 /**
  * recommend vias for a given set of sub-journey suggestions based on constraints listed in
  * [this issue](https://github.com/dabund24/vahrplan/issues/19#issue-2537334331)
  * @param subJourneys
  */
-export default function recommendVias(subJourneys: JourneyBlock[][]): ParsedLocation[] {
+export default function recommendVias(subJourneys: SubJourney[]): ParsedLocation[] {
 	const viaCandidates = new ViaCandidates();
 	const subJourneysLegs = subJourneys.map((subJourney) =>
-		subJourney.filter((block) => block.type === "leg")
+		subJourney.blocks.filter((block) => block.type === "leg")
 	); // filter only the leg blocks of each sub-journey. The rest is irrelevant
 
 	for (const subJourneyLegs of subJourneysLegs) {
