@@ -160,7 +160,7 @@ function legToBlock(leg: Leg): LegBlock {
 		direction: leg.direction,
 		name: leg.line?.name ?? leg.line?.productName,
 		productName: leg.line?.productName ?? leg.line?.name,
-		product: (leg.line?.product as Product | undefined) ?? "longDistanceExpress",
+		product: parseProduct(leg.line?.product),
 		info: parseLegInfo(leg),
 		currentLocation: getLegCurrentLocation(leg),
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],
@@ -378,4 +378,14 @@ function getAttributeFromStopover(stopover: StopOver | undefined): TransitAttrib
 		return "additional";
 	}
 	return undefined;
+}
+
+function parseProduct(hafasProduct: string | undefined): Product {
+	if (hafasProduct === undefined || hafasProduct === "nationalExpress") {
+		return "longDistanceExpress";
+	}
+	if (hafasProduct === "national") {
+		return "longDistance";
+	}
+	return hafasProduct as Product;
 }

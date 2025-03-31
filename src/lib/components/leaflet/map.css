@@ -5,18 +5,6 @@
 			filter: var(--map-filter);
 		}
 	}
-	.map[data-theme="light"] {
-		.product--nationalExpress {
-			--product-color: #000000;
-		}
-	}
-	@media (prefers-color-scheme: light) {
-		.map[data-theme="system"] {
-			.product--nationalExpress {
-				--product-color: #000000;
-			}
-		}
-	}
 }
 
 .leaflet-container {
