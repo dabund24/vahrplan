@@ -27,6 +27,7 @@
 	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
+	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -239,7 +240,15 @@
 	</div>
 </TitlelessHeader>
 {#if modalLeg}
-	<Modal showModalKey="showLegModal" title={`${modalLeg.name} → ${modalLeg.direction}`}>
+	<Modal showModalKey="showLegModal">
+		{#snippet title()}
+			<LineNameDirection
+				lineName={modalLeg?.name}
+				direction={modalLeg?.direction}
+				productName={modalLeg?.productName}
+				lineShape={modalLeg?.lineShape}
+			/>
+		{/snippet}
 		<div class="padded-top-bottom">
 			{#each modalLeg.info.statuses as status}
 				<Warning color="red">{status}</Warning>

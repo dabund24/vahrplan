@@ -5,7 +5,7 @@
 	import { page } from "$app/state";
 
 	type Props = {
-		title: string;
+		title: string | Snippet;
 		height?: string;
 		children: Snippet;
 		headerItems?: Snippet;

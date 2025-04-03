@@ -1,4 +1,4 @@
-import type { JourneyNodesWithRefs } from "$lib/server/journeyData/JourneyDataService";
+import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 import type { ParsedLocation, RelativeTimeType, SubJourney, TreeNode } from "$lib/types";
 import {
 	type DisplayedFormData,

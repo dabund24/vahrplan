@@ -21,6 +21,7 @@ export type Settings = {
 	general: {
 		colorScheme: "system" | "light" | "dark";
 		color: "red" | "yellow" | "green" | "blue" | "purple";
+		isLineIcons: boolean;
 		journeyDetailsStandardView: "classic" | "map";
 		shortLinksDiagrams: boolean;
 		shortLinksJourneys: boolean;
@@ -54,6 +55,7 @@ export const settings = writable<Settings>({
 	general: {
 		colorScheme: "system",
 		color: "green",
+		isLineIcons: true,
 		journeyDetailsStandardView: "classic",
 		shortLinksDiagrams: false,
 		shortLinksJourneys: false,

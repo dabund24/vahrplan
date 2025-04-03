@@ -2,7 +2,7 @@
 	import type { Snippet } from "svelte";
 
 	type Props = {
-		title: string;
+		title: string | Snippet;
 		isMobileOnly?: boolean;
 		children?: Snippet;
 	};
@@ -10,7 +10,13 @@
 </script>
 
 <header class="flex-row" class:mobile-only={isMobileOnly}>
-	<strong class="limit-lines">{title}</strong>
+	<strong class="limit-lines">
+		{#if typeof title === "string"}
+			{title}
+		{:else}
+			{@render title()}
+		{/if}
+	</strong>
 	<div class="buttons flex-row">
 		{@render children?.()}
 	</div>

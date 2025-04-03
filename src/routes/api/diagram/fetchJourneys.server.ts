@@ -1,6 +1,6 @@
 import type { JourneysOptions, RelativeTimeType, SubJourney, TimeData } from "$lib/types";
 import { journeyDataService } from "$lib/server/setup";
-import type { JourneyNodesWithRefs } from "$lib/server/journeyData/JourneyDataService";
+import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { DIAGRAM_COLUMN_MAX_REQUESTS, MAX_DATE } from "$lib/constants";
 

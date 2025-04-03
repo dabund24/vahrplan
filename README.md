@@ -52,6 +52,7 @@ Instructions:
 
 - Copy `.env.example` to `.env`
 - Start Valkey with `valkey-server` (or Redis with `redis-server`) on Port 6379
+- Run the `line-shapes.sh` script (fetches line icon data)
 - Run `npm install`
 - Run `npm run build`
 - Run `npm run preview`

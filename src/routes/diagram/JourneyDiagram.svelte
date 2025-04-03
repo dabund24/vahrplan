@@ -2,7 +2,7 @@
 	import type { TreeNode } from "$lib/types";
 	import JourneyDiagram from "./JourneyDiagram.svelte";
 	import JourneyDiagramElement from "./JourneyDiagramElement.svelte";
-	import type { JourneyNodesWithRefs } from "$lib/server/journeyData/JourneyDataService";
+	import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 	import type { DiagramData } from "$lib/state/diagramData.svelte";
 
 	type Props = {
