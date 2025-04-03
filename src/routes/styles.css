@@ -103,7 +103,8 @@
 }
 
 @media (update: fast) {
-	:root[data-theme="dark"] {
+	:root[data-theme="dark"],
+	:root[data-theme="midnight"] {
 		--map-filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
 			brightness(0.7);
 	}
@@ -116,7 +117,8 @@
 	}
 }
 
-[data-theme="dark"] {
+[data-theme="dark"],
+[data-theme="midnight"] {
 	color-scheme: dark;
 	--external-ref-icon--inverse: var(--external-ref-icon--light);
 	--external-ref-icon: var(--external-ref-icon--dark);
@@ -129,6 +131,10 @@
 		--external-ref-icon--inverse: var(--external-ref-icon--light);
 		--external-ref-icon: var(--external-ref-icon--dark);
 	}
+}
+
+[data-theme="midnight"] {
+	--background-color: black;
 }
 
 ul,
@@ -325,7 +331,10 @@ h3 {
 }
 
 .product--suburban {
-	--product-color: light-dark(var(--suburban-color), oklch(from var(--suburban-color) 0.8 0.15 h));
+	--product-color: light-dark(
+		var(--suburban-color),
+		oklch(from var(--suburban-color) 0.8 0.15 h)
+	);
 	--product-color--alt: oklch(from var(--suburban-color) 0.8 0.1 h);
 }
 
@@ -355,7 +364,10 @@ h3 {
 }
 
 .product--regional {
-	--product-color: light-dark(var(--regional-color), oklch(from var(--regional-color) 0.8 0.15 h));
+	--product-color: light-dark(
+		var(--regional-color),
+		oklch(from var(--regional-color) 0.8 0.15 h)
+	);
 	--product-color--alt: oklch(from var(--regional-color) 0.8 0.1 h);
 }
 

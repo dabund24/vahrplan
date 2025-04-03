@@ -76,7 +76,7 @@
 		}
 	}
 
-	:global(:root[data-theme="dark"]) {
+	:global(:root[data-theme="dark"]), :global(:root[data-theme="midnight"]) {
 		.time {
 			border-width: calc(var(--line-width) / 2);
 		}

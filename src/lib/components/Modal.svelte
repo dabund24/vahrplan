@@ -56,15 +56,13 @@
 		border-radius: var(--border-radius--large);
 		border: var(--border);
 		background-color: var(--background-color);
+		color: var(--foreground-color);
 		padding: 0;
 		scrollbar-width: thin;
 		max-height: calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 5rem);
 	}
 	dialog::backdrop {
-		background: var(--background-color--transparent, #ffffffe0);
-	}
-	:global([data-theme="dark"]) dialog::backdrop {
-		background: var(--background-color--transparent, #121212e0);
+		background: var(--background-color--transparent);
 	}
 
 	dialog[open] {
