@@ -24,7 +24,8 @@
 			options: [
 				{ value: "system", name: "System" },
 				{ value: "light", name: "Hell" },
-				{ value: "dark", name: "Dunkel" }
+				{ value: "dark", name: "Dunkel" },
+				{ value: "midnight", name: "Mitternacht" }
 			]
 		}}
 	/>

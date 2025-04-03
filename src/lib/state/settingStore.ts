@@ -19,7 +19,7 @@ export const products: Record<Product, string> = {
 export type Settings = {
 	journeysOptions: ReturnType<GetDiagramApiClient["parse"]>["options"];
 	general: {
-		colorScheme: "system" | "light" | "dark";
+		colorScheme: "system" | "light" | "dark" | "midnight";
 		color: "red" | "yellow" | "green" | "blue" | "purple";
 		isLineIcons: boolean;
 		journeyDetailsStandardView: "classic" | "map";
@@ -100,7 +100,9 @@ if (browser) {
 			isDarkTheme =
 				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 		} else {
-			isDarkTheme = settings.general.colorScheme === "dark";
+			isDarkTheme =
+				settings.general.colorScheme === "dark" ||
+				settings.general.colorScheme === "midnight";
 		}
 		const themeColorElement = document.getElementById("theme-color")!;
 		themeColorElement.setAttribute("content", isDarkTheme ? "#121212" : "#ffffff");
