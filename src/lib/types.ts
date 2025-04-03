@@ -1,4 +1,5 @@
 import type { Settings } from "$lib/state/settingStore";
+import type { LineShape } from "$lib/server/journey-data/lineShapes";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -171,6 +172,7 @@ export type LegBlock = {
 	name?: string;
 	productName?: string;
 	product: Product;
+	lineShape?: LineShape;
 	info: {
 		statuses: string[];
 		hints: string[];
@@ -239,7 +241,9 @@ export type PopupDataLine = {
 	duration: number;
 	direction?: string;
 	product: Product;
+	productName?: string;
 	name?: string;
+	lineShape?: LineShape;
 };
 
 export type PopupDataStation = {

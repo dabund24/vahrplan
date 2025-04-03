@@ -8,6 +8,7 @@
 	import JourneyInfo from "$lib/components/journeys/TripInfo.svelte";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 	import IconExpand from "$lib/components/icons/IconExpand.svelte";
+	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 
 	type Props = {
 		block: LegBlock;
@@ -88,7 +89,12 @@
 						class="hoverable flex-row"
 						style="anchor-name: --leg--{block.blockKey}{departureTime}__stopovers-summary"
 					>
-						<span class="limit-lines">{block.name} &rightarrow; {block.direction}</span>
+						<LineNameDirection
+							lineName={block.name}
+							productName={block.productName}
+							direction={block.direction}
+							lineShape={block.lineShape}
+						/>
 						<IconExpand />
 					</summary>
 					<div>
@@ -146,10 +152,6 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.5rem;
-		.limit-lines {
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-		}
 	}
 
 	details:not(:last-child) > *:not(summary) {

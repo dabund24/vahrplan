@@ -16,7 +16,8 @@ import type {
 } from "$lib/types";
 import { dateDifference, getBlockEnd, getBlockStart, getFirstAndLastTime } from "$lib/util";
 import { transferToBlock } from "$lib/merge";
-import { parseLegInfo } from "$lib/server/journeyData/hafasClient/parse/parseLegInfo";
+import { parseLegInfo } from "$lib/server/journey-data/hafas-client/parse/parseLegInfo";
+import { getLineShape } from "$lib/server/journey-data/lineShapes";
 
 /**
  * parse a sub-journey from hafas
@@ -157,10 +158,11 @@ function legToBlock(leg: Leg): LegBlock {
 				leg.departure ?? leg.plannedDeparture,
 				leg.arrival ?? leg.plannedArrival
 			) ?? 0,
-		direction: leg.direction,
+		direction: leg.direction ?? undefined,
 		name: leg.line?.name ?? leg.line?.productName,
 		productName: leg.line?.productName ?? leg.line?.name,
 		product: parseProduct(leg.line?.product),
+		lineShape: getLineShape(leg.line),
 		info: parseLegInfo(leg),
 		currentLocation: getLegCurrentLocation(leg),
 		stopovers: leg.stopovers?.slice(1, -1).map(parseStopover) ?? [],

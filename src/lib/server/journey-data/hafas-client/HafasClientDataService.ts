@@ -1,7 +1,7 @@
 import {
 	JourneyDataService,
 	type JourneyNodesWithRefs
-} from "$lib/server/journeyData/JourneyDataService";
+} from "$lib/server/journey-data/JourneyDataService";
 import {
 	type HafasClient,
 	type Journeys,
@@ -15,10 +15,10 @@ import type { JourneysOptions, ParsedLocation, SubJourney, TimeData } from "$lib
 import {
 	parseStationStopLocation,
 	parseSubJourney
-} from "$lib/server/journeyData/hafasClient/parse/parse";
+} from "$lib/server/journey-data/hafas-client/parse/parse";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
-import { formatOptions, formatStop } from "$lib/server/journeyData/hafasClient/formatOptions";
+import { formatOptions, formatStop } from "$lib/server/journey-data/hafas-client/formatOptions";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = Error & {

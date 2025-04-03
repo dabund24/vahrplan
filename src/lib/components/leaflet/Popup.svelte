@@ -7,6 +7,7 @@
 	import "./popup.css";
 	import IconFiller from "$lib/components/icons/IconFiller.svelte";
 	import Duration from "$lib/components/Duration.svelte";
+	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 
 	type Props = {
 		popupData: PopupData;
@@ -42,7 +43,14 @@
 	{#if popupData.type === "line"}
 		<Duration duration={popupData.duration} />
 		<div class="product--{popupData.product} line--vertical line--product"></div>
-		<span>{popupData.name} &rightarrow; {popupData.direction}</span>
+		<span
+			><LineNameDirection
+				lineName={popupData.name}
+				productName={popupData.productName}
+				direction={popupData.direction}
+				lineShape={popupData.lineShape}
+			/></span
+		>
 	{:else if popupData.type === "walk"}
 		<Duration duration={popupData.duration} />
 		<div class="filler-icon">
