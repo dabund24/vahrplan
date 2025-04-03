@@ -15,7 +15,7 @@
 
 <Header title={"Einstellungen"} isMobileOnly={true} />
 <div class="content-wrapper">
-	<h1>Farben</h1>
+	<h1>Allgemein</h1>
 	<Setting
 		settingName={"Schema"}
 		bind:setting={$settings.general.colorScheme}
@@ -41,6 +41,11 @@
 				{ value: "purple", name: "Violett" }
 			]
 		}}
+	/>
+	<Setting
+		settingName="Linien-Icons verwenden"
+		bind:setting={$settings.general.isLineIcons}
+		settingInfo={{ type: "boolean" }}
 	/>
 	<h1>
 		<span class="mobile-only">Reisedetails</span><span class="desktop-only">Reisevorschau</span>

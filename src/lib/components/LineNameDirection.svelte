@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LineShape } from "$lib/server/journey-data/lineShapes";
+	import { settings } from "$lib/state/settingStore";
 
 	type Props = {
 		lineName?: string;
@@ -12,7 +13,7 @@
 </script>
 
 <span class="container limit-lines">
-	{#if lineShape !== undefined}
+	{#if lineShape !== undefined && $settings.general.isLineIcons}
 		<b>
 			{lineShape.linePrefix}
 			<span
