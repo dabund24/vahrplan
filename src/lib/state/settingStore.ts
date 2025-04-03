@@ -95,17 +95,11 @@ if (browser) {
 		document.documentElement.setAttribute("data-theme", settings.general.colorScheme);
 		document.documentElement.setAttribute("data-color", settings.general.color);
 
-		let isDarkTheme: boolean;
-		if (settings.general.colorScheme === "system") {
-			isDarkTheme =
-				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-		} else {
-			isDarkTheme =
-				settings.general.colorScheme === "dark" ||
-				settings.general.colorScheme === "midnight";
-		}
 		const themeColorElement = document.getElementById("theme-color")!;
-		themeColorElement.setAttribute("content", isDarkTheme ? "#121212" : "#ffffff");
+		themeColorElement.setAttribute(
+			"content",
+			themeColorFromColorScheme(settings.general.colorScheme, settings.general.color)
+		);
 
 		return settings;
 	});
@@ -139,4 +133,45 @@ function applyLocalStorageSettingGroupToAppSettings<K extends Exclude<keyof Sett
 		}
 	}
 	return settings;
+}
+
+function themeColorFromColorScheme(
+	colorScheme: Settings["general"]["colorScheme"],
+	accentColor: Settings["general"]["color"]
+): string {
+	if (colorScheme === "midnight") {
+		return "#000";
+	}
+
+	let isDarkTheme: boolean;
+	if (colorScheme === "system") {
+		isDarkTheme =
+			window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+	} else {
+		isDarkTheme = colorScheme === "dark";
+	}
+
+	let colorHue: number;
+	switch (accentColor) {
+		case "red":
+			colorHue = 25;
+			break;
+		case "yellow":
+			colorHue = 70;
+			break;
+		case "green":
+			colorHue = 170;
+			break;
+		case "blue":
+			colorHue = 252;
+			break;
+		case "purple":
+			colorHue = 300;
+	}
+
+	if (isDarkTheme) {
+		return `oklch(0.15 0.015 ${colorHue})`;
+	} else {
+		return `oklch(0.99 0.002 ${colorHue})`;
+	}
 }
