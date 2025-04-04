@@ -56,8 +56,8 @@
 		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
 	}
 	function addVia(index: number): void {
-		if (stops.length - 1 > DIAGRAM_MAX_COLUMNS) {
-			toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS} Zwischenstationen möglich.`, "red");
+		if (stops.length > DIAGRAM_MAX_COLUMNS) {
+			toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS - 1} Zwischenstationen möglich.`, "red");
 			return;
 		}
 		stops = [

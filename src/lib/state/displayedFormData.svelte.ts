@@ -63,10 +63,10 @@ export function updateDisplayedLocations(
 		return;
 	}
 
-	const newFormData: DisplayedFormData = displayedFormData;
+	const newFormData: DisplayedFormData = { ...displayedFormData };
 	newFormData.locations = updateLocationsFn(newFormData);
 	if (newFormData.locations.length - 1 < DIAGRAM_MIN_COLUMNS) {
-		toast(`Mindestens ${DIAGRAM_MIN_COLUMNS} Stationen sind notwendig.`, "red");
+		toast(`Station konnte nicht entfernt werden.`, "red");
 		return;
 	}
 	if (newFormData.locations.length - 1 > DIAGRAM_MAX_COLUMNS) {
