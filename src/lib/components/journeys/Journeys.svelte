@@ -29,7 +29,7 @@
 	{#if warningMessage !== undefined}
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
-	{#if !selectedData.isFullJourneySelected}
+	{#if selectedData.selectedJourneys.length !== 0 && !selectedData.isFullJourneySelected}
 		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning
 		>
 	{/if}
