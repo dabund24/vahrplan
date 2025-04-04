@@ -431,21 +431,23 @@ h3 {
 .hoverable--visible--group {
 	--base-padding: 0.5rem;
 	align-items: stretch;
-	button {
+	button,
+	input,
+	.hoverable--visible--group--sep {
 		border-top: var(--border--very-transparant);
 		border-bottom: var(--border--very-transparant);
 		background-color: var(--foreground-color--very-transparent);
 		padding: 0.5rem calc(var(--base-padding) + var(--line-width));
 		transition: none;
-		height: 100%;
+		min-height: 100%;
 	}
-	button:hover,
-	button:active {
+	:where(button, input):hover,
+	:where(button, input):active {
 		background-color: var(--foreground-color--transparent);
 		border: var(--border);
 		padding: 0.5rem var(--base-padding);
 	}
-	> :first-child button {
+	> :first-child :where(button, input) {
 		border-top-left-radius: 50vh;
 		border-bottom-left-radius: 50vh;
 		border-left: var(--border--very-transparant);
@@ -455,7 +457,7 @@ h3 {
 			border-left-color: var(--foreground-color--transparent);
 		}
 	}
-	> :last-child button {
+	> :last-child :where(button, input) {
 		border-top-right-radius: 50vh;
 		border-bottom-right-radius: 50vh;
 		border-right: var(--border--very-transparant);
@@ -463,6 +465,15 @@ h3 {
 		&:hover,
 		&:active {
 			border-right-color: var(--foreground-color--transparent);
+		}
+	}
+	> .hoverable--visible--group--sep {
+		padding: calc(2 * var(--line-width)) var(--line-width);
+		> * {
+			width: var(--line-width);
+			background-color: var(--foreground-color--transparent);
+			height: 100%;
+			border-radius: var(--border-radius--small);
 		}
 	}
 }

@@ -4,7 +4,6 @@
 	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
-	import Setting from "$lib/components/Setting.svelte";
 	import { settings } from "$lib/state/settingStore";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { get } from "svelte/store";
@@ -39,25 +38,18 @@
 	});
 
 	let departureArrivalSelection: 0 | 1 = $state(0);
-	let isTimeNow = $state(true);
-	let time = $state(dateToInputDate(new Date().toISOString()));
+	let time = $state(new Date());
 
 	$effect.pre(() => initTimeInputs(initialFormData));
 
 	function initTimeInputs(displayedFormData: DisplayedFormData | undefined): void {
 		if (displayedFormData === undefined) {
-			departureArrivalSelection = 0;
-			isTimeNow = true;
-			time = dateToInputDate(new Date().toISOString());
 			return;
 		}
 
 		departureArrivalSelection =
 			displayedFormData.timeData.scrollDirection === "earlier" ? 1 : 0;
-		isTimeNow =
-			~~(new Date().getTime() / 60000) ===
-			~~(new Date(displayedFormData.timeData.time).getTime() / 60000);
-		time = dateToInputDate(displayedFormData.timeData.time);
+		time = new Date(dateToInputDate(displayedFormData.timeData.time));
 	}
 
 	function removeVia(index: number): void {
@@ -78,13 +70,19 @@
 		stops = stops.toReversed();
 	}
 
+	function setTimePreset(minuteOffset: number): void {
+		const now = new Date();
+		now.setTime(now.getTime() + 60 * 1000 * minuteOffset);
+		time = now;
+	}
+
 	async function handleFormSubmit(event: SubmitEvent): Promise<void> {
 		event.preventDefault();
 		const stopsToBeDisplayed = stops.filter(valueIsDefined);
 		if (!verifyUserInput(stopsToBeDisplayed.map((s) => s.value))) {
 			return;
 		}
-		const journeyTime = isTimeNow ? new Date() : new Date(time);
+		const journeyTime = new Date(time);
 		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
 		const scrollDirection: RelativeTimeType =
 			departureArrivalSelection === 0 ? "later" : "earlier";
@@ -189,7 +187,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="time-filter-submit" class:time-is-now={isTimeNow}>
+	<div class="time-filter-submit">
 		<div class="flex-row">
 			<SingleSelect
 				titles={[
@@ -198,22 +196,33 @@
 				]}
 				bind:selected={departureArrivalSelection}
 			/>
-			<Setting
-				settingName="jetzt"
-				bind:setting={isTimeNow}
-				settingInfo={{ type: "boolean" }}
-			/>
 		</div>
-		<div class="time-input-container">
-			{#if isTimeNow !== undefined && !isTimeNow}
+		<div class="time-input-container hoverable--visible--group flex-row">
+			<div>
 				<input
-					transition:scale
-					class="hoverable hoverable--visible"
+					class=""
 					type="datetime-local"
-					bind:value={time}
+					bind:value={
+						(): string => {
+							return dateToInputDate(time.toISOString());
+						},
+						(t): void => {
+							time = new Date(t);
+						}
+					}
 					aria-label={`${departureArrivalSelection === 0 ? "Abfahrt" : "Ankunft"}szeit`}
 				/>
-			{/if}
+			</div>
+			<div class="hoverable--visible--group--sep"><div></div></div>
+			<div>
+				<button type="button" onclick={() => void setTimePreset(0)}> jetzt </button>
+			</div>
+			<div>
+				<button type="button" onclick={() => void setTimePreset(15)}> in 15min </button>
+			</div>
+			<div>
+				<button type="button" onclick={() => void setTimePreset(60)}> in 1h </button>
+			</div>
 		</div>
 		<div class="filter-submit">
 			<FilterModal />
@@ -273,38 +282,64 @@
 	.time-filter-submit {
 		width: 100%;
 		max-width: 30rem;
-		gap: 4px;
 		margin: 1rem 0;
-		& > * {
+		container-type: inline-size;
+		> * {
 			display: flex;
-			justify-content: space-between;
-		}
-		& button {
-			width: 100%;
-			justify-content: center;
-		}
-		& .time-input-container {
-			height: calc(16px + 1rem + 1lh);
 		}
 		input[type="datetime-local"] {
-			padding: 0.5rem;
-			margin: var(--line-width) 0;
+			box-sizing: border-box;
 			font-variant-numeric: tabular-nums;
+			-webkit-appearance: none;
+		}
+		.time-input-container {
+			padding-top: var(--line-width);
+			> * {
+				min-height: 100%;
+			}
+		}
+	}
+
+	@container (max-width: 29.5rem) {
+		.time-input-container > :nth-child(4) {
+			display: none;
+		}
+	}
+
+	@container (max-width: 24rem) {
+		.time-input-container > :nth-child(5) {
+			display: none;
+		}
+		.time-input-container > :nth-child(3) button {
+			border-top-right-radius: 50vh;
+			border-bottom-right-radius: 50vh;
+			padding-right: calc(var(--base-padding) + 0.25rem);
+			&:not(:hover) {
+				border-right: var(--border--very-transparant);
+			}
+		}
+	}
+
+	@container (max-width: 20.5rem) {
+		.time-input-container > :where(:nth-child(2), :nth-child(3)) {
+			display: none;
+		}
+		.time-input-container > :nth-child(1) input {
+			border-radius: 50vh;
+			padding-right: calc(var(--base-padding) + 0.25rem);
+			&:not(:hover) {
+				border-right: var(--border--very-transparant);
+			}
 		}
 	}
 
 	.filter-submit {
 		margin-top: 1rem;
-		transition: margin-top 0.4s var(--cubic-bezier);
 		justify-content: end;
 		gap: 0.5rem;
 		& > button {
 			width: fit-content;
 			padding: 0.5rem 1rem;
 		}
-	}
-
-	.time-is-now .filter-submit {
-		margin-top: calc(-16px - 1lh);
 	}
 </style>
