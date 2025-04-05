@@ -30,13 +30,13 @@
 	style:anchor-name="--leg--{block.blockKey}"
 >
 	<div class="flex-column">
-		<div class="top-or-bottom flex-column">
+		<div class="top-or-bottom time flex-column">
 			<Time time={block.departureData.time} />
 		</div>
 		<div class="middle duration-container">
 			<Duration duration={block.duration} isAlignedRight={true} />
 		</div>
-		<div class="top-or-bottom flex-column">
+		<div class="top-or-bottom time flex-column">
 			<Time time={block.arrivalData.time} />
 		</div>
 	</div>
@@ -125,6 +125,9 @@
 	.top-or-bottom {
 		height: 3rem;
 		align-items: center;
+	}
+	.time {
+		font-weight: bold;
 	}
 	.line-container {
 		position: relative;
