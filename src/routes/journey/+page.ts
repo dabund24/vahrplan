@@ -8,10 +8,6 @@ import { type DisplayedJourney, getDisplayedJourney } from "$lib/state/displayed
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import { defaultJourneysOptions } from "$lib/state/settingStore";
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte";
-import {
-	buildLocationEquivalenceSystem,
-	type LocationEquivalenceSystem
-} from "../api/diagram/locationRepresentatives";
 
 const journeyApiClient = apiClient("GET", "/api/journey");
 
@@ -54,19 +50,9 @@ async function diagramDataFromTokens(
 	fetchFn: typeof fetch
 ): Promise<DiagramData> {
 	const journeysApiClient = apiClient("GET", "/api/journey");
-	const { content: response } = (await journeysApiClient.request(tokens, fetchFn)).throwIfError();
-
-	const subJourneys = response.subJourneys;
-	let locationEquivalenceSystem: LocationEquivalenceSystem = {
-		representatives: {},
-		idToRepresentative: {}
-	};
-	for (const subJourney of subJourneys) {
-		locationEquivalenceSystem = buildLocationEquivalenceSystem(
-			subJourney,
-			locationEquivalenceSystem
-		);
-	}
+	const {
+		content: { subJourneys, locationEquivalenceSystem }
+	} = (await journeysApiClient.request(tokens, fetchFn)).throwIfError();
 
 	return Promise.resolve({
 		columns: subJourneys.map((j) => ({

@@ -4,7 +4,7 @@ import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
-import type { LocationEquivalenceSystem } from "../../locationRepresentatives";
+import type { LocationEquivalenceSystem } from "../../locationRepresentativesUtils";
 
 type ReqType = {
 	scrollDirection: RelativeTimeType;

@@ -1,9 +1,15 @@
 import type { ParsedLocation, SubJourney } from "$lib/types";
+import type { LocationEquivalenceSystem } from "./locationRepresentativesUtils";
 
-export type LocationEquivalenceSystem = {
-	idToRepresentative: Partial<Record<string, string>>; // resolve location id to key for representatives
-	representatives: Record<string, ParsedLocation>; // get representative
-};
+export function buildLocationEquivalenceSystemFromSubJourneys(
+	subJourneys: SubJourney[],
+	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} }
+): LocationEquivalenceSystem {
+	for (const subJourney of subJourneys) {
+		buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	}
+	return equivalenceSystem;
+}
 
 /**
  * adds all transfer locations from the passed `subJourney` to the `equivalenceSystem`

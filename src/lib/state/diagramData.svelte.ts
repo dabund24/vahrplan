@@ -12,7 +12,7 @@ import {
 } from "$lib/state/selectedData.svelte";
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
-import type { LocationEquivalenceSystem } from "../../routes/api/diagram/locationRepresentatives";
+import type { LocationEquivalenceSystem } from "../../routes/api/diagram/locationRepresentativesUtils";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];

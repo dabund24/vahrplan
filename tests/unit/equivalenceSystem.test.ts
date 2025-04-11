@@ -2,8 +2,8 @@ import type { LegBlock, ParsedLocation, SubJourney		 } from "$lib/types";
 import { expect, test } from "vitest";
 import {
 	buildLocationEquivalenceSystem,
-	type LocationEquivalenceSystem
-} from "../../src/routes/api/diagram/locationRepresentatives";
+} from "../../src/routes/api/diagram/locationRepresentatives.server";
+import type { LocationEquivalenceSystem } from "../../src/routes/api/diagram/locationRepresentativesUtils";
 
 const locationA1: ParsedLocation = {
 	name: "a1",

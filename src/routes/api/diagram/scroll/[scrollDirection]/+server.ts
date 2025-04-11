@@ -5,7 +5,7 @@ import type { RelativeTimeType, TimeData, TransitType } from "$lib/types";
 import { buildTree, subJourneyToNodeData, unfoldTree } from "../../treePlantation.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
-import { buildLocationEquivalenceSystem } from "../../locationRepresentatives";
+import { buildLocationEquivalenceSystemFromSubJourneys } from "../../locationRepresentatives.server";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
@@ -35,14 +35,10 @@ export const POST: RequestHandler = async function (reqEvent) {
 	});
 	const resTree = buildTree(oldNodeData);
 
-	for (const { journeys } of resColumns.content) {
-		for (const subJourney of journeys) {
-			locationEquivalenceSystem = buildLocationEquivalenceSystem(
-				subJourney,
-				locationEquivalenceSystem
-			);
-		}
-	}
+	locationEquivalenceSystem = buildLocationEquivalenceSystemFromSubJourneys(
+		resColumns.content.flatMap((column) => column.journeys),
+		locationEquivalenceSystem
+	);
 
 	return client.formatResponse(
 		new VahrplanSuccess({

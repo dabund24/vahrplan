@@ -6,10 +6,7 @@ import { fetchJourneys } from "./fetchJourneys.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import recommendVias from "./viaRecommendations.server";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
-import {
-	buildLocationEquivalenceSystem,
-	type LocationEquivalenceSystem
-} from "./locationRepresentatives";
+import { buildLocationEquivalenceSystemFromSubJourneys } from "./locationRepresentatives.server";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
@@ -33,18 +30,9 @@ export const GET: RequestHandler = async function (reqEvent) {
 	);
 	const tree = buildTree(timeData);
 
-	let locationEquivalenceSystem: LocationEquivalenceSystem = {
-		idToRepresentative: {},
-		representatives: {}
-	};
-	for (const { journeys } of journeyColumns.content) {
-		for (const subJourney of journeys) {
-			locationEquivalenceSystem = buildLocationEquivalenceSystem(
-				subJourney,
-				locationEquivalenceSystem
-			);
-		}
-	}
+	const locationEquivalenceSystem = buildLocationEquivalenceSystemFromSubJourneys(
+		journeyColumns.content.flatMap((column) => column.journeys)
+	);
 
 	const recommendedVias = journeyColumns.content.map((j) => recommendVias(j.journeys));
 
