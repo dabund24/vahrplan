@@ -49,6 +49,20 @@ test("GET /api/diagram/shorturl/[shortDiagramId] api client parsing and formatti
 				]
 			}
 		],
+		locationEquivalenceSystem: {
+			idToRepresentative: {
+				foo: "foo",
+				bar: "foo"
+			},
+			representatives: {
+				foo: {
+					type: "station",
+					name: "Foo",
+					requestParameter: "foo",
+					position: { lng: 1, lat: 2 }
+				}
+			}
+		},
 		recommendedVias: [
 			[
 				{

@@ -5,11 +5,13 @@ import type { RelativeTimeType, TimeData, TransitType } from "$lib/types";
 import { buildTree, subJourneyToNodeData, unfoldTree } from "../../treePlantation.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
+import { buildLocationEquivalenceSystem } from "../../locationRepresentatives";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
-	const { scrollDirection, tokens, stops, tree, options, recommendedVias } =
-		await client.parse(reqEvent);
+	const reqData = await client.parse(reqEvent);
+	const { scrollDirection, tokens, stops, tree, options, recommendedVias } = reqData;
+	let { locationEquivalenceSystem } = reqData;
 
 	const timeData: TimeData[] = tokens.map((token) => ({
 		type: "relative",
@@ -31,11 +33,25 @@ export const POST: RequestHandler = async function (reqEvent) {
 			column.push(...newNodeData[columnIndex]);
 		}
 	});
-
 	const resTree = buildTree(oldNodeData);
 
+	for (const { journeys } of resColumns.content) {
+		for (const subJourney of journeys) {
+			locationEquivalenceSystem = buildLocationEquivalenceSystem(
+				subJourney,
+				locationEquivalenceSystem
+			);
+		}
+	}
+
 	return client.formatResponse(
-		new VahrplanSuccess({ columns: resColumns.content, tree: resTree, recommendedVias, isNew })
+		new VahrplanSuccess({
+			columns: resColumns.content,
+			tree: resTree,
+			locationEquivalenceSystem,
+			recommendedVias,
+			isNew
+		})
 	);
 };
 

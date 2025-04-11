@@ -4,6 +4,7 @@ import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
+import type { LocationEquivalenceSystem } from "../../locationRepresentatives";
 
 type ReqType = {
 	scrollDirection: RelativeTimeType;
@@ -11,6 +12,7 @@ type ReqType = {
 	tokens: string[];
 	options: JourneysOptions;
 	tree: TreeNode[];
+	locationEquivalenceSystem: LocationEquivalenceSystem;
 	recommendedVias: ParsedLocation[][];
 };
 
@@ -36,6 +38,7 @@ export class PostDiagramScrollApiClient extends PathParamSettable<ReqType, Diagr
 			stops: content.stops,
 			options: content.options,
 			tree: content.tree,
+			locationEquivalenceSystem: content.locationEquivalenceSystem,
 			recommendedVias: content.recommendedVias
 		};
 		return JSON.stringify(bodyContent);

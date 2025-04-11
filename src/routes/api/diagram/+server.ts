@@ -6,6 +6,10 @@ import { fetchJourneys } from "./fetchJourneys.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import recommendVias from "./viaRecommendations.server";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
+import {
+	buildLocationEquivalenceSystem,
+	type LocationEquivalenceSystem
+} from "./locationRepresentatives";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
@@ -20,7 +24,6 @@ export const GET: RequestHandler = async function (reqEvent) {
 		diagramData.timeData,
 		diagramData.options
 	);
-
 	if (journeyColumns.isError) {
 		return client.formatResponse(journeyColumns);
 	}
@@ -28,8 +31,20 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const timeData = journeyColumns.content.map((column) =>
 		column.journeys.map(subJourneyToNodeData)
 	);
-
 	const tree = buildTree(timeData);
+
+	let locationEquivalenceSystem: LocationEquivalenceSystem = {
+		idToRepresentative: {},
+		representatives: {}
+	};
+	for (const { journeys } of journeyColumns.content) {
+		for (const subJourney of journeys) {
+			locationEquivalenceSystem = buildLocationEquivalenceSystem(
+				subJourney,
+				locationEquivalenceSystem
+			);
+		}
+	}
 
 	const recommendedVias = journeyColumns.content.map((j) => recommendVias(j.journeys));
 
@@ -38,6 +53,7 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const result: DiagramData = {
 		columns: journeyColumns.content,
 		tree,
+		locationEquivalenceSystem,
 		recommendedVias,
 		isNew
 	};

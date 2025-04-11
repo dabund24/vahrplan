@@ -12,10 +12,12 @@ import {
 } from "$lib/state/selectedData.svelte";
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
+import type { LocationEquivalenceSystem } from "../../routes/api/diagram/locationRepresentatives";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
 	tree: TreeNode[];
+	locationEquivalenceSystem: LocationEquivalenceSystem;
 	recommendedVias: ParsedLocation[][];
 	isNew: boolean[][];
 };
@@ -40,6 +42,7 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 			journeys: []
 		})),
 		tree: [],
+		locationEquivalenceSystem: { idToRepresentative: {}, representatives: {} },
 		recommendedVias: Array.from({ length: columnCount }, () => []),
 		isNew: Array.from({ length: columnCount }, () => [])
 	};
@@ -102,7 +105,7 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
 export async function scrollDiagramData(scrollDirection: RelativeTimeType): Promise<void> {
 	const scrollApiClient = apiClient("POST", "/api/diagram/scroll/[scrollDirection]");
 	const oldDiagramData = diagramData;
-	const { columns, tree, recommendedVias } = await oldDiagramData;
+	const { columns, tree, locationEquivalenceSystem, recommendedVias } = await oldDiagramData;
 	const displayedFormData = getDisplayedFormData();
 
 	const tokens = columns.map((c) => c[`${scrollDirection}Ref`]);
@@ -117,6 +120,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		tokens,
 		stops,
 		tree,
+		locationEquivalenceSystem,
 		recommendedVias,
 		options: displayedFormData.options
 	});
@@ -145,6 +149,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 	diagramData = Promise.resolve({
 		columns,
 		tree: res.content.tree,
+		locationEquivalenceSystem: res.content.locationEquivalenceSystem,
 		recommendedVias: res.content.recommendedVias,
 		isNew: res.content.isNew
 	});
