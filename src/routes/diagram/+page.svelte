@@ -7,7 +7,7 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/state";
 	import { browser } from "$app/environment";
-	import { type Snippet } from "svelte";
+	import { type ComponentProps, type Snippet } from "svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
@@ -25,6 +25,7 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import ScrollButton from "./ScrollButton.svelte";
+	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -73,7 +74,41 @@
 			void searchDiagram(initialFormData);
 		}
 	}
+
+	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
+		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent },
+		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent }
+	];
 </script>
+
+{#snippet timeSpaceIcon()}
+	<IconMap />
+{/snippet}
+
+{#snippet timeSpaceTabContent()}
+	LOL
+{/snippet}
+
+{#snippet schematicIcon()}
+	<IconRefresh />
+{/snippet}
+
+{#snippet schematicTabContent()}
+	{#await diagramData}
+		<ScrollButton isClickable={false} scrollDirection="earlier" />
+		<JourneyDiagramSkeleton depth={(displayedFormData?.locations.length ?? 1) - 1} />
+		<ScrollButton isClickable={false} scrollDirection="later" />
+	{:then { tree, columns, isNew }}
+		<ScrollButton
+			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
+			scrollDirection="earlier"
+		/>
+		<JourneyDiagram nodes={tree} {columns} {isNew} />
+		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
+	{:catch err}
+		{err}
+	{/await}
+{/snippet}
 
 <svelte:head>
 	<title>Vahrplan - {pageTitle}</title>
@@ -98,26 +133,12 @@
 				</section>
 				<section class="diagram">
 					{#if displayedFormData !== undefined}
-						<JourneySummary />
-						{#await diagramData}
-							<ScrollButton isClickable={false} scrollDirection="earlier" />
-							<JourneyDiagramSkeleton
-								depth={displayedFormData.locations.length - 1}
-							/>
-							<ScrollButton isClickable={false} scrollDirection="later" />
-						{:then { tree, columns, isNew }}
-							<ScrollButton
-								isClickable={(columns[0]?.earlierRef ?? "") !== ""}
-								scrollDirection="earlier"
-							/>
-							<JourneyDiagram nodes={tree} {columns} {isNew} />
-							<ScrollButton
-								isClickable={(columns[0]?.laterRef ?? "") !== ""}
-								scrollDirection="later"
-							/>
-						{:catch err}
-							{err}
-						{/await}
+						<MiniTabs tabs={diagramTabData}>
+							{#snippet tabEnvironment(miniTabs: Snippet, tabContent: Snippet)}
+								<JourneySummary miniTabsSnippet={miniTabs} />
+								{@render tabContent()}
+							{/snippet}
+						</MiniTabs>
 					{/if}
 				</section>
 			</div>

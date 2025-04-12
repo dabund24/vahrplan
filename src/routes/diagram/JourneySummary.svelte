@@ -15,7 +15,7 @@
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import { toggleDiagramBookmark, getBookmarks, type DiagramBookmark } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
-	import { onMount } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
@@ -28,6 +28,10 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+
+	type Props = { miniTabsSnippet: Snippet };
+
+	const { miniTabsSnippet }: Props = $props();
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -107,6 +111,9 @@
 <TitlelessHeader --header-width="calc(var(--diagram-width) - 2rem">
 	<div id="journey-summary" class="flex-column summary-background">
 		<div class="flex-row actions" class:all-selected={selectedData.isFullJourneySelected}>
+			<div class="mini-tab-container">
+				{@render miniTabsSnippet()}
+			</div>
 			{#await diagramData then { recommendedVias }}
 				<ViaRecommendations {recommendedVias} />
 			{/await}
@@ -265,13 +272,16 @@
 <style>
 	.actions {
 		position: sticky;
-		right: 0.5rem;
-		align-self: start;
-		align-items: start;
+		left: 0;
 		padding: 4px 0 0.5rem;
-		margin-left: auto;
 		gap: 4px;
-		transition: padding-right 0.4s var(--cubic-bezier);
+		width: min(100%, 100cqw - 1rem); /* scrollbar is not part of container :/ */
+		.mini-tab-container {
+			margin-right: auto;
+		}
+		button:last-of-type {
+			transition: margin-right 0.4s var(--cubic-bezier);
+		}
 		a {
 			display: none;
 			position: absolute;
@@ -282,9 +292,10 @@
 	@media screen and (max-width: 999px) {
 		.actions {
 			padding: 0.5rem 0;
-			right: 0.75rem;
-			&.all-selected {
-				padding-right: calc(28px + 1rem);
+			left: 0.75rem;
+			width: min(100%, 100cqw - 1.5rem);
+			&.all-selected > button:last-of-type {
+				margin-right: calc(12px + 2rem);
 			}
 			a {
 				display: block;
