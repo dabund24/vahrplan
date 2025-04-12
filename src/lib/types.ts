@@ -1,4 +1,3 @@
-import type { Settings } from "$lib/state/settingStore";
 import type { LineShape } from "$lib/server/journey-data/lineShapes";
 
 export type KeyedItem<T, K extends number | string> = {
@@ -188,6 +187,7 @@ export type WalkingBlock = {
 	type: "walk";
 	originLocation: ParsedLocation;
 	destinationLocation: ParsedLocation;
+	time: ParsedTime;
 	transferTime: number;
 	travelTime?: number;
 	distance: number;
@@ -197,6 +197,7 @@ export type OnwardJourneyBlock = {
 	type: "onward-journey";
 	originLocation: ParsedLocation;
 	destinationLocation: ParsedLocation;
+	time: ParsedTime;
 	transferTime: number;
 	travelTime?: number;
 	recommendedAction?: string;
@@ -271,10 +272,3 @@ export type DatabaseEntry<T> = {
 export type KeylessDatabaseEntry<T> = Omit<DatabaseEntry<T>, "key">;
 
 export type DatabaseEntryType = "journey" | "journeys";
-
-export type DiagramRequestData = {
-	stops: string[];
-	timeRole: TransitType;
-	options: Settings["journeysOptions"];
-	time: string;
-};

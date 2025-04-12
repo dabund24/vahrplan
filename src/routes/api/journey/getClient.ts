@@ -5,10 +5,12 @@ import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import { ApiClient } from "$lib/api-client/ApiClient";
 import { browser } from "$app/environment";
 import type { LocationEquivalenceSystem } from "../diagram/locationRepresentativesUtils";
+import type { SvgData } from "$lib/server/svgData/svgData.server";
 
 type ResType = {
 	subJourneys: SubJourney[];
 	locationEquivalenceSystem: LocationEquivalenceSystem;
+	svgData: SvgData;
 };
 
 export class GetJourneyApiClient extends NonApiUsable<string[], ResType>()(

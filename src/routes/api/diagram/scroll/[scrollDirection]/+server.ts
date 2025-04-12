@@ -6,6 +6,7 @@ import { buildTree, subJourneyToNodeData, unfoldTree } from "../../treePlantatio
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import { buildLocationEquivalenceSystemFromSubJourneys } from "../../locationRepresentatives.server";
+import { generateSvgData } from "$lib/server/svgData/svgData.server";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
@@ -22,7 +23,9 @@ export const POST: RequestHandler = async function (reqEvent) {
 	if (resColumns.isError) {
 		return client.formatResponse(resColumns);
 	}
-	const newNodeData = resColumns.content.map((d) => d.journeys.map(subJourneyToNodeData));
+	const subJourneyMatrix = resColumns.content.map((column) => column.journeys);
+
+	const newNodeData = subJourneyMatrix.map((column) => column.map(subJourneyToNodeData));
 	const oldNodeData = unfoldTree(tree, tokens.length);
 	const isNew = computeIsNew(scrollDirection, oldNodeData, newNodeData);
 
@@ -36,14 +39,20 @@ export const POST: RequestHandler = async function (reqEvent) {
 	const resTree = buildTree(oldNodeData);
 
 	locationEquivalenceSystem = buildLocationEquivalenceSystemFromSubJourneys(
-		resColumns.content.flatMap((column) => column.journeys),
+		subJourneyMatrix.flat(),
 		locationEquivalenceSystem
 	);
+
+	const svgData = generateSvgData(subJourneyMatrix, {
+		timeData: oldNodeData,
+		locationEquivalenceSystem
+	});
 
 	return client.formatResponse(
 		new VahrplanSuccess({
 			columns: resColumns.content,
 			tree: resTree,
+			svgData,
 			locationEquivalenceSystem,
 			recommendedVias,
 			isNew

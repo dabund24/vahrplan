@@ -13,10 +13,12 @@ import {
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
 import type { LocationEquivalenceSystem } from "../../routes/api/diagram/locationRepresentativesUtils";
+import type { SvgData } from "$lib/server/svgData/svgData.server";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
 	tree: TreeNode[];
+	svgData: SvgData;
 	locationEquivalenceSystem: LocationEquivalenceSystem;
 	recommendedVias: ParsedLocation[][];
 	isNew: boolean[][];
@@ -42,6 +44,7 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 			journeys: []
 		})),
 		tree: [],
+		svgData: { firstTimeMark: 0, timeMarkInterval: 1, yMin: 0, yMax: 0, columns: [] },
 		locationEquivalenceSystem: { idToRepresentative: {}, representatives: {} },
 		recommendedVias: Array.from({ length: columnCount }, () => []),
 		isNew: Array.from({ length: columnCount }, () => [])
@@ -90,12 +93,52 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
 	if (journeys.isError || oldDiagramData !== diagramData) {
 		return;
 	}
-	const subJourneys = journeys.content.subJourneys;
-	for (const subJourney of subJourneys) {
-		const columnIndex = subJourneys.indexOf(subJourney);
-		setJourney(subJourney, columnIndex, selectedBy.selectedJourneys[columnIndex]);
-	}
+
+	await refreshJourneyData(journeys.content.subJourneys, selectedBy);
+	await refreshSvgData(journeys.content.svgData, selectedBy);
+
 	toast("Reisedaten aktualisiert.", "green");
+}
+
+/**
+ * refresh the raw data of a journey from the diagram data
+ * @param refreshedJourneyData
+ * @param selectedBy
+ */
+async function refreshJourneyData(
+	refreshedJourneyData: SubJourney[],
+	selectedBy: SelectedData
+): Promise<void> {
+	refreshedJourneyData.forEach((subJourney, columnIndex) => {
+		const rowIndex = selectedBy.selectedJourneys[columnIndex];
+		diagramData = diagramData.then((diagramData) => {
+			diagramData.columns[columnIndex].journeys[rowIndex] = subJourney;
+			return diagramData;
+		});
+	});
+	await diagramData; // prevent race conditions
+}
+
+/**
+ * refresh the svg data of a journey from the diagram data
+ * @param refreshedSvgData
+ * @param selectedBy
+ */
+async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedData): Promise<void> {
+	diagramData = diagramData.then((diagramData) => {
+		diagramData.svgData.yMax = Math.max(diagramData.svgData.yMax, refreshedSvgData.yMax);
+		diagramData.svgData.yMax = Math.min(diagramData.svgData.yMax, refreshedSvgData.yMax);
+		diagramData.svgData.firstTimeMark = Math.min(
+			diagramData.svgData.firstTimeMark,
+			refreshedSvgData.firstTimeMark
+		);
+		refreshedSvgData.columns.forEach(({ subJourneys: [refreshedJourney] }, columnIndex) => {
+			const rowIndex = selectedBy.selectedJourneys[columnIndex];
+			diagramData.svgData.columns[columnIndex].subJourneys[rowIndex] = refreshedJourney;
+		});
+		return diagramData;
+	});
+	await diagramData; // prevent race conditions
 }
 
 /**
@@ -105,7 +148,8 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
 export async function scrollDiagramData(scrollDirection: RelativeTimeType): Promise<void> {
 	const scrollApiClient = apiClient("POST", "/api/diagram/scroll/[scrollDirection]");
 	const oldDiagramData = diagramData;
-	const { columns, tree, locationEquivalenceSystem, recommendedVias } = await oldDiagramData;
+	const { columns, tree, svgData, locationEquivalenceSystem, recommendedVias } =
+		await oldDiagramData;
 	const displayedFormData = getDisplayedFormData();
 
 	const tokens = columns.map((c) => c[`${scrollDirection}Ref`]);
@@ -149,19 +193,32 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 	diagramData = Promise.resolve({
 		columns,
 		tree: res.content.tree,
+		svgData: scrollSvgData(svgData, res.content.svgData, scrollDirection),
 		locationEquivalenceSystem: res.content.locationEquivalenceSystem,
 		recommendedVias: res.content.recommendedVias,
 		isNew: res.content.isNew
 	});
 }
 
-async function getJourney(columnIndex: number, rowIndex: number): Promise<SubJourney> {
-	return (await diagramData).columns[columnIndex].journeys[rowIndex];
+function scrollSvgData(
+	oldSvgData: SvgData,
+	newSvgData: SvgData,
+	scrollDirection: RelativeTimeType
+): SvgData {
+	let arrayExpansionFn: "push" | "unshift";
+	if (scrollDirection === "earlier") {
+		oldSvgData.yMin = newSvgData.yMin;
+		arrayExpansionFn = "unshift";
+	} else {
+		oldSvgData.yMax = newSvgData.yMax;
+		arrayExpansionFn = "push";
+	}
+	oldSvgData.columns.forEach((column, columnIndex) => {
+		column.subJourneys[arrayExpansionFn](...newSvgData.columns[columnIndex].subJourneys);
+	});
+	return oldSvgData;
 }
 
-function setJourney(journey: SubJourney, columnIndex: number, rowIndex: number): void {
-	diagramData = diagramData.then((diagramData) => {
-		diagramData.columns[columnIndex].journeys[rowIndex] = journey;
-		return diagramData;
-	});
+async function getJourney(columnIndex: number, rowIndex: number): Promise<SubJourney> {
+	return (await diagramData).columns[columnIndex].journeys[rowIndex];
 }

@@ -51,7 +51,7 @@ async function diagramDataFromTokens(
 ): Promise<DiagramData> {
 	const journeysApiClient = apiClient("GET", "/api/journey");
 	const {
-		content: { subJourneys, locationEquivalenceSystem }
+		content: { subJourneys, svgData, locationEquivalenceSystem }
 	} = (await journeysApiClient.request(tokens, fetchFn)).throwIfError();
 
 	return Promise.resolve({
@@ -61,6 +61,7 @@ async function diagramDataFromTokens(
 			laterRef: ""
 		})),
 		tree: journeyNodesToPathGraph(subJourneys, 0),
+		svgData,
 		locationEquivalenceSystem,
 		recommendedVias: [],
 		isNew: Array.from({ length: subJourneys.length }, () => [false])
