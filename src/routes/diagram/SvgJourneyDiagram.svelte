@@ -21,6 +21,6 @@
 <style>
 	.main-svg {
 		width: var(--diagram-width);
-		height: 20rem;
+		height: 50rem;
 	}
 </style>

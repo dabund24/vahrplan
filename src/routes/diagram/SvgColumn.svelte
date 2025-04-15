@@ -7,6 +7,6 @@
 	const { columnData, minTime, columnIndex }: Props = $props();
 </script>
 
-{#each columnData.subJourneys as journey}
-	<SvgSubJourney {journey} {minTime} {columnIndex} />
+{#each columnData.subJourneys as journey, rowIndex}
+	<SvgSubJourney {journey} {minTime} {columnIndex} {rowIndex} />
 {/each}
