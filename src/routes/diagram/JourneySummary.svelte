@@ -310,7 +310,6 @@
 	}
 
 	#journey-summary {
-		--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
 		word-break: break-word;
 	}
 
@@ -345,7 +344,7 @@
 	/* handle special cases */
 
 	.summary-element:nth-last-child(2) .times-container {
-		margin-right: calc(var(--connection-width) / -2 + var(--beginning-end-offset));
+		margin-right: calc(var(--connection-width) / -2 + var(--diagram--beginning-end-offset));
 	}
 
 	.summary-element:first-child {
@@ -353,7 +352,7 @@
 			text-align: left;
 		}
 		& .visuals-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 var(--beginning-end-offset);
+			margin: 0 calc(var(--connection-width) / -2) 0 var(--diagram--beginning-end-offset);
 			& > .station-icon-container {
 				left: 0;
 			}
@@ -362,20 +361,20 @@
 			margin: 0;
 		}
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 var(--beginning-end-offset);
+			margin: 0 calc(var(--connection-width) / -2) 0 var(--diagram--beginning-end-offset);
 		}
 	}
 
 	.summary-element:nth-last-child(2):not(:first-child) .visuals--selected {
-		margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
+		margin: 0 calc(var(--connection-width) / -2 + var(--diagram--beginning-end-offset)) 0
 			calc(var(--connection-width) / 2);
 	}
 
 	.summary-element:first-child:nth-last-child(2) {
 		& .visuals-container,
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
-				var(--beginning-end-offset);
+			margin: 0 calc(var(--connection-width) / -2 + var(--diagram--beginning-end-offset)) 0
+				var(--diagram--beginning-end-offset);
 		}
 	}
 
@@ -384,10 +383,10 @@
 			text-align: right;
 		}
 		& .visuals-container {
-			margin: 0 var(--beginning-end-offset) 0 auto;
+			margin: 0 var(--diagram--beginning-end-offset) 0 auto;
 		}
 		& .times-container {
-			margin: 0 0 0 calc(var(--connection-width) / 2 - var(--beginning-end-offset));
+			margin: 0 0 0 calc(var(--connection-width) / 2 - var(--diagram--beginning-end-offset));
 		}
 		& .times--journey {
 			width: 0;

@@ -44,7 +44,7 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 			journeys: []
 		})),
 		tree: [],
-		svgData: { firstTimeMark: 0, timeMarkInterval: 1, yMin: 0, yMax: 0, columns: [] },
+		svgData: { firstTimeMark: 0, timeMarkInterval: 1, minTime: 0, maxTime: 0, columns: [] },
 		locationEquivalenceSystem: { idToRepresentative: {}, representatives: {} },
 		recommendedVias: Array.from({ length: columnCount }, () => []),
 		isNew: Array.from({ length: columnCount }, () => [])
@@ -126,8 +126,8 @@ async function refreshJourneyData(
  */
 async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedData): Promise<void> {
 	diagramData = diagramData.then((diagramData) => {
-		diagramData.svgData.yMax = Math.max(diagramData.svgData.yMax, refreshedSvgData.yMax);
-		diagramData.svgData.yMax = Math.min(diagramData.svgData.yMax, refreshedSvgData.yMax);
+		diagramData.svgData.maxTime = Math.max(diagramData.svgData.maxTime, refreshedSvgData.maxTime);
+		diagramData.svgData.maxTime = Math.min(diagramData.svgData.maxTime, refreshedSvgData.maxTime);
 		diagramData.svgData.firstTimeMark = Math.min(
 			diagramData.svgData.firstTimeMark,
 			refreshedSvgData.firstTimeMark
@@ -207,10 +207,10 @@ function scrollSvgData(
 ): SvgData {
 	let arrayExpansionFn: "push" | "unshift";
 	if (scrollDirection === "earlier") {
-		oldSvgData.yMin = newSvgData.yMin;
+		oldSvgData.minTime = newSvgData.minTime;
 		arrayExpansionFn = "unshift";
 	} else {
-		oldSvgData.yMax = newSvgData.yMax;
+		oldSvgData.maxTime = newSvgData.maxTime;
 		arrayExpansionFn = "push";
 	}
 	oldSvgData.columns.forEach((column, columnIndex) => {

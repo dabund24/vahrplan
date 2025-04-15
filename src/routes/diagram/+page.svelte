@@ -26,6 +26,7 @@
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import ScrollButton from "./ScrollButton.svelte";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
+	import SvgJourneyDiagram from "./SvgJourneyDiagram.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -86,7 +87,9 @@
 {/snippet}
 
 {#snippet timeSpaceTabContent()}
-	LOL
+	{#await diagramData then { svgData }}
+		<SvgJourneyDiagram {svgData} />
+	{/await}
 {/snippet}
 
 {#snippet schematicIcon()}
@@ -237,6 +240,7 @@
 		padding: 0 0.5rem 0.5rem;
 		overscroll-behavior-x: none;
 		box-sizing: border-box;
+        --diagram--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
 		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
 		--display-width: calc(100vw - 2rem - 8px);

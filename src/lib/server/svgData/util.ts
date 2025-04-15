@@ -29,9 +29,9 @@ function computeLocationDistances(
  * compute the x-coordinate for a time in a svg diagram
  * @param time
  */
-export function computeCoordinateY(time: string | undefined | null): number {
+export function computeCoordinateY(time: string | undefined | null | number): number {
 	if (time === undefined || time === null) {
 		return 0;
 	}
-	return new Date(time).getTime();
+	return new Date(time).getTime() / 60000;
 }

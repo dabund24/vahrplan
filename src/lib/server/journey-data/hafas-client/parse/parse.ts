@@ -215,8 +215,16 @@ function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock
 		originLocation: parseStationStopLocation(walk.origin),
 		destinationLocation: parseStationStopLocation(walk.destination),
 		time: parseTimePair(
-			{ time: walk.arrival, timePlanned: walk.plannedArrival, delay: walk.arrivalDelay },
-			{ time: walk.departure, timePlanned: walk.plannedDeparture, delay: walk.departureDelay }
+			{
+				time: walk.departure,
+				timePlanned: walk.plannedDeparture,
+				delay: walk.departureDelay
+			},
+			{
+				time: walk.arrival,
+				timePlanned: walk.plannedArrival,
+				delay: walk.arrivalDelay
+			}
 		),
 		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
 		travelTime: dateDifference(walk.departure, walk.arrival),
@@ -233,8 +241,12 @@ function onwardJourneyToBlock(leg: Leg, nextDeparture: string | undefined): Onwa
 		originLocation: parseStationStopLocation(leg.origin),
 		destinationLocation: parseStationStopLocation(leg.destination),
 		time: parseTimePair(
-			{ time: leg.arrival, timePlanned: leg.plannedArrival, delay: leg.arrivalDelay },
-			{ time: leg.departure, timePlanned: leg.plannedDeparture, delay: leg.departureDelay }
+			{ time: leg.departure, timePlanned: leg.plannedDeparture, delay: leg.departureDelay },
+			{
+				time: leg.arrival,
+				timePlanned: leg.plannedArrival,
+				delay: leg.arrivalDelay
+			}
 		),
 		transferTime: dateDifference(leg.departure ?? leg.plannedDeparture, nextDeparture) ?? 0,
 		travelTime: dateDifference(leg.departure, leg.arrival),

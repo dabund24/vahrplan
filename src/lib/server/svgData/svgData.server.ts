@@ -8,16 +8,17 @@ import { computeTransferSvgData, type TransferSvgData } from "$lib/server/svgDat
 import { computeLegSvgData, type LegSvgData } from "$lib/server/svgData/legSvgData";
 import { error } from "@sveltejs/kit";
 import { VahrplanError } from "$lib/VahrplanError";
+import { computeCoordinateY } from "$lib/server/svgData/util";
 
 export type SvgData = {
-	yMin: number;
-	yMax: number;
+	minTime: number;
+	maxTime: number;
 	firstTimeMark: number;
 	timeMarkInterval: number;
 	columns: { subJourneys: SubJourneySvgData[] }[];
 };
 
-type SubJourneySvgData = {
+export type SubJourneySvgData = {
 	blocks: BlockSvgData[];
 };
 
@@ -34,8 +35,8 @@ export function generateSvgData(
 		locationEquivalenceSystem: LocationEquivalenceSystem;
 	}
 ): SvgData {
-	const yMin = computeMinY(ctx.timeData);
-	const yMax = computeMaxY(ctx.timeData);
+	const minTime = computeMinTime(ctx.timeData);
+	const maxTime = computeMaxTime(ctx.timeData);
 
 	const stops = computeStops(subJourneys, ctx.locationEquivalenceSystem);
 
@@ -54,18 +55,19 @@ export function generateSvgData(
 		};
 	});
 
-	return { yMin, yMax, columns, firstTimeMark: 0, timeMarkInterval: 0 };
+	return { minTime, maxTime, columns, firstTimeMark: 0, timeMarkInterval: 0 };
 }
 
-function computeMinY(timeData: Record<TransitType, string>[][]): number {
-	return timeData.reduce(
+function computeMinTime(timeData: Record<TransitType, string>[][]): number {
+	const minTime = timeData.reduce(
 		(currentMin, column) => Math.min(currentMin, new Date(column[0].departure).getTime()),
 		MAX_DATE
 	);
+	return computeCoordinateY(minTime);
 }
 
-function computeMaxY(timeData: Record<TransitType, string>[][]): number {
-	return timeData.reduce((currentMax, column) => {
+function computeMaxTime(timeData: Record<TransitType, string>[][]): number {
+	const maxTime = timeData.reduce((currentMax, column) => {
 		// compute latest arrival in column (columns are sorted by departure, but not arrival!)
 		const columnMax = column.reduce(
 			(currentColumnMax, subJourneyData) =>
@@ -75,6 +77,7 @@ function computeMaxY(timeData: Record<TransitType, string>[][]): number {
 
 		return Math.max(currentMax, columnMax);
 	}, 0);
+	return computeCoordinateY(maxTime);
 }
 
 function computeStops(
@@ -82,13 +85,17 @@ function computeStops(
 	equivSys: LocationEquivalenceSystem
 ): (ParsedLocation | undefined)[] {
 	return subJourneys.reduce(
-		(stops, column) => [...stops, legBlockToLocation(column[0].blocks.at(-1), equivSys)],
-		[legBlockToLocation(subJourneys[0][0].blocks[0], equivSys)]
+		(stops, column) => [
+			...stops,
+			legBlockToLocation(column[0].blocks.at(-1), "arrival", equivSys)
+		],
+		[legBlockToLocation(subJourneys[0][0].blocks[0], "departure", equivSys)]
 	);
 }
 
 function legBlockToLocation(
 	block: JourneyBlock | undefined,
+	locationType: TransitType,
 	equivSys: LocationEquivalenceSystem
 ): ParsedLocation | undefined {
 	if (block === undefined) {
@@ -99,7 +106,7 @@ function legBlockToLocation(
 	if (block.type === "location") {
 		location = block.location;
 	} else if (block.type === "leg") {
-		location = block.arrivalData.location;
+		location = block[`${locationType}Data`].location;
 	} else {
 		error(500, new VahrplanError("ERROR"));
 	}
@@ -118,7 +125,9 @@ function subJourneyToSvgData(
 	const blocksSvgData: BlockSvgData[] = [];
 	subJourney.blocks.forEach((block, blockIndex) => {
 		if (block.type === "leg") {
-			blocksSvgData.push(computeLegSvgData(block, journeyEndPositions));
+			blocksSvgData.push(
+				computeLegSvgData(block, journeyEndPositions, locationEquivalenceSystem)
+			);
 		} else if (
 			block.type === "walk" ||
 			block.type === "transfer" ||

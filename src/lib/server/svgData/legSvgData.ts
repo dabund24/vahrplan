@@ -1,6 +1,10 @@
 import type { LegBlock, ParsedLocation, Product, TransitType } from "$lib/types";
 import { computeCoordinateX, computeCoordinateY } from "$lib/server/svgData/util";
 import type { SvgPosition } from "$lib/server/svgData/svgData.server";
+import {
+	getLocationRepresentative,
+	type LocationEquivalenceSystem
+} from "../../../routes/api/diagram/locationRepresentativesUtils";
 
 export type LegSvgData = {
 	type: "leg";
@@ -12,14 +16,24 @@ export type LegSvgData = {
 
 export function computeLegSvgData(
 	legBlock: LegBlock,
-	journeyEndPositions: Record<TransitType, ParsedLocation["position"]>
+	journeyEndPositions: Record<TransitType, ParsedLocation["position"]>,
+	locationEquivalenceSystem: LocationEquivalenceSystem
 ): LegSvgData {
+	const departureLocation = getLocationRepresentative(
+		locationEquivalenceSystem,
+		legBlock.departureData.location
+	);
 	const start: [number, number] = [
-		computeCoordinateX(legBlock.departureData.location.position, journeyEndPositions),
+		computeCoordinateX(departureLocation.position, journeyEndPositions),
 		computeCoordinateY(legBlock.departureData.time.departure?.time)
 	];
+
+	const arrivalLocation = getLocationRepresentative(
+		locationEquivalenceSystem,
+		legBlock.arrivalData.location
+	);
 	const end: [number, number] = [
-		computeCoordinateX(legBlock.arrivalData.location.position, journeyEndPositions),
+		computeCoordinateX(arrivalLocation.position, journeyEndPositions),
 		computeCoordinateY(legBlock.arrivalData.time.arrival?.time)
 	];
 	return {

@@ -41,8 +41,10 @@ export function computeTransferSvgData(
 
 	let start: [number, number];
 	let end: [number, number];
-	const startY = computeCoordinateY(time.departure?.time);
-	const endY = computeCoordinateY(time.arrival?.time);
+	const startY = computeCoordinateY(time.arrival?.time);
+	const endY = computeCoordinateY(
+		new Date(time.arrival?.time ?? 0).getTime() + block.transferTime * 60000
+	);
 
 	if (transferPosition === "middle") {
 		// transfer is somewhere in the middle, so use representative location
