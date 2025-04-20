@@ -45,5 +45,5 @@ function svgStopoversToPolylinePoints(
 }
 
 export function formatSvgPoint([x, y]: SvgPosition, columnIndex: number, minTime: number): string {
-	return `${x + columnIndex},${y - minTime}`;
+	return `${(x + columnIndex).toFixed(3)},${y - minTime}`;
 }
