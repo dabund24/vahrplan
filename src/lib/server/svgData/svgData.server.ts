@@ -140,5 +140,7 @@ function subJourneyToSvgData(
 			);
 		}
 	});
+	blocksSvgData[0].start[0] = 0;
+	blocksSvgData[blocksSvgData.length - 1].end[0] = 1;
 	return blocksSvgData;
 }
