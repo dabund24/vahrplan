@@ -10,7 +10,11 @@ export type LegSvgData = {
 	type: "leg";
 	start: SvgPosition;
 	end: SvgPosition;
-	transferableStopovers: { id: number; position: SvgPosition }[];
+	transferableStopovers: {
+		id: string;
+		start: SvgPosition;
+		end: SvgPosition;
+	}[];
 	product: Product;
 };
 
@@ -36,11 +40,42 @@ export function computeLegSvgData(
 		computeCoordinateX(arrivalLocation.position, journeyEndPositions),
 		computeCoordinateY(legBlock.arrivalData.time.arrival?.time)
 	];
+
+	const transferableStopovers = determineTransferableStopovers(
+		legBlock,
+		journeyEndPositions,
+		transferLocations
+	);
+
 	return {
 		type: "leg",
 		product: legBlock.product,
-		transferableStopovers: [],
-		start: start,
+		transferableStopovers,
+		start,
 		end
 	};
+}
+
+function determineTransferableStopovers(
+	legBlock: LegBlock,
+	journeyEndPositions: Record<TransitType, ParsedLocation["position"]>,
+	transferLocations: LocationEquivalenceSystem
+): LegSvgData["transferableStopovers"] {
+	return legBlock.stopovers.reduce((acc: LegSvgData["transferableStopovers"], stopover) => {
+		if (
+			transferLocations.idToRepresentative[stopover.location.requestParameter] !== undefined
+		) {
+			const location = getLocationRepresentative(transferLocations, stopover.location);
+			const start: [number, number] = [
+				computeCoordinateX(stopover.location.position, journeyEndPositions),
+				computeCoordinateY(stopover.time.arrival?.time)
+			];
+			const end: [number, number] = [
+				computeCoordinateX(stopover.location.position, journeyEndPositions),
+				computeCoordinateY(stopover.time.departure?.time)
+			];
+			acc.push({ id: location.requestParameter, start, end });
+		}
+		return acc;
+	}, []);
 }

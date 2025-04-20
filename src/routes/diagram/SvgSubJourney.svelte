@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SubJourneySvgData } from "$lib/server/svgData/svgData.server";
 	import { toggleJourneySelection } from "$lib/state/selectedData.svelte";
-	import { svgJourneyToPolylinePoints, formatSvgX, formatSvgY } from "./svgDiagramUtils";
+	import { svgJourneyToPolylinePoints, svgBlockToPolylinePoints } from "./svgDiagramUtils";
 
 	type Props = {
 		journey: SubJourneySvgData;
@@ -59,24 +59,19 @@
 </g>
 
 {#each journey.blocks as block}
+	{@const points = `${svgBlockToPolylinePoints(block, columnIndex, minTime)}`}
 	{#if block.type === "leg"}
 		<polyline
 			class="svg-line stroke--product product--{block.product}"
-			points="{formatSvgX(block.start[0], columnIndex)},{formatSvgY(
-				block.start[1],
-				minTime
-			)} {formatSvgX(block.end[0], columnIndex)},{formatSvgY(block.end[1], minTime)}"
+			{points}
 			vector-effect="non-scaling-stroke"
 		/>
 	{:else if block.type === "transfer"}
 		<polyline
 			class="svg-line"
-			points="{formatSvgX(block.start[0], columnIndex)},{formatSvgY(
-				block.start[1],
-				minTime
-			)} {formatSvgX(block.end[0], columnIndex)},{formatSvgY(block.end[1], minTime)}"
+			{points}
 			stroke="var(--foreground-color)"
-			stroke-dasharray="2 4"
+			stroke-dasharray="0 4"
 			vector-effect="non-scaling-stroke"
 		/>
 	{/if}
