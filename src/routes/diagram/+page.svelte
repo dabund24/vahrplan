@@ -216,11 +216,15 @@
 			var(--background-color) 1px calc(100% - 1px),
 			var(--foreground-color--very-transparent) calc(100% - 1px)
 		);
-		background-size: calc(var(--connection-width)) 100%;
+		background-size: calc(var(--diagram-width) / var(--connection-count)) 100%;
 		background-repeat: repeat;
 		/* cover vertical lines at very right and at very left */
+        &:has(:global(#journey-summary.has-svg-diagram)) {
+			background-position-x: var(--diagram--beginning-end-offset);
+        }
 		outline: var(--background-color) solid 4px;
 		outline-offset: -3px;
+
 	}
 	.split-container {
 		height: 100%;
@@ -256,7 +260,7 @@
 			var(--connection-width--max-threshold)
 		);
 		--diagram-width: calc(var(--connection-width) * var(--connection-count));
-		:has(:global(#journey-summary.has-svg-diagram)) {
+		&:has(:global(#journey-summary.has-svg-diagram)) {
 			/* first and last columns of svg diagram are slightly wider, so make them smaller here */
 			--diagram-width: calc(
 				var(--connection-width) * var(--connection-count) - 2 *

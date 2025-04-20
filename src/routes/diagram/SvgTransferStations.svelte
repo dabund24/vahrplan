@@ -53,24 +53,24 @@
 
 	<svg
 		class="transfer-stations"
-		viewBox="0 0 {selectedJourneys.length} 1"
+		viewBox="-0.05 0 {selectedJourneys.length + 0.1} 1"
 		preserveAspectRatio="none"
 	>
 		<g stroke="var(--foreground-color--transparent)" stroke-linejoin="round" fill="none">
-			{#each Array.from({ length: columns.length - 1 }) as _, i}
+			{#each Array.from({ length: columns.length + 1 }) as _, i}
 				<g stroke-width="2">
 					<line
-						x1={i + 1}
+						x1={i}
 						y1="0"
-						x2={i + 1}
+						x2={i}
 						y2="1"
 						stroke="var(--background-color--transparent)"
 						vector-effect="non-scaling-stroke"
 					/>
 					<line
-						x1={i + 1}
+						x1={i}
 						y1="0"
-						x2={i + 1}
+						x2={i}
 						y2="1"
 						stroke="var(--foreground-color--very-transparent)"
 						vector-effect="non-scaling-stroke"
@@ -98,7 +98,6 @@
 	.transfer-stations-container {
 		position: relative;
 		pointer-events: none;
-		width: var(--diagram-width);
 		height: calc(var(--line-width) + 1lh + 1rem);
 		margin: calc(-1 * var(--line-width) - 1lh - 0.5rem) auto -0.5rem;
 	}
@@ -117,7 +116,8 @@
 	}
 
 	.transfer-stations {
-		width: 100%;
+        width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
+        margin: 0 calc(-0.05 * var(--diagram-width) / var(--connection-count));
 		height: 100%;
 	}
 </style>
