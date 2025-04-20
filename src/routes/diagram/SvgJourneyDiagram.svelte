@@ -11,6 +11,10 @@
 	const { svgData }: Props = $props();
 	const { columns, minTime, maxTime, timeMarkInterval, firstTimeMark } = $derived(svgData);
 
+	const diagramCoordinateRangeY = $derived(maxTime - minTime);
+	const yMin = $derived(-0.05 * diagramCoordinateRangeY);
+	const ySize = $derived(1.1 * diagramCoordinateRangeY);
+
 	const { selectedJourneys } = $derived(getSelectedData());
 	const selectedJourneyCoords = $derived.by(() => {
 		const coords = selectedJourneys.reduce(
@@ -33,37 +37,54 @@
 		}
 		return coords;
 	});
-
-	$inspect(selectedJourneyCoords);
 </script>
 
-<svg class="main-svg" viewBox="0 0 {columns.length} {maxTime - minTime}" preserveAspectRatio="none">
-	<g
-		class="svg__inner-wrapper"
-		stroke-linecap="round"
-		fill="none"
-		stroke-linejoin="round"
-		stroke-width="2"
+<div class="svg-container">
+	<div></div>
+	<svg
+		class="main-svg"
+		viewBox="-0.05 {yMin} {columns.length + 0.1} {ySize}"
+		preserveAspectRatio="none"
 	>
-		{#each selectedJourneyCoords as subJourneyCoords}
-			<polyline
-				points={subJourneyCoords}
-				vector-effect="non-scaling-stroke"
-				stroke="var(--accent-color)"
-				stroke-width="1rem"
-				opacity="0.3"
-			/>
-		{/each}
+		<g
+			class="svg__inner-wrapper"
+			stroke-linecap="round"
+			fill="none"
+			stroke-linejoin="round"
+			stroke-width="2"
+		>
+			{#each selectedJourneyCoords as subJourneyCoords}
+				<polyline
+					points={subJourneyCoords}
+					vector-effect="non-scaling-stroke"
+					stroke="var(--accent-color)"
+					stroke-width="1rem"
+					opacity="0.3"
+				/>
+			{/each}
 
-		{#each columns as column, columnIndex}
-			<SvgColumn columnData={column} {minTime} {columnIndex} />
-		{/each}
-	</g>
-</svg>
+			{#each columns as column, columnIndex}
+				<SvgColumn columnData={column} {minTime} {yMin} {ySize} {columnIndex} />
+			{/each}
+		</g>
+	</svg>
+	<div></div>
+</div>
 
 <style>
+	.svg-container {
+		display: grid;
+		width: calc(var(--diagram-width) + 2 * var(--diagram--beginning-end-offset));
+		grid-template-columns: var(--diagram--beginning-end-offset) var(--diagram-width) var(
+				--diagram--beginning-end-offset
+			);
+		overflow: visible;
+	}
+
 	.main-svg {
-		width: var(--diagram-width);
+		display: block;
+		width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
 		height: 50rem;
+		margin: 0 calc(-0.05 * var(--diagram-width) / var(--connection-count));
 	}
 </style>

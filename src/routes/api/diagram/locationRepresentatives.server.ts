@@ -1,12 +1,12 @@
 import type { ParsedLocation, SubJourney } from "$lib/types";
 import type { LocationEquivalenceSystem } from "./locationRepresentativesUtils";
 
-export function buildLocationEquivalenceSystemFromSubJourneys(
+export function buildTransferLocationEquivalenceSystemFromSubJourneys(
 	subJourneys: SubJourney[],
 	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} }
 ): LocationEquivalenceSystem {
 	for (const subJourney of subJourneys) {
-		buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+		buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	}
 	return equivalenceSystem;
 }
@@ -16,7 +16,7 @@ export function buildLocationEquivalenceSystemFromSubJourneys(
  * @param subJourney
  * @param equivalenceSystem
  */
-export function buildLocationEquivalenceSystem(
+export function buildTransferLocationEquivalenceSystem(
 	subJourney: SubJourney,
 	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} }
 ): LocationEquivalenceSystem {

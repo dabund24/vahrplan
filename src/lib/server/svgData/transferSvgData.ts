@@ -26,11 +26,11 @@ export function computeTransferSvgData(
 	blockIndex: number,
 	ctx: {
 		journeyEndPositions: Record<TransitType, ParsedLocation["position"]>;
-		locationEquivalenceSystem: LocationEquivalenceSystem;
+		transferLocations: LocationEquivalenceSystem;
 		subJourney: SubJourney;
 	}
 ): TransferSvgData {
-	const { journeyEndPositions, locationEquivalenceSystem, subJourney } = ctx;
+	const { journeyEndPositions, transferLocations, subJourney } = ctx;
 	const transferPosition = determineTransferPosition(subJourney, blockIndex);
 
 	const originLocation =
@@ -49,7 +49,7 @@ export function computeTransferSvgData(
 	if (transferPosition === "middle") {
 		// transfer is somewhere in the middle, so use representative location
 		const location = getLocationRepresentative(
-			locationEquivalenceSystem,
+			transferLocations,
 			block.type === "transfer" ? block.transitData.location : block.destinationLocation
 		);
 		start = [computeCoordinateX(location.position, journeyEndPositions), startY];

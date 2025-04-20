@@ -10,17 +10,17 @@ export type LegSvgData = {
 	type: "leg";
 	start: SvgPosition;
 	end: SvgPosition;
-	transferrableStopovers: { id: number; position: SvgPosition }[];
+	transferableStopovers: { id: number; position: SvgPosition }[];
 	product: Product;
 };
 
 export function computeLegSvgData(
 	legBlock: LegBlock,
 	journeyEndPositions: Record<TransitType, ParsedLocation["position"]>,
-	locationEquivalenceSystem: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem
 ): LegSvgData {
 	const departureLocation = getLocationRepresentative(
-		locationEquivalenceSystem,
+		transferLocations,
 		legBlock.departureData.location
 	);
 	const start: [number, number] = [
@@ -29,7 +29,7 @@ export function computeLegSvgData(
 	];
 
 	const arrivalLocation = getLocationRepresentative(
-		locationEquivalenceSystem,
+		transferLocations,
 		legBlock.arrivalData.location
 	);
 	const end: [number, number] = [
@@ -39,7 +39,7 @@ export function computeLegSvgData(
 	return {
 		type: "leg",
 		product: legBlock.product,
-		transferrableStopovers: [],
+		transferableStopovers: [],
 		start: start,
 		end
 	};

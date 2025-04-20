@@ -12,7 +12,7 @@ type ReqType = {
 	tokens: string[];
 	options: JourneysOptions;
 	tree: TreeNode[];
-	locationEquivalenceSystem: LocationEquivalenceSystem;
+	transferLocations: LocationEquivalenceSystem;
 	recommendedVias: ParsedLocation[][];
 };
 
@@ -38,7 +38,7 @@ export class PostDiagramScrollApiClient extends PathParamSettable<ReqType, Diagr
 			stops: content.stops,
 			options: content.options,
 			tree: content.tree,
-			locationEquivalenceSystem: content.locationEquivalenceSystem,
+			transferLocations: content.transferLocations,
 			recommendedVias: content.recommendedVias
 		};
 		return JSON.stringify(bodyContent);

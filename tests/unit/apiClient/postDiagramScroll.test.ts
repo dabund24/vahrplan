@@ -49,7 +49,7 @@ test("GET /api/diagram/shorturl/[shortDiagramId] api client parsing and formatti
 				]
 			}
 		],
-		locationEquivalenceSystem: {
+		transferLocations: {
 			idToRepresentative: {
 				foo: "foo",
 				bar: "foo"

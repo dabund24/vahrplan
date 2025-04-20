@@ -6,7 +6,7 @@ import { fetchJourneys } from "./fetchJourneys.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import recommendVias from "./viaRecommendations.server";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
-import { buildLocationEquivalenceSystemFromSubJourneys } from "./locationRepresentatives.server";
+import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "./locationRepresentatives.server";
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
 
 export const GET: RequestHandler = async function (reqEvent) {
@@ -30,16 +30,13 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const timeData = subJourneyMatrix.map((column) => column.map(subJourneyToNodeData));
 	const tree = buildTree(timeData);
 
-	const locationEquivalenceSystem = buildLocationEquivalenceSystemFromSubJourneys(
+	const transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(
 		subJourneyMatrix.flat()
 	);
 
 	const recommendedVias = subJourneyMatrix.map((j) => recommendVias(j));
 
-	const svgData = generateSvgData(subJourneyMatrix, {
-		timeData,
-		locationEquivalenceSystem
-	});
+	const svgData = generateSvgData(subJourneyMatrix, { timeData, transferLocations });
 
 	const isNew = journeyColumns.content.map((column) => column.journeys.map((_) => false));
 
@@ -47,7 +44,7 @@ export const GET: RequestHandler = async function (reqEvent) {
 		columns: journeyColumns.content,
 		tree,
 		svgData,
-		locationEquivalenceSystem,
+		transferLocations,
 		recommendedVias,
 		isNew
 	};

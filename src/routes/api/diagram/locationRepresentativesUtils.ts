@@ -12,11 +12,14 @@ export type LocationEquivalenceSystem = {
  */
 export function getLocationRepresentative(
 	locationEquivalenceSystem: LocationEquivalenceSystem,
-	location: ParsedLocation
+	location: ParsedLocation | string
 ): ParsedLocation {
-	const representativeId =
-		locationEquivalenceSystem.idToRepresentative[location.requestParameter];
+	const locationId = typeof location === "string" ? location : location.requestParameter;
+	const representativeId = locationEquivalenceSystem.idToRepresentative[locationId];
 	if (representativeId === undefined) {
+		if (typeof location === "string") {
+			throw new Error();
+		}
 		return location;
 	}
 	return locationEquivalenceSystem.representatives[representativeId];

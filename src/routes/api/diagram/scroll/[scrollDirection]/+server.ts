@@ -5,14 +5,14 @@ import type { RelativeTimeType, TimeData, TransitType } from "$lib/types";
 import { buildTree, subJourneyToNodeData, unfoldTree } from "../../treePlantation.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
-import { buildLocationEquivalenceSystemFromSubJourneys } from "../../locationRepresentatives.server";
+import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "../../locationRepresentatives.server";
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
 	const reqData = await client.parse(reqEvent);
 	const { scrollDirection, tokens, stops, tree, options, recommendedVias } = reqData;
-	let { locationEquivalenceSystem } = reqData;
+	let { transferLocations } = reqData;
 
 	const timeData: TimeData[] = tokens.map((token) => ({
 		type: "relative",
@@ -38,14 +38,14 @@ export const POST: RequestHandler = async function (reqEvent) {
 	});
 	const resTree = buildTree(oldNodeData);
 
-	locationEquivalenceSystem = buildLocationEquivalenceSystemFromSubJourneys(
+	transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(
 		subJourneyMatrix.flat(),
-		locationEquivalenceSystem
+		transferLocations
 	);
 
 	const svgData = generateSvgData(subJourneyMatrix, {
 		timeData: oldNodeData,
-		locationEquivalenceSystem
+		transferLocations: transferLocations
 	});
 
 	return client.formatResponse(
@@ -53,7 +53,7 @@ export const POST: RequestHandler = async function (reqEvent) {
 			columns: resColumns.content,
 			tree: resTree,
 			svgData,
-			locationEquivalenceSystem,
+			transferLocations: transferLocations,
 			recommendedVias,
 			isNew
 		})

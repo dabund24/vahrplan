@@ -9,7 +9,7 @@ import type { SvgData } from "$lib/server/svgData/svgData.server";
 
 type ResType = {
 	subJourneys: SubJourney[];
-	locationEquivalenceSystem: LocationEquivalenceSystem;
+	transferLocations: LocationEquivalenceSystem;
 	svgData: SvgData;
 };
 

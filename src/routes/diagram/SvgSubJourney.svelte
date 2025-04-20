@@ -31,6 +31,7 @@
 <defs>
 	<polyline
 		id="svg-journey--{journeyId}"
+		class="svg-journey-polyline-def"
 		fill="none"
 		points={journeyCoords}
 		vector-effect="non-scaling-stroke"
@@ -84,6 +85,9 @@
 <style>
 	.svg-line {
 		pointer-events: none;
+	}
+	.svg-journey-polyline-def {
+		transition: none;
 	}
 	.svg-journey--hoverable:hover {
 		cursor: pointer;

@@ -19,7 +19,7 @@ export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
 	tree: TreeNode[];
 	svgData: SvgData;
-	locationEquivalenceSystem: LocationEquivalenceSystem;
+	transferLocations: LocationEquivalenceSystem;
 	recommendedVias: ParsedLocation[][];
 	isNew: boolean[][];
 };
@@ -45,7 +45,7 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 		})),
 		tree: [],
 		svgData: { firstTimeMark: 0, timeMarkInterval: 1, minTime: 0, maxTime: 0, columns: [] },
-		locationEquivalenceSystem: { idToRepresentative: {}, representatives: {} },
+		transferLocations: { idToRepresentative: {}, representatives: {} },
 		recommendedVias: Array.from({ length: columnCount }, () => []),
 		isNew: Array.from({ length: columnCount }, () => [])
 	};
@@ -126,8 +126,14 @@ async function refreshJourneyData(
  */
 async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedData): Promise<void> {
 	diagramData = diagramData.then((diagramData) => {
-		diagramData.svgData.maxTime = Math.max(diagramData.svgData.maxTime, refreshedSvgData.maxTime);
-		diagramData.svgData.maxTime = Math.min(diagramData.svgData.maxTime, refreshedSvgData.maxTime);
+		diagramData.svgData.maxTime = Math.max(
+			diagramData.svgData.maxTime,
+			refreshedSvgData.maxTime
+		);
+		diagramData.svgData.maxTime = Math.min(
+			diagramData.svgData.maxTime,
+			refreshedSvgData.maxTime
+		);
 		diagramData.svgData.firstTimeMark = Math.min(
 			diagramData.svgData.firstTimeMark,
 			refreshedSvgData.firstTimeMark
@@ -148,8 +154,7 @@ async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedDat
 export async function scrollDiagramData(scrollDirection: RelativeTimeType): Promise<void> {
 	const scrollApiClient = apiClient("POST", "/api/diagram/scroll/[scrollDirection]");
 	const oldDiagramData = diagramData;
-	const { columns, tree, svgData, locationEquivalenceSystem, recommendedVias } =
-		await oldDiagramData;
+	const { columns, tree, svgData, transferLocations, recommendedVias } = await oldDiagramData;
 	const displayedFormData = getDisplayedFormData();
 
 	const tokens = columns.map((c) => c[`${scrollDirection}Ref`]);
@@ -164,7 +169,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		tokens,
 		stops,
 		tree,
-		locationEquivalenceSystem,
+		transferLocations,
 		recommendedVias,
 		options: displayedFormData.options
 	});
@@ -194,7 +199,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		columns,
 		tree: res.content.tree,
 		svgData: scrollSvgData(svgData, res.content.svgData, scrollDirection),
-		locationEquivalenceSystem: res.content.locationEquivalenceSystem,
+		transferLocations: res.content.transferLocations,
 		recommendedVias: res.content.recommendedVias,
 		isNew: res.content.isNew
 	});

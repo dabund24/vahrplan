@@ -28,10 +28,14 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+	import SvgTransferStations from "./SvgTransferStations.svelte";
 
-	type Props = { miniTabsSnippet: Snippet };
+	type Props = {
+		miniTabsSnippet: Snippet;
+		activeSummaryTab: number | undefined;
+	};
 
-	const { miniTabsSnippet }: Props = $props();
+	const { miniTabsSnippet, activeSummaryTab }: Props = $props();
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -108,8 +112,12 @@
 	}
 </script>
 
-<TitlelessHeader --header-width="calc(var(--diagram-width) - 2rem">
-	<div id="journey-summary" class="flex-column summary-background">
+<TitlelessHeader --header-width="calc(var(--connection-width) * var(--connection-count) - 2rem)">
+	<div
+		id="journey-summary"
+		class="flex-column summary-background"
+		class:has-svg-diagram={activeSummaryTab === 0}
+	>
 		<div class="flex-row actions" class:all-selected={selectedData.isFullJourneySelected}>
 			<div class="mini-tab-container">
 				{@render miniTabsSnippet()}
@@ -244,6 +252,11 @@
 				</div>
 			{/each}
 		</div>
+		{#if activeSummaryTab === 0}
+			{#await diagramData then { svgData: { columns }, transferLocations }}
+				<SvgTransferStations {columns} {transferLocations} />
+			{/await}
+		{/if}
 	</div>
 </TitlelessHeader>
 {#if modalLeg}
@@ -311,6 +324,7 @@
 
 	#journey-summary {
 		word-break: break-word;
+		--line-shift-distance: calc(var(--diagram-width) / (2 * var(--connection-count)));
 	}
 
 	@media screen and (max-width: 999px) {
@@ -344,7 +358,7 @@
 	/* handle special cases */
 
 	.summary-element:nth-last-child(2) .times-container {
-		margin-right: calc(var(--connection-width) / -2 + var(--diagram--beginning-end-offset));
+		margin-right: calc(-1 * var(--line-shift-distance) + var(--diagram--beginning-end-offset));
 	}
 
 	.summary-element:first-child {
@@ -352,7 +366,7 @@
 			text-align: left;
 		}
 		& .visuals-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 var(--diagram--beginning-end-offset);
+			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--diagram--beginning-end-offset);
 			& > .station-icon-container {
 				left: 0;
 			}
@@ -361,19 +375,19 @@
 			margin: 0;
 		}
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 var(--diagram--beginning-end-offset);
+			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--diagram--beginning-end-offset);
 		}
 	}
 
 	.summary-element:nth-last-child(2):not(:first-child) .visuals--selected {
-		margin: 0 calc(var(--connection-width) / -2 + var(--diagram--beginning-end-offset)) 0
-			calc(var(--connection-width) / 2);
+		margin: 0 calc(-1 * var(--line-shift-distance) + var(--diagram--beginning-end-offset)) 0
+			var(--line-shift-distance);
 	}
 
 	.summary-element:first-child:nth-last-child(2) {
 		& .visuals-container,
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2 + var(--diagram--beginning-end-offset)) 0
+			margin: 0 calc(-1 * var(--line-shift-distance) + var(--diagram--beginning-end-offset)) 0
 				var(--diagram--beginning-end-offset);
 		}
 	}
@@ -386,10 +400,31 @@
 			margin: 0 var(--diagram--beginning-end-offset) 0 auto;
 		}
 		& .times-container {
-			margin: 0 0 0 calc(var(--connection-width) / 2 - var(--diagram--beginning-end-offset));
+			margin: 0 0 0 calc(var(--line-shift-distance) - var(--diagram--beginning-end-offset));
 		}
 		& .times--journey {
 			width: 0;
+		}
+	}
+
+	/* change layout if svg diagram is displayed*/
+
+	.has-svg-diagram {
+		.summary-element:first-child {
+			flex-basis: var(--diagram--beginning-end-offset);
+		}
+		.summary-element:last-child {
+			flex-basis: var(--diagram--beginning-end-offset);
+		}
+
+		.summary-element:nth-last-child(2) .times-container,
+		.summary-element:nth-last-child(2):not(:first-child) .visuals--selected,
+		.summary-element:first-child:nth-last-child(2)
+			:where(.visuals-container, .times-container) {
+			margin-right: calc(-1 * var(--line-shift-distance));
+		}
+		.summary-element:last-child .times-container {
+			margin-left: calc(var(--line-shift-distance));
 		}
 	}
 
@@ -412,7 +447,7 @@
 			position: relative;
 			width: 100%;
 			height: 100%;
-			margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
+			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--line-shift-distance);
 		}
 		& .lines {
 			position: absolute;
@@ -462,7 +497,7 @@
 	/* rules for times-container */
 
 	.times-container {
-		margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
+		margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--line-shift-distance);
 		z-index: 1;
 		white-space: nowrap;
 		position: relative;

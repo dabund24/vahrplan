@@ -137,8 +137,15 @@
 				<section class="diagram">
 					{#if displayedFormData !== undefined}
 						<MiniTabs tabs={diagramTabData}>
-							{#snippet tabEnvironment(miniTabs: Snippet, tabContent: Snippet)}
-								<JourneySummary miniTabsSnippet={miniTabs} />
+							{#snippet tabEnvironment(
+								miniTabs: Snippet,
+								tabContent: Snippet,
+								activeTab?: number
+							)}
+								<JourneySummary
+									miniTabsSnippet={miniTabs}
+									activeSummaryTab={activeTab}
+								/>
 								{@render tabContent()}
 							{/snippet}
 						</MiniTabs>
@@ -202,7 +209,6 @@
 	}
 	.diagram {
 		margin: 0 auto;
-		gap: 0.5rem;
 		/* vertical lines separating sub-journeys */
 		background-image: linear-gradient(
 			to right,
@@ -240,7 +246,7 @@
 		padding: 0 0.5rem 0.5rem;
 		overscroll-behavior-x: none;
 		box-sizing: border-box;
-        --diagram--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
+		--diagram--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
 		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
 		--display-width: calc(100vw - 2rem - 8px);
@@ -249,11 +255,14 @@
 			calc(var(--display-width) / var(--connection-count)),
 			var(--connection-width--max-threshold)
 		);
-		--diagram-width: clamp(
-			calc(var(--connection-width--min-threshold) * (var(--connection-count))),
-			var(--display-width),
-			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
-		);
+		--diagram-width: calc(var(--connection-width) * var(--connection-count));
+		:has(:global(#journey-summary.has-svg-diagram)) {
+			/* first and last columns of svg diagram are slightly wider, so make them smaller here */
+			--diagram-width: calc(
+				var(--connection-width) * var(--connection-count) - 2 *
+					var(--diagram--beginning-end-offset)
+			);
+		}
 		width: fit-content;
 		min-width: fit-content;
 		margin: auto;

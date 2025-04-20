@@ -1,8 +1,6 @@
-import type { LegBlock, ParsedLocation, SubJourney		 } from "$lib/types";
+import type { LegBlock, ParsedLocation, SubJourney } from "$lib/types";
 import { expect, test } from "vitest";
-import {
-	buildLocationEquivalenceSystem,
-} from "../../src/routes/api/diagram/locationRepresentatives.server";
+import { buildTransferLocationEquivalenceSystem } from "../../src/routes/api/diagram/locationRepresentatives.server";
 import type { LocationEquivalenceSystem } from "../../src/routes/api/diagram/locationRepresentativesUtils";
 
 const locationA1: ParsedLocation = {
@@ -50,7 +48,7 @@ test("location equivalence system empty", () => {
 		representatives: { a1: locationA1, b2: locationB1 },
 		idToRepresentative: { a1: "a1", a2: "a1", b2: "b2", b1: "b2" }
 	};
-	const actual = buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	const actual = buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	expect(actual).toEqual(expected);
 });
 
@@ -69,7 +67,7 @@ test("location equivalence system no mapping", () => {
 		representatives: { a2: locationA1, b2: locationB1 },
 		idToRepresentative: { a1: "a2", a2: "a2", b2: "b2", b1: "b2" }
 	};
-	const actual = buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	const actual = buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	expect(actual).toEqual(expected);
 });
 
@@ -88,7 +86,7 @@ test("location equivalence system first location mapped", () => {
 		representatives: { a1: locationA1 },
 		idToRepresentative: { a1: "a1", a2: "a1" }
 	};
-	const actual = buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	const actual = buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	expect(actual).toEqual(expected);
 });
 
@@ -107,7 +105,7 @@ test("location equivalence system second location mapped", () => {
 		representatives: { a2: locationA1 },
 		idToRepresentative: { a2: "a2", a1: "a2" }
 	};
-	const actual = buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	const actual = buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	expect(actual).toEqual(expected);
 });
 
@@ -126,7 +124,7 @@ test("location equivalence system both location mapped to different representati
 		representatives: { a2: locationA1 },
 		idToRepresentative: { a1: "a2", a2: "a2", a3: "a2" }
 	};
-	const actual = buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	const actual = buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	expect(actual).toEqual(expected);
 });
 
@@ -145,6 +143,6 @@ test("location equivalence system both location mapped to same representative", 
 		representatives: { a1: locationA1 },
 		idToRepresentative: { a1: "a1", a2: "a1", a3: "a1" }
 	};
-	const actual = buildLocationEquivalenceSystem(subJourney, equivalenceSystem);
+	const actual = buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
 	expect(actual).toEqual(expected);
 });

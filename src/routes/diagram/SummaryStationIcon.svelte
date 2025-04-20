@@ -28,8 +28,8 @@
 	}: Props = $props();
 
 	const locationNamePromise = $derived.by(async () => {
-		const { locationEquivalenceSystem } = await getDiagramData();
-		return getLocationRepresentative(locationEquivalenceSystem, location).name;
+		const { transferLocations } = await getDiagramData();
+		return getLocationRepresentative(transferLocations, location).name;
 	});
 
 	let thisPressedId = $state(-1);

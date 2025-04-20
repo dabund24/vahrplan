@@ -22,7 +22,7 @@ export type SubJourneySvgData = {
 	blocks: BlockSvgData[];
 };
 
-type BlockSvgData = LegSvgData | TransferSvgData;
+export type BlockSvgData = LegSvgData | TransferSvgData;
 
 export type TransferPosition = "start" | "end" | "middle";
 
@@ -32,13 +32,13 @@ export function generateSvgData(
 	subJourneys: SubJourney[][],
 	ctx: {
 		timeData: Record<TransitType, string>[][];
-		locationEquivalenceSystem: LocationEquivalenceSystem;
+		transferLocations: LocationEquivalenceSystem;
 	}
 ): SvgData {
 	const minTime = computeMinTime(ctx.timeData);
 	const maxTime = computeMaxTime(ctx.timeData);
 
-	const stops = computeStops(subJourneys, ctx.locationEquivalenceSystem);
+	const stops = computeStops(subJourneys, ctx.transferLocations);
 
 	const columns: SvgData["columns"] = subJourneys.map((column, columnIndex) => {
 		const journeyEndPositions = {
@@ -49,7 +49,7 @@ export function generateSvgData(
 			subJourneys: column.map((subJourney) => ({
 				blocks: subJourneyToSvgData(subJourney, {
 					journeyEndPositions,
-					locationEquivalenceSystem: ctx.locationEquivalenceSystem
+					transferLocations: ctx.transferLocations
 				})
 			}))
 		};
@@ -82,21 +82,21 @@ function computeMaxTime(timeData: Record<TransitType, string>[][]): number {
 
 function computeStops(
 	subJourneys: SubJourney[][],
-	equivSys: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem
 ): (ParsedLocation | undefined)[] {
 	return subJourneys.reduce(
 		(stops, column) => [
 			...stops,
-			legBlockToLocation(column[0].blocks.at(-1), "arrival", equivSys)
+			legBlockToLocation(column[0].blocks.at(-1), "arrival", transferLocations)
 		],
-		[legBlockToLocation(subJourneys[0][0].blocks[0], "departure", equivSys)]
+		[legBlockToLocation(subJourneys[0][0].blocks[0], "departure", transferLocations)]
 	);
 }
 
 function legBlockToLocation(
 	block: JourneyBlock | undefined,
 	locationType: TransitType,
-	equivSys: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem
 ): ParsedLocation | undefined {
 	if (block === undefined) {
 		return undefined;
@@ -111,23 +111,21 @@ function legBlockToLocation(
 		error(500, new VahrplanError("ERROR"));
 	}
 
-	return getLocationRepresentative(equivSys, location);
+	return getLocationRepresentative(transferLocations, location);
 }
 
 function subJourneyToSvgData(
 	subJourney: SubJourney,
 	ctx: {
 		journeyEndPositions: Record<TransitType, ParsedLocation["position"]>;
-		locationEquivalenceSystem: LocationEquivalenceSystem;
+		transferLocations: LocationEquivalenceSystem;
 	}
 ): BlockSvgData[] {
-	const { journeyEndPositions, locationEquivalenceSystem } = ctx;
+	const { journeyEndPositions, transferLocations } = ctx;
 	const blocksSvgData: BlockSvgData[] = [];
 	subJourney.blocks.forEach((block, blockIndex) => {
 		if (block.type === "leg") {
-			blocksSvgData.push(
-				computeLegSvgData(block, journeyEndPositions, locationEquivalenceSystem)
-			);
+			blocksSvgData.push(computeLegSvgData(block, journeyEndPositions, transferLocations));
 		} else if (
 			block.type === "walk" ||
 			block.type === "transfer" ||
@@ -136,7 +134,7 @@ function subJourneyToSvgData(
 			blocksSvgData.push(
 				computeTransferSvgData(block, blockIndex, {
 					journeyEndPositions,
-					locationEquivalenceSystem,
+					transferLocations: transferLocations,
 					subJourney
 				})
 			);
