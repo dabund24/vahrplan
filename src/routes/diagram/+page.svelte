@@ -87,8 +87,21 @@
 {/snippet}
 
 {#snippet timeSpaceTabContent()}
-	{#await diagramData then { svgData }}
+	{#await diagramData}
+		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="earlier" />
+		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="later" />
+	{:then { columns, svgData }}
+		<ScrollButton
+			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
+			isTextHidden={true}
+			scrollDirection="earlier"
+		/>
 		<SvgJourneyDiagram {svgData} />
+		<ScrollButton
+			isClickable={(columns[0]?.laterRef ?? "") !== ""}
+			isTextHidden={true}
+			scrollDirection="later"
+		/>
 	{/await}
 {/snippet}
 
@@ -219,12 +232,11 @@
 		background-size: calc(var(--diagram-width) / var(--connection-count)) 100%;
 		background-repeat: repeat;
 		/* cover vertical lines at very right and at very left */
-        &:has(:global(#journey-summary.has-svg-diagram)) {
+		&:has(:global(#journey-summary.has-svg-diagram)) {
 			background-position-x: var(--diagram--beginning-end-offset);
-        }
+		}
 		outline: var(--background-color) solid 4px;
 		outline-offset: -3px;
-
 	}
 	.split-container {
 		height: 100%;

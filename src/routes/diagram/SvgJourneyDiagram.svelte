@@ -84,7 +84,7 @@
 	.main-svg {
 		display: block;
 		width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
-		height: 50rem;
+		height: 50rem; /* TODO add 3.5rem here */
 		margin: 0 calc(-0.05 * var(--diagram-width) / var(--connection-count));
 	}
 </style>

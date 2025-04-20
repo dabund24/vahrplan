@@ -7,10 +7,11 @@
 
 	type Props = {
 		isClickable: boolean;
+		isTextHidden?: boolean;
 		scrollDirection: RelativeTimeType;
 	};
 
-	const { isClickable, scrollDirection }: Props = $props();
+	const { isClickable, scrollDirection, isTextHidden }: Props = $props();
 
 	const buttonText = scrollDirection === "earlier" ? "Früher" : "Später";
 
@@ -34,7 +35,9 @@
 		{:else}
 			<IconDownArrow />
 		{/if}
-		{buttonText}
+		{#if !isTextHidden}
+			{buttonText}
+		{/if}
 	</button>
 </div>
 
@@ -42,12 +45,19 @@
 	div {
 		width: 100%;
 		position: relative;
+		padding: 0.5rem 0;
 	}
 	button {
 		position: sticky;
 		left: 0.5rem;
 		gap: 0.5rem;
 		align-items: center;
+		background-image: linear-gradient(
+			var(--foreground-color--very-transparent),
+			var(--foreground-color--very-transparent)
+		);
+		background-color: var(--background-color);
+		box-shadow: var(--background-color) 0 0 var(--line-width) var(--line-width);
 	}
 	.not-scrollable {
 		opacity: 0.5;
