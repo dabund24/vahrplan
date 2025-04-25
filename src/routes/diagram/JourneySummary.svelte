@@ -537,7 +537,7 @@
 		display: inline;
 	}
 
-	.station--selected .times--journey {
+	#journey-summary:not(.has-svg-diagram) .station--selected .times--journey {
 		visibility: visible;
 	}
 </style>

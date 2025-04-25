@@ -1,4 +1,5 @@
 import type { ParsedLocation, TransitType } from "$lib/types";
+import { MINUTE_IN_MS } from "$lib/constants";
 
 /**
  * compute the x-coordinate for a location in a svg diagram
@@ -33,5 +34,5 @@ export function computeCoordinateY(time: string | undefined | null | number): nu
 	if (time === undefined || time === null) {
 		return 0;
 	}
-	return new Date(time).getTime() / 60000;
+	return new Date(time).getTime() / MINUTE_IN_MS;
 }

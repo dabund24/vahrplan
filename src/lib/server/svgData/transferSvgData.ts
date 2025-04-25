@@ -12,6 +12,7 @@ import {
 } from "../../../routes/api/diagram/locationRepresentativesUtils";
 import { type SvgPosition, type TransferPosition } from "$lib/server/svgData/svgData.server";
 import { computeCoordinateX, computeCoordinateY } from "$lib/server/svgData/util";
+import { MINUTE_IN_MS } from "$lib/constants";
 
 export type TransferSvgData = {
 	type: "transfer";
@@ -43,7 +44,7 @@ export function computeTransferSvgData(
 	let end: [number, number];
 	const startY = computeCoordinateY(time.arrival?.time);
 	const endY = computeCoordinateY(
-		new Date(time.arrival?.time ?? 0).getTime() + block.transferTime * 60000
+		new Date(time.arrival?.time ?? 0).getTime() + block.transferTime * MINUTE_IN_MS
 	);
 
 	if (transferPosition === "middle") {

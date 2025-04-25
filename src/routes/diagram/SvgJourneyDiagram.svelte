@@ -2,18 +2,20 @@
 	import type { SvgData } from "$lib/server/svgData/svgData.server";
 	import SvgColumn from "./SvgColumn.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte";
-	import { svgJourneyToPolylinePoints } from "./svgDiagramUtils";
+	import { svgJourneyToPolylinePoints, timeMarkIt } from "./svgDiagramUtils";
+	import SvgTimeMarks from "./SvgTimeMarks.svelte";
 
 	type Props = {
 		svgData: SvgData;
 	};
 
 	const { svgData }: Props = $props();
-	const { columns, minTime, maxTime, timeMarkInterval, firstTimeMark } = $derived(svgData);
+	const { columns, minTime, maxTime, timeMarksData, minutesPerHeight } = $derived(svgData);
 
 	const diagramCoordinateRangeY = $derived(maxTime - minTime);
-	const yMin = $derived(-0.05 * diagramCoordinateRangeY);
-	const ySize = $derived(1.1 * diagramCoordinateRangeY);
+	const diagramScaleY = $derived(diagramCoordinateRangeY / minutesPerHeight);
+	const yMin = $derived(-0.2 * diagramCoordinateRangeY);
+	const ySize = $derived(1.3 * diagramCoordinateRangeY);
 
 	const { selectedJourneys } = $derived(getSelectedData());
 	const selectedJourneyCoords = $derived.by(() => {
@@ -37,10 +39,12 @@
 		}
 		return coords;
 	});
+
+	const timeMarks = $derived([...timeMarkIt(timeMarksData, minTime, maxTime)]);
 </script>
 
-<div class="svg-container">
-	<div></div>
+<div class="svg-container" style:--diagram-height="calc(25rem * {diagramScaleY})">
+	<SvgTimeMarks {timeMarks} />
 	<svg
 		class="main-svg"
 		viewBox="-0.05 {yMin} {columns.length + 0.1} {ySize}"
@@ -53,6 +57,17 @@
 			stroke-linejoin="round"
 			stroke-width="2"
 		>
+			{#each timeMarks as { yCoordinate }}
+				<line
+					x1="0"
+					x2={columns.length}
+					y1={yCoordinate}
+					y2={yCoordinate}
+					stroke="var(--foreground-color--transparent)"
+					stroke-width="1"
+					vector-effect="non-scaling-stroke"
+				/>
+			{/each}
 			{#each selectedJourneyCoords as subJourneyCoords}
 				<polyline
 					points={subJourneyCoords}
@@ -68,7 +83,7 @@
 			{/each}
 		</g>
 	</svg>
-	<div></div>
+	<SvgTimeMarks {timeMarks} />
 </div>
 
 <style>
@@ -78,13 +93,16 @@
 		grid-template-columns: var(--diagram--beginning-end-offset) var(--diagram-width) var(
 				--diagram--beginning-end-offset
 			);
-		overflow: visible;
+		overflow-x: visible;
+		margin-top: 0.5rem;
 	}
 
 	.main-svg {
 		display: block;
 		width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
-		height: 50rem; /* TODO add 3.5rem here */
-		margin: 0 calc(-0.05 * var(--diagram-width) / var(--connection-count));
+		height: calc(1.3 * var(--diagram-height));
+		margin: calc(-0.2 * var(--diagram-height))
+			calc(-0.05 * var(--diagram-width) / var(--connection-count))
+			calc(-0.1 * var(--diagram-height));
 	}
 </style>

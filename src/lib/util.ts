@@ -8,6 +8,7 @@ import type {
 	TransitType,
 	ParsedTime
 } from "$lib/types";
+import { MINUTE_IN_MS } from "$lib/constants";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -103,7 +104,7 @@ export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
 	};
 }
 
-export function timeToString(time: string | undefined): string {
+export function timeToString(time: string | number | undefined): string {
 	if (time === undefined || time === null) {
 		return "−−:−−";
 	}
@@ -128,7 +129,7 @@ export function dateToString(date: string | undefined): string {
 
 export function dateToInputDate(date: string): string {
 	const dateObject = new Date(date);
-	const timezoneOffset = dateObject.getTimezoneOffset() * 60000;
+	const timezoneOffset = dateObject.getTimezoneOffset() * MINUTE_IN_MS;
 	const timeIsoString = new Date(dateObject.getTime() - timezoneOffset).toISOString();
 	return timeIsoString.substring(0, timeIsoString.indexOf("T") + 6);
 }
@@ -149,5 +150,5 @@ export function dateDifference(
 	const dateA = new Date(sooner).getTime();
 	const dateB = new Date(later).getTime();
 	const differenceMilliseconds = dateB - dateA;
-	return differenceMilliseconds / 60000;
+	return differenceMilliseconds / MINUTE_IN_MS;
 }

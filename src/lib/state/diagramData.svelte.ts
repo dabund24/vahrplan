@@ -14,6 +14,7 @@ import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
 import type { LocationEquivalenceSystem } from "../../routes/api/diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
+import { MAX_DATE } from "$lib/constants";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
@@ -44,7 +45,13 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 			journeys: []
 		})),
 		tree: [],
-		svgData: { firstTimeMark: 0, timeMarkInterval: 1, minTime: 0, maxTime: 0, columns: [] },
+		svgData: {
+			timeMarksData: { firstTimeMark: 0, timeMarkInterval: MAX_DATE },
+			minutesPerHeight: 1,
+			minTime: 0,
+			maxTime: 0,
+			columns: []
+		},
 		transferLocations: { idToRepresentative: {}, representatives: {} },
 		recommendedVias: Array.from({ length: columnCount }, () => []),
 		isNew: Array.from({ length: columnCount }, () => [])
@@ -130,13 +137,9 @@ async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedDat
 			diagramData.svgData.maxTime,
 			refreshedSvgData.maxTime
 		);
-		diagramData.svgData.maxTime = Math.min(
-			diagramData.svgData.maxTime,
-			refreshedSvgData.maxTime
-		);
-		diagramData.svgData.firstTimeMark = Math.min(
-			diagramData.svgData.firstTimeMark,
-			refreshedSvgData.firstTimeMark
+		diagramData.svgData.minTime = Math.min(
+			diagramData.svgData.minTime,
+			refreshedSvgData.minTime
 		);
 		refreshedSvgData.columns.forEach(({ subJourneys: [refreshedJourney] }, columnIndex) => {
 			const rowIndex = selectedBy.selectedJourneys[columnIndex];

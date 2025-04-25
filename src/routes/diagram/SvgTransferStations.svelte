@@ -56,7 +56,7 @@
 		viewBox="-0.05 0 {selectedJourneys.length + 0.1} 1"
 		preserveAspectRatio="none"
 	>
-		<g stroke="var(--foreground-color--transparent)" stroke-linejoin="round" fill="none">
+		<g stroke="var(--foreground-color)" stroke-linejoin="round" fill="none">
 			{#each Array.from({ length: columns.length + 1 }) as _, i}
 				<g stroke-width="2">
 					<line
@@ -80,13 +80,8 @@
 			{#each transferStationsData as { xTop, xBottom }}
 				<g stroke-width="1">
 					<polyline
-						stroke="var(--background-color--transparent)"
 						vector-effect="non-scaling-stroke"
-						points="{xBottom},0.9 {xBottom},1"
-					/>
-					<polyline
-						vector-effect="non-scaling-stroke"
-						points="{xTop},0 {xTop},0.8 {xTop},9 {xTop},0.8 {xBottom},0.9 {xBottom},1"
+						points="{xTop},0 {xTop},0.7 {xTop},0.3 {xBottom},0.8 {xBottom},1"
 					/>
 				</g>
 			{/each}
@@ -105,7 +100,7 @@
 	.location-name {
 		position: absolute;
 		transition: left 0.4s var(--cubic-bezier);
-		bottom: -0.5rem;
+		bottom: 0;
 		width: 8rem;
 		line-clamp: 2;
 		-webkit-line-clamp: 2;
@@ -116,8 +111,8 @@
 	}
 
 	.transfer-stations {
-        width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
-        margin: 0 calc(-0.05 * var(--diagram-width) / var(--connection-count));
+		width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
+		margin: 0 calc(-0.05 * var(--diagram-width) / var(--connection-count));
 		height: 100%;
 	}
 </style>

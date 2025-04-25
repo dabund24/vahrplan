@@ -1,8 +1,11 @@
 import type {
 	BlockSvgData,
 	SubJourneySvgData,
+	SvgData,
 	SvgPosition
 } from "$lib/server/svgData/svgData.server";
+import { timeToString } from "$lib/util";
+import { MINUTE_IN_MS } from "$lib/constants";
 
 export function svgJourneyToPolylinePoints(
 	journey: SubJourneySvgData,
@@ -46,4 +49,36 @@ function svgStopoversToPolylinePoints(
 
 export function formatSvgPoint([x, y]: SvgPosition, columnIndex: number, minTime: number): string {
 	return `${(x + columnIndex).toFixed(3)},${y - minTime}`;
+}
+
+export type TimeMark = {
+	content: string;
+	yCoordinate: number;
+	topInsetPercent: number;
+};
+
+export function* timeMarkIt(
+	timeMarksData: SvgData["timeMarksData"],
+	minTime: number,
+	maxTime: number
+): Generator<TimeMark> {
+	for (
+		let t = timeMarksData.firstTimeMark + timeMarksData.timeMarkInterval;
+		t < maxTime;
+		t += timeMarksData.timeMarkInterval
+	) {
+		yield formatTimeMark(t, minTime, maxTime);
+	}
+
+	for (let t = timeMarksData.firstTimeMark; t >= minTime; t -= timeMarksData.timeMarkInterval) {
+		yield formatTimeMark(t, minTime, maxTime);
+	}
+}
+
+function formatTimeMark(t: number, minTime: number, maxTime: number): TimeMark {
+	const content = timeToString(t * MINUTE_IN_MS);
+	const yCoordinate = t - minTime;
+	const yRange = maxTime - minTime;
+	const topInsetPercent = (100 * yCoordinate) / yRange;
+	return { content, yCoordinate, topInsetPercent };
 }

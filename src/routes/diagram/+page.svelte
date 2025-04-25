@@ -231,10 +231,11 @@
 		);
 		background-size: calc(var(--diagram-width) / var(--connection-count)) 100%;
 		background-repeat: repeat;
-		/* cover vertical lines at very right and at very left */
 		&:has(:global(#journey-summary.has-svg-diagram)) {
 			background-position-x: var(--diagram--beginning-end-offset);
 		}
+
+        /* cover vertical lines at very right and at very left */
 		outline: var(--background-color) solid 4px;
 		outline-offset: -3px;
 	}
@@ -278,6 +279,7 @@
 				var(--connection-width) * var(--connection-count) - 2 *
 					var(--diagram--beginning-end-offset)
 			);
+            --diagram--beginning-end-offset: calc(4.4ch * 0.8 + var(--line-width));
 		}
 		width: fit-content;
 		min-width: fit-content;

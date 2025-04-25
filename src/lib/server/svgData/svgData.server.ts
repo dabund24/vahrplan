@@ -9,12 +9,16 @@ import { computeLegSvgData, type LegSvgData } from "$lib/server/svgData/legSvgDa
 import { error } from "@sveltejs/kit";
 import { VahrplanError } from "$lib/VahrplanError";
 import { computeCoordinateY } from "$lib/server/svgData/util";
+import { computeTimeMarksData } from "$lib/server/svgData/timeMarks";
 
 export type SvgData = {
 	minTime: number;
 	maxTime: number;
-	firstTimeMark: number;
-	timeMarkInterval: number;
+	timeMarksData: {
+		firstTimeMark: number;
+		timeMarkInterval: number;
+	};
+	minutesPerHeight: number;
 	columns: { subJourneys: SubJourneySvgData[] }[];
 };
 
@@ -40,6 +44,11 @@ export function generateSvgData(
 
 	const stops = computeStops(subJourneys, ctx.transferLocations);
 
+	const diagramHeight = 1 + 0.5 * (subJourneys.length - 1);
+	const minutesPerHeight = (maxTime - minTime) / diagramHeight;
+
+	const timeMarksData: SvgData["timeMarksData"] = computeTimeMarksData(minTime, minutesPerHeight);
+
 	const columns: SvgData["columns"] = subJourneys.map((column, columnIndex) => {
 		const journeyEndPositions = {
 			departure: stops[columnIndex]?.position ?? { lat: 0, lng: 0 },
@@ -55,7 +64,7 @@ export function generateSvgData(
 		};
 	});
 
-	return { minTime, maxTime, columns, firstTimeMark: 0, timeMarkInterval: 0 };
+	return { minTime, maxTime, columns, timeMarksData, minutesPerHeight };
 }
 
 function computeMinTime(timeData: Record<TransitType, string>[][]): number {
