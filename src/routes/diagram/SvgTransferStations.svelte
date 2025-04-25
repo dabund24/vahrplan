@@ -77,11 +77,31 @@
 					/>
 				</g>
 			{/each}
+			<defs>
+				<linearGradient
+					id="journey-summary__transfers__gradient"
+					gradientUnits="userSpaceOnUse"
+					x2="0%"
+					y2="100%"
+				>
+					<stop offset="70%" stop-color="var(--foreground-color)" stop-opacity="1" />
+					<stop offset="100%" stop-color="var(--foreground-color)" stop-opacity="0" />
+				</linearGradient>
+			</defs>
 			{#each transferStationsData as { xTop, xBottom }}
 				<g stroke-width="1">
 					<polyline
 						vector-effect="non-scaling-stroke"
-						points="{xTop},0 {xTop},0.7 {xTop},0.3 {xBottom},0.8 {xBottom},1"
+						stroke-linecap="round"
+						points="{xTop},0 {xTop},0.8 {xTop},0.3 {xBottom},0.7"
+					/>
+					<line
+						stroke="url(#journey-summary__transfers__gradient)"
+						vector-effect="non-scaling-stroke"
+						x1={xBottom}
+						x2={xBottom}
+						y1="0.7"
+						y2="1"
 					/>
 				</g>
 			{/each}
