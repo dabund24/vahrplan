@@ -364,6 +364,9 @@
 	.summary-element:first-child {
 		& .station-name {
 			text-align: left;
+            width: fit-content;
+            margin-right: auto;
+            translate: calc(max(var(--diagram--beginning-end-offset), 50%) - 50%);
 		}
 		& .visuals-container {
 			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--diagram--beginning-end-offset);
@@ -395,6 +398,9 @@
 	.summary-element:last-child {
 		& .station-name {
 			text-align: right;
+            width: fit-content;
+            margin-left: auto;
+            translate: calc(50% - max(var(--diagram--beginning-end-offset), 50%));
 		}
 		& .visuals-container {
 			margin: 0 var(--diagram--beginning-end-offset) 0 auto;
