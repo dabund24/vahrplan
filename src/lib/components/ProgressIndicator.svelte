@@ -47,20 +47,25 @@
 	style:--animation-offset={`${animationOffset}ms`}
 	style:--animation-duration={`${animationDuration}ms`}
 >
-	<div>
-		{@render children()}
-	</div>
+	{@render children()}
 </div>
 
 <style>
 	.indicator-container {
+		display: flex;
 		position: absolute;
 		translate: 0 -50%;
 		z-index: 10;
 		visibility: hidden;
 		animation: current-position-animation--vertical var(--animation-duration) linear
 			var(--animation-offset);
+		width: 100%;
+		justify-content: center;
 		&.horizontal {
+			width: unset;
+			justify-content: unset;
+			align-items: center;
+			height: 100%;
 			translate: -50% 0;
 			animation: current-position-animation--horizontal var(--animation-duration) linear
 				var(--animation-offset);

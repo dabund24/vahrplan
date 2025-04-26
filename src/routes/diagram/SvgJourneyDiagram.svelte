@@ -4,6 +4,7 @@
 	import { getSelectedData } from "$lib/state/selectedData.svelte";
 	import { svgJourneyToPolylinePoints, timeMarkIt } from "./svgDiagramUtils";
 	import SvgTimeMarks from "./SvgTimeMarks.svelte";
+	import SvgNowLine from "./SvgNowLine.svelte";
 
 	type Props = {
 		svgData: SvgData;
@@ -44,12 +45,13 @@
 </script>
 
 <div class="svg-container" style:--diagram-height="calc(25rem * {diagramScaleY})">
-	<SvgTimeMarks {timeMarks} />
+	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />
 	<svg
 		class="main-svg"
 		viewBox="-0.05 {yMin} {columns.length + 0.1} {ySize}"
 		preserveAspectRatio="none"
 	>
+		<SvgNowLine {minTime} {maxTime} columnCount={columns.length} />
 		<g
 			class="svg__inner-wrapper"
 			stroke-linecap="round"
@@ -83,7 +85,7 @@
 			{/each}
 		</g>
 	</svg>
-	<SvgTimeMarks {timeMarks} />
+	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />
 </div>
 
 <style>
