@@ -12,11 +12,19 @@
 
 	const { svgData }: Props = $props();
 	const { columns, minTime, maxTime, timeMarksData, minutesPerHeight } = $derived(svgData);
+	const diagramBaseHeightRem = 22;
+	const diagramTopBottomOffsetRem = 3.5;
+	const diagramHeightOffsetRatio = diagramTopBottomOffsetRem / diagramBaseHeightRem;
 
 	const diagramCoordinateRangeY = $derived(maxTime - minTime);
 	const diagramScaleY = $derived(diagramCoordinateRangeY / minutesPerHeight);
-	const yMin = $derived(-0.2 * diagramCoordinateRangeY);
-	const ySize = $derived(1.3 * diagramCoordinateRangeY);
+	const yMin = $derived(-2 * diagramHeightOffsetRatio * minutesPerHeight);
+	const ySize = $derived(
+		diagramCoordinateRangeY + 3 * diagramHeightOffsetRatio * minutesPerHeight
+	);
+
+	$inspect(yMin);
+	$inspect(ySize);
 
 	const { selectedJourneys } = $derived(getSelectedData());
 	const selectedJourneyCoords = $derived.by(() => {
@@ -44,7 +52,12 @@
 	const timeMarks = $derived([...timeMarkIt(timeMarksData, minTime, maxTime)]);
 </script>
 
-<div class="svg-container" style:--diagram-height="calc(25rem * {diagramScaleY})">
+<div
+	class="svg-container"
+	style:--diagram--top-bottom-offset--rem={diagramTopBottomOffsetRem}
+	style:--diagram-height="calc((1rem * var(--diagram--top-bottom-offset--rem) /
+	{diagramHeightOffsetRatio}) * {diagramScaleY})"
+>
 	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />
 	<svg
 		class="main-svg"
@@ -102,9 +115,9 @@
 	.main-svg {
 		display: block;
 		width: calc(var(--diagram-width) + 0.1 * var(--diagram-width) / var(--connection-count));
-		height: calc(1.3 * var(--diagram-height));
-		margin: calc(-0.2 * var(--diagram-height))
+		height: calc(var(--diagram-height) + (3rem * var(--diagram--top-bottom-offset--rem)));
+		margin: calc(-2rem * var(--diagram--top-bottom-offset--rem))
 			calc(-0.05 * var(--diagram-width) / var(--connection-count))
-			calc(-0.1 * var(--diagram-height));
+			calc(-1rem * var(--diagram--top-bottom-offset--rem));
 	}
 </style>
