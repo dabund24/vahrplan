@@ -62,15 +62,17 @@ export function* timeMarkIt(
 	minTime: number,
 	maxTime: number
 ): Generator<TimeMark> {
-	for (
-		let t = timeMarksData.firstTimeMark + timeMarksData.timeMarkInterval;
-		t < maxTime;
-		t += timeMarksData.timeMarkInterval
-	) {
+	// time marks earlier than `firstTimeMark`
+	for (let t = timeMarksData.firstTimeMark; t >= minTime; t -= timeMarksData.timeMarkInterval) {
 		yield formatTimeMark(t, minTime, maxTime);
 	}
 
-	for (let t = timeMarksData.firstTimeMark; t >= minTime; t -= timeMarksData.timeMarkInterval) {
+	// time marks later than `firstTimeMark`
+	for (
+		let t = timeMarksData.firstTimeMark + timeMarksData.timeMarkInterval;
+		t <= maxTime;
+		t += timeMarksData.timeMarkInterval
+	) {
 		yield formatTimeMark(t, minTime, maxTime);
 	}
 }
