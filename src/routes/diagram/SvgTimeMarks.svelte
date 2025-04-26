@@ -44,6 +44,7 @@
 		border-radius: 50vh;
 		margin: auto;
 		text-align: center;
+		pointer-events: auto;
 	}
 
 	.now-mark {
