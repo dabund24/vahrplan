@@ -110,6 +110,12 @@
 			);
 		overflow-x: visible;
 		margin-top: 0.5rem;
+		> :global(:first-child) {
+			translate: calc(-1 * var(--line-width));
+		}
+		> :global(:last-child) {
+			translate: var(--line-width);
+		}
 	}
 
 	.main-svg {
