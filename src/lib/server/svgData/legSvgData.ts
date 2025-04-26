@@ -16,6 +16,7 @@ export type LegSvgData = {
 		end: SvgPosition;
 	}[];
 	product: Product;
+	isCancelled: boolean;
 };
 
 export function computeLegSvgData(
@@ -52,7 +53,8 @@ export function computeLegSvgData(
 		product: legBlock.product,
 		transferableStopovers,
 		start,
-		end
+		end,
+		isCancelled: legBlock.attribute === "cancelled"
 	};
 }
 

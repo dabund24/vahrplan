@@ -63,6 +63,7 @@
 	{#if block.type === "leg"}
 		<polyline
 			class="svg-line stroke--product product--{block.product}"
+			class:cancelled={block.isCancelled}
 			{points}
 			vector-effect="non-scaling-stroke"
 		/>
@@ -80,6 +81,10 @@
 <style>
 	.svg-line {
 		pointer-events: none;
+	}
+	.cancelled {
+		stroke-dasharray: 6 9;
+		opacity: 0.5;
 	}
 	.svg-journey-polyline-def {
 		transition: none;
