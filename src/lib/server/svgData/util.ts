@@ -14,7 +14,8 @@ export function computeCoordinateX(
 	const distanceFromOrigin = computeLocationDistances(departure, position);
 	const distanceFromDestination = computeLocationDistances(position, arrival);
 	const totalDistance = distanceFromOrigin + distanceFromDestination;
-	return distanceFromOrigin / totalDistance;
+	const nonRoundedCoordinate = distanceFromOrigin / totalDistance;
+	return Math.round(nonRoundedCoordinate * 1000) / 1000;
 }
 
 function computeLocationDistances(
