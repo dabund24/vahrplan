@@ -9,9 +9,6 @@
 	let animationOffset = $derived(minTime * MINUTE_IN_MS - new Date().getTime());
 	let animationDuration = $derived((maxTime - minTime) * MINUTE_IN_SECONDS);
 
-	let animateMotionElement: SVGAnimateMotionElement;
-	let lineElement: SVGLineElement;
-
 	onMount(() => document.addEventListener("visibilitychange", synchronizeAnimation));
 	onDestroy(() => document.removeEventListener("visibilitychange", synchronizeAnimation));
 
@@ -20,8 +17,8 @@
 	 */
 	function synchronizeAnimation(): void {
 		if (document.visibilityState === "visible") {
-			lineElement.replaceChildren();
-			lineElement.appendChild(animateMotionElement);
+			minTime = minTime + 1;
+			minTime = minTime - 1;
 		}
 	}
 </script>
@@ -34,12 +31,10 @@
 	stroke="var(--accent-color)"
 	stroke-width="1"
 	vector-effect="non-scaling-stroke"
-	bind:this={lineElement}
 >
 	<animateMotion
 		begin="{animationOffset}ms"
 		dur="{animationDuration}s"
 		path="M {columnCount + 1},0 v {maxTime - minTime}"
-		bind:this={animateMotionElement}
 	/>
 </line>

@@ -5,6 +5,7 @@
 	import { svgJourneyToPolylinePoints, timeMarkIt } from "./svgDiagramUtils";
 	import SvgTimeMarks from "./SvgTimeMarks.svelte";
 	import SvgNowLine from "./SvgNowLine.svelte";
+	import { onDestroy, onMount } from "svelte";
 
 	type Props = {
 		svgData: SvgData;
@@ -12,6 +13,21 @@
 
 	const { svgData }: Props = $props();
 	const { columns, minTime, maxTime, timeMarksData, minutesPerHeight } = $derived(svgData);
+
+	let svgElement: SVGSVGElement;
+
+	onMount(() => document.addEventListener("visibilitychange", resetSvg));
+	onDestroy(() => document.removeEventListener("visibilitychange", resetSvg));
+
+	/**
+	 * resets all animations
+	 */
+	function resetSvg(): void {
+		if (document.visibilityState === "visible") {
+			svgElement.setCurrentTime(0);
+		}
+	}
+
 	const diagramBaseHeightRem = 22;
 	const diagramTopBottomOffsetRem = 3.5;
 	const diagramHeightOffsetRatio = diagramTopBottomOffsetRem / diagramBaseHeightRem;
@@ -63,6 +79,7 @@
 		class="main-svg"
 		viewBox="-0.05 {yMin} {columns.length + 0.1} {ySize}"
 		preserveAspectRatio="none"
+		bind:this={svgElement}
 	>
 		<SvgNowLine {minTime} {maxTime} columnCount={columns.length} />
 		<g
