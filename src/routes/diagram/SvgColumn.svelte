@@ -30,7 +30,6 @@
 	<polyline
 		stroke="var(--foreground-color--transparent)"
 		stroke-width="1"
-		vector-effect="non-scaling-stroke"
 		points="{x + columnIndex},{yMin} {x + columnIndex},{ySize}"
 	/>
 {/each}

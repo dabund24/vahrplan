@@ -97,13 +97,11 @@
 					y2={yCoordinate}
 					stroke="var(--foreground-color--transparent)"
 					stroke-width="1"
-					vector-effect="non-scaling-stroke"
 				/>
 			{/each}
 			{#each selectedJourneyCoords as subJourneyCoords}
 				<polyline
 					points={subJourneyCoords}
-					vector-effect="non-scaling-stroke"
 					stroke="var(--accent-color)"
 					stroke-width="1rem"
 					opacity="0.3"

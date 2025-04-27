@@ -30,7 +30,6 @@
 	y2="0"
 	stroke="var(--accent-color)"
 	stroke-width="1"
-	vector-effect="non-scaling-stroke"
 >
 	<animateMotion
 		begin="{animationOffset}ms"

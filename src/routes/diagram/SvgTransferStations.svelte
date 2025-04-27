@@ -65,7 +65,6 @@
 						x2={i}
 						y2="1"
 						stroke="var(--background-color--transparent)"
-						vector-effect="non-scaling-stroke"
 					/>
 					<line
 						x1={i}
@@ -73,7 +72,6 @@
 						x2={i}
 						y2="1"
 						stroke="var(--foreground-color--very-transparent)"
-						vector-effect="non-scaling-stroke"
 					/>
 				</g>
 			{/each}
@@ -91,13 +89,11 @@
 			{#each transferStationsData as { xTop, xBottom }}
 				<g stroke-width="1">
 					<polyline
-						vector-effect="non-scaling-stroke"
 						stroke-linecap="round"
 						points="{xTop},0 {xTop},0.8 {xTop},0.3 {xBottom},0.7"
 					/>
 					<line
 						stroke="url(#journey-summary__transfers__gradient)"
-						vector-effect="non-scaling-stroke"
 						x1={xBottom}
 						x2={xBottom}
 						y1="0.7"

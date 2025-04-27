@@ -65,7 +65,6 @@
 			class="svg-line stroke--product product--{block.product}"
 			class:cancelled={block.isCancelled}
 			{points}
-			vector-effect="non-scaling-stroke"
 		/>
 	{:else if block.type === "transfer"}
 		<polyline
@@ -73,7 +72,6 @@
 			{points}
 			stroke="var(--foreground-color)"
 			stroke-dasharray="0 4"
-			vector-effect="non-scaling-stroke"
 		/>
 	{/if}
 {/each}

@@ -183,6 +183,9 @@ button {
 svg {
 	display: block;
 	flex-shrink: 0;
+	polyline, line {
+		vector-effect: non-scaling-stroke;
+	}
 }
 
 svg polyline,
