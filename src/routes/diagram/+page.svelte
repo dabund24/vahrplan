@@ -27,6 +27,7 @@
 	import ScrollButton from "./ScrollButton.svelte";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import SvgJourneyDiagram from "./SvgJourneyDiagram.svelte";
+	import IconTimeAxes from "$lib/components/icons/IconTimeAxes.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -104,7 +105,7 @@
 {/snippet}
 
 {#snippet timeSpaceIcon()}
-	<IconMap />
+	<IconTimeAxes />
 {/snippet}
 
 {#snippet timeSpaceTabContent()}
