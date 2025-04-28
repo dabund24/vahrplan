@@ -2,8 +2,8 @@
 	<g
 		stroke="var(--foreground-color)"
 		stroke-linecap="round"
-		stroke-width="2"
 		stroke-linejoin="round"
+		stroke-width="2"
 		fill="none"
 	>
 		<polyline points="4,1 4,12 15,12" />
