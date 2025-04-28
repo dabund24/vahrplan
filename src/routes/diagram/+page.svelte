@@ -77,10 +77,31 @@
 	}
 
 	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
-		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent },
-		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent }
+		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent },
+		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent }
 	];
 </script>
+
+{#snippet schematicIcon()}
+	<IconRefresh />
+{/snippet}
+
+{#snippet schematicTabContent()}
+	{#await diagramData}
+		<ScrollButton isClickable={false} scrollDirection="earlier" />
+		<JourneyDiagramSkeleton depth={(displayedFormData?.locations.length ?? 1) - 1} />
+		<ScrollButton isClickable={false} scrollDirection="later" />
+	{:then { tree, columns, isNew }}
+		<ScrollButton
+			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
+			scrollDirection="earlier"
+		/>
+		<JourneyDiagram nodes={tree} {columns} {isNew} />
+		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
+	{:catch err}
+		{err}
+	{/await}
+{/snippet}
 
 {#snippet timeSpaceIcon()}
 	<IconMap />
@@ -102,27 +123,6 @@
 			isTextHidden={true}
 			scrollDirection="later"
 		/>
-	{/await}
-{/snippet}
-
-{#snippet schematicIcon()}
-	<IconRefresh />
-{/snippet}
-
-{#snippet schematicTabContent()}
-	{#await diagramData}
-		<ScrollButton isClickable={false} scrollDirection="earlier" />
-		<JourneyDiagramSkeleton depth={(displayedFormData?.locations.length ?? 1) - 1} />
-		<ScrollButton isClickable={false} scrollDirection="later" />
-	{:then { tree, columns, isNew }}
-		<ScrollButton
-			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
-			scrollDirection="earlier"
-		/>
-		<JourneyDiagram nodes={tree} {columns} {isNew} />
-		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
-	{:catch err}
-		{err}
 	{/await}
 {/snippet}
 
@@ -235,7 +235,7 @@
 			background-position-x: var(--diagram--beginning-end-offset);
 		}
 
-        /* cover vertical lines at very right and at very left */
+		/* cover vertical lines at very right and at very left */
 		outline: var(--background-color) solid 4px;
 		outline-offset: -3px;
 	}
@@ -279,7 +279,7 @@
 				var(--connection-width) * var(--connection-count) - 2 *
 					var(--diagram--beginning-end-offset)
 			);
-            --diagram--beginning-end-offset: calc(4.4ch * 0.8 + var(--line-width));
+			--diagram--beginning-end-offset: calc(4.4ch * 0.8 + var(--line-width));
 		}
 		width: fit-content;
 		min-width: fit-content;

@@ -116,7 +116,7 @@
 	<div
 		id="journey-summary"
 		class="flex-column summary-background"
-		class:has-svg-diagram={activeSummaryTab === 0}
+		class:has-svg-diagram={activeSummaryTab === 1}
 	>
 		<div class="flex-row actions" class:all-selected={selectedData.isFullJourneySelected}>
 			<div class="mini-tab-container">
@@ -252,7 +252,7 @@
 				</div>
 			{/each}
 		</div>
-		{#if activeSummaryTab === 0}
+		{#if activeSummaryTab === 1}
 			{#await diagramData then { svgData: { columns }, transferLocations }}
 				<SvgTransferStations {columns} {transferLocations} />
 			{/await}
