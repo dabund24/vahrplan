@@ -25,9 +25,9 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import ScrollButton from "./ScrollButton.svelte";
-	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import SvgJourneyDiagram from "./SvgJourneyDiagram.svelte";
 	import IconTimeAxes from "$lib/components/icons/IconTimeAxes.svelte";
+	import IconHome from "$lib/components/icons/IconHome.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -84,7 +84,7 @@
 </script>
 
 {#snippet schematicIcon()}
-	<IconRefresh />
+	<IconHome />
 {/snippet}
 
 {#snippet schematicTabContent()}
