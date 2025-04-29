@@ -100,6 +100,9 @@
 	.duration-container {
 		max-width: min-content;
 		display: inline-block;
+		:global(.time) {
+			font-weight: bold;
+		}
 	}
 	.icon-container {
 		align-items: center;

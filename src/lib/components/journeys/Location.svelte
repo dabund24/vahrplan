@@ -40,4 +40,8 @@
 		gap: 0.5rem;
 		align-items: center;
 	}
+
+	.time-container {
+		font-weight: bold;
+	}
 </style>
