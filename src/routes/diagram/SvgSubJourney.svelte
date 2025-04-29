@@ -28,6 +28,47 @@
 	}
 </script>
 
+{#each journey.blocks as block}
+	{@const points = `${svgBlockToPolylinePoints(block, columnIndex, minTime)}`}
+	{#if block.type === "leg"}
+		<polyline
+			class="svg-line stroke--product product--{block.product}"
+			class:cancelled={block.isCancelled}
+			{points}
+		/>
+	{:else if block.type === "transfer"}
+		<polyline
+			class="svg-line"
+			{points}
+			stroke="var(--foreground-color)"
+			stroke-dasharray="0 4"
+		/>
+	{/if}
+{/each}
+
+{#each journey.blocks as block, blockIndex}
+	{#if block.type === "leg"}
+		{#snippet locationCircle(position: SvgPosition, idComponent: string)}
+			{@const id = `svg-journey--${journeyId}-${blockIndex}__location-circle__${idComponent}`}
+			<defs>
+				<line
+					{id}
+					x1={position[0] + columnIndex}
+					x2={position[0] + columnIndex}
+					y1={position[1] - minTime}
+					y2={position[1] - minTime + 0.01}
+					vector-effect="non-scaling-stroke"
+				/>
+			</defs>
+			<use href="#{id}" class="stroke--product product--{block.product}" stroke-width="6" />
+			<use href="#{id}" stroke="var(--background-color)" stroke-width="4" />
+			<use href="#{id}" class="stroke--product product--{block.product}" stroke-width="2" />
+		{/snippet}
+		{@render locationCircle(block.start, "0")}
+		{@render locationCircle(block.end, "1")}
+	{/if}
+{/each}
+
 <defs>
 	<polyline
 		id="svg-journey--{journeyId}"
@@ -57,46 +98,6 @@
 		mask="url(#svg-journey--{journeyId}__mask)"
 	/>
 </g>
-
-{#each journey.blocks as block}
-	{@const points = `${svgBlockToPolylinePoints(block, columnIndex, minTime)}`}
-	{#if block.type === "leg"}
-		<polyline
-			class="svg-line stroke--product product--{block.product}"
-			class:cancelled={block.isCancelled}
-			{points}
-		/>
-	{:else if block.type === "transfer"}
-		<polyline
-			class="svg-line"
-			{points}
-			stroke="var(--foreground-color)"
-			stroke-dasharray="0 4"
-		/>
-	{/if}
-{/each}
-{#each journey.blocks as block, blockIndex}
-	{#if block.type === "leg"}
-		{#snippet locationCircle(position: SvgPosition, idComponent: string)}
-			{@const id = `svg-journey--${journeyId}-${blockIndex}__location-circle__${idComponent}`}
-			<defs>
-				<line
-					{id}
-					x1={position[0] + columnIndex}
-					x2={position[0] + columnIndex}
-					y1={position[1] - minTime}
-					y2={position[1] - minTime + 0.01}
-					vector-effect="non-scaling-stroke"
-				/>
-			</defs>
-			<use href="#{id}" class="stroke--product product--{block.product}" stroke-width="6" />
-			<use href="#{id}" stroke="var(--background-color)" stroke-width="4" />
-			<use href="#{id}" class="stroke--product product--{block.product}" stroke-width="2" />
-		{/snippet}
-		{@render locationCircle(block.start, "0")}
-		{@render locationCircle(block.end, "1")}
-	{/if}
-{/each}
 
 <style>
 	.svg-line {
