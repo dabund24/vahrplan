@@ -1,18 +1,20 @@
 <script lang="ts">
-	import type { SvgData } from "$lib/server/svgData/svgData.server";
-	import SvgColumn from "./SvgColumn.svelte";
-	import { getSelectedData } from "$lib/state/selectedData.svelte";
-	import { svgJourneyToPolylinePoints, timeMarkIt } from "./svgDiagramUtils";
 	import SvgTimeMarks from "./SvgTimeMarks.svelte";
 	import SvgNowLine from "./SvgNowLine.svelte";
-	import { onDestroy, onMount } from "svelte";
+	import { onDestroy, onMount, type Snippet } from "svelte";
+	import { type TimeMark } from "./svgDiagramUtils";
 
 	type Props = {
-		svgData: SvgData;
+		children: Snippet<[number, number]>;
+		columnCount: number;
+		minTime: number;
+		maxTime: number;
+		timeMarks: TimeMark[];
+		minutesPerHeight: number;
 	};
 
-	const { svgData }: Props = $props();
-	const { columns, minTime, maxTime, timeMarksData, minutesPerHeight } = $derived(svgData);
+	const { children, columnCount, maxTime, minTime, timeMarks, minutesPerHeight }: Props =
+		$props();
 
 	let svgElement: SVGSVGElement;
 
@@ -38,34 +40,6 @@
 	const ySize = $derived(
 		diagramCoordinateRangeY + 3 * diagramHeightOffsetRatio * minutesPerHeight
 	);
-
-	$inspect(yMin);
-	$inspect(ySize);
-
-	const { selectedJourneys } = $derived(getSelectedData());
-	const selectedJourneyCoords = $derived.by(() => {
-		const coords = selectedJourneys.reduce(
-			(acc, rowIndex, columnIndex) => {
-				if (rowIndex !== -1) {
-					// journey keeps going
-					const subJourneyData = columns[columnIndex].subJourneys[rowIndex];
-					acc[acc.length - 1] +=
-						` ${svgJourneyToPolylinePoints(subJourneyData, minTime, columnIndex)}`;
-				} else if (acc.at(-1) !== "") {
-					// journey is interrupted
-					acc.push("");
-				}
-				return acc;
-			},
-			[""]
-		);
-		if (coords.at(-1) === "") {
-			coords.pop();
-		}
-		return coords;
-	});
-
-	const timeMarks = $derived([...timeMarkIt(timeMarksData, minTime, maxTime)]);
 </script>
 
 <div
@@ -77,11 +51,22 @@
 	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />
 	<svg
 		class="main-svg"
-		viewBox="-0.05 {yMin} {columns.length + 0.1} {ySize}"
+		viewBox="-0.05 {yMin} {columnCount + 0.1} {ySize}"
 		preserveAspectRatio="none"
 		bind:this={svgElement}
 	>
-		<SvgNowLine {minTime} {maxTime} columnCount={columns.length} />
+		<SvgNowLine {minTime} {maxTime} {columnCount} />
+		{#each timeMarks as { yCoordinate }}
+			<line
+				x1="0"
+				x2={columnCount}
+				y1={yCoordinate}
+				y2={yCoordinate}
+				stroke="var(--foreground-color--transparent)"
+				stroke-width="1"
+			/>
+		{/each}
+
 		<g
 			class="svg__inner-wrapper"
 			stroke-linecap="round"
@@ -89,28 +74,7 @@
 			stroke-linejoin="round"
 			stroke-width="2"
 		>
-			{#each timeMarks as { yCoordinate }}
-				<line
-					x1="0"
-					x2={columns.length}
-					y1={yCoordinate}
-					y2={yCoordinate}
-					stroke="var(--foreground-color--transparent)"
-					stroke-width="1"
-				/>
-			{/each}
-			{#each selectedJourneyCoords as subJourneyCoords}
-				<polyline
-					points={subJourneyCoords}
-					stroke="var(--accent-color)"
-					stroke-width="1rem"
-					opacity="0.3"
-				/>
-			{/each}
-
-			{#each columns as column, columnIndex}
-				<SvgColumn columnData={column} {minTime} {yMin} {ySize} {columnIndex} />
-			{/each}
+			{@render children(yMin, ySize)}
 		</g>
 	</svg>
 	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />

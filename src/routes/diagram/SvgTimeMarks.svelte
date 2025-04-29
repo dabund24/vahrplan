@@ -17,7 +17,7 @@
 		<div class="now-mark">jetzt</div>
 	</ProgressIndicator>
 	{#each timeMarks as { content, topInsetPercent }}
-		<div class="time-mark" style:top="{topInsetPercent}%">
+		<div class="skeleton-text time-mark" style:top="{topInsetPercent}%">
 			{content}
 		</div>
 	{/each}

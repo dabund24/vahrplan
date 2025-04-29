@@ -25,9 +25,10 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import ScrollButton from "./ScrollButton.svelte";
-	import SvgJourneyDiagram from "./SvgJourneyDiagram.svelte";
+	import SvgDiagram from "./SvgDiagram.svelte";
 	import IconTimeAxes from "$lib/components/icons/IconTimeAxes.svelte";
 	import IconHome from "$lib/components/icons/IconHome.svelte";
+	import SvgDiagramSkeleton from "./SvgDiagramSkeleton.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -111,6 +112,7 @@
 {#snippet timeSpaceTabContent()}
 	{#await diagramData}
 		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="earlier" />
+		<SvgDiagramSkeleton columnCount={(displayedFormData?.locations.length ?? 2) - 1} />
 		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="later" />
 	{:then { columns, svgData }}
 		<ScrollButton
@@ -118,7 +120,7 @@
 			isTextHidden={true}
 			scrollDirection="earlier"
 		/>
-		<SvgJourneyDiagram {svgData} />
+		<SvgDiagram {svgData} />
 		<ScrollButton
 			isClickable={(columns[0]?.laterRef ?? "") !== ""}
 			isTextHidden={true}
