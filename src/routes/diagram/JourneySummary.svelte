@@ -15,7 +15,7 @@
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import { toggleDiagramBookmark, getBookmarks, type DiagramBookmark } from "$lib/bookmarks";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
-	import { onMount } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
@@ -28,6 +28,14 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+	import SvgTransferStations from "./SvgTransferStations.svelte";
+
+	type Props = {
+		miniTabsSnippet: Snippet;
+		activeSummaryTab: number | undefined;
+	};
+
+	const { miniTabsSnippet, activeSummaryTab }: Props = $props();
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -104,9 +112,16 @@
 	}
 </script>
 
-<TitlelessHeader --header-width="calc(var(--diagram-width) - 2rem">
-	<div id="journey-summary" class="flex-column summary-background">
+<TitlelessHeader --header-width="calc(var(--connection-width) * var(--connection-count) - 2rem)">
+	<div
+		id="journey-summary"
+		class="flex-column summary-background"
+		class:has-svg-diagram={activeSummaryTab === 1}
+	>
 		<div class="flex-row actions" class:all-selected={selectedData.isFullJourneySelected}>
+			<div class="mini-tab-container">
+				{@render miniTabsSnippet()}
+			</div>
 			{#await diagramData then { recommendedVias }}
 				<ViaRecommendations {recommendedVias} />
 			{/await}
@@ -237,6 +252,11 @@
 				</div>
 			{/each}
 		</div>
+		{#if activeSummaryTab === 1}
+			{#await diagramData then { svgData: { columns }, transferLocations }}
+				<SvgTransferStations {columns} {transferLocations} />
+			{/await}
+		{/if}
 	</div>
 </TitlelessHeader>
 {#if modalLeg}
@@ -265,13 +285,16 @@
 <style>
 	.actions {
 		position: sticky;
-		right: 0.5rem;
-		align-self: start;
-		align-items: start;
+		left: 0;
 		padding: 4px 0 0.5rem;
-		margin-left: auto;
 		gap: 4px;
-		transition: padding-right 0.4s var(--cubic-bezier);
+		width: min(100%, 100cqw - 1rem); /* scrollbar is not part of container :/ */
+		.mini-tab-container {
+			margin-right: auto;
+		}
+		button:last-of-type {
+			transition: margin-right 0.4s var(--cubic-bezier);
+		}
 		a {
 			display: none;
 			position: absolute;
@@ -282,9 +305,10 @@
 	@media screen and (max-width: 999px) {
 		.actions {
 			padding: 0.5rem 0;
-			right: 0.75rem;
-			&.all-selected {
-				padding-right: calc(28px + 1rem);
+			left: 0.75rem;
+			width: min(100%, 100cqw - 1.5rem);
+			&.all-selected > button:last-of-type {
+				margin-right: calc(12px + 2rem);
 			}
 			a {
 				display: block;
@@ -299,8 +323,8 @@
 	}
 
 	#journey-summary {
-		--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
 		word-break: break-word;
+		--line-shift-distance: calc(var(--diagram-width) / (2 * var(--connection-count)));
 	}
 
 	@media screen and (max-width: 999px) {
@@ -334,15 +358,18 @@
 	/* handle special cases */
 
 	.summary-element:nth-last-child(2) .times-container {
-		margin-right: calc(var(--connection-width) / -2 + var(--beginning-end-offset));
+		margin-right: calc(-1 * var(--line-shift-distance) + var(--diagram--beginning-end-offset));
 	}
 
 	.summary-element:first-child {
 		& .station-name {
 			text-align: left;
+            width: fit-content;
+            margin-right: auto;
+            translate: calc(max(var(--diagram--beginning-end-offset), 50%) - 50%);
 		}
 		& .visuals-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 var(--beginning-end-offset);
+			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--diagram--beginning-end-offset);
 			& > .station-icon-container {
 				left: 0;
 			}
@@ -351,35 +378,59 @@
 			margin: 0;
 		}
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2) 0 var(--beginning-end-offset);
+			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--diagram--beginning-end-offset);
 		}
 	}
 
 	.summary-element:nth-last-child(2):not(:first-child) .visuals--selected {
-		margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
-			calc(var(--connection-width) / 2);
+		margin: 0 calc(-1 * var(--line-shift-distance) + var(--diagram--beginning-end-offset)) 0
+			var(--line-shift-distance);
 	}
 
 	.summary-element:first-child:nth-last-child(2) {
 		& .visuals-container,
 		& .times-container {
-			margin: 0 calc(var(--connection-width) / -2 + var(--beginning-end-offset)) 0
-				var(--beginning-end-offset);
+			margin: 0 calc(-1 * var(--line-shift-distance) + var(--diagram--beginning-end-offset)) 0
+				var(--diagram--beginning-end-offset);
 		}
 	}
 
 	.summary-element:last-child {
 		& .station-name {
 			text-align: right;
+            width: fit-content;
+            margin-left: auto;
+            translate: calc(50% - max(var(--diagram--beginning-end-offset), 50%));
 		}
 		& .visuals-container {
-			margin: 0 var(--beginning-end-offset) 0 auto;
+			margin: 0 var(--diagram--beginning-end-offset) 0 auto;
 		}
 		& .times-container {
-			margin: 0 0 0 calc(var(--connection-width) / 2 - var(--beginning-end-offset));
+			margin: 0 0 0 calc(var(--line-shift-distance) - var(--diagram--beginning-end-offset));
 		}
 		& .times--journey {
 			width: 0;
+		}
+	}
+
+	/* change layout if svg diagram is displayed*/
+
+	.has-svg-diagram {
+		.summary-element:first-child {
+			flex-basis: var(--diagram--beginning-end-offset);
+		}
+		.summary-element:last-child {
+			flex-basis: var(--diagram--beginning-end-offset);
+		}
+
+		.summary-element:nth-last-child(2) .times-container,
+		.summary-element:nth-last-child(2):not(:first-child) .visuals--selected,
+		.summary-element:first-child:nth-last-child(2)
+			:where(.visuals-container, .times-container) {
+			margin-right: calc(-1 * var(--line-shift-distance));
+		}
+		.summary-element:last-child .times-container {
+			margin-left: calc(var(--line-shift-distance));
 		}
 	}
 
@@ -402,7 +453,7 @@
 			position: relative;
 			width: 100%;
 			height: 100%;
-			margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
+			margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--line-shift-distance);
 		}
 		& .lines {
 			position: absolute;
@@ -452,7 +503,7 @@
 	/* rules for times-container */
 
 	.times-container {
-		margin: 0 calc(var(--connection-width) / -2) 0 calc(var(--connection-width) / 2);
+		margin: 0 calc(-1 * var(--line-shift-distance)) 0 var(--line-shift-distance);
 		z-index: 1;
 		white-space: nowrap;
 		position: relative;
@@ -492,7 +543,7 @@
 		display: inline;
 	}
 
-	.station--selected .times--journey {
+	#journey-summary:not(.has-svg-diagram) .station--selected .times--journey {
 		visibility: visible;
 	}
 </style>

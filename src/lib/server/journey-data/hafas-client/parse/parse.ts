@@ -214,6 +214,18 @@ function walkToBlock(walk: Leg, nextDeparture: string | undefined): WalkingBlock
 		type: "walk",
 		originLocation: parseStationStopLocation(walk.origin),
 		destinationLocation: parseStationStopLocation(walk.destination),
+		time: parseTimePair(
+			{
+				time: walk.departure,
+				timePlanned: walk.plannedDeparture,
+				delay: walk.departureDelay
+			},
+			{
+				time: walk.arrival,
+				timePlanned: walk.plannedArrival,
+				delay: walk.arrivalDelay
+			}
+		),
 		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
 		travelTime: dateDifference(walk.departure, walk.arrival),
 		distance: walk.distance ?? 0
@@ -228,6 +240,14 @@ function onwardJourneyToBlock(leg: Leg, nextDeparture: string | undefined): Onwa
 		type: "onward-journey",
 		originLocation: parseStationStopLocation(leg.origin),
 		destinationLocation: parseStationStopLocation(leg.destination),
+		time: parseTimePair(
+			{ time: leg.departure, timePlanned: leg.plannedDeparture, delay: leg.departureDelay },
+			{
+				time: leg.arrival,
+				timePlanned: leg.plannedArrival,
+				delay: leg.arrivalDelay
+			}
+		),
 		transferTime: dateDifference(leg.departure ?? leg.plannedDeparture, nextDeparture) ?? 0,
 		travelTime: dateDifference(leg.departure, leg.arrival),
 		recommendedAction,

@@ -183,6 +183,10 @@ button {
 svg {
 	display: block;
 	flex-shrink: 0;
+	polyline,
+	line {
+		vector-effect: non-scaling-stroke;
+	}
 }
 
 svg polyline,
@@ -495,13 +499,18 @@ h3 {
 }
 
 .skeleton {
-	& .skeleton-text {
-		border-radius: 50vh;
+	.skeleton-text, .skeleton-stroke {
 		animation: skeleton-loading 0.5s linear infinite alternate;
-		background-color: var(--foreground-color--transparent);
-		color: transparent;
 		user-select: none;
 		-webkit-user-select: none;
+	}
+	.skeleton-text {
+		border-radius: 50vh;
+		background-color: var(--foreground-color--transparent) !important;
+		color: transparent;
+	}
+	.skeleton-stroke {
+		stroke: var(--foreground-color--transparent) !important;
 	}
 }
 

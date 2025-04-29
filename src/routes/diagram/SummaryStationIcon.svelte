@@ -8,6 +8,8 @@
 		addDisplayedLocation,
 		removeDisplayedLocation
 	} from "$lib/state/displayedFormData.svelte.js";
+	import { getDiagramData } from "$lib/state/diagramData.svelte";
+	import { getLocationRepresentative } from "../api/diagram/locationRepresentativesUtils";
 
 	type Props = {
 		location: ParsedLocation;
@@ -25,6 +27,11 @@
 		pressedStationId = $bindable()
 	}: Props = $props();
 
+	const locationNamePromise = $derived.by(async () => {
+		const { transferLocations } = await getDiagramData();
+		return getLocationRepresentative(transferLocations, location).name;
+	});
+
 	let thisPressedId = $state(-1);
 	let isPressed = $derived(thisPressedId === pressedStationId);
 
@@ -38,7 +45,9 @@
 
 {#if isPressed && !isDisplayedLocation}
 	<div class="icon-neighbor location-name" transition:fade={{ duration: 200 }}>
-		{location.name}
+		{#await locationNamePromise then locationName}
+			{locationName}
+		{/await}
 	</div>
 {/if}
 <button

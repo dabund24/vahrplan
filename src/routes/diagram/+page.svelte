@@ -7,7 +7,7 @@
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import { page } from "$app/state";
 	import { browser } from "$app/environment";
-	import { type Snippet } from "svelte";
+	import { type ComponentProps, type Snippet } from "svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
@@ -25,6 +25,10 @@
 	import { getDiagramData } from "$lib/state/diagramData.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import ScrollButton from "./ScrollButton.svelte";
+	import SvgDiagram from "./SvgDiagram.svelte";
+	import IconTimeAxes from "$lib/components/icons/IconTimeAxes.svelte";
+	import IconHome from "$lib/components/icons/IconHome.svelte";
+	import SvgDiagramSkeleton from "./SvgDiagramSkeleton.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -73,7 +77,57 @@
 			void searchDiagram(initialFormData);
 		}
 	}
+
+	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
+		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent },
+		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent }
+	];
 </script>
+
+{#snippet schematicIcon()}
+	<IconHome />
+{/snippet}
+
+{#snippet schematicTabContent()}
+	{#await diagramData}
+		<ScrollButton isClickable={false} scrollDirection="earlier" />
+		<JourneyDiagramSkeleton depth={(displayedFormData?.locations.length ?? 1) - 1} />
+		<ScrollButton isClickable={false} scrollDirection="later" />
+	{:then { tree, columns, isNew }}
+		<ScrollButton
+			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
+			scrollDirection="earlier"
+		/>
+		<JourneyDiagram nodes={tree} {columns} {isNew} />
+		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
+	{:catch err}
+		{err}
+	{/await}
+{/snippet}
+
+{#snippet timeSpaceIcon()}
+	<IconTimeAxes />
+{/snippet}
+
+{#snippet timeSpaceTabContent()}
+	{#await diagramData}
+		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="earlier" />
+		<SvgDiagramSkeleton columnCount={(displayedFormData?.locations.length ?? 2) - 1} />
+		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="later" />
+	{:then { columns, svgData, isNew }}
+		<ScrollButton
+			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
+			isTextHidden={true}
+			scrollDirection="earlier"
+		/>
+		<SvgDiagram {svgData} {isNew} />
+		<ScrollButton
+			isClickable={(columns[0]?.laterRef ?? "") !== ""}
+			isTextHidden={true}
+			scrollDirection="later"
+		/>
+	{/await}
+{/snippet}
 
 <svelte:head>
 	<title>Vahrplan - {pageTitle}</title>
@@ -98,26 +152,19 @@
 				</section>
 				<section class="diagram">
 					{#if displayedFormData !== undefined}
-						<JourneySummary />
-						{#await diagramData}
-							<ScrollButton isClickable={false} scrollDirection="earlier" />
-							<JourneyDiagramSkeleton
-								depth={displayedFormData.locations.length - 1}
-							/>
-							<ScrollButton isClickable={false} scrollDirection="later" />
-						{:then { tree, columns, isNew }}
-							<ScrollButton
-								isClickable={(columns[0]?.earlierRef ?? "") !== ""}
-								scrollDirection="earlier"
-							/>
-							<JourneyDiagram nodes={tree} {columns} {isNew} />
-							<ScrollButton
-								isClickable={(columns[0]?.laterRef ?? "") !== ""}
-								scrollDirection="later"
-							/>
-						{:catch err}
-							{err}
-						{/await}
+						<MiniTabs tabs={diagramTabData}>
+							{#snippet tabEnvironment(
+								miniTabs: Snippet,
+								tabContent: Snippet,
+								activeTab?: number
+							)}
+								<JourneySummary
+									miniTabsSnippet={miniTabs}
+									activeSummaryTab={activeTab}
+								/>
+								{@render tabContent()}
+							{/snippet}
+						</MiniTabs>
 					{/if}
 				</section>
 			</div>
@@ -178,7 +225,6 @@
 	}
 	.diagram {
 		margin: 0 auto;
-		gap: 0.5rem;
 		/* vertical lines separating sub-journeys */
 		background-image: linear-gradient(
 			to right,
@@ -186,8 +232,12 @@
 			var(--background-color) 1px calc(100% - 1px),
 			var(--foreground-color--very-transparent) calc(100% - 1px)
 		);
-		background-size: calc(var(--connection-width)) 100%;
+		background-size: calc(var(--diagram-width) / var(--connection-count)) 100%;
 		background-repeat: repeat;
+		&:has(:global(#journey-summary.has-svg-diagram)) {
+			background-position-x: var(--diagram--beginning-end-offset);
+		}
+
 		/* cover vertical lines at very right and at very left */
 		outline: var(--background-color) solid 4px;
 		outline-offset: -3px;
@@ -216,6 +266,7 @@
 		padding: 0 0.5rem 0.5rem;
 		overscroll-behavior-x: none;
 		box-sizing: border-box;
+		--diagram--beginning-end-offset: calc(var(--line-width) / 2 + 0.5rem + 2.2ch);
 		--connection-width--min-threshold: 11em;
 		--connection-width--max-threshold: 40em;
 		--display-width: calc(100vw - 2rem - 8px);
@@ -224,11 +275,15 @@
 			calc(var(--display-width) / var(--connection-count)),
 			var(--connection-width--max-threshold)
 		);
-		--diagram-width: clamp(
-			calc(var(--connection-width--min-threshold) * (var(--connection-count))),
-			var(--display-width),
-			calc(var(--connection-width--max-threshold) * (var(--connection-count)))
-		);
+		--diagram-width: calc(var(--connection-width) * var(--connection-count));
+		&:has(:global(#journey-summary.has-svg-diagram)) {
+			/* first and last columns of svg diagram are slightly wider, so make them smaller here */
+			--diagram-width: calc(
+				var(--connection-width) * var(--connection-count) - 2 *
+					var(--diagram--beginning-end-offset)
+			);
+			--diagram--beginning-end-offset: calc(4.4ch * 0.8 + var(--line-width));
+		}
 		width: fit-content;
 		min-width: fit-content;
 		margin: auto;

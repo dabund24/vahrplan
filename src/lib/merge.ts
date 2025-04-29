@@ -170,6 +170,7 @@ function mergingWalkToBlock(
 		type: "walk",
 		originLocation: departureLocation,
 		destinationLocation: arrivalLocation,
+		time: { departure: departureTime.arrival, arrival: arrivalTime.departure },
 		distance: 0,
 		travelTime: undefined,
 		transferTime: dateDifference(departureTime.arrival?.time, arrivalTime.departure?.time) ?? 0

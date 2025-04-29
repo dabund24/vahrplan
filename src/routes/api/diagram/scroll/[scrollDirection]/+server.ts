@@ -5,11 +5,14 @@ import type { RelativeTimeType, TimeData, TransitType } from "$lib/types";
 import { buildTree, subJourneyToNodeData, unfoldTree } from "../../treePlantation.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
+import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "../../locationRepresentatives.server";
+import { generateSvgData } from "$lib/server/svgData/svgData.server";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
-	const { scrollDirection, tokens, stops, tree, options, recommendedVias } =
-		await client.parse(reqEvent);
+	const reqData = await client.parse(reqEvent);
+	const { scrollDirection, tokens, stops, tree, options, recommendedVias } = reqData;
+	let { transferLocations } = reqData;
 
 	const timeData: TimeData[] = tokens.map((token) => ({
 		type: "relative",
@@ -20,7 +23,9 @@ export const POST: RequestHandler = async function (reqEvent) {
 	if (resColumns.isError) {
 		return client.formatResponse(resColumns);
 	}
-	const newNodeData = resColumns.content.map((d) => d.journeys.map(subJourneyToNodeData));
+	const subJourneyMatrix = resColumns.content.map((column) => column.journeys);
+
+	const newNodeData = subJourneyMatrix.map((column) => column.map(subJourneyToNodeData));
 	const oldNodeData = unfoldTree(tree, tokens.length);
 	const isNew = computeIsNew(scrollDirection, oldNodeData, newNodeData);
 
@@ -31,11 +36,27 @@ export const POST: RequestHandler = async function (reqEvent) {
 			column.push(...newNodeData[columnIndex]);
 		}
 	});
-
 	const resTree = buildTree(oldNodeData);
 
+	transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(
+		subJourneyMatrix.flat(),
+		transferLocations
+	);
+
+	const svgData = generateSvgData(subJourneyMatrix, {
+		timeData: oldNodeData,
+		transferLocations: transferLocations
+	});
+
 	return client.formatResponse(
-		new VahrplanSuccess({ columns: resColumns.content, tree: resTree, recommendedVias, isNew })
+		new VahrplanSuccess({
+			columns: resColumns.content,
+			tree: resTree,
+			svgData,
+			transferLocations: transferLocations,
+			recommendedVias,
+			isNew
+		})
 	);
 };
 

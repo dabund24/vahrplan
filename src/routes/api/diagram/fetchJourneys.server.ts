@@ -3,6 +3,7 @@ import { journeyDataService } from "$lib/server/setup";
 import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { DIAGRAM_COLUMN_MAX_REQUESTS, MAX_DATE } from "$lib/constants";
+import { VahrplanError } from "$lib/VahrplanError";
 
 type RequestData = {
 	fromTo: { from: string; to: string };
@@ -35,8 +36,9 @@ export async function fetchJourneys(
 			{ fromTo: { from, to }, timeData: nextColumnStart, options },
 			nextColumnTimeLimit
 		);
-		if (column.isError) {
-			return column;
+		if (column.isError || column.content.journeys.length === 0) {
+			const errMessage = `Keine Verbindungen von ${i + 1}. zu ${i + 2}. Station gefunden`;
+			return VahrplanError.withMessage("NOT_FOUND", errMessage);
 		}
 		result[i] = column.content;
 

@@ -18,13 +18,11 @@
 		setDisplayedFormData
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getSelectedData, setSelectedData } from "$lib/state/selectedData.svelte";
-	import { getDiagramData, setDiagramData } from "$lib/state/diagramData.svelte";
+	import { setDiagramData } from "$lib/state/diagramData.svelte";
 	import { browser } from "$app/environment";
 
 	const displayedFormData = $derived(getDisplayedFormData());
 	const selectedData = $derived(getSelectedData());
-
-	$inspect(getDiagramData());
 
 	const { formData, diagramData } = page.data;
 
