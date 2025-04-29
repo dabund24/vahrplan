@@ -5,12 +5,14 @@
 	import { svgJourneyToPolylinePoints, timeMarkIt } from "./svgDiagramUtils";
 	import SvgNowLine from "./SvgNowLine.svelte";
 	import SvgDiagramWrapper from "./SvgDiagramWrapper.svelte";
+	import type { DiagramData } from "$lib/state/diagramData.svelte";
 
 	type Props = {
 		svgData: SvgData;
+		isNew: DiagramData["isNew"];
 	};
 
-	const { svgData }: Props = $props();
+	const { svgData, isNew }: Props = $props();
 	const { columns, minTime, maxTime, minutesPerHeight, timeMarksData } = $derived(svgData);
 
 	const { selectedJourneys } = $derived(getSelectedData());
@@ -53,7 +55,14 @@
 			{/each}
 
 			{#each columns as column, columnIndex}
-				<SvgColumn columnData={column} {minTime} {yMin} {ySize} {columnIndex} />
+				<SvgColumn
+					columnData={column}
+					{minTime}
+					{yMin}
+					{ySize}
+					{columnIndex}
+					isNewColumn={isNew[columnIndex]}
+				/>
 			{/each}
 		</g>
 	{/snippet}

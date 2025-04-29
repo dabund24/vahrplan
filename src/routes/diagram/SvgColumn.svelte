@@ -2,6 +2,7 @@
 	import type { BlockSvgData, SvgData } from "$lib/server/svgData/svgData.server";
 	import SvgSubJourney from "./SvgSubJourney.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import type { DiagramData } from "$lib/state/diagramData.svelte";
 
 	type Props = {
 		columnData: SvgData["columns"][number];
@@ -9,9 +10,10 @@
 		yMin: number;
 		ySize: number;
 		columnIndex: number;
+		isNewColumn: DiagramData["isNew"][number];
 	};
 
-	const { columnData, minTime, yMin, ySize, columnIndex }: Props = $props();
+	const { columnData, minTime, yMin, ySize, columnIndex, isNewColumn }: Props = $props();
 
 	const { selectedJourneys } = $derived(getSelectedData());
 
@@ -34,5 +36,5 @@
 	/>
 {/each}
 {#each columnData.subJourneys as journey, rowIndex}
-	<SvgSubJourney {journey} {minTime} {columnIndex} {rowIndex} />
+	<SvgSubJourney {journey} {minTime} {columnIndex} {rowIndex} isNew={isNewColumn[rowIndex]} />
 {/each}

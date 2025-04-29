@@ -8,9 +8,10 @@
 		minTime: number;
 		columnIndex: number;
 		rowIndex: number;
+		isNew: boolean;
 	};
 
-	const { journey, minTime, columnIndex, rowIndex }: Props = $props();
+	const { journey, minTime, columnIndex, rowIndex, isNew }: Props = $props();
 
 	const journeyCoords = $derived(svgJourneyToPolylinePoints(journey, minTime, columnIndex));
 
@@ -85,13 +86,18 @@
 
 <g
 	class="svg-journey--hoverable"
+	class:is-new={isNew}
 	role="button"
 	onclick={handleJourneyToggle}
 	onkeydown={handleJourneyButtonPress}
 	tabindex="0"
 	stroke="transparent"
 >
-	<use href="#svg-journey--{journeyId}" stroke-width="calc(1rem + 4px)" />
+	<use
+		href="#svg-journey--{journeyId}"
+		class="hoverable__background"
+		stroke-width="calc(1rem + 4px)"
+	/>
 	<use
 		href="#svg-journey--{journeyId}"
 		stroke-width="calc(1rem + 4px)"
@@ -118,5 +124,21 @@
 	}
 	.svg-journey--hoverable:where(:hover, :focus-visible) {
 		stroke: var(--foreground-color--transparent);
+	}
+
+	.is-new .hoverable__background {
+		animation: 10s highlight-new-journey--stroke;
+	}
+
+	@keyframes highlight-new-journey--stroke {
+		0% {
+			stroke: var(--foreground-color--transparent);
+		}
+		60% {
+			stroke: var(--foreground-color--transparent);
+		}
+		100% {
+			stroke: transparent;
+		}
 	}
 </style>

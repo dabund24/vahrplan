@@ -114,13 +114,13 @@
 		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="earlier" />
 		<SvgDiagramSkeleton columnCount={(displayedFormData?.locations.length ?? 2) - 1} />
 		<ScrollButton isClickable={false} isTextHidden={true} scrollDirection="later" />
-	{:then { columns, svgData }}
+	{:then { columns, svgData, isNew }}
 		<ScrollButton
 			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
 			isTextHidden={true}
 			scrollDirection="earlier"
 		/>
-		<SvgDiagram {svgData} />
+		<SvgDiagram {svgData} {isNew} />
 		<ScrollButton
 			isClickable={(columns[0]?.laterRef ?? "") !== ""}
 			isTextHidden={true}
