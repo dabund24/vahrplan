@@ -5,12 +5,10 @@
 	import { beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
-	import type { Snippet } from "svelte";
 	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
+	import type { LayoutProps } from "./$types";
 
-	type Props = { children: Snippet };
-
-	let { children }: Props = $props();
+	let { children, data }: LayoutProps = $props();
 
 	beforeNavigate((navigation) => {
 		if (navigation.to?.url.origin !== location.origin) {
@@ -45,7 +43,7 @@
 			</small>
 		</footer>
 	</main>
-	<Toasts />
+	<Toasts news={data.news} />
 </div>
 
 <style>
