@@ -8,8 +8,8 @@
 		"start": "node build/index.js",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
-		"lint:fix": "npm run lint -- --fix",
+		"lint": "svelte-kit sync && eslint . --max-warnings 0 --report-unused-disable-directives",
+		"lint:fix": "svelte-kit sync && npm run lint -- --fix",
 		"format": "prettier --check .",
 		"format:fix": "prettier --write ."
 	},
