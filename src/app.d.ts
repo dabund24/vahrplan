@@ -9,6 +9,8 @@ import type { JourneyNode } from "$lib/types";
  */
 type TripInfoModalKeys = Record<`${"showTripInfoModal"}${string}`, boolean | undefined>;
 
+type ServerNewsModalKeys = Record<`${"serverNewsModal"}${string}`, boolean | undefined>;
+
 declare global {
 	namespace App {
 		// interface Error {}
@@ -19,7 +21,7 @@ declare global {
 			treeNodes?: JourneyNode[] | undefined;
 		}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-		interface PageState extends TripInfoModalKeys {
+		interface PageState extends TripInfoModalKeys, ServerNewsModalKeys {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showRecommendationModal?: boolean;

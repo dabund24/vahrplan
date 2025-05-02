@@ -14,7 +14,6 @@ CACHE_DURATION_SECONDS.set("/api/locations", YEAR_IN_SECONDS);
 /**
  * sets the cache-control header of the response based on the url
  */
-// eslint-disable-next-line @typescript-eslint/unbound-method
 const cache: Handle = async function ({ event, resolve }) {
 	const response = await resolve(event);
 	if (!response.ok) {
@@ -33,7 +32,6 @@ const userRateLimiter = new RateLimiter(rateLimiterIntervalSeconds, rateLimiterA
 /**
  * limits api access for each user
  */
-// eslint-disable-next-line @typescript-eslint/unbound-method
 const userRateLimiting: Handle = function ({ event, resolve }) {
 	if (!event.url.pathname.startsWith("/api/")) {
 		return resolve(event);

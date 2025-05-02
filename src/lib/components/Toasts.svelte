@@ -6,6 +6,13 @@
 	import IconInfo from "$lib/components/icons/IconInfo.svelte";
 	import IconCheckmark from "$lib/components/icons/IconCheckmark.svelte";
 	import ServiceWorkerUpdates from "$lib/components/ServiceWorkerUpdates.svelte";
+	import ServerNotifications from "$lib/components/ServerNotifications.svelte";
+	import type { ServerNews } from "../server/news.server";
+
+	type Props = {
+		news: ServerNews[];
+	};
+	const { news }: Props = $props();
 </script>
 
 <div popover="manual" class="toasts flex-column">
@@ -15,6 +22,7 @@
 			transition:scale
 			animate:flip={{ duration: 400 }}
 			style="--color: var(--accent--{toast.color})"
+			role="alert"
 		>
 			<div class="flex-row">
 				{#if toast.color === "red"}
@@ -28,6 +36,9 @@
 			</div>
 			<div class="line--regular line--{toast.color}"></div>
 		</div>
+	{/each}
+	{#each news as singleNews}
+		<ServerNotifications news={singleNews} />
 	{/each}
 	<ServiceWorkerUpdates />
 </div>
