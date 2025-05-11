@@ -77,6 +77,9 @@ jobs:
             - name: Create environment variables
               run: cp .env.example .env
 
+            - name: Fetch line names
+              run: chmod +x scripts/line-shapes.sh && ./scripts/line-shapes.sh
+
             - name: Setup node.js
               uses: actions/setup-node@v4
               with:
