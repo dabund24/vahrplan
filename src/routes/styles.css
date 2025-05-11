@@ -1,26 +1,26 @@
 [data-color="red"] {
-	--accent--light: var(--accent--red--light);
-	--accent--dark: var(--accent--red--dark);
+	--accent-base: var(--accent-base--red);
+	--accent--dark: oklch(from var(--accent-base--red) 0.8 0.1 h);
 }
 
 [data-color="yellow"] {
-	--accent--light: var(--accent--yellow--light);
-	--accent--dark: var(--accent--yellow--dark);
+	--accent-base: var(--accent-base--yellow);
+	--accent--dark: oklch(from var(--accent-base--yellow) 0.8 0.1 h);
 }
 
 [data-color="green"] {
-	--accent--light: var(--accent--green--light);
-	--accent--dark: var(--accent--green--dark);
+	--accent-base: var(--accent-base--green);
+	--accent--dark: oklch(from var(--accent-base--green) 0.8 0.1 h);
 }
 
 [data-color="blue"] {
-	--accent--light: var(--accent--blue--light);
-	--accent--dark: var(--accent--blue--dark);
+	--accent-base: var(--accent-base--blue);
+	--accent--dark: oklch(from var(--accent-base--blue) 0.8 0.1 h);
 }
 
 [data-color="purple"] {
-	--accent--light: var(--accent--purple--light);
-	--accent--dark: var(--accent--purple--dark);
+	--accent-base: var(--accent-base--purple);
+	--accent--dark: oklch(from var(--accent-base--purple) 0.8 0.1 h);
 }
 
 :root,
@@ -48,103 +48,63 @@
 	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
 
 	accent-color: var(--accent-color);
-	--foreground-color--light: #000000;
-	--background-color--light: #ffffff;
-	--foreground-color--transparent--light: #00000020;
-	--foreground-color--very-transparent--light: #00000010;
-	--background-color--transparent--light: #ffffffe0;
-	--foreground-color--dark: #ffffff;
-	--background-color--dark: #121212;
-	--foreground-color--transparent--dark: #ffffff14;
-	--foreground-color--very-transparent--dark: #ffffff0a;
-	--background-color--transparent--dark: #121212e0;
+	color-scheme: light dark;
+	--accent-color: light-dark(var(--accent-base), var(--accent--dark));
+	--accent--red: light-dark(
+		var(--accent-base--red),
+		oklch(from var(--accent-base--red) 0.8 0.1 h)
+	);
+	--accent--yellow: light-dark(
+		var(--accent-base--yellow),
+		oklch(from var(--accent-base--yellow) 0.8 0.1 h)
+	);
+	--accent--green: light-dark(
+		var(--accent-base--green),
+		oklch(from var(--accent-base--green) 0.8 0.1 h)
+	);
+	--foreground-color: light-dark(
+		oklch(from var(--accent-base) 0.25 0.02 h),
+		oklch(from var(--accent-base) 0.95 0.002 h)
+	);
+	--background-color: light-dark(
+		oklch(from var(--accent-base) 0.99 0.002 h),
+		oklch(from var(--accent-base) 0.15 0.015 h)
+	);
+	--foreground-color--transparent: oklch(from var(--foreground-color) l c h / 0.12);
+	--foreground-color--very-transparent: oklch(from var(--foreground-color) l c h / 0.06);
+	--background-color--transparent: oklch(from var(--background-color) l c h / 0.9);
 
-	--accent--red--light: #cb1a29;
-	--accent--red--dark: #eb6c68;
-	--accent--yellow--light: #e19d00;
-	--accent--yellow--dark: #ffd52a;
-	--accent--green--light: #0e7667;
-	--accent--green--dark: #27f4e2;
-	--accent--blue--light: #0e6aba;
-	--accent--blue--dark: #54bef6;
-	--accent--purple--light: #654199;
-	--accent--purple--dark: #ba9cd4;
+	--accent-base--red: oklch(0.5 0.2 25);
+	--accent-base--yellow: oklch(0.79 0.17 70);
+	--accent-base--green: oklch(0.5 0.09 170);
+	--accent-base--blue: oklch(0.52 0.15 252);
+	--accent-base--purple: oklch(0.46 0.14 300);
 
-	--nationalExpress-color: var(--foreground-color);
-	--nationalExpress-color--alt: var(--background-color);
-	--suburban-color--light: #408335;
-	--suburban-color--alt--light: #8cbc80;
-	--subway-color--light: #1455c0;
-	--subway-color--alt--light: #73aef4;
-	--tram-color--light: #a9455d;
-	--tram-color--alt--light: #da9aa8;
-	--bus-color--light: #814997;
-	--bus-color--alt--light: #c2a1c7;
-	--ferry-color--light: #309fd1;
-	--ferry-color--alt--light: #84cfef;
-	--taxi-color--light: #ffd800;
-	--taxi-color--alt--light: #fff876;
-	--regional-color--light: #ec0016;
-	--regional-color--alt--light: #fa9090;
-	--regionalExpress-color--light: #f39200;
-	--regionalExpress-color--alt--light: #faca7f;
-	--national-color--light: #646973;
-	--national-color--alt--light: #afb4bb;
-
-	--suburban-color--dark: #66a558;
-	--subway-color--dark: #347de0;
-	--tram-color--dark: #c0687b;
-	--bus-color--dark: #9a6ca6;
-	--ferry-color--dark: #55b9e6;
-	--taxi-color--dark: #fff000;
-	--regional-color--dark: #f75056;
-	--regionalExpress-color--dark: #f8ab37;
-	--national-color--dark: #878c96;
+	--longDistanceExpress-color: var(--foreground-color);
+	--longDistance-color: oklch(0.52 0.017 265);
+	--regionalExpress-color: oklch(0.75 0.167 65);
+	--regional-color: oklch(0.59 0.24 27.5);
+	--suburban-color: oklch(0.55 0.1316 140);
+	--subway-color: oklch(0.48 0.1797 260);
+	--tram-color: oklch(0.53 0.1329 0);
+	--bus-color: oklch(0.5 0.1327 315.7);
+	--taxi-color: oklch(0.89 0.1827 95.76);
+	--ferry-color: oklch(0.66 0.1213 232.8);
 }
 
 [data-theme="light"],
 [data-theme="system"],
 :root:not([data-theme]) {
 	color-scheme: light;
-	--background-color: var(--background-color--light);
-	--foreground-color: var(--foreground-color--light);
-	--background-color--transparent: var(--background-color--transparent--light);
-	--foreground-color--transparent: var(--foreground-color--transparent--light);
-	--foreground-color--very-transparent: var(--foreground-color--very-transparent--light);
 	--product-color: var(--foreground-color);
 
 	--external-ref-icon: var(--external-ref-icon--light);
 	--external-ref-icon--inverse: var(--external-ref-icon--dark);
-
-	--accent-color: var(--accent--light);
-	--accent--red: var(--accent--red--light);
-	--accent--yellow: var(--accent--yellow--light);
-	--accent--green: var(--accent--green--light);
-	--accent--blue: var(--accent--blue--light);
-	--accent--purple: var(--accent--purple--light);
-
-	--suburban-color: var(--suburban-color--light);
-	--suburban-color--alt: var(--suburban-color--alt--light);
-	--subway-color: var(--subway-color--light);
-	--subway-color--alt: var(--subway-color--alt--light);
-	--tram-color: var(--tram-color--light);
-	--tram-color--alt: var(--tram-color--alt--light);
-	--bus-color: var(--bus-color--light);
-	--bus-color--alt: var(--bus-color--alt--light);
-	--ferry-color: var(--ferry-color--light);
-	--ferry-color--alt: var(--ferry-color--alt--light);
-	--taxi-color: var(--taxi-color--light);
-	--taxi-color--alt: var(--taxi-color--alt--light);
-	--regional-color: var(--regional-color--light);
-	--regional-color--alt: var(--regional-color--alt--light);
-	--regionalExpress-color: var(--regionalExpress-color--light);
-	--regionalExpress-color--alt: var(--regionalExpress-color--alt--light);
-	--national-color: var(--national-color--light);
-	--national-color--alt: var(--national-color--alt--light);
 }
 
 @media (update: fast) {
-	:root[data-theme="dark"] {
+	:root[data-theme="dark"],
+	:root[data-theme="midnight"] {
 		--map-filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)
 			brightness(0.7);
 	}
@@ -157,33 +117,11 @@
 	}
 }
 
-[data-theme="dark"] {
+[data-theme="dark"],
+[data-theme="midnight"] {
 	color-scheme: dark;
 	--external-ref-icon--inverse: var(--external-ref-icon--light);
 	--external-ref-icon: var(--external-ref-icon--dark);
-
-	--background-color: var(--background-color--dark);
-	--foreground-color: var(--foreground-color--dark);
-	--background-color--transparent: var(--background-color--transparent--dark);
-	--foreground-color--transparent: var(--foreground-color--transparent--dark);
-	--foreground-color--very-transparent: var(--foreground-color--very-transparent--dark);
-	--accent-color: var(--accent--dark);
-	--accent-inverted: var(--accent--light);
-	--accent--red: var(--accent--red--dark);
-	--accent--yellow: var(--accent--yellow--dark);
-	--accent--green: var(--accent--green--dark);
-	--accent--blue: var(--accent--blue--dark);
-	--accent--purple: var(--accent--purple--dark);
-
-	--suburban-color: var(--suburban-color--dark);
-	--subway-color: var(--subway-color--dark);
-	--tram-color: var(--tram-color--dark);
-	--bus-color: var(--bus-color--dark);
-	--ferry-color: var(--ferry-color--dark);
-	--taxi-color: var(--taxi-color--dark);
-	--regional-color: var(--regional-color--dark);
-	--regionalExpress-color: var(--regionalExpress-color--dark);
-	--national-color: var(--national-color--dark);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -192,30 +130,11 @@
 		color-scheme: dark;
 		--external-ref-icon--inverse: var(--external-ref-icon--light);
 		--external-ref-icon: var(--external-ref-icon--dark);
-
-		--background-color: var(--background-color--dark);
-		--foreground-color: var(--foreground-color--dark);
-		--background-color--transparent: var(--background-color--transparent--dark);
-		--foreground-color--transparent: var(--foreground-color--transparent--dark);
-		--foreground-color--very-transparent: var(--foreground-color--very-transparent--dark);
-		--accent-color: var(--accent--dark);
-		--accent-inverted: var(--accent--light);
-		--accent--red: var(--accent--red--dark);
-		--accent--yellow: var(--accent--yellow--dark);
-		--accent--green: var(--accent--green--dark);
-		--accent--blue: var(--accent--blue--dark);
-		--accent--purple: var(--accent--purple--dark);
-
-		--suburban-color: var(--suburban-color--dark);
-		--subway-color: var(--subway-color--dark);
-		--tram-color: var(--tram-color--dark);
-		--bus-color: var(--bus-color--dark);
-		--ferry-color: var(--ferry-color--dark);
-		--taxi-color: var(--taxi-color--dark);
-		--regional-color: var(--regional-color--dark);
-		--regionalExpress-color: var(--regionalExpress-color--dark);
-		--national-color: var(--national-color--dark);
 	}
+}
+
+[data-theme="midnight"] {
+	--background-color: black;
 }
 
 ul,
@@ -264,6 +183,10 @@ button {
 svg {
 	display: block;
 	flex-shrink: 0;
+	polyline,
+	line {
+		vector-effect: non-scaling-stroke;
+	}
 }
 
 svg polyline,
@@ -383,10 +306,10 @@ h3 {
 }
 
 .line--warning {
-	background-color: var(--accent--yellow);
+	background-color: var(--accent-base--yellow);
 }
 .text--yellow {
-	color: var(--accent--yellow);
+	color: var(--accent-base--yellow);
 }
 
 .line--error {
@@ -396,10 +319,6 @@ h3 {
 .text--cancelled,
 .text--delayed {
 	color: var(--accent--red);
-}
-
-.text--blue {
-	color: var(--accent--blue);
 }
 
 .line--product {
@@ -416,53 +335,65 @@ h3 {
 }
 
 .product--suburban {
-	--product-color: var(--suburban-color);
-	--product-color--alt: var(--suburban-color--alt);
+	--product-color: light-dark(
+		var(--suburban-color),
+		oklch(from var(--suburban-color) 0.8 0.15 h)
+	);
+	--product-color--alt: oklch(from var(--suburban-color) 0.8 0.1 h);
 }
 
 .product--subway {
-	--product-color: var(--subway-color);
-	--product-color--alt: var(--subway-color--alt);
+	--product-color: light-dark(var(--subway-color), oklch(from var(--subway-color) 0.8 0.15 h));
+	--product-color--alt: oklch(from var(--subway-color) 0.8 0.1 h);
 }
 
 .product--tram {
-	--product-color: var(--tram-color);
-	--product-color--alt: var(--tram-color--alt);
+	--product-color: light-dark(var(--tram-color), oklch(from var(--tram-color) 0.8 0.15 h));
+	--product-color--alt: oklch(from var(--tram-color) 0.8 0.1 h);
 }
 
 .product--bus {
-	--product-color: var(--bus-color);
-	--product-color--alt: var(--bus-color--alt);
+	--product-color: light-dark(var(--bus-color), oklch(from var(--bus-color) 0.8 0.15 h));
+	--product-color--alt: oklch(from var(--bus-color) 0.8 0.1 h);
 }
 
 .product--ferry {
-	--product-color: var(--ferry-color);
-	--product-color--alt: var(--ferry-color--alt);
+	--product-color: light-dark(var(--ferry-color), oklch(from var(--ferry-color) 0.8 0.15 h));
+	--product-color--alt: oklch(from var(--ferry-color) 0.8 0.1 h);
 }
 
 .product--taxi {
-	--product-color: var(--taxi-color);
-	--product-color--alt: var(--taxi-color--alt);
+	--product-color: light-dark(var(--taxi-color), oklch(from var(--taxi-color) 0.8 0.15 h));
+	--product-color--alt: oklch(from var(--taxi-color) 1 0.1 h);
 }
 
 .product--regional {
-	--product-color: var(--regional-color);
-	--product-color--alt: var(--regional-color--alt);
+	--product-color: light-dark(
+		var(--regional-color),
+		oklch(from var(--regional-color) 0.8 0.15 h)
+	);
+	--product-color--alt: oklch(from var(--regional-color) 0.8 0.1 h);
 }
 
 .product--regionalExpress {
-	--product-color: var(--regionalExpress-color);
-	--product-color--alt: var(--regionalExpress-color--alt);
+	--product-color: light-dark(
+		var(--regionalExpress-color),
+		oklch(from var(--regionalExpress-color) 0.8 0.15 h)
+	);
+	--product-color--alt: oklch(from var(--regionalExpress-color) 0.8 0.1 h);
 }
 
-.product--national {
-	--product-color: var(--national-color);
-	--product-color--alt: var(--national-color--alt);
+.product--longDistance {
+	--product-color: light-dark(
+		var(--longDistance-color),
+		oklch(from var(--longDistance-color) 0.7 0.015 h)
+	);
+	--product-color--alt: oklch(from var(--longDistance-color) 0.8 0.015 h);
 }
 
-.product--nationalExpress {
-	--product-color: var(--nationalExpress-color);
-	--product-color--alt: var(--nationalExpress-color--alt);
+.product--longDistanceExpress {
+	--product-color: var(--foreground-color);
+	--product-color--alt: var(--background-color);
 }
 
 .hoverable {
@@ -504,21 +435,23 @@ h3 {
 .hoverable--visible--group {
 	--base-padding: 0.5rem;
 	align-items: stretch;
-	button {
+	button,
+	input,
+	.hoverable--visible--group--sep {
 		border-top: var(--border--very-transparant);
 		border-bottom: var(--border--very-transparant);
 		background-color: var(--foreground-color--very-transparent);
 		padding: 0.5rem calc(var(--base-padding) + var(--line-width));
 		transition: none;
-		height: 100%;
+		min-height: 100%;
 	}
-	button:hover,
-	button:active {
+	:where(button, input):hover,
+	:where(button, input):active {
 		background-color: var(--foreground-color--transparent);
 		border: var(--border);
 		padding: 0.5rem var(--base-padding);
 	}
-	> :first-child button {
+	> :first-child :where(button, input) {
 		border-top-left-radius: 50vh;
 		border-bottom-left-radius: 50vh;
 		border-left: var(--border--very-transparant);
@@ -528,7 +461,7 @@ h3 {
 			border-left-color: var(--foreground-color--transparent);
 		}
 	}
-	> :last-child button {
+	> :last-child :where(button, input) {
 		border-top-right-radius: 50vh;
 		border-bottom-right-radius: 50vh;
 		border-right: var(--border--very-transparant);
@@ -536,6 +469,15 @@ h3 {
 		&:hover,
 		&:active {
 			border-right-color: var(--foreground-color--transparent);
+		}
+	}
+	> .hoverable--visible--group--sep {
+		padding: calc(2 * var(--line-width)) var(--line-width);
+		> * {
+			width: var(--line-width);
+			background-color: var(--foreground-color--transparent);
+			height: 100%;
+			border-radius: var(--border-radius--small);
 		}
 	}
 }
@@ -557,13 +499,19 @@ h3 {
 }
 
 .skeleton {
-	& .skeleton-text {
-		border-radius: 50vh;
+	.skeleton-text,
+	.skeleton-stroke {
 		animation: skeleton-loading 0.5s linear infinite alternate;
-		background-color: var(--foreground-color--transparent);
-		color: transparent;
 		user-select: none;
 		-webkit-user-select: none;
+	}
+	.skeleton-text {
+		border-radius: 50vh;
+		background-color: var(--foreground-color--transparent) !important;
+		color: transparent;
+	}
+	.skeleton-stroke {
+		stroke: var(--foreground-color--transparent) !important;
 	}
 }
 

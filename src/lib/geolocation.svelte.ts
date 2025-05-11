@@ -1,8 +1,9 @@
 import type { ParsedGeolocation, ParsedLocation } from "$lib/types";
 import { get } from "svelte/store";
-import { settings } from "$lib/stores/settingStore";
-import { toast } from "$lib/stores/toastStore";
-import { startLoading, stopLoading } from "$lib/stores/loadingStore";
+import { settings } from "$lib/state/settingStore";
+import { toast } from "$lib/state/toastStore";
+import { startLoading, stopLoading } from "$lib/state/loadingStore";
+import type { Location } from "hafas-client";
 
 export type CurrentPositionData = {
 	position: ParsedLocation["position"] | undefined;
@@ -149,12 +150,12 @@ export function getParsedGeolocation(
 	return {
 		type: "currentLocation",
 		name: "Standort",
-		requestParameter: {
+		id: JSON.stringify({
 			type: "location",
 			address: "Standort",
 			latitude: position.lat,
 			longitude: position.lng
-		},
+		} as Location),
 		position: position,
 		asAt: date
 	};

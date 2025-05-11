@@ -46,6 +46,7 @@
 		visibility: hidden;
 		width: auto;
 		display: none;
+		font-weight: bold;
 	}
 	.align-right + .width-setter {
 		display: block;

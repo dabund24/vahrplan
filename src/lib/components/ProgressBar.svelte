@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type LoadingStatus, loadingStatus } from "$lib/stores/loadingStore";
+	import { type LoadingStatus, loadingStatus } from "$lib/state/loadingStore";
 
 	let isWidthReset = $state(false);
 

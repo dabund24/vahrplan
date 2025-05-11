@@ -8,6 +8,7 @@
 	import JourneyInfo from "$lib/components/journeys/TripInfo.svelte";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 	import IconExpand from "$lib/components/icons/IconExpand.svelte";
+	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 
 	type Props = {
 		block: LegBlock;
@@ -29,13 +30,13 @@
 	style:anchor-name="--leg--{block.blockKey}"
 >
 	<div class="flex-column">
-		<div class="top-or-bottom flex-column">
+		<div class="top-or-bottom time flex-column">
 			<Time time={block.departureData.time} />
 		</div>
 		<div class="middle duration-container">
 			<Duration duration={block.duration} isAlignedRight={true} />
 		</div>
-		<div class="top-or-bottom flex-column">
+		<div class="top-or-bottom time flex-column">
 			<Time time={block.arrivalData.time} />
 		</div>
 	</div>
@@ -88,7 +89,12 @@
 						class="hoverable flex-row"
 						style="anchor-name: --leg--{block.blockKey}{departureTime}__stopovers-summary"
 					>
-						<span class="limit-lines">{block.name} &rightarrow; {block.direction}</span>
+						<LineNameDirection
+							lineName={block.name}
+							productName={block.productName}
+							direction={block.direction}
+							lineShape={block.lineShape}
+						/>
 						<IconExpand />
 					</summary>
 					<div>
@@ -120,6 +126,9 @@
 		height: 3rem;
 		align-items: center;
 	}
+	.time {
+		font-weight: bold;
+	}
 	.line-container {
 		position: relative;
 		margin: 1.5rem 0.5rem;
@@ -146,10 +155,6 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.5rem;
-		.limit-lines {
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-		}
 	}
 
 	details:not(:last-child) > *:not(summary) {

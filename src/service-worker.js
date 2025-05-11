@@ -93,7 +93,7 @@ function urlIsCachedByServiceWorker(url) {
 		(
 			url.includes("/api/") || // api requests are always handled by the server
 			url.includes("/diagram?") || // loading diagrams with data includes api requests, so they are handled by the server
-			url.includes("/journey?")
+			url.includes("/journey/")
 		) // loading a specific journey includes an api request, so it's handled by the server
 	);
 }

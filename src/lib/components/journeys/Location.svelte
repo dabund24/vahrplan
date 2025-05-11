@@ -3,7 +3,7 @@
 	import Time from "$lib/components/Time.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
-	import { displayedFormData } from "$lib/stores/journeyStores";
+	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 
 	type Props = {
 		block: LocationBlock;
@@ -11,13 +11,15 @@
 
 	let { block }: Props = $props();
 
+	const displayedFormData = $derived(getDisplayedFormData());
+
 	let { locationName, locationType } = $derived.by(() => {
 		let locationName = block.location.name;
 		let locationType = block.location.type;
 		if (block.location.type === "currentLocation") {
 			locationName = getGeolocationString(block.location.asAt);
 		} else if (block.location.name === "Standort") {
-			locationName = getGeolocationString($displayedFormData?.geolocationDate ?? new Date());
+			locationName = getGeolocationString(displayedFormData?.geolocationDate ?? new Date());
 			locationType = "currentLocation";
 		}
 		return { locationName, locationType };
@@ -37,5 +39,9 @@
 		height: 3rem;
 		gap: 0.5rem;
 		align-items: center;
+	}
+
+	.time-container {
+		font-weight: bold;
 	}
 </style>

@@ -52,6 +52,7 @@ Instructions:
 
 - Copy `.env.example` to `.env`
 - Start Valkey with `valkey-server` (or Redis with `redis-server`) on Port 6379
+- Run the `line-shapes.sh` script (fetches line icon data)
 - Run `npm install`
 - Run `npm run build`
 - Run `npm run preview`
@@ -77,18 +78,24 @@ The app is now running on [`http://localhost:4173`](http://localhost:4173)
 - Framework: Svelte
 - Build-Tool: Vite
 
-## Great projects this app relies on
-
-- [hafas-client](https://github.com/public-transport/hafas-client)
-- [Leaflet](https://leafletjs.com)
-- [OpenStreetMap](https://www.openstreetmap.org)
-
 ## Screenshots
 
 ![connection search 1](static/screenshots/desktop_1.png)
 ![connection search 2](static/screenshots/desktop_2.png)
 ![journey details](static/screenshots/desktop_3.png)
 ![bookmarks](static/screenshots/desktop_4.png)
+
+## Great projects this app relies on
+
+- [db-vendo-client](https://github.com/public-transport/db-vendo-client)
+- [Leaflet](https://leafletjs.com)
+- [OpenStreetMap](https://www.openstreetmap.org)
+
+## Related Projects
+
+- [Tespace](https://tespace.traines.eu/)
+- [Bahnvorhersage](https://bahnvorhersage.de/)
+- [Wahrscheinlich ankommen](https://reitlinger.notion.site/Wahrscheinlich-Ankommen-a04600890c6142d9a12540ab58c15993)
 
 ## How it works
 

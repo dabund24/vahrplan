@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Product } from "$lib/stores/settingStore";
+	import type { Product } from "$lib/types";
 
 	type Props = {
 		product: Product;

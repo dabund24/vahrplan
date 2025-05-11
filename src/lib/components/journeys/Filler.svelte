@@ -63,8 +63,8 @@
 	</div>
 	{#if block.type === "walk"}
 		<a href={osmLink} target="_blank">
-			{#if block.distance !== undefined && block.walkingTime !== undefined}
-				{block.distance}m Fußweg (ca. <i>{block.walkingTime}min</i>)
+			{#if block.distance !== undefined && block.travelTime !== undefined}
+				{block.distance}m Fußweg (ca. <i>{block.travelTime}min</i>)
 			{:else}
 				Fußweg
 			{/if}
@@ -100,6 +100,9 @@
 	.duration-container {
 		max-width: min-content;
 		display: inline-block;
+		:global(.time) {
+			font-weight: bold;
+		}
 	}
 	.icon-container {
 		align-items: center;

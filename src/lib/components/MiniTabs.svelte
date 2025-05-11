@@ -10,7 +10,7 @@
 			content: Snippet; // the content associated with the tab
 			isFullHeight?: boolean; // sets the height of the content to 100vh instead of 100%
 		}[];
-		tabEnvironment: Snippet<[Snippet, Snippet]>;
+		tabEnvironment: Snippet<[Snippet, Snippet, number?]>;
 		startingTab?: number;
 	};
 
@@ -34,7 +34,7 @@
 	</div>
 {/snippet}
 
-{@render tabEnvironment(miniTabs, tabContent)}
+{@render tabEnvironment(miniTabs, tabContent, activeTab)}
 
 <style>
 	.pad-content {

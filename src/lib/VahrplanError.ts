@@ -1,4 +1,4 @@
-import type { NumericRange } from "@sveltejs/kit";
+import { error, type NumericRange } from "@sveltejs/kit";
 import type { HafasErrorCode } from "$lib/types";
 
 export type VahrplanErrorType =
@@ -19,6 +19,10 @@ export class VahrplanError extends Error {
 		this.message = message;
 		this.code = getErrorCodeFromErrorType(type);
 		this.type = type;
+	}
+
+	throwIfError(): never {
+		error(this.code, { ...this });
 	}
 
 	static withMessage(type: VahrplanErrorType, message: string): VahrplanError {

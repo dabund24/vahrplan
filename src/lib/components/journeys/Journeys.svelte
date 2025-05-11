@@ -4,64 +4,42 @@
 	import LegRegular from "$lib/components/journeys/LegRegular.svelte";
 	import Filler from "$lib/components/journeys/Filler.svelte";
 	import Location from "$lib/components/journeys/Location.svelte";
-	import { displayedJourneys, selectedJourneys } from "$lib/stores/journeyStores";
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { dateDifference } from "$lib/util";
-	import type { JourneyBlock, LegBlock, TransferBlock, WalkingBlock } from "$lib/types";
 	import Warning from "$lib/components/Warning.svelte";
+	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { getSelectedData } from "$lib/state/selectedData.svelte";
 
-	let selectedDeparture = $derived($selectedJourneys.at(0)?.subJourney.departureTime?.time);
-	let selectedArrival = $derived($selectedJourneys.at(-1)?.subJourney.arrivalTime?.time);
+	const displayedJourney = $derived(getDisplayedJourney());
+	const selectedData = $derived(getSelectedData());
 
-	let flatBlocks = $derived($displayedJourneys.flatMap((journey) => journey.value));
-
-	let hasImpossibleTransfer = $derived(
-		flatBlocks.filter(isTransferOrWalkingBlock).some((transfer) => transfer.transferTime < 0)
-	);
-
-	function isTransferOrWalkingBlock(block: JourneyBlock): block is TransferBlock | WalkingBlock {
-		return block.type === "transfer" || block.type === "walk";
-	}
-
-	let hasCancelledLeg = $derived(
-		flatBlocks.filter(isLegBlock).some((leg) => leg.attribute === "cancelled")
-	);
-
-	function isLegBlock(block: JourneyBlock): block is LegBlock {
-		return block.type === "leg";
-	}
-
-	let warningMessage = $derived(getWarningMessage(hasImpossibleTransfer, hasCancelledLeg));
-
-	function getWarningMessage(
-		hasImpossibleTransfer: boolean,
-		hasCancelledLeg: boolean
-	): string | undefined {
-		if (hasImpossibleTransfer && hasCancelledLeg) {
-			return "Reise nicht möglich: Negative Umstiegszeit und Fahrt entfällt";
-		} else if (hasImpossibleTransfer) {
-			return "Reise nicht möglich: Negative Umstiegszeit";
-		} else if (hasCancelledLeg) {
+	let warningMessage = $derived.by(() => {
+		const statuses = displayedJourney.statuses;
+		if (statuses.has("cancelled") && statuses.has("impossibleTransfer")) {
+			return "Reise nicht möglich: Nicht erreichbarer Umstieg und Fahrt entfällt";
+		} else if (statuses.has("impossibleTransfer")) {
+			return "Reise nicht möglich: Nicht erreichbarer Umstieg";
+		} else if (statuses.has("cancelled")) {
 			return "Reise nicht möglich: Fahrt entfällt";
 		}
-	}
+	});
 </script>
 
 <div class="journeys-wrapper">
 	{#if warningMessage !== undefined}
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
-	{#if $selectedJourneys.some((j) => j.selectedBy === -1)}
+	{#if selectedData.selectedJourneys.length !== 0 && !selectedData.isFullJourneySelected}
 		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning
 		>
 	{/if}
 	<DateDuration
-		date={selectedDeparture}
-		duration={dateDifference(selectedDeparture, selectedArrival)}
+		date={displayedJourney.departure}
+		duration={dateDifference(displayedJourney.departure, displayedJourney.arrival)}
 	/>
-	{#each $displayedJourneys as journey (journey.key)}
+	{#each displayedJourney.blocks as subJourney (subJourney.key)}
 		<div in:scale animate:flip={{ duration: 400 }}>
-			{#each journey.value as block}
+			{#each subJourney.value as block}
 				{#if block.type === "leg"}
 					<LegRegular {block} />
 				{:else if block.type === "walk" || block.type === "onward-journey" || block.type === "transfer" || block.type === "unselected"}

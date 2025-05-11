@@ -22,14 +22,16 @@
 				duration: block.duration,
 				direction: block.direction,
 				product: block.product,
-				name: block.name
+				productName: block.productName,
+				name: block.name,
+				lineShape: block.lineShape
 			};
 		}
 		if (block.type === "walk") {
 			return {
 				type: "walk",
 				duration: block.transferTime,
-				walkingTime: block.walkingTime,
+				walkingTime: block.travelTime,
 				distance: block.distance
 			};
 		}

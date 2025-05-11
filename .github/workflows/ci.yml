@@ -8,7 +8,7 @@ on:
 
 jobs:
     build:
-        name: Test build
+        name: Build
         runs-on: ubuntu-latest
 
         steps:
@@ -16,6 +16,9 @@ jobs:
 
             - name: Create environment variables
               run: cp .env.example .env
+
+            - name: Fetch line names
+              run: chmod +x scripts/line-shapes.sh && ./scripts/line-shapes.sh
 
             - name: Setup node.js
               uses: actions/setup-node@v4
@@ -29,7 +32,7 @@ jobs:
               run: npm run build
 
     format:
-        name: Test formatting
+        name: Formatting
         runs-on: ubuntu-latest
 
         steps:
@@ -65,7 +68,34 @@ jobs:
               run: npm run lint
 
     svelte-check:
-        name: Run svelte-check
+        name: Svelte-check
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Create environment variables
+              run: cp .env.example .env
+
+            - name: Fetch line names
+              run: chmod +x scripts/line-shapes.sh && ./scripts/line-shapes.sh
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22.x"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build
+              run: npm run build
+
+            - name: Svelte check
+              run: npm run check
+
+    test:
+        name: Test
         runs-on: ubuntu-latest
 
         steps:
@@ -83,7 +113,4 @@ jobs:
               run: npm ci
 
             - name: Build
-              run: npm run build
-
-            - name: Svelte check
-              run: npm run check
+              run: npm run test

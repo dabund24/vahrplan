@@ -1,9 +1,9 @@
 <script lang="ts">
 	import "./styles.css";
-	import Navbar from "./Navbar.svelte";
+	import Navbar from "./de/dbnav/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { beforeNavigate } from "$app/navigation";
-	import { startLoading, stopLoading } from "$lib/stores/loadingStore";
+	import { startLoading, stopLoading } from "$lib/state/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
 	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
 	import type { LayoutProps } from "./$types";
@@ -38,8 +38,8 @@
 		{@render children()}
 		<footer>
 			<small>
-				<a href="/about/privacy">Datenschutz</a>
-				<a href="/about/imprint">Impressum</a>
+				<a href="/de/privacy">Datenschutz</a>
+				<a href="/de/imprint">Impressum</a>
 			</small>
 		</footer>
 	</main>

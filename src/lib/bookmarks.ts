@@ -1,9 +1,10 @@
-import type { ParsedLocation, TransitType } from "$lib/types";
-import { type DisplayedFormData, type SelectedJourney } from "$lib/stores/journeyStores";
-import { getDiagramUrlFromFormData, getJourneyUrl } from "$lib/urls";
-import { toast } from "$lib/stores/toastStore";
+import type { ParsedLocation, RelativeTimeType } from "$lib/types";
+import { type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+import { toast } from "$lib/state/toastStore";
+import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
+import { apiClient } from "$lib/api-client/apiClientFactory";
 
-export type BookmarkType = "diagram" | "journey" | "station";
+export type BookmarkType = "diagram" | "journey" | "location";
 
 type Bookmarks<T extends BookmarkType> = T extends "diagram"
 	? {
@@ -15,7 +16,7 @@ type Bookmarks<T extends BookmarkType> = T extends "diagram"
 				type: T;
 				bookmarks: JourneyBookmark[];
 			}
-		: T extends "station"
+		: T extends "location"
 			? {
 					type: T;
 					bookmarks: ParsedLocation[];
@@ -24,16 +25,17 @@ type Bookmarks<T extends BookmarkType> = T extends "diagram"
 
 export type DiagramBookmark = {
 	stops: Pick<ParsedLocation, "name" | "type">[];
-	transitType: TransitType;
-	time: Date;
+	scrollDirection: RelativeTimeType;
+	time: string;
 	link: string;
+	type: "absolute";
 };
 
 export type JourneyBookmark = {
 	start: Pick<ParsedLocation, "name" | "type">;
 	destination: Pick<ParsedLocation, "name" | "type">;
-	arrival: Date;
-	departure: Date;
+	arrival: string;
+	departure: string;
 	link: string;
 };
 
@@ -84,7 +86,10 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		return getBookmarks("diagram");
 	}
 	const bookmarks = getBookmarks("diagram");
-	const diagramUrlHref = getDiagramUrlFromFormData(formData).href;
+	const diagramApiClient = apiClient("GET", "/de/dbnav/api/diagram");
+	const diagramUrlHref = diagramApiClient.formatNonApiUrl(
+		diagramApiClient.formDataToRequestData(formData)
+	).href;
 	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.link === diagramUrlHref);
 	if (indexInOldData !== -1) {
 		// bookmark already exists => remove it
@@ -101,9 +106,10 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 				name: location.value.name
 			};
 		}),
-		time: formData.time,
-		transitType: formData.timeRole,
-		link: diagramUrlHref
+		time: formData.timeData.time,
+		scrollDirection: formData.timeData.scrollDirection,
+		link: diagramUrlHref,
+		type: "absolute"
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "diagram", bookmarks });
@@ -114,18 +120,16 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 /**
  * either removes or adds a diagram bookmark
  * @param journey all sub-journeys
- * @param formData displayed form data
  * @returns all current bookmarks
  */
-export function toggleJourneyBookmark(
-	journey: SelectedJourney[],
-	formData: DisplayedFormData | undefined
-): JourneyBookmark[] {
+export function toggleJourneyBookmark(journey: DisplayedJourney): JourneyBookmark[] {
 	const bookmarks = getBookmarks("journey");
-	if (journey.length === 0 || formData === undefined) {
+	if (journey.selectedSubJourneys.length === 0) {
 		return bookmarks;
 	}
-	const journeyUrlHref = getJourneyUrl(journey).href;
+
+	const tokens = journey.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
+	const journeyUrlHref = apiClient("GET", "/de/dbnav/api/journey").formatNonApiUrl(tokens).href;
 	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.link === journeyUrlHref);
 	if (indexInOldData !== -1) {
 		// bookmark already exists => remove it
@@ -137,15 +141,15 @@ export function toggleJourneyBookmark(
 	// bookmark does not yet exist => add it
 	const bookmark: JourneyBookmark = {
 		start: {
-			type: formData.locations.at(0)?.value.type ?? "station",
-			name: formData.locations.at(0)?.value.name ?? ""
+			type: journey.locations.at(0)?.value.type ?? "station",
+			name: journey.locations.at(0)?.value.name ?? ""
 		},
 		destination: {
-			type: formData.locations.at(-1)?.value.type ?? "station",
-			name: formData.locations.at(-1)?.value.name ?? ""
+			type: journey.locations.at(-1)?.value.type ?? "station",
+			name: journey.locations.at(-1)?.value.name ?? ""
 		},
-		departure: journey.at(0)?.subJourney.departureTime?.time ?? new Date(0),
-		arrival: journey.at(-1)?.subJourney.arrivalTime?.time ?? new Date(0),
+		departure: journey.departure ?? new Date(0).toISOString(),
+		arrival: journey.arrival ?? new Date(0).toISOString(),
 		link: journeyUrlHref
 	};
 	bookmarks.push(bookmark);

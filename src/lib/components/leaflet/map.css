@@ -1,20 +1,9 @@
 @media (update: fast) {
 	.map[data-theme="dark"],
+	.map[data-theme="midnight"],
 	.map[data-theme="system"] {
 		.osm-tiles {
 			filter: var(--map-filter);
-		}
-	}
-	.map[data-theme="light"] {
-		.product--nationalExpress {
-			--product-color: #000000;
-		}
-	}
-	@media (prefers-color-scheme: light) {
-		.map[data-theme="system"] {
-			.product--nationalExpress {
-				--product-color: #000000;
-			}
 		}
 	}
 }

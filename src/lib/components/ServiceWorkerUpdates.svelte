@@ -39,7 +39,7 @@
 	if (browser && "serviceWorker" in navigator) {
 		let isRefreshing: boolean;
 		const isFirstVisit = navigator.serviceWorker.controller === null; // no service worker yet?
-		let reg = navigator.serviceWorker.register("./service-worker.js");
+		let reg = navigator.serviceWorker.register("/service-worker.js");
 
 		navigator.serviceWorker.addEventListener("controllerchange", () => {
 			if (isRefreshing) return; // prevent infinite reloads when debugging
