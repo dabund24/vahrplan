@@ -5,7 +5,6 @@
 	import { beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/state/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
-	import type { Snippet } from "svelte";
 	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
 	import type { LayoutProps } from "./$types";
 
