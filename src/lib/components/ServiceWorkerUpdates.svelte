@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
-	import { scale } from "svelte/transition";
-	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import StaticToast from "$lib/components/StaticToast.svelte";
 
 	let isUpdatable = $state(false);
 	let updateFn: () => void = $state(() => void {}); // the function to run when user clicks "update"
@@ -52,30 +51,18 @@
 	}
 </script>
 
-{#if isUpdatable}
-	<div transition:scale class="flex-row">
-		<span> Eine neue Version ist verfügbar! </span>
-		<div class="flex-row">
-			<button class="hoverable hoverable--visible hoverable--accent" onclick={updateFn}>
-				Aktualisieren
-			</button>
-			<button class="hoverable hoverable--visible" onclick={() => void (isUpdatable = false)}>
-				<IconClose />
-			</button>
-		</div>
-	</div>
-{/if}
+<StaticToast isVisible={isUpdatable}>
+	{#snippet text()}
+		Eine neue Version ist verfügbar!
+	{/snippet}
+	{#snippet buttons()}
+		<button class="hoverable hoverable--visible hoverable--accent" onclick={updateFn}>
+			Aktualisieren
+		</button>
+	{/snippet}
+</StaticToast>
 
 <style>
-	.flex-row {
-		width: max-content;
-		max-width: calc(100vw - 1.5rem);
-		align-items: center;
-		gap: 1rem;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
 	.hoverable--accent {
 		padding: 0.5rem 1rem;
 	}

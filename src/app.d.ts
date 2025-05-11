@@ -10,6 +10,8 @@ import { type VahrplanError } from "$lib/VahrplanError";
  */
 type TripInfoModalKeys = Record<`${"showTripInfoModal"}${string}`, boolean | undefined>;
 
+type ServerNewsModalKeys = Record<`${"serverNewsModal"}${string}`, boolean | undefined>;
+
 declare global {
 	namespace App {
 		// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/consistent-type-definitions
@@ -21,7 +23,7 @@ declare global {
 			diagramData?: DiagramData;
 		}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-		interface PageState extends TripInfoModalKeys {
+		interface PageState extends TripInfoModalKeys, ServerNewsModalKeys {
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showRecommendationModal?: boolean;

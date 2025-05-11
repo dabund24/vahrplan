@@ -6,10 +6,10 @@
 	import { startLoading, stopLoading } from "$lib/state/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
 	import type { Snippet } from "svelte";
+	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
+	import type { LayoutProps } from "./$types";
 
-	type Props = { children: Snippet };
-
-	let { children }: Props = $props();
+	let { children, data }: LayoutProps = $props();
 
 	beforeNavigate((navigation) => {
 		if (navigation.to?.url.origin !== location.origin) {
@@ -26,7 +26,7 @@
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	<!--{@html PUBLIC_ANALYTICS_SCRIPT}-->
+	{@html PUBLIC_ANALYTICS_SCRIPT}
 </svelte:head>
 
 <div class="app">
@@ -44,7 +44,7 @@
 			</small>
 		</footer>
 	</main>
-	<Toasts />
+	<Toasts news={data.news} />
 </div>
 
 <style>
