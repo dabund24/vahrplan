@@ -150,7 +150,7 @@ export function getParsedGeolocation(
 	return {
 		type: "currentLocation",
 		name: "Standort",
-		requestParameter: JSON.stringify({
+		id: JSON.stringify({
 			type: "location",
 			address: "Standort",
 			latitude: position.lat,

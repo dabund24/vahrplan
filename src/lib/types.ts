@@ -38,7 +38,7 @@ export type ParsedTime = Partial<
 export type ParsedLocation =
 	| {
 			name: string;
-			requestParameter: string;
+			id: string;
 			readonly type: "station" | "address" | "poi";
 			position: { lat: number; lng: number };
 	  }
@@ -46,7 +46,7 @@ export type ParsedLocation =
 
 export type ParsedGeolocation = {
 	name: string;
-	requestParameter: string;
+	id: string;
 	readonly type: "currentLocation";
 	asAt: Date;
 	position: { lat: number; lng: number };
@@ -107,11 +107,6 @@ export type SubJourney = {
 		url: string;
 	};
 } & { [K in TransitType as `${K}Time`]: ParsedTime[K] };
-
-export type Diagram = {
-	recommendedVias: ParsedLocation[][];
-	tree: TreeNode[];
-};
 
 export type TreeNode = JourneyNode | EmptyNode;
 

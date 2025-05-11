@@ -180,7 +180,7 @@
 						</div>
 						<div class="visuals--selected">
 							<div class="intermediate-stations flex-row">
-								{#each journeyInfo[i]?.legs.slice(1) ?? [] as leg (leg.departureData.location.requestParameter)}
+								{#each journeyInfo[i]?.legs.slice(1) ?? [] as leg (leg.departureData.location.id)}
 									<div
 										class="station-icon-container"
 										transition:scale

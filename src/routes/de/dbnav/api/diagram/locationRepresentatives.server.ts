@@ -34,21 +34,21 @@ function addLocationPair(
 	[location0, location1]: [ParsedLocation, ParsedLocation],
 	equivSys: LocationEquivalenceSystem
 ): LocationEquivalenceSystem {
-	const representativeId0 = equivSys.idToRepresentative[location0.requestParameter];
-	const representativeId1 = equivSys.idToRepresentative[location1.requestParameter];
+	const representativeId0 = equivSys.idToRepresentative[location0.id];
+	const representativeId1 = equivSys.idToRepresentative[location1.id];
 
 	if (representativeId0 === undefined && representativeId1 === undefined) {
 		// representative is not yet mapped
-		const representativeId = location0.requestParameter;
-		equivSys.idToRepresentative[location0.requestParameter] = representativeId;
-		equivSys.idToRepresentative[location1.requestParameter] = representativeId;
+		const representativeId = location0.id;
+		equivSys.idToRepresentative[location0.id] = representativeId;
+		equivSys.idToRepresentative[location1.id] = representativeId;
 		equivSys.representatives[representativeId] = determineBetterRepresentative(
 			location0,
 			location1
 		);
 	} else if (representativeId0 !== undefined && representativeId1 === undefined) {
 		// representative only mapped for location0
-		equivSys.idToRepresentative[location1.requestParameter] = representativeId0;
+		equivSys.idToRepresentative[location1.id] = representativeId0;
 		const currentRepresentative = equivSys.representatives[representativeId0];
 		equivSys.representatives[representativeId0] = determineBetterRepresentative(
 			currentRepresentative,
@@ -56,7 +56,7 @@ function addLocationPair(
 		);
 	} else if (representativeId0 === undefined && representativeId1 !== undefined) {
 		// representative only mapped for location1
-		equivSys.idToRepresentative[location0.requestParameter] = representativeId1;
+		equivSys.idToRepresentative[location0.id] = representativeId1;
 		const currentRepresentative = equivSys.representatives[representativeId1];
 		equivSys.representatives[representativeId1] = determineBetterRepresentative(
 			currentRepresentative,

@@ -195,7 +195,7 @@
 						position: currentPositionData.position,
 						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
 						name: "Live-Standort",
-						requestParameter: JSON.stringify({ type: "location" })
+						id: JSON.stringify({ type: "location" })
 					},
 					time: {},
 					platformData: null

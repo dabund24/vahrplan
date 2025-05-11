@@ -187,7 +187,7 @@ function getLegCurrentLocation(leg: Leg): ParsedGeolocation | undefined {
 	return {
 		type: "currentLocation",
 		name: `${leg.line?.name} → ${leg.direction}`,
-		requestParameter: JSON.stringify({ type: "location" } as Location),
+		id: JSON.stringify({ type: "location" } as Location),
 		position: {
 			lat: leg.currentLocation.latitude ?? 0,
 			lng: leg.currentLocation.longitude ?? 0
@@ -261,7 +261,7 @@ export function parseStationStopLocation(
 	if (location === undefined) {
 		return {
 			name: "undefined",
-			requestParameter: "",
+			id: "",
 			type: "station",
 			position: {
 				lat: 0,
@@ -272,7 +272,7 @@ export function parseStationStopLocation(
 	if (location.type === "station" || location.type === "stop") {
 		return {
 			name: location.name ?? "undefined",
-			requestParameter: location.id ?? JSON.stringify(location),
+			id: location.id ?? JSON.stringify(location),
 			type: "station",
 			position: {
 				lat: location.location?.latitude ?? 0,
@@ -282,7 +282,7 @@ export function parseStationStopLocation(
 	} else if (location.poi) {
 		return {
 			name: location.name ?? "undefined",
-			requestParameter: JSON.stringify(location),
+			id: JSON.stringify(location),
 			type: "poi",
 			position: {
 				lat: location.latitude ?? 0,
@@ -292,7 +292,7 @@ export function parseStationStopLocation(
 	} else {
 		return {
 			name: location.address ?? "undefined",
-			requestParameter: JSON.stringify(location),
+			id: JSON.stringify(location),
 			type: "address",
 			position: {
 				lat: location.latitude ?? 0,

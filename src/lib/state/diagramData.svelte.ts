@@ -72,7 +72,7 @@ export async function setDiagramDataFromFormData(formData: DisplayedFormData): P
 	const diagramApiClient = apiClient("GET", "/de/dbnav/api/diagram");
 	diagramData = diagramApiClient
 		.request({
-			stops: formData.locations.map((l) => l.value.requestParameter),
+			stops: formData.locations.map((l) => l.value.id),
 			timeData: formData.timeData,
 			options: formData.options
 		})
@@ -166,7 +166,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		toast("Suche nach mehr Verbindungen ist nicht möglich.", "red");
 		return;
 	}
-	const stops = displayedFormData.locations.map((l) => l.value.requestParameter);
+	const stops = displayedFormData.locations.map((l) => l.value.id);
 
 	const res = await scrollApiClient.request({
 		scrollDirection,

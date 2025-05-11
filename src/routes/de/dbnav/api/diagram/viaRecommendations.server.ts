@@ -123,7 +123,7 @@ class ViaCandidates {
 			})
 			.map((candidate) => ({
 				location: candidate.location,
-				locationId: candidate.location.requestParameter
+				locationId: candidate.location.id
 			}));
 	}
 }

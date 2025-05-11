@@ -110,7 +110,7 @@ export class HafasClientDataService extends JourneyDataService {
 	}
 
 	async location(
-		token: ParsedLocation["requestParameter"]
+		token: ParsedLocation["id"]
 	): Promise<VahrplanResult<ParsedLocation>> {
 		if (token.startsWith("{")) {
 			// token is location object

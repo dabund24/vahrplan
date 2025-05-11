@@ -14,7 +14,7 @@ export function getLocationRepresentative(
 	locationEquivalenceSystem: LocationEquivalenceSystem,
 	location: ParsedLocation | string
 ): ParsedLocation {
-	const locationId = typeof location === "string" ? location : location.requestParameter;
+	const locationId = typeof location === "string" ? location : location.id;
 	const representativeId = locationEquivalenceSystem.idToRepresentative[locationId];
 	if (representativeId === undefined) {
 		if (typeof location === "string") {

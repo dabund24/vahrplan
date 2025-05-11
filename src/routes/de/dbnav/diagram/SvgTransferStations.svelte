@@ -32,7 +32,7 @@
 				const location = getLocationRepresentative(transferLocations, transfer.locationId);
 				return {
 					name: location.name,
-					id: location.requestParameter,
+					id: location.id,
 					xTop: (i + 1) / (transfers.length + 1) + columnIndex,
 					xBottom: transfer.start[0] + columnIndex
 				};

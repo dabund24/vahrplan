@@ -58,7 +58,7 @@ export abstract class JourneyDataService {
 	 * @param token the request token of the location
 	 */
 	abstract location(
-		token: ParsedLocation["requestParameter"]
+		token: ParsedLocation["id"]
 	): Promise<VahrplanResult<ParsedLocation>>;
 
 	/**

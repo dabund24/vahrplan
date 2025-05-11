@@ -59,7 +59,7 @@ export function computeTransferSvgData(
 			type: "transfer",
 			start,
 			end,
-			locationId: location.requestParameter,
+			locationId: location.id,
 			transferPosition
 		};
 	}
@@ -67,7 +67,7 @@ export function computeTransferSvgData(
 	// transfer starts or ends journey, so use non-start/non-destination location
 	start = [computeCoordinateX(originLocation.position, journeyEndPositions), startY];
 	end = [computeCoordinateX(destinationLocation.position, journeyEndPositions), endY];
-	const { requestParameter: locationId } =
+	const { id: locationId } =
 		transferPosition === "start" ? originLocation : destinationLocation;
 
 	return { type: "transfer", start, end, locationId, transferPosition };

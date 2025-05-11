@@ -42,7 +42,7 @@ function formDataMatchesUrl(url: URL, formData: DisplayedFormData | undefined): 
 	}
 
 	const currentDiagramData: Parameters<(typeof diagramApiClient)["formatNonApiUrl"]>[0] = {
-		stops: formData.locations.map((l) => l.value.requestParameter),
+		stops: formData.locations.map((l) => l.value.id),
 		timeData: formData.timeData,
 		options: formData.options
 	};

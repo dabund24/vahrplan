@@ -7,25 +7,25 @@ const locationA1: ParsedLocation = {
 	name: "a1",
 	type: "station",
 	position: { lng: 0, lat: 0 },
-	requestParameter: "a1"
+	id: "a1"
 };
 const locationA2: ParsedLocation = {
 	name: "a2LongName",
 	type: "station",
 	position: { lng: 0, lat: 0 },
-	requestParameter: "a2"
+	id: "a2"
 };
 const locationB1: ParsedLocation = {
 	name: "b1",
 	type: "station",
 	position: { lng: 0, lat: 0 },
-	requestParameter: "b1"
+	id: "b1"
 };
 const locationB2: ParsedLocation = {
 	name: "b2LongName",
 	type: "station",
 	position: { lng: 0, lat: 0 },
-	requestParameter: "b2"
+	id: "b2"
 };
 
 test("location equivalence system empty", () => {

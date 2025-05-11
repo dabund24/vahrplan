@@ -157,7 +157,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData>()(
 
 	public formDataToRequestData(formData: DisplayedFormData): ReqType {
 		return {
-			stops: formData.locations.map((l) => l.value.requestParameter),
+			stops: formData.locations.map((l) => l.value.id),
 			timeData: formData.timeData,
 			options: formData.options
 		};

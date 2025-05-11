@@ -58,7 +58,7 @@ test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and
 				foo: {
 					type: "station",
 					name: "Foo",
-					requestParameter: "foo",
+					id: "foo",
 					position: { lng: 1, lat: 2 }
 				}
 			}
@@ -70,7 +70,7 @@ test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and
 						type: "station",
 						name: "Hello",
 						position: { lng: 0, lat: 1 },
-						requestParameter: "123456789"
+						id: "123456789"
 					},
 					locationId: "123456789"
 				},
@@ -79,7 +79,7 @@ test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and
 						type: "address",
 						name: "My street",
 						position: { lng: 42, lat: 24 },
-						requestParameter: "refresh"
+						id: "refresh"
 					},
 					locationId: "refresh"
 				}
