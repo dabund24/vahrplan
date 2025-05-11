@@ -12,7 +12,7 @@
 	let bookmarks: ParsedLocation[] = $state([]);
 
 	onMount(() => {
-		bookmarks = getBookmarks("station");
+		bookmarks = getBookmarks("location");
 	});
 
 	let toBeBookmarkedStation: ParsedLocation | undefined = $state(undefined);
@@ -28,13 +28,13 @@
 			return;
 		}
 		bookmarks.push(newBookmark);
-		setBookmarks({ type: "station", bookmarks });
-		bookmarks = getBookmarks("station");
+		setBookmarks({ type: "location", bookmarks });
+		bookmarks = getBookmarks("location");
 	}
 
 	function removeStationBookmark(toBeRemoved: ParsedLocation): void {
 		bookmarks = bookmarks.filter((bookmark) => bookmark.name !== toBeRemoved.name);
-		setBookmarks({ type: "station", bookmarks });
+		setBookmarks({ type: "location", bookmarks });
 	}
 </script>
 

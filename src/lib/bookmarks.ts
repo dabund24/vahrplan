@@ -4,7 +4,7 @@ import { toast } from "$lib/state/toastStore";
 import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 
-export type BookmarkType = "diagram" | "journey" | "station";
+export type BookmarkType = "diagram" | "journey" | "location";
 
 type Bookmarks<T extends BookmarkType> = T extends "diagram"
 	? {
@@ -16,7 +16,7 @@ type Bookmarks<T extends BookmarkType> = T extends "diagram"
 				type: T;
 				bookmarks: JourneyBookmark[];
 			}
-		: T extends "station"
+		: T extends "location"
 			? {
 					type: T;
 					bookmarks: ParsedLocation[];

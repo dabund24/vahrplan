@@ -49,7 +49,7 @@
 		if (!isSimpleInput) {
 			bookmarkedLocations = [
 				getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
-				...getBookmarks("station")
+				...getBookmarks("location")
 			];
 		}
 	});
