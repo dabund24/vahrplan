@@ -64,9 +64,7 @@ function determineTransferableStopovers(
 	transferLocations: LocationEquivalenceSystem
 ): LegSvgData["transferableStopovers"] {
 	return legBlock.stopovers.reduce((acc: LegSvgData["transferableStopovers"], stopover) => {
-		if (
-			transferLocations.idToRepresentative[stopover.location.id] !== undefined
-		) {
+		if (transferLocations.idToRepresentative[stopover.location.id] !== undefined) {
 			const location = getLocationRepresentative(transferLocations, stopover.location);
 			const start: [number, number] = [
 				computeCoordinateX(stopover.location.position, journeyEndPositions),

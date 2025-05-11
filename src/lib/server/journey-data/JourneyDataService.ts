@@ -57,9 +57,7 @@ export abstract class JourneyDataService {
 	 * get a single location based on a token
 	 * @param token the request token of the location
 	 */
-	abstract location(
-		token: ParsedLocation["id"]
-	): Promise<VahrplanResult<ParsedLocation>>;
+	abstract location(token: ParsedLocation["id"]): Promise<VahrplanResult<ParsedLocation>>;
 
 	/**
 	 * parse an error that may be thrown when data fetching goes wrong
