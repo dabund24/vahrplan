@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { ParsedLocation } from "$lib/types";
-	import type { KeyedItem } from "$lib/types.js";
+	import type { KeyedItem, ParsedLocation } from "$lib/types.js";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
@@ -11,9 +10,10 @@
 		type DisplayedFormData,
 		updateDisplayedLocations
 	} from "$lib/state/displayedFormData.svelte.js";
+	import type { RecommendedVia } from "../api/diagram/viaRecommendations.server";
 
 	type Props = {
-		recommendedVias: ParsedLocation[][];
+		recommendedVias: RecommendedVia[][];
 	};
 
 	let { recommendedVias }: Props = $props();
@@ -28,14 +28,14 @@
 
 	function initSuggestedLocations(
 		displayedFormData: DisplayedFormData | undefined,
-		recommendedVias: ParsedLocation[][]
+		recommendedVias: RecommendedVia[][]
 	): typeof suggestedLocations {
 		if (displayedFormData === undefined) {
 			return [];
 		}
 		let suggestions: typeof suggestedLocations = [];
 
-		const viaRecommendations: KeyedItem<ParsedLocation, number>[][] = recommendedVias.map(
+		const viaRecommendations: KeyedItem<RecommendedVia, number>[][] = recommendedVias.map(
 			(subJourneyRecommendations) =>
 				subJourneyRecommendations.map((subJourneyRecommendation) => ({
 					value: subJourneyRecommendation,
@@ -50,7 +50,10 @@
 			});
 			suggestions.push(
 				...viaRecommendations[i].map((viaRecommendation) => ({
-					location: viaRecommendation,
+					location: {
+						key: viaRecommendation.key,
+						value: viaRecommendation.value.location
+					},
 					isSelected: false,
 					isDisplayed: false
 				}))

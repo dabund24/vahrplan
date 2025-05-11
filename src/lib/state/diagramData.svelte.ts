@@ -1,5 +1,5 @@
 import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
-import type { ParsedLocation, RelativeTimeType, SubJourney, TreeNode } from "$lib/types";
+import type { RelativeTimeType, SubJourney, TreeNode } from "$lib/types";
 import {
 	type DisplayedFormData,
 	getDisplayedFormData
@@ -15,13 +15,14 @@ import { toast } from "$lib/state/toastStore";
 import type { LocationEquivalenceSystem } from "../../routes/de/dbnav/api/diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
 import { MAX_DATE } from "$lib/constants";
+import type { RecommendedVia } from "../../routes/de/dbnav/api/diagram/viaRecommendations.server";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
 	tree: TreeNode[];
 	svgData: SvgData;
 	transferLocations: LocationEquivalenceSystem;
-	recommendedVias: ParsedLocation[][];
+	recommendedVias: RecommendedVia[][];
 	isNew: boolean[][];
 };
 

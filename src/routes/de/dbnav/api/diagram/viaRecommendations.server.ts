@@ -1,11 +1,16 @@
 import type { ParsedLocation, SubJourney } from "$lib/types";
 
+export type RecommendedVia = {
+	location: ParsedLocation;
+	locationId: string;
+};
+
 /**
  * recommend vias for a given set of sub-journey suggestions based on constraints listed in
  * [this issue](https://github.com/dabund24/vahrplan/issues/19#issue-2537334331)
  * @param subJourneys
  */
-export default function recommendVias(subJourneys: SubJourney[]): ParsedLocation[] {
+export default function recommendVias(subJourneys: SubJourney[]): RecommendedVia[] {
 	const viaCandidates = new ViaCandidates();
 	const subJourneysLegs = subJourneys.map((subJourney) =>
 		subJourney.blocks.filter((block) => block.type === "leg")
@@ -105,7 +110,7 @@ class ViaCandidates {
 	 * @param subJourneyLocationsNames location names of the sub-journey
 	 * @returns the via candidates as `ParsedLocation` objects
 	 */
-	getInOrder(subJourneyLocationsNames: string[]): ParsedLocation[] {
+	getInOrder(subJourneyLocationsNames: string[]): RecommendedVia[] {
 		return this.candidates
 			.sort((candidateA, candidateB) => {
 				const indexA = subJourneyLocationsNames.findIndex((name) =>
@@ -116,6 +121,9 @@ class ViaCandidates {
 				);
 				return indexA - indexB;
 			})
-			.map((candidate) => candidate.location);
+			.map((candidate) => ({
+				location: candidate.location,
+				locationId: candidate.location.requestParameter
+			}));
 	}
 }

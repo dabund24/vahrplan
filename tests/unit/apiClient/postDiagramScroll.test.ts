@@ -66,16 +66,22 @@ test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and
 		recommendedVias: [
 			[
 				{
-					type: "station",
-					name: "Hello",
-					position: { lng: 0, lat: 1 },
-					requestParameter: "123456789"
+					location: {
+						type: "station",
+						name: "Hello",
+						position: { lng: 0, lat: 1 },
+						requestParameter: "123456789"
+					},
+					locationId: "123456789"
 				},
 				{
-					type: "address",
-					name: "My street",
-					position: { lng: 42, lat: 24 },
-					requestParameter: "refresh"
+					location: {
+						type: "address",
+						name: "My street",
+						position: { lng: 42, lat: 24 },
+						requestParameter: "refresh"
+					},
+					locationId: "refresh"
 				}
 			],
 			[]
