@@ -16,7 +16,7 @@ export function NonApiUsable<ReqT, ResT>() {
 		// BaseT extends ReturnType<typeof QueryParamSettable<ReqT, ResT>>
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
-			protected abstract readonly nonApiRoute: `/${string}`;
+			protected abstract readonly nonApiRoute: `/de/dbnav/${string}`;
 
 			/**
 			 * format a url for non-api purposes

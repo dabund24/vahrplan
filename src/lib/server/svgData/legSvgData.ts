@@ -4,7 +4,7 @@ import type { SvgPosition } from "$lib/server/svgData/svgData.server";
 import {
 	getLocationRepresentative,
 	type LocationEquivalenceSystem
-} from "../../../routes/api/diagram/locationRepresentativesUtils";
+} from "../../../routes/de/dbnav/api/diagram/locationRepresentativesUtils";
 
 export type LegSvgData = {
 	type: "leg";

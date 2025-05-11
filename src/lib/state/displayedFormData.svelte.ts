@@ -39,7 +39,7 @@ export function setDisplayedFormData(newFormData: DisplayedFormData): void {
  * @returns a promise that resolves once the page has navigated to the correct url
  */
 export async function searchDiagram(newFormData: DisplayedFormData): Promise<void> {
-	const diagramApiClient = apiClient("GET", "/api/diagram");
+	const diagramApiClient = apiClient("GET", "/de/dbnav/api/diagram");
 	const diagramUrl = diagramApiClient.formatNonApiUrl(
 		diagramApiClient.formDataToRequestData(newFormData)
 	);

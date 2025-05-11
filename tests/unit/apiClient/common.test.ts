@@ -5,7 +5,7 @@ import { VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 
 test("api client success", async () => {
-	const client = apiClient("GET", "/api/journey/shorturl/[shortJourneyId]");
+	const client = apiClient("GET", "/de/dbnav/api/journey/shorturl/[shortJourneyId]");
 	const input = "station";
 	const response = ["journeyId"];
 
@@ -22,7 +22,7 @@ test("api client success", async () => {
 });
 
 test("api client error", async () => {
-	const client = apiClient("GET", "/api/journey/shorturl/[shortJourneyId]");
+	const client = apiClient("GET", "/de/dbnav/api/journey/shorturl/[shortJourneyId]");
 
 	const input = "station";
 	const error = new VahrplanError("ERROR");

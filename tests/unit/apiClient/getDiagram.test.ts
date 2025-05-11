@@ -2,10 +2,10 @@ import { test } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { apiClientParseFormatTest } from "./utils";
 
-const client = apiClient("GET", "/api/diagram");
+const client = apiClient("GET", "/de/dbnav/api/diagram");
 let input: ReturnType<(typeof client)["parse"]>;
 
-test("GET /api/diagram api client parsing and formatting", async () => {
+test("GET /de/dbnav/api/diagram api client parsing and formatting", async () => {
 	input = {
 		stops: ["12345", "Lorem Ip+um D*lor $it am€t"],
 		timeData: {
@@ -33,7 +33,7 @@ test("GET /api/diagram api client parsing and formatting", async () => {
 		}
 	};
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: "/api/diagram",
+		expectedPath: "/de/dbnav/api/diagram",
 		params: {}
 	});
 });

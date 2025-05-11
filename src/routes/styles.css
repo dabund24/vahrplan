@@ -499,7 +499,8 @@ h3 {
 }
 
 .skeleton {
-	.skeleton-text, .skeleton-stroke {
+	.skeleton-text,
+	.skeleton-stroke {
 		animation: skeleton-loading 0.5s linear infinite alternate;
 		user-select: none;
 		-webkit-user-select: none;

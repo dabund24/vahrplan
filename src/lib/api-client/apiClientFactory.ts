@@ -1,25 +1,25 @@
 import type { RequestEvent } from "@sveltejs/kit";
 import { ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
-import { GetDiagramApiClient } from "../../routes/api/diagram/getClient";
-import { PostDiagramScrollApiClient } from "../../routes/api/diagram/scroll/[scrollDirection]/postClient";
-import { GetDiagramShortUrlApiClient } from "../../routes/api/diagram/shorturl/[shortDiagramId]/getClient";
-import { GetJourneyApiClient } from "../../routes/api/journey/getClient";
-import { GetJourneyShortUrlApiClient } from "../../routes/api/journey/shorturl/[shortJourneyId]/getClient";
-import { GetLocationApiClient } from "../../routes/api/location/[locationId]/getClient";
-import { GetLocationsApiClient } from "../../routes/api/locations/[name]/getClient";
-import { PutDiagramShortApiClient } from "../../routes/api/diagram/shorturl/putClient";
-import { PutJourneyShortUrlApiClient } from "../../routes/api/journey/shorturl/putClient";
+import { GetDiagramApiClient } from "../../routes/de/dbnav/api/diagram/getClient";
+import { PostDiagramScrollApiClient } from "../../routes/de/dbnav/api/diagram/scroll/[scrollDirection]/postClient";
+import { GetDiagramShortUrlApiClient } from "../../routes/de/dbnav/api/diagram/shorturl/[shortDiagramId]/getClient";
+import { GetJourneyApiClient } from "../../routes/de/dbnav/api/journey/getClient";
+import { GetJourneyShortUrlApiClient } from "../../routes/de/dbnav/api/journey/shorturl/[shortJourneyId]/getClient";
+import { GetLocationApiClient } from "../../routes/de/dbnav/api/location/[locationId]/getClient";
+import { GetLocationsApiClient } from "../../routes/de/dbnav/api/locations/[name]/getClient";
+import { PutDiagramShortApiClient } from "../../routes/de/dbnav/api/diagram/shorturl/putClient";
+import { PutJourneyShortUrlApiClient } from "../../routes/de/dbnav/api/journey/shorturl/putClient";
 
 const routes = {
-	diagram: "/api/diagram",
-	diagramScroll: "/api/diagram/scroll/[scrollDirection]",
-	diagramShortUrl: "/api/diagram/shorturl",
-	diagramShortUrlId: "/api/diagram/shorturl/[shortDiagramId]",
-	journey: "/api/journey",
-	journeyShortUrl: "/api/journey/shorturl",
-	journeyShortUrlId: "/api/journey/shorturl/[shortJourneyId]",
-	location: "/api/location/[locationId]",
-	locations: "/api/locations/[name]"
+	diagram: "/de/dbnav/api/diagram",
+	diagramScroll: "/de/dbnav/api/diagram/scroll/[scrollDirection]",
+	diagramShortUrl: "/de/dbnav/api/diagram/shorturl",
+	diagramShortUrlId: "/de/dbnav/api/diagram/shorturl/[shortDiagramId]",
+	journey: "/de/dbnav/api/journey",
+	journeyShortUrl: "/de/dbnav/api/journey/shorturl",
+	journeyShortUrlId: "/de/dbnav/api/journey/shorturl/[shortJourneyId]",
+	location: "/de/dbnav/api/location/[locationId]",
+	locations: "/de/dbnav/api/locations/[name]"
 } as const;
 
 const clients = {

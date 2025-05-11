@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import type { TransitType } from "$lib/types";
-import { buildTree, unfoldTree } from "../../src/routes/api/diagram/treePlantation.server";
+import { buildTree, unfoldTree } from "../../src/routes/de/dbnav/api/diagram/treePlantation.server";
 
 function mockTime(date: number): string {
 	return new Date(date).toISOString();

@@ -2,10 +2,10 @@ import { test } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { apiClientParseFormatTest } from "./utils";
 
-const client = apiClient("PUT", "/api/diagram/shorturl");
+const client = apiClient("PUT", "/de/dbnav/api/diagram/shorturl");
 let input: Awaited<ReturnType<(typeof client)["parse"]>>;
 
-test("PUT /api/diagram/shorturl api client parsing and formatting", async () => {
+test("PUT /de/dbnav/api/diagram/shorturl api client parsing and formatting", async () => {
 	input = {
 		type: "journeys",
 		value: {
@@ -37,7 +37,7 @@ test("PUT /api/diagram/shorturl api client parsing and formatting", async () => 
 		expirationDate: 69420
 	};
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/api/diagram/shorturl`,
+		expectedPath: `/de/dbnav/api/diagram/shorturl`,
 		params: {}
 	});
 });

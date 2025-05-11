@@ -24,7 +24,7 @@ export function PathParamSettable<ReqT, ResT>() {
 			 * @param content
 			 * @protected
 			 */
-			protected abstract formatUrlPath(content: ReqT): `/api/${string}`;
+			protected abstract formatUrlPath(content: ReqT): `/de/dbnav/api/${string}`;
 
 			protected override requestInternal(
 				content: ReqT,

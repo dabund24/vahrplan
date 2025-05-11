@@ -1,8 +1,8 @@
 import type { Line } from "hafas-client";
-import { /* getLineShape, */ type LineShape } from "$lib/server/journey-data/lineShapes";
+import type { /* getLineShape, */ LineShape } from "$lib/server/journey-data/lineShapes";
 import { expect, test } from "vitest";
 
-// TODO somehow mock reading line names'
+// TODO somehow mock reading line names. This is not tested yet!!!
 
 function getLineShape(_: unknown): [] {
 	return [];

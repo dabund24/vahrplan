@@ -9,7 +9,7 @@ import type {
 import {
 	getLocationRepresentative,
 	type LocationEquivalenceSystem
-} from "../../../routes/api/diagram/locationRepresentativesUtils";
+} from "../../../routes/de/dbnav/api/diagram/locationRepresentativesUtils";
 import { type SvgPosition, type TransferPosition } from "$lib/server/svgData/svgData.server";
 import { computeCoordinateX, computeCoordinateY } from "$lib/server/svgData/util";
 import { MINUTE_IN_MS } from "$lib/constants";
