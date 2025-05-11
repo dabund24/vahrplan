@@ -22,12 +22,11 @@
 	<h1>Historie</h1>
 	Inspiration für Vahrplan war <a href="https://youtu.be/rD5iATcC9Mo">dieses tolle Video</a>, in
 	dem (neben einigen allgemein sehr hilfreichen Tipps zur Reiseplanung bei Bahnfahrten) das
-	Programm <a href="https://tespace.traines.eu/tstp">time-space-train-planner</a> vorgestellt
-	wurde. In den Monaten danach habe ich mir einen anderen Ansatz für dasselbe Problem überlegt, um
-	das Konzept etwas zugänglicher zu machen und dann schließlich im August 2023 mit dem
-	Programmieren begonnen. Nach vielen Erweiterungen, Änderungen und sogar einem vollständigen
-	Neuschreiben des Codes im Frühjahr 2024 konnte ich im September desselben Jahres Vahrplan
-	endlich veröffentichen.
+	Programm <a href="https://tespace.traines.eu/tstp">Tespace</a> vorgestellt wurde. In den Monaten
+	danach habe ich mir einen anderen Ansatz für dasselbe Problem überlegt, um das Konzept etwas
+	zugänglicher zu machen und dann schließlich im August 2023 mit dem Programmieren begonnen. Nach
+	vielen Erweiterungen, Änderungen und sogar einem vollständigen Neuschreiben des Codes im
+	Frühjahr 2024 konnte ich im September desselben Jahres Vahrplan endlich veröffentichen.
 	<h1>Quellcode</h1>
 	Der vollständige Quellcode für Vahrplan ist
 	<a href="https://github.com/dabund24/vahrplan">auf Github</a>
@@ -73,8 +72,8 @@
 			{@render tool("Nosql-Datenbank", "Valkey", "https://valkey.io/")}
 			{@render tool(
 				"Verbindungsdaten",
-				"Hafas via hafas-client",
-				"https://github.com/public-transport/hafas-client"
+				"Hafas via db-vendo-client",
+				"https://github.com/public-transport/db-vendo-client"
 			)}
 		</ul>
 		<h2>Frontend</h2>
