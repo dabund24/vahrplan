@@ -28,6 +28,7 @@ export type DiagramBookmark = {
 	scrollDirection: RelativeTimeType;
 	time: string;
 	link: string;
+	type: "absolute";
 };
 
 export type JourneyBookmark = {
@@ -107,7 +108,8 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		}),
 		time: formData.timeData.time,
 		scrollDirection: formData.timeData.scrollDirection,
-		link: diagramUrlHref
+		link: diagramUrlHref,
+		type: "absolute"
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "diagram", bookmarks });
