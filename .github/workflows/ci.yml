@@ -18,7 +18,7 @@ jobs:
               run: cp .env.example .env
 
             - name: Fetch line names
-              run: ./scripts/line-shapes.sh
+              run: chmod +x scripts/line-shapes.sh && ./scripts/line-shapes.sh
 
             - name: Setup node.js
               uses: actions/setup-node@v4
