@@ -45,7 +45,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"db-vendo-client": "^6.3.4",
+		"db-vendo-client": "^6.8.2",
 		"hafas-client": "^6.3.3",
 		"leaflet": "^1.9.4",
 		"redis": "^4.7.0"
