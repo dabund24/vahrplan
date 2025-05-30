@@ -9,6 +9,9 @@ export default defineConfig({
 	},
 	test: {
 		mockReset: true,
-		testTimeout: undefined
+		testTimeout: undefined,
+		env: {
+			["TZ"]: "UTC"
+		}
 	}
 });
