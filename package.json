@@ -6,7 +6,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"start": "node --env-file=.env build/index.js",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "svelte-kit sync && eslint . --max-warnings 0 --report-unused-disable-directives",
 		"lint:fix": "svelte-kit sync && npm run lint -- --fix",
