@@ -1,14 +1,18 @@
 import type { Line } from "hafas-client";
-import type { /* getLineShape, */ LineShape } from "$lib/server/journey-data/lineShapes";
-import { expect, test } from "vitest";
+import { getLineShape, type LineShape } from "$lib/server/journey-data/lineShapes";
+import { beforeAll, expect, test, vi } from "vitest";
 
-// TODO somehow mock reading line names. This is not tested yet!!!
-
-function getLineShape(_: unknown): [] {
-	return [];
+async function readLinesCsv(): Promise<string> {
+	return (await import("fs")).readFileSync("tests/unit/fixtures/line-shapes.csv").toString();
 }
 
-test.skip("line shapes first entry", () => {
+beforeAll(() => {
+	vi.mock("$app/server", () => ({
+		read: (): object => ({ text: readLinesCsv })
+	}));
+});
+
+test("line shapes first entry", () => {
 	const hafasLine = {
 		type: "line",
 		id: "ag-84293",
@@ -33,7 +37,7 @@ test.skip("line shapes first entry", () => {
 	expect(actual).toEqual(expected);
 });
 
-test.skip("line shapes last entry", () => {
+test("line shapes last entry", () => {
 	const hafasLine = {
 		type: "line",
 		id: "str-13575",
@@ -58,7 +62,7 @@ test.skip("line shapes last entry", () => {
 	expect(actual).toEqual(expected);
 });
 
-test.skip("line shapes all RE 1", () => {
+test("line shapes all RE 1", () => {
 	const values: { hafasLine: Line; expected: LineShape }[] = [
 		{
 			hafasLine: {
@@ -246,7 +250,7 @@ test.skip("line shapes all RE 1", () => {
 	}
 });
 
-test.skip("line shapes Bus X660", () => {
+test("line shapes Bus X660", () => {
 	const hafasLine = {
 		type: "line",
 		id: "bus-2315",
