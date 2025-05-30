@@ -290,6 +290,7 @@
 		input[type="datetime-local"] {
 			box-sizing: border-box;
 			font-variant-numeric: tabular-nums;
+			appearance: none;
 			-webkit-appearance: none;
 		}
 		.time-input-container {
