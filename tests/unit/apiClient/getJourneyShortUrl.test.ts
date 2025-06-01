@@ -1,6 +1,6 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { apiClientParseFormatTest } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
 
 const route = "journey/shorturl/[shortJourneyId]";
 const client = apiClient("GET", route);
@@ -24,4 +24,14 @@ test(`GET ${route} api client non-api url parsing`, () => {
 	const url = new URL("http://localhost/journey/shorturl/knjgnaekgnaw");
 	const id = client.parseNonApiUrl(url);
 	expect(id).toEqual("knjgnaekgnaw");
+});
+
+test(`GET ${route} api client plausible`, async () => {
+	input = "fkjewfenjsg";
+	vi.mock("$app/environment", () => ({ browser: true }));
+
+	await apiClientPlausibleTest(client, input, {
+		goal: "GET /api/journey/shorturl/[shortJourneyId]",
+		props: {}
+	});
 });
