@@ -27,7 +27,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 	)
 ) {
 	protected override readonly methodType = "GET";
-	protected override readonly route = "/api/diagram";
+	protected override readonly route = "diagram";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = 120;
 	protected override readonly queryParamNames = {

@@ -28,7 +28,7 @@ export abstract class ApiClient<
 	RequestEventT extends RequestEvent<object, string>
 > {
 	protected abstract readonly methodType: MethodT;
-	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang]/[profile]${infer RouteT}`
+	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang]/[profile]/api/${infer RouteT}`
 		? RouteT
 		: never;
 	protected abstract readonly cacheMaxAge: number;
@@ -49,7 +49,7 @@ export abstract class ApiClient<
 		}
 		urlBase ??= "http://localhost";
 		const requestData: RequestData = {
-			url: new URL(`/de/dbnav${this.route}`, urlBase),
+			url: new URL(`/de/dbnav/api/${this.route}`, urlBase),
 			requestInit: {}
 		};
 		return this.requestInternal(content, requestData, fetchFn);
@@ -92,7 +92,7 @@ export abstract class ApiClient<
 		if (browser && window.plausible && typeof plausible === "function") {
 			// @ts-expect-error plausible
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			plausible(`${this.methodType} ${this.route}`);
+			plausible(`${this.methodType} /api/${this.route}`);
 		}
 
 		requestInit.method = this.methodType;

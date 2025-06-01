@@ -23,7 +23,7 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 	)
 ) {
 	protected override readonly methodType = "POST";
-	protected override readonly route = "/api/diagram/scroll/[scrollDirection]";
+	protected override readonly route = "diagram/scroll/[scrollDirection]";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = 120;
 

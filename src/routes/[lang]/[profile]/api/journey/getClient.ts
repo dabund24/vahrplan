@@ -19,7 +19,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 	)
 ) {
 	protected override readonly methodType = "GET";
-	protected override readonly route = "/api/journey";
+	protected override readonly route = "journey";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = 30;
 	protected override readonly queryParamNames = {

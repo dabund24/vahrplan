@@ -10,7 +10,7 @@ export class PutJourneyShortUrlApiClient extends BodySettable<ReqType, string, R
 	ApiClient<ReqType, string, "PUT", RequestEvent>
 ) {
 	protected override readonly methodType = "PUT";
-	protected override readonly route = "/api/journey/shorturl";
+	protected override readonly route = "journey/shorturl";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 

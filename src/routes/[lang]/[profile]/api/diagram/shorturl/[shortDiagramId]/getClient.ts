@@ -12,7 +12,7 @@ export class GetDiagramShortUrlApiClient extends NonApiUsable<string, ResT, Requ
 	PathParamSettable<string, ResT, RequestEvent>()(ApiClient<string, ResT, "GET", RequestEvent>)
 ) {
 	protected override readonly methodType = "GET";
-	protected override readonly route = "/api/diagram/shorturl/[shortDiagramId]";
+	protected override readonly route = "diagram/shorturl/[shortDiagramId]";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 	protected override readonly nonApiRoute = "/de/dbnav/diagram/shorturl/[shortDiagramId]";

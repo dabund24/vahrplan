@@ -26,6 +26,13 @@
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html PUBLIC_ANALYTICS_SCRIPT}
+	<script>
+		window.plausible =
+			window.plausible ||
+			function () {
+				(window.plausible.q = window.plausible.q || []).push(arguments);
+			};
+	</script>
 </svelte:head>
 
 <div class="app">

@@ -11,7 +11,7 @@ export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], 
 	)
 ) {
 	protected override readonly methodType = "GET";
-	protected override readonly route = "/api/journey/shorturl/[shortJourneyId]";
+	protected override readonly route = "journey/shorturl/[shortJourneyId]";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 	protected override readonly nonApiRoute = "/de/dbnav/journey/shorturl/[shortJourneyId]";

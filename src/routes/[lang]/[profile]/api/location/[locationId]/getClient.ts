@@ -8,7 +8,7 @@ export class GetLocationApiClient extends PathParamSettable<string, ParsedLocati
 	ApiClient<string, ParsedLocation, "GET", RequestEvent>
 ) {
 	protected override readonly methodType = "GET";
-	protected override readonly route = "/api/location/[locationId]";
+	protected override readonly route = "location/[locationId]";
 	protected override readonly isLoadingAnimated = false;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 
