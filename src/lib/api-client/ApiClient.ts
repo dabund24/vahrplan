@@ -95,7 +95,10 @@ export abstract class ApiClient<
 		if (browser && plausible && typeof plausible === "function") {
 			// @ts-expect-error plausible
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			plausible(`${this.methodType} /api/${this.route}`, { props: plausibleProps });
+			plausible(`${this.methodType} /api/${this.route}`, {
+				props: plausibleProps,
+				u: location.href.split("?")[0]
+			});
 		}
 
 		requestInit.method = this.methodType;

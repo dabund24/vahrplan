@@ -21,7 +21,7 @@ export async function apiClientParseFormatTest<
 
 	// @ts-expect-error plausible
 	global.plausible = () => void {};
-	global.location = { origin: "http://localhost" } as Location;
+	global.location = { origin: "http://localhost", href: "http://localhost" } as Location;
 	global.fetch = vi.fn(async (request: RequestInfo | URL, _?: RequestInit) => {
 		url = new URL((request as Request).url);
 		parsed = await client.parse({ params: paramInfo.params, url, request } as RequestEventT);
@@ -53,7 +53,11 @@ export async function apiClientPlausibleTest<
 			void {}
 	);
 
-	global.location = { ...global.location, origin: "http://localhost" };
+	global.location = {
+		...global.location,
+		origin: "http://localhost",
+		href: "http://localhost?super-secret-query-parameter=42"
+	};
 
 	global.fetch = async (
 		_request: RequestInfo | URL,
@@ -65,6 +69,6 @@ export async function apiClientPlausibleTest<
 	// @ts-expect-error plausible
 	expect(plausible, "registered incorrect plausible event").toHaveBeenCalledExactlyOnceWith(
 		expected.goal,
-		{ props: expected.props }
+		{ props: expected.props, u: "http://localhost" }
 	);
 }

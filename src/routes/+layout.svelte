@@ -33,6 +33,9 @@
 				(window.plausible.q = window.plausible.q || []).push(arguments);
 			};
 	</script>
+	<script>
+		plausible("pageview", { u: location.href.split("?")[0] });
+	</script>
 </svelte:head>
 
 <div class="app">
