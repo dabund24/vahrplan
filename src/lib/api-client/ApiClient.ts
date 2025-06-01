@@ -5,10 +5,12 @@ import { toast } from "$lib/state/toastStore";
 import { json, type RequestEvent, type RouteDefinition } from "@sveltejs/kit";
 import { browser } from "$app/environment";
 import { untrack } from "svelte";
+import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
 
 export type RequestData = {
 	url: URL;
 	requestInit: RequestInit;
+	plausibleProps: Partial<Record<PlausibleProp, string | number>>;
 };
 
 export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">;
@@ -50,7 +52,8 @@ export abstract class ApiClient<
 		urlBase ??= "http://localhost";
 		const requestData: RequestData = {
 			url: new URL(`/de/dbnav/api/${this.route}`, urlBase),
-			requestInit: {}
+			requestInit: {},
+			plausibleProps: {}
 		};
 		return this.requestInternal(content, requestData, fetchFn);
 	}
@@ -79,7 +82,7 @@ export abstract class ApiClient<
 	 */
 	protected async requestInternal(
 		_content: ReqT,
-		{ url, requestInit }: RequestData,
+		{ url, requestInit, plausibleProps }: RequestData,
 		fetchFn?: typeof fetch
 	): Promise<VahrplanResult<ResT>> {
 		const estimatedUpstreamCalls = this.estimateUpstreamCalls(_content);
@@ -89,10 +92,10 @@ export abstract class ApiClient<
 		}
 
 		// @ts-expect-error plausible
-		if (browser && window.plausible && typeof plausible === "function") {
+		if (browser && plausible && typeof plausible === "function") {
 			// @ts-expect-error plausible
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			plausible(`${this.methodType} /api/${this.route}`);
+			plausible(`${this.methodType} /api/${this.route}`, { props: plausibleProps });
 		}
 
 		requestInit.method = this.methodType;

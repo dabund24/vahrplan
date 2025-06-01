@@ -14,6 +14,10 @@ import {
 } from "$lib/constants";
 import { VahrplanError } from "$lib/VahrplanError";
 import { browser } from "$app/environment";
+import {
+	type PlausibleProp,
+	PlausiblePropSettable
+} from "$lib/api-client/PlausiblePropSettableApiClient";
 
 type ReqType = {
 	stops: string[];
@@ -22,8 +26,10 @@ type ReqType = {
 };
 
 export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, RequestEvent>()(
-	QueryParamSettable<ReqType, DiagramData, RequestEvent>()(
-		ApiClient<ReqType, DiagramData, "GET", RequestEvent>
+	PlausiblePropSettable<ReqType, DiagramData, RequestEvent>()(
+		QueryParamSettable<ReqType, DiagramData, RequestEvent>()(
+			ApiClient<ReqType, DiagramData, "GET", RequestEvent>
+		)
 	)
 ) {
 	protected override readonly methodType = "GET";
@@ -142,6 +148,12 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 
 	protected override estimateUpstreamCalls(reqContent: ReqType): number {
 		return 1 + (reqContent.stops.length - 2) * DIAGRAM_COLUMN_MAX_REQUESTS; // first column is always one request
+	}
+
+	protected override formatProps(content: ReqType): Record<PlausibleProp, string | number> {
+		return {
+			viaCount: content.stops.length - 2
+		};
 	}
 
 	public override formatNonApiUrl(content: ReqType): URL {

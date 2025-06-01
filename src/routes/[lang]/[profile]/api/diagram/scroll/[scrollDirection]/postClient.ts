@@ -6,6 +6,10 @@ import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import type { LocationEquivalenceSystem } from "../../locationRepresentativesUtils";
 import type { RecommendedVia } from "../../viaRecommendations.server";
+import {
+	type PlausibleProp,
+	PlausiblePropSettable
+} from "$lib/api-client/PlausiblePropSettableApiClient";
 
 type ReqType = {
 	scrollDirection: RelativeTimeType;
@@ -19,7 +23,9 @@ type ReqType = {
 
 export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramData, RequestEvent>()(
 	PathParamSettable<ReqType, DiagramData, RequestEvent>()(
-		ApiClient<ReqType, DiagramData, "POST", RequestEvent>
+		PlausiblePropSettable<ReqType, DiagramData, RequestEvent>()(
+			ApiClient<ReqType, DiagramData, "POST", RequestEvent>
+		)
 	)
 ) {
 	protected override readonly methodType = "POST";
@@ -51,6 +57,12 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 		return {
 			scrollDirection: reqEvent.params.scrollDirection as RelativeTimeType,
 			...((await reqEvent.request.json()) as Omit<ReqType, "scrollDirection">)
+		};
+	}
+
+	protected override formatProps(content: ReqType): Record<PlausibleProp, string | number> {
+		return {
+			viaCount: content.stops.length - 2
 		};
 	}
 }

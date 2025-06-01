@@ -6,6 +6,10 @@ import { ApiClient } from "$lib/api-client/ApiClient";
 import { browser } from "$app/environment";
 import type { LocationEquivalenceSystem } from "../diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
+import {
+	type PlausibleProp,
+	PlausiblePropSettable
+} from "$lib/api-client/PlausiblePropSettableApiClient";
 
 type ResType = {
 	subJourneys: SubJourney[];
@@ -15,7 +19,9 @@ type ResType = {
 
 export class GetJourneyApiClient extends NonApiUsable<string[], ResType, RequestEvent>()(
 	QueryParamSettable<string[], ResType, RequestEvent>()(
-		ApiClient<string[], ResType, "GET", RequestEvent>
+		PlausiblePropSettable<string[], ResType, RequestEvent>()(
+			ApiClient<string[], ResType, "GET", RequestEvent>
+		)
 	)
 ) {
 	protected override readonly methodType = "GET";
@@ -52,5 +58,11 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 
 	protected requestEventFromUrl(url: URL): RequestEvent {
 		return { url } as RequestEvent;
+	}
+
+	protected override formatProps(content: string[]): Record<PlausibleProp, string | number> {
+		return {
+			viaCount: content.length - 1
+		};
 	}
 }
