@@ -86,7 +86,7 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		return getBookmarks("diagram");
 	}
 	const bookmarks = getBookmarks("diagram");
-	const diagramApiClient = apiClient("GET", "/de/dbnav/api/diagram");
+	const diagramApiClient = apiClient("GET", "diagram");
 	const diagramUrlHref = diagramApiClient.formatNonApiUrl(
 		diagramApiClient.formDataToRequestData(formData)
 	).href;
@@ -129,7 +129,7 @@ export function toggleJourneyBookmark(journey: DisplayedJourney): JourneyBookmar
 	}
 
 	const tokens = journey.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
-	const journeyUrlHref = apiClient("GET", "/de/dbnav/api/journey").formatNonApiUrl(tokens).href;
+	const journeyUrlHref = apiClient("GET", "journey").formatNonApiUrl(tokens).href;
 	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.link === journeyUrlHref);
 	if (indexInOldData !== -1) {
 		// bookmark already exists => remove it

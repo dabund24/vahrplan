@@ -7,11 +7,10 @@ type NonBodyfulHttpMethod = Exclude<HttpMethod, "POST" | "PUT">;
  * @mixin NonApiUsable Provides methods in {@linkcode ApiClient}s for parsing and formatting urls in non-api context
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function NonApiUsable<ReqT, ResT>() {
+export function NonApiUsable<ReqT, ResT, RequestEventT extends RequestEvent<object, string>>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends NonBodyfulHttpMethod,
-		RequestEventT extends RequestEvent<object, string>,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 		// BaseT extends ReturnType<typeof QueryParamSettable<ReqT, ResT>>
 	>(base: BaseT) {

@@ -11,11 +11,14 @@ import type { RequestEvent } from "@sveltejs/kit";
  * @mixin QueryParamSettable Lets {@linkcode ApiClient}s pass information through query parameters
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function QueryParamSettable<ReqT, ResT>() {
+export function QueryParamSettable<
+	ReqT,
+	ResT,
+	RequestEventT extends RequestEvent<object, string>
+>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
-		RequestEventT extends RequestEvent<object, string>,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class QueryParamSettable extends base {

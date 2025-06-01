@@ -28,7 +28,9 @@ export abstract class ApiClient<
 	RequestEventT extends RequestEvent<object, string>
 > {
 	protected abstract readonly methodType: MethodT;
-	protected abstract readonly route: RequestEventT["route"]["id"];
+	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang]/[profile]${infer RouteT}`
+		? RouteT
+		: never;
 	protected abstract readonly cacheMaxAge: number;
 	protected abstract readonly isLoadingAnimated: boolean;
 
@@ -47,7 +49,7 @@ export abstract class ApiClient<
 		}
 		urlBase ??= "http://localhost";
 		const requestData: RequestData = {
-			url: new URL(this.route, urlBase),
+			url: new URL(`/de/dbnav${this.route}`, urlBase),
 			requestInit: {}
 		};
 		return this.requestInternal(content, requestData, fetchFn);

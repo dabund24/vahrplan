@@ -1,7 +1,7 @@
 import type { LegBlock, ParsedLocation, SubJourney } from "$lib/types";
 import { expect, test } from "vitest";
-import { buildTransferLocationEquivalenceSystem } from "../../src/routes/de/dbnav/api/diagram/locationRepresentatives.server";
-import type { LocationEquivalenceSystem } from "../../src/routes/de/dbnav/api/diagram/locationRepresentativesUtils";
+import { buildTransferLocationEquivalenceSystem } from "../../src/routes/[lang]/[profile]/api/diagram/locationRepresentatives.server";
+import type { LocationEquivalenceSystem } from "../../src/routes/[lang]/[profile]/api/diagram/locationRepresentativesUtils";
 
 const locationA1: ParsedLocation = {
 	name: "a1",

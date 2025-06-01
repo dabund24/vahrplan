@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
-import type { GetDiagramApiClient } from "../../routes/de/dbnav/api/diagram/getClient";
+import type { GetDiagramApiClient } from "../../routes/[lang]/[profile]/api/diagram/getClient";
 import type { JourneysOptions, Product } from "$lib/types";
 
 export const products: Record<Product, string> = {

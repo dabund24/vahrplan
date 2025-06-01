@@ -12,7 +12,7 @@ export async function apiClientParseFormatTest<
 	input: ReqT,
 	paramInfo: {
 		expectedPath: string;
-		params: RequestEventT["params"];
+		params: Omit<RequestEventT["params"], "lang" | "profile">;
 	}
 ): Promise<void> {
 	let url: URL | undefined = undefined;

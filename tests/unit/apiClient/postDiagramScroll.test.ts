@@ -2,10 +2,11 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 import { test } from "vitest";
 import { apiClientParseFormatTest } from "./utils";
 
-const client = apiClient("POST", "/de/dbnav/api/diagram/scroll/[scrollDirection]");
+const route = "diagram/scroll/[scrollDirection]";
+const client = apiClient("POST", route);
 let input: Awaited<ReturnType<(typeof client)["parse"]>>;
 
-test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and formatting", async () => {
+test(`GET ${route} api client parsing and formatting`, async () => {
 	input = {
 		scrollDirection: "earlier",
 		stops: ["", "12345"],

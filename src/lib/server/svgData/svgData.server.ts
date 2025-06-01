@@ -3,7 +3,7 @@ import { MAX_DATE } from "$lib/constants";
 import {
 	getLocationRepresentative,
 	type LocationEquivalenceSystem
-} from "../../../routes/de/dbnav/api/diagram/locationRepresentativesUtils";
+} from "../../../routes/[lang]/[profile]/api/diagram/locationRepresentativesUtils";
 import { computeTransferSvgData, type TransferSvgData } from "$lib/server/svgData/transferSvgData";
 import { computeLegSvgData, type LegSvgData } from "$lib/server/svgData/legSvgData";
 import { error } from "@sveltejs/kit";
