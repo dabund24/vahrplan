@@ -20,6 +20,11 @@ export function BodySettable<ReqT, ResT, RequestEventT extends RequestEvent<obje
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class BodySettable extends base {
+			/**
+			 * override to generate body of http request
+			 * @param content
+			 * @protected
+			 */
 			protected abstract formatBody(content: ReqT): string;
 
 			protected override requestInternal(

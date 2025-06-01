@@ -29,7 +29,7 @@ export function QueryParamSettable<
 			protected abstract readonly queryParamNames: Record<string, `${Lowercase<string>}`>;
 
 			/**
-			 *
+			 * override to generate query params
 			 * @param content
 =			 * @protected
 			 */
