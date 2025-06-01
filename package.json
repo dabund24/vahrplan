@@ -23,7 +23,7 @@
 		"@types/eslint": "9.6.1",
 		"@types/hafas-client": "^6.2.0",
 		"@types/leaflet": "^1.9.15",
-		"@types/node": "^22.13.14",
+		"@types/node": "^22.15.29",
 		"@typescript-eslint/eslint-plugin": "^8.19.0",
 		"@typescript-eslint/parser": "^8.16.0",
 		"@vitest/ui": "^3.0.9",
