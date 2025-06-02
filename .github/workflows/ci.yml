@@ -126,8 +126,8 @@ jobs:
               with:
                   node-version: "22.x"
 
-            - name: Move current lockfile
-              run: mv package-lock.json initial-package-lock.json
+            - name: Copy current lockfile
+              run: cp package-lock.json initial-package-lock.json
 
             - name: Re-generate lockfile
               run: npm install --package-lock-only
