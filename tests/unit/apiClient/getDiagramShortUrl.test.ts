@@ -1,11 +1,12 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { apiClientParseFormatTest } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
 
-const client = apiClient("GET", "/de/dbnav/api/diagram/shorturl/[shortDiagramId]");
+const route = "diagram/shorturl/[shortDiagramId]";
+const client = apiClient("GET", route);
 let input: ReturnType<(typeof client)["parse"]>;
 
-test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and formatting", async () => {
+test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "myDiagramId";
 	await apiClientParseFormatTest(client, input, {
 		expectedPath: `/de/dbnav/api/diagram/shorturl/${input}`,
@@ -13,14 +14,24 @@ test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client parsing and
 	});
 });
 
-test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client non-api url formatting", () => {
+test(`GET ${route} api client non-api url formatting`, () => {
 	input = "myDiagramId";
 	const url = client.formatNonApiUrl(input);
 	expect(url.pathname).toEqual("/de/dbnav/diagram/shorturl/myDiagramId");
 });
 
-test("GET /de/dbnav/api/diagram/shorturl/[shortDiagramId] api client non-api url parsing", () => {
+test(`GET ${route} api client non-api url parsing`, () => {
 	const url = new URL("http://localhost/diagram/shorturl/myDiagramId");
 	const id = client.parseNonApiUrl(url);
 	expect(id).toEqual("myDiagramId");
+});
+
+test(`GET ${route} api client plausible`, async () => {
+	input = "hellloew";
+	vi.mock("$app/environment", () => ({ browser: true }));
+
+	await apiClientPlausibleTest(client, input, {
+		goal: "GET /api/diagram/shorturl/[shortDiagramId]",
+		props: {}
+	});
 });

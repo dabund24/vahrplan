@@ -12,10 +12,10 @@ import {
 } from "$lib/state/selectedData.svelte";
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
-import type { LocationEquivalenceSystem } from "../../routes/de/dbnav/api/diagram/locationRepresentativesUtils";
+import type { LocationEquivalenceSystem } from "../../routes/[lang]/[profile]/api/diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
 import { MAX_DATE } from "$lib/constants";
-import type { RecommendedVia } from "../../routes/de/dbnav/api/diagram/viaRecommendations.server";
+import type { RecommendedVia } from "../../routes/[lang]/[profile]/api/diagram/viaRecommendations.server";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
@@ -69,7 +69,7 @@ export function setDiagramData(newDiagramData: Promise<DiagramData>): void {
  * @returns a promise that resolves once the data has loaded
  */
 export async function setDiagramDataFromFormData(formData: DisplayedFormData): Promise<void> {
-	const diagramApiClient = apiClient("GET", "/de/dbnav/api/diagram");
+	const diagramApiClient = apiClient("GET", "diagram");
 	diagramData = diagramApiClient
 		.request({
 			stops: formData.locations.map((l) => l.value.id),
@@ -90,7 +90,7 @@ export async function setDiagramDataFromFormData(formData: DisplayedFormData): P
  * @param selectedBy an array having a row index for every column
  */
 export async function refreshDiagramData(selectedBy: SelectedData): Promise<void> {
-	const journeyApiClient = apiClient("GET", "/de/dbnav/api/journey");
+	const journeyApiClient = apiClient("GET", "journey");
 	const oldDiagramData = diagramData;
 	const tokens = await Promise.all(
 		selectedBy.selectedJourneys.map(
@@ -156,7 +156,7 @@ async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedDat
  * @param scrollDirection
  */
 export async function scrollDiagramData(scrollDirection: RelativeTimeType): Promise<void> {
-	const scrollApiClient = apiClient("POST", "/de/dbnav/api/diagram/scroll/[scrollDirection]");
+	const scrollApiClient = apiClient("POST", "diagram/scroll/[scrollDirection]");
 	const oldDiagramData = diagramData;
 	const { columns, tree, svgData, transferLocations, recommendedVias } = await oldDiagramData;
 	const displayedFormData = getDisplayedFormData();

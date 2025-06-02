@@ -1,6 +1,6 @@
 <script lang="ts">
 	import "./styles.css";
-	import Navbar from "./de/dbnav/Navbar.svelte";
+	import Navbar from "./[lang]/[profile]/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/state/loadingStore";
@@ -26,6 +26,16 @@
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html PUBLIC_ANALYTICS_SCRIPT}
+	<script>
+		window.plausible =
+			window.plausible ||
+			function () {
+				(window.plausible.q = window.plausible.q || []).push(arguments);
+			};
+	</script>
+	<script>
+		plausible("pageview", { u: location.href.split("?")[0] });
+	</script>
 </svelte:head>
 
 <div class="app">

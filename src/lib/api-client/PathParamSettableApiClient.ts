@@ -11,11 +11,14 @@ import type { RequestEvent } from "@sveltejs/kit";
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function PathParamSettable<ReqT, ResT>() {
+export function PathParamSettable<
+	ReqT,
+	ResT,
+	RequestEventT extends RequestEvent<object, string>
+>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
-		RequestEventT extends RequestEvent<object, string>,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class PathParamSettable extends base {
