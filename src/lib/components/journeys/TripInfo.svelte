@@ -10,7 +10,6 @@
 	type Props = {
 		info: LegBlock["info"];
 		blockKey: string;
-		departureTime: number;
 	};
 
 	let { info, blockKey }: Props = $props();

@@ -6,7 +6,6 @@
 	type Props = {
 		isBelowHeaderMobile?: boolean;
 		isBelowHeaderDesktop?: boolean;
-		padContent?: boolean;
 		tabs: {
 			title: string;
 			content: Snippet;
