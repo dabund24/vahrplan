@@ -116,7 +116,7 @@ jobs:
               run: npm run test
 
     lockfile:
-        name: Check package-lock.json
+        name: Lockfile
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
