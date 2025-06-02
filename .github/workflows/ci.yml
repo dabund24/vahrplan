@@ -114,3 +114,18 @@ jobs:
 
             - name: Build
               run: npm run test
+
+    lockfile:
+        name: Check package-lock.json
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Move current lockfile
+              run: mv package-lock.json initial-package-lock.json
+
+            - name: Re-generate lockfile
+              run: npm install --package-lock-only
+
+            - name: Compare lockfiles
+              run: diff initial-package-lock.json package-lock.json
