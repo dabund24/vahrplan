@@ -49,7 +49,7 @@
 		<IconOptions />
 	</button>
 	{#snippet optionsContent()}
-		{#each options as option}
+		{#each options as option (option.name)}
 			{#snippet buttonContent()}
 				<span>
 					{option.name}

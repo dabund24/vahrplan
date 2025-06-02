@@ -32,7 +32,7 @@
 		/>
 	{:else if settingInfo.type === "options"}
 		<select class="hoverable hoverable--visible" name={settingName} bind:value={setting}>
-			{#each settingInfo.options as option}
+			{#each settingInfo.options as option (option.name)}
 				<option value={option.value}>
 					{option.name}
 				</option>

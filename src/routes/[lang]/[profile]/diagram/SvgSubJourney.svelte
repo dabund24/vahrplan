@@ -29,7 +29,7 @@
 	}
 </script>
 
-{#each journey.blocks as block}
+{#each journey.blocks as block (block)}
 	{@const points = `${svgBlockToPolylinePoints(block, columnIndex, minTime)}`}
 	{#if block.type === "leg"}
 		<polyline
@@ -47,7 +47,7 @@
 	{/if}
 {/each}
 
-{#each journey.blocks as block, blockIndex}
+{#each journey.blocks as block, blockIndex (blockIndex)}
 	{#if block.type === "leg"}
 		{#snippet locationCircle(position: SvgPosition, idComponent: string)}
 			{@const id = `svg-journey--${journeyId}-${blockIndex}__location-circle__${idComponent}`}

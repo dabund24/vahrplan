@@ -170,7 +170,7 @@
 		</label>
 		<ul>
 			{#await suggestions}
-				{#each { length: 10 } as _}
+				{#each { length: 10 } as _, i (i)}
 					<li class="skeleton">
 						<span class="flex-row padded-top-bottom suggestion">
 							<span class="suggestion-icon">
@@ -181,7 +181,7 @@
 					</li>
 				{/each}
 			{:then suggestions}
-				{#each suggestions as suggestion, i}
+				{#each suggestions as suggestion, i (i)}
 					<li>
 						<button
 							type="button"

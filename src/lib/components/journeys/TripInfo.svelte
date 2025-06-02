@@ -51,7 +51,7 @@
 
 {#snippet statuses()}
 	<ul>
-		{#each info.statuses as warningText}
+		{#each info.statuses as warningText, i (i)}
 			<li>
 				<Warning color="red">
 					{warningText}
@@ -63,7 +63,7 @@
 
 {#snippet hints()}
 	<ul>
-		{#each info.hints as warningText}
+		{#each info.hints as warningText, i (i)}
 			<li>
 				<Warning>
 					{warningText}

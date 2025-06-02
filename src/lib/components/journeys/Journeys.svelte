@@ -39,7 +39,7 @@
 	/>
 	{#each displayedJourney.blocks as subJourney (subJourney.key)}
 		<div in:scale animate:flip={{ duration: 400 }}>
-			{#each subJourney.value as block}
+			{#each subJourney.value as block, i (i)}
 				{#if block.type === "leg"}
 					<LegRegular {block} />
 				{:else if block.type === "walk" || block.type === "onward-journey" || block.type === "transfer" || block.type === "unselected"}

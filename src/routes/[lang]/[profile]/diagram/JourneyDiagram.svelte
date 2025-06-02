@@ -15,7 +15,7 @@
 </script>
 
 <div class="flex-column diagram-column">
-	{#each nodes as node}
+	{#each nodes as node, i (i)}
 		<div class="flex-row diagram-box">
 			{#if node.type === "journeyNode"}
 				{@const subJourney = columns[node.columnIndex].journeys[node.rowIndex]}

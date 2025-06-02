@@ -25,7 +25,7 @@
 
 <Modal title="Tickets" showModalKey="showTicketModal">
 	<div class="padded-top-bottom flex-column">
-		{#each ticketData as data, i}
+		{#each ticketData as data, i (i)}
 			{@render locationRow(locations[i])}
 			<div class="padded-top-bottom link-container flex-row">
 				{#if data !== undefined}

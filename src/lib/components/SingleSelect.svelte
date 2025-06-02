@@ -15,7 +15,7 @@
 
 <div class="flex-column">
 	<ul class="hoverable--visible--group">
-		{#each titles as title, i}
+		{#each titles as title, i (i)}
 			<li>
 				<button type="button" title={title.title} onclick={() => void (selected = i)}>
 					{#if title.type === "icon"}

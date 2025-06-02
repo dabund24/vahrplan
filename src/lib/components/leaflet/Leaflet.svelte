@@ -107,7 +107,7 @@
 >
 	{#if map !== undefined}
 		{#each displayedJourney.blocks as subJourneyBlocks (subJourneyBlocks.key)}
-			{#each subJourneyBlocks.value as block}
+			{#each subJourneyBlocks.value as block, i (i)}
 				{#if block.type === "leg"}
 					<Polyline {block} />
 					{#if block.precededBy === undefined}
@@ -119,7 +119,7 @@
 							/>
 						</Marker>
 					{/if}
-					{#each block.stopovers as stopover}
+					{#each block.stopovers as stopover, j (j)}
 						<Marker
 							data={stopover}
 							product1={block.product ?? ""}
