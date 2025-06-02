@@ -92,13 +92,16 @@ export abstract class ApiClient<
 		}
 
 		// @ts-expect-error plausible
-		if (browser && plausible && typeof plausible === "function") {
-			// @ts-expect-error plausible
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			plausible(`${this.methodType} /api/${this.route}`, {
-				props: plausibleProps,
-				u: location.href.split("?")[0]
-			});
+		if (browser && plausible) {
+			void import("$app/state").then(
+				({ page }) =>
+					// @ts-expect-error plausible
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+					void plausible(`${this.methodType} /api/${this.route}`, {
+						props: plausibleProps,
+						u: page.route.id
+					})
+			);
 		}
 
 		requestInit.method = this.methodType;
