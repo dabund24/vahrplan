@@ -112,5 +112,25 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Build
+            - name: Test
               run: npm run test
+
+    lockfile:
+        name: Lockfile
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22.x"
+
+            - name: Copy current lockfile
+              run: cp package-lock.json initial-package-lock.json
+
+            - name: Re-generate lockfile
+              run: npm install --package-lock-only
+
+            - name: Compare lockfiles
+              run: diff initial-package-lock.json package-lock.json
