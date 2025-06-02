@@ -43,7 +43,7 @@
 </script>
 
 {#snippet infoIconRed()}
-	<IconInfo color={"red"} />
+	<IconInfo color="red" />
 {/snippet}
 
 {#snippet infoIconRegular()}
@@ -54,7 +54,7 @@
 	<ul>
 		{#each info.statuses as warningText}
 			<li>
-				<Warning color={"red"}>
+				<Warning color="red">
 					{warningText}
 				</Warning>
 			</li>

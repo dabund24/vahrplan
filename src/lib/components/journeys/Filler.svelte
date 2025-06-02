@@ -50,7 +50,7 @@
 		{#if block.type === "transfer" && block.isStopover}
 			{@const arrivalTime = new Date(block.transitData.time.arrival?.time ?? 0).getTime()}
 			{@const departureTime = new Date(block.transitData.time.departure?.time ?? 0).getTime()}
-			<IconStationLocation color={"product"} isSmallIcon={true} iconType={"station"} />
+			<IconStationLocation color="product" isSmallIcon={true} iconType="station" />
 			<TrainProgressIndicator
 				departureTime={arrivalTime}
 				arrivalTime={departureTime}

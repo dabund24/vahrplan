@@ -30,7 +30,7 @@
 	<div class="time-container">
 		<Time time={block.time} />
 	</div>
-	<IconStationLocation iconType={locationType} color={"foreground"} />
+	<IconStationLocation iconType={locationType} color="foreground" />
 	<strong>{locationName}</strong>
 </div>
 

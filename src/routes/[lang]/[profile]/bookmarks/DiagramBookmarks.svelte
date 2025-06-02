@@ -72,7 +72,7 @@
 							<li class="flex-row padded-top-bottom stop">
 								<div class="icon flex-column">
 									<IconStationLocation
-										color={"foreground"}
+										color="foreground"
 										iconType={stop.type}
 									/>
 								</div>
@@ -107,7 +107,7 @@
 {/if}
 
 {#if pastBookmarks.length > 0}
-	<AccordionElement title={"Alte Diagramme"}>
+	<AccordionElement title="Alte Diagramme">
 		{@render bookmarksSnippet(pastBookmarks, true)}
 	</AccordionElement>
 {/if}

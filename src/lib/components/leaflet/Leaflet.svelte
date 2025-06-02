@@ -202,7 +202,7 @@
 				}}
 				orientation={currentPositionData.orientation}
 			>
-				<IconStationLocation iconType={"currentLocation"} color={"accent"} />
+				<IconStationLocation iconType="currentLocation" color="accent" />
 			</Marker>
 		{/if}
 	{/if}

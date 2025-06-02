@@ -174,7 +174,7 @@
 					<li class="skeleton">
 						<span class="flex-row padded-top-bottom suggestion">
 							<span class="suggestion-icon">
-								<IconStationLocation color={"foreground"} iconType={"station"} />
+								<IconStationLocation color="foreground" iconType="station" />
 							</span>
 							<span>&#8203;</span>
 						</span>
@@ -192,7 +192,7 @@
 						>
 							<span class="suggestion-icon">
 								<IconStationLocation
-									color={"foreground"}
+									color="foreground"
 									iconType={suggestion.type}
 								/>
 							</span>

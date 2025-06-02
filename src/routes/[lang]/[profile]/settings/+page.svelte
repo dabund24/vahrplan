@@ -13,11 +13,11 @@
 	<meta name="description" content="Einstellungen für Vahrplan" />
 </svelte:head>
 
-<Header title={"Einstellungen"} isMobileOnly={true} />
+<Header title="Einstellungen" isMobileOnly={true} />
 <div class="content-wrapper">
 	<h1>Allgemein</h1>
 	<Setting
-		settingName={"Schema"}
+		settingName="Schema"
 		bind:setting={$settings.general.colorScheme}
 		settingInfo={{
 			type: "options",
@@ -30,7 +30,7 @@
 		}}
 	/>
 	<Setting
-		settingName={"Akzentfarbe"}
+		settingName="Akzentfarbe"
 		bind:setting={$settings.general.color}
 		settingInfo={{
 			type: "options",
@@ -64,12 +64,12 @@
 	/>
 	<h1>Karte</h1>
 	<Setting
-		settingName={"Live-Standort auf Karte anzeigen"}
+		settingName="Live-Standort auf Karte anzeigen"
 		bind:setting={$settings.general.mapGeolocation}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName={"Karte vom Farbschema unabhängig immer hell lassen"}
+		settingName="Karte vom Farbschema unabhängig immer hell lassen"
 		bind:setting={$settings.general.isMapAlwaysLight}
 		settingInfo={{ type: "boolean" }}
 	/>
@@ -97,12 +97,12 @@
 		</ButtonModal>
 	</div>
 	<Setting
-		settingName={"Kurzlinks für Verbindungsdiagramme"}
+		settingName="Kurzlinks für Verbindungsdiagramme"
 		bind:setting={$settings.general.shortLinksDiagrams}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName={"Kurzlinks für Reisen"}
+		settingName="Kurzlinks für Reisen"
 		bind:setting={$settings.general.shortLinksJourneys}
 		settingInfo={{ type: "boolean" }}
 	/>
@@ -131,12 +131,12 @@
 		</ButtonModal>
 	</div>
 	<Setting
-		settingName={"App-Einstellungen"}
+		settingName="App-Einstellungen"
 		bind:setting={$settings.storage.general}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName={"Verbindungsfilter"}
+		settingName="Verbindungsfilter"
 		bind:setting={$settings.storage.journeysOptions}
 		settingInfo={{ type: "boolean" }}
 	/>
