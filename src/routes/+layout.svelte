@@ -2,11 +2,12 @@
 	import "./styles.css";
 	import Navbar from "./[lang]/[profile]/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
-	import { beforeNavigate } from "$app/navigation";
+	import { afterNavigate, beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/state/loadingStore";
 	import Toasts from "$lib/components/Toasts.svelte";
 	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
 	import type { LayoutProps } from "./$types";
+	import { page } from "$app/state";
 
 	let { children, data }: LayoutProps = $props();
 
@@ -21,6 +22,12 @@
 			() => stopLoading(loadingId, true)
 		);
 	});
+
+	afterNavigate((navigation) => {
+		if (navigation.to?.url.href !== navigation.from?.url.href) {
+			plausible("pageview", { u: page.route.id });
+		}
+	});
 </script>
 
 <svelte:head>
@@ -32,9 +39,6 @@
 			function () {
 				(window.plausible.q = window.plausible.q || []).push(arguments);
 			};
-	</script>
-	<script>
-		plausible("pageview", { u: location.href.split("?")[0] });
 	</script>
 </svelte:head>
 
