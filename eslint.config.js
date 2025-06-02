@@ -1,8 +1,8 @@
 import js from "@eslint/js";
 import ts from "typescript-eslint";
 import svelte from "eslint-plugin-svelte";
-import svelte_config from "./svelte.config.js";
 import globals from "globals";
+import svelteConfig from "./svelte.config.js";
 
 export default [
 	{
@@ -96,17 +96,12 @@ export default [
 	...svelte.configs["flat/recommended"],
 	// svelte config
 	{
-		rules: {
-			// ...
-		}
-	},
-	{
 		files: ["**/*.svelte"],
 		languageOptions: {
 			parserOptions: {
-				extraFileExtensions: ["**/*.svelte", ".svelte"],
+				extraFileExtensions: [".svelte"],
 				parser: ts.parser,
-				svelteConfig: svelte_config
+				svelteConfig
 			}
 		},
 		rules: {
@@ -114,8 +109,16 @@ export default [
 			"@typescript-eslint/no-unsafe-call": "off",
 			"@typescript-eslint/no-unsafe-argument": "off",
 			"no-undef": "off",
-			"@typescript-eslint/no-unsafe-return": "off",
 			"@typescript-eslint/no-unsafe-assignment": "off"
+		}
+	},
+	{
+		files: ["**/*.svelte.ts"],
+		languageOptions: {
+			parserOptions: {
+				parser: ts.parser,
+				svelteConfig
+			}
 		}
 	},
 	// prettier
