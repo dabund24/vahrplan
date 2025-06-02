@@ -45,7 +45,7 @@
 	{#snippet children(yMin: number, ySize: number)}
 		<SvgNowLine {minTime} {maxTime} columnCount={columns.length} />
 		<g stroke-linecap="round" fill="none" stroke-linejoin="round" stroke-width="2">
-			{#each selectedJourneyCoords as subJourneyCoords}
+			{#each selectedJourneyCoords as subJourneyCoords, i (i)}
 				<polyline
 					points={subJourneyCoords}
 					stroke="var(--accent-color)"
@@ -54,7 +54,7 @@
 				/>
 			{/each}
 
-			{#each columns as column, columnIndex}
+			{#each columns as column, columnIndex (columnIndex)}
 				<SvgColumn
 					columnData={column}
 					{minTime}

@@ -12,7 +12,7 @@
 	<Options {id} {options} />
 </div>
 <div class="flex-row desktop-only options">
-	{#each options as _, i}
+	{#each options as _, i (i)}
 		{@const option = options[options.length - 1 - i]}
 		{#if option.type === "link"}
 			<a class="hoverable hoverable--visible" href={option.url} title={option.name}>

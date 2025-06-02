@@ -10,7 +10,6 @@
 	type Props = {
 		info: LegBlock["info"];
 		blockKey: string;
-		departureTime: number;
 	};
 
 	let { info, blockKey }: Props = $props();
@@ -43,7 +42,7 @@
 </script>
 
 {#snippet infoIconRed()}
-	<IconInfo color={"red"} />
+	<IconInfo color="red" />
 {/snippet}
 
 {#snippet infoIconRegular()}
@@ -52,9 +51,9 @@
 
 {#snippet statuses()}
 	<ul>
-		{#each info.statuses as warningText}
+		{#each info.statuses as warningText, i (i)}
 			<li>
-				<Warning color={"red"}>
+				<Warning color="red">
 					{warningText}
 				</Warning>
 			</li>
@@ -64,7 +63,7 @@
 
 {#snippet hints()}
 	<ul>
-		{#each info.hints as warningText}
+		{#each info.hints as warningText, i (i)}
 			<li>
 				<Warning>
 					{warningText}

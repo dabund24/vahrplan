@@ -92,7 +92,7 @@
 				</Warning>
 			{/if}
 			<div>
-				{#each suggestedLocations as suggestedLocation, i}
+				{#each suggestedLocations as suggestedLocation, i (i)}
 					<div class="station-row" class:displayed={suggestedLocation.isDisplayed}>
 						<div class="icon flex-column">
 							<IconStationLocation

@@ -56,7 +56,7 @@
 	onclick={handleStationPress}
 	title={location.name}
 >
-	<IconStationLocation color={"product"} iconType={location.type} isSmallIcon={isStopover} />
+	<IconStationLocation color="product" iconType={location.type} isSmallIcon={isStopover} />
 </button>
 {#if isPressed && isDisplayedLocation}
 	<button

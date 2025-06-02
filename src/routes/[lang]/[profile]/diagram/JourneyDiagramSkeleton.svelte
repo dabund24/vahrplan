@@ -7,15 +7,15 @@
 </script>
 
 <div class="flex-column skeleton">
-	{#each { length: 12 } as _}
+	{#each { length: 12 } as _, i (i)}
 		<div class="flex-row">
-			{#each { length: depth } as _}
+			{#each { length: depth } as _, j (j)}
 				<div class="flex-row diagram-element">
 					<span class="time">
 						<Time time={{ departure: { time: new Date(0).toISOString() } }} />
 					</span>
 					<span class="flex-row legs">
-						{#each { length: Math.floor(Math.random() * 5) + 1 } as _}
+						{#each { length: Math.floor(Math.random() * 5) + 1 } as _, k (k)}
 							<span
 								class="leg skeleton-text"
 								style="--duration: {Math.random() * 2 + 2}"

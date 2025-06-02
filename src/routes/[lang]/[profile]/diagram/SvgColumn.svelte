@@ -28,13 +28,13 @@
 	});
 </script>
 
-{#each selectedJourneyTransfers as { start: [x, _] }}
+{#each selectedJourneyTransfers as { start: [x, _] }, i (i)}
 	<polyline
 		stroke="var(--foreground-color--transparent)"
 		stroke-width="1"
 		points="{x + columnIndex},{yMin} {x + columnIndex},{ySize}"
 	/>
 {/each}
-{#each columnData.subJourneys as journey, rowIndex}
+{#each columnData.subJourneys as journey, rowIndex (rowIndex)}
 	<SvgSubJourney {journey} {minTime} {columnIndex} {rowIndex} isNew={isNewColumn[rowIndex]} />
 {/each}

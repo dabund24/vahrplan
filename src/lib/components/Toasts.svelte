@@ -37,7 +37,7 @@
 			<div class="line--regular line--{toast.color}"></div>
 		</div>
 	{/each}
-	{#each news as singleNews}
+	{#each news as singleNews (singleNews.id)}
 		<ServerNotifications news={singleNews} />
 	{/each}
 	<ServiceWorkerUpdates />

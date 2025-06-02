@@ -72,7 +72,7 @@
 						<Time time={{ departure: { time: bookmark.departure } }} />
 						<div class="icon">
 							<IconStationLocation
-								color={"foreground"}
+								color="foreground"
 								iconType={bookmark.start.type}
 							/>
 						</div>
@@ -92,7 +92,7 @@
 						<Time time={{ arrival: { time: bookmark.arrival } }} />
 						<div class="icon">
 							<IconStationLocation
-								color={"foreground"}
+								color="foreground"
 								iconType={bookmark.destination.type}
 							/>
 						</div>
@@ -124,7 +124,7 @@
 	{@render bookmarksSnippet(futureBookmarks, false)}
 {/if}
 {#if pastBookmarks.length > 0}
-	<AccordionElement title={"Vergangene Reisen"}>
+	<AccordionElement title="Vergangene Reisen">
 		{@render bookmarksSnippet(pastBookmarks, true)}
 	</AccordionElement>
 {/if}

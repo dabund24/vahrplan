@@ -68,13 +68,10 @@
 						)}, {timeToString(bookmark.time)}
 					</div>
 					<ol>
-						{#each bookmark.stops as stop}
+						{#each bookmark.stops as stop, i (i)}
 							<li class="flex-row padded-top-bottom stop">
 								<div class="icon flex-column">
-									<IconStationLocation
-										color={"foreground"}
-										iconType={stop.type}
-									/>
+									<IconStationLocation color="foreground" iconType={stop.type} />
 								</div>
 								<strong class="limit-lines">
 									{stop.name}
@@ -107,7 +104,7 @@
 {/if}
 
 {#if pastBookmarks.length > 0}
-	<AccordionElement title={"Alte Diagramme"}>
+	<AccordionElement title="Alte Diagramme">
 		{@render bookmarksSnippet(pastBookmarks, true)}
 	</AccordionElement>
 {/if}

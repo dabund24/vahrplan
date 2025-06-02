@@ -57,7 +57,7 @@
 		preserveAspectRatio="none"
 	>
 		<g stroke="var(--foreground-color)" stroke-linejoin="round" fill="none">
-			{#each Array.from({ length: columns.length + 1 }) as _, i}
+			{#each Array.from({ length: columns.length + 1 }) as _, i (i)}
 				<g stroke-width="2">
 					<line
 						x1={i}
@@ -86,7 +86,7 @@
 					<stop offset="100%" stop-color="var(--foreground-color)" stop-opacity="0" />
 				</linearGradient>
 			</defs>
-			{#each transferStationsData as { xTop, xBottom }}
+			{#each transferStationsData as { xTop, xBottom } (xTop)}
 				<g stroke-width="1">
 					<polyline
 						stroke-linecap="round"

@@ -170,18 +170,18 @@
 		</label>
 		<ul>
 			{#await suggestions}
-				{#each { length: 10 } as _}
+				{#each { length: 10 } as _, i (i)}
 					<li class="skeleton">
 						<span class="flex-row padded-top-bottom suggestion">
 							<span class="suggestion-icon">
-								<IconStationLocation color={"foreground"} iconType={"station"} />
+								<IconStationLocation color="foreground" iconType="station" />
 							</span>
 							<span>&#8203;</span>
 						</span>
 					</li>
 				{/each}
 			{:then suggestions}
-				{#each suggestions as suggestion, i}
+				{#each suggestions as suggestion, i (i)}
 					<li>
 						<button
 							type="button"
@@ -192,7 +192,7 @@
 						>
 							<span class="suggestion-icon">
 								<IconStationLocation
-									color={"foreground"}
+									color="foreground"
 									iconType={suggestion.type}
 								/>
 							</span>

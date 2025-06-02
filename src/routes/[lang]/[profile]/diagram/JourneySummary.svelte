@@ -273,7 +273,7 @@
 			/>
 		{/snippet}
 		<div class="padded-top-bottom">
-			{#each modalLeg.info.statuses as status}
+			{#each modalLeg.info.statuses as status, i (i)}
 				<Warning color="red">{status}</Warning>
 			{/each}
 			<DateDuration

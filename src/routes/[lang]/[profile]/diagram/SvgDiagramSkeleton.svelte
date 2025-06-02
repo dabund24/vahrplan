@@ -21,8 +21,8 @@
 
 <div class="skeleton">
 	<SvgDiagramWrapper {columnCount} minTime={0} {maxTime} {timeMarks} {minutesPerHeight}>
-		{#each { length: columnCount } as _, columnIndex}
-			{#each { length: 6 } as _}
+		{#each { length: columnCount } as _, columnIndex (columnIndex)}
+			{#each { length: 6 } as _, rowIndex (rowIndex)}
 				{@const y1 = Math.random() * 0.7 + 0.5 * columnIndex}
 				{@const y2 = y1 + 0.1 + Math.random() * (1 + 0.5 * columnIndex - y1)}
 				<g class="skeleton-stroke" stroke-width="2">

@@ -118,7 +118,7 @@
 			Nur Fernverkehr
 		</button>
 	</div>
-	{#each productKeys as product}
+	{#each productKeys as product (product)}
 		<Setting
 			settingName={products[product]}
 			bind:setting={$settings.journeysOptions.products[product]}

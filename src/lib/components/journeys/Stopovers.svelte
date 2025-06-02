@@ -51,7 +51,7 @@
 )}
 
 <ol>
-	{#each stopovers as stopover, i}
+	{#each stopovers as stopover, i (i)}
 		{@const thisStopoverArrival = getStopoverTime(stopover, "arrival")}
 		{@const thisStopoverDeparture = getStopoverTime(stopover, "departure")}
 		{@const nextStopoverArrival =

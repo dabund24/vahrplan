@@ -56,7 +56,7 @@
 		bind:this={svgElement}
 	>
 		<SvgNowLine {minTime} {maxTime} {columnCount} />
-		{#each timeMarks as { yCoordinate }}
+		{#each timeMarks as { yCoordinate } (yCoordinate)}
 			<line
 				x1="0"
 				x2={columnCount}

@@ -6,7 +6,6 @@
 	type Props = {
 		isBelowHeaderMobile?: boolean;
 		isBelowHeaderDesktop?: boolean;
-		padContent?: boolean;
 		tabs: {
 			title: string;
 			content: Snippet;
@@ -24,7 +23,7 @@
 			class="flex-row hoverable--visible--group hoverable--visible--group--no-side-padding"
 			role="tablist"
 		>
-			{#each tabs as tab, i}
+			{#each tabs as tab, i (i)}
 				<li role="tab" aria-selected={activeTab === i}>
 					<button onclick={() => void (activeTab = i)} type="button">{tab.title}</button>
 				</li>

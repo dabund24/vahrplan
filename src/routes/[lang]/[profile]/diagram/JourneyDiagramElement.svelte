@@ -39,7 +39,7 @@
 		<Time time={{ departure: subJourney.departureTime }} />
 	</span>
 	<span class="flex-row legs">
-		{#each displayedBlocks as block}
+		{#each displayedBlocks as block (block.blockKey)}
 			<svelte:element
 				this={block.attribute === "cancelled" ? "s" : "span"}
 				class="leg product--{block.product}"
