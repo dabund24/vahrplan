@@ -35,6 +35,7 @@
 	.align-right {
 		display: flex;
 		white-space: unset;
+		hyphens: none;
 		margin: auto 0 auto auto;
 		direction: rtl;
 		width: 0;
