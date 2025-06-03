@@ -26,7 +26,7 @@
 	afterNavigate((navigation) => {
 		if (navigation.to?.url.href !== navigation.from?.url.href) {
 			// @ts-expect-error plausible
-			plausible("pageview", { u: page.route.id });
+			plausible("pageview", { u: `${location.origin}${page.route.id}` });
 		}
 	});
 </script>

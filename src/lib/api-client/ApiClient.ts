@@ -99,7 +99,7 @@ export abstract class ApiClient<
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 					void plausible(`${this.methodType} /api/${this.route}`, {
 						props: plausibleProps,
-						u: page.route.id
+						u: `${location.origin}${page.route.id}`
 					})
 			);
 		}
