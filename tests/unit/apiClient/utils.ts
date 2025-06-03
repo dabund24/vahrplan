@@ -47,7 +47,9 @@ export async function apiClientPlausibleTest<
 	input: ReqT,
 	expected: { goal: string; props: Partial<Record<PlausibleProp, string | number>> }
 ): Promise<void> {
-	vi.mock("$app/state", () => ({ page: { route: { id: "foo/bar/baz" } } }));
+	vi.mock("$app/state", () => ({ page: { route: { id: "/foo/bar/baz" } } }));
+
+	global.location = { ...global.location, origin: "https://vahrplan.de" };
 
 	// @ts-expect-error plausible
 	global.plausible = vi.fn(
@@ -65,6 +67,6 @@ export async function apiClientPlausibleTest<
 	// @ts-expect-error plausible
 	expect(plausible, "registered incorrect plausible event").toHaveBeenCalledExactlyOnceWith(
 		expected.goal,
-		{ props: expected.props, u: "foo/bar/baz" }
+		{ props: expected.props, u: "https://vahrplan.de/foo/bar/baz" }
 	);
 }
