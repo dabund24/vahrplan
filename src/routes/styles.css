@@ -234,6 +234,14 @@ select {
 	color: var(--foreground-color);
 }
 
+hr {
+	width: calc(100% - 2rem);
+	height: var(--line-width);
+	border: none;
+	background-color: var(--foreground-color--transparent);
+	border-radius: var(--border-radius--small);
+}
+
 header,
 h1,
 h2,

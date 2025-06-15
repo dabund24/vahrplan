@@ -1,6 +1,6 @@
 <script lang="ts">
 	import "./styles.css";
-	import Navbar from "./[lang]/[profile]/Navbar.svelte";
+	import Navbar from "$lib/components/navbar/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/state/loadingStore";
@@ -100,10 +100,6 @@
 	}
 
 	@media screen and (max-width: 999px) {
-		.app {
-			grid-template-rows: 100% auto;
-		}
-
 		main {
 			overflow: unset;
 		}
