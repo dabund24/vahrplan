@@ -135,7 +135,7 @@
 		}
 
 		[popover].expand-to-top {
-            top: auto;
+			top: auto;
 			bottom: calc(anchor(top) + var(--line-width));
 		}
 

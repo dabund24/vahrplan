@@ -53,8 +53,8 @@
 			var(--background-color--transparent),
 			transparent
 		);
-		animation: 2s var(--cubic-bezier--regular) calc(1s * var(--loading-est) - 1s) infinite backwards
-			extend-loading-est;
+		animation: 2s var(--cubic-bezier--regular) calc(1s * var(--loading-est) - 1s) infinite
+			backwards extend-loading-est;
 	}
 
 	@keyframes extend-loading-est {
