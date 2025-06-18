@@ -26,9 +26,10 @@
 	type Props = {
 		id: string;
 		options: OptionElement[];
+		isExpandedToTop?: boolean;
 	};
 
-	let { id, options }: Props = $props();
+	let { id, options, isExpandedToTop = false }: Props = $props();
 
 	let popoverElement: HTMLElement;
 
@@ -80,6 +81,7 @@
 	<div
 		id="{id}-popover"
 		popover="auto"
+		class:expand-to-top={isExpandedToTop}
 		style="position-anchor: --{id}-popover-anchor"
 		bind:this={popoverElement}
 		onclick={() => void popoverElement.hidePopover()}
@@ -130,6 +132,11 @@
 			right: calc(anchor(right) - var(--line-width));
 			top: calc(anchor(bottom) + var(--line-width));
 			margin: 0 0 0 auto;
+		}
+
+		[popover].expand-to-top {
+            top: auto;
+			bottom: calc(anchor(top) + var(--line-width));
 		}
 
 		[popover]:popover-open {

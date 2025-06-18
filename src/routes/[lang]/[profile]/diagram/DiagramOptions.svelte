@@ -76,7 +76,7 @@
 	<ViaRecommendations {recommendedVias} bind:isDisplayed={hasViaRecommendations} />
 {/await}
 
-<ResponsiveOptions id="diagram-options" {options} />
+<ResponsiveOptions id="diagram-options" {options} isExpandedToTop={true} />
 
 {#snippet iconStation()}
 	<IconStationLocation iconType="station" color="foreground" />

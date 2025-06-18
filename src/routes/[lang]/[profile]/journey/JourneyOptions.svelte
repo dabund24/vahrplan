@@ -74,5 +74,5 @@
 {/snippet}
 
 {#if selectedData.isFullJourneySelected}
-	<ResponsiveOptions id="journey-options" {options} />
+	<ResponsiveOptions id="journey-options" {options} isExpandedToTop={true} />
 {/if}
