@@ -31,13 +31,13 @@
 		background-color: transparent;
 		width: 100%;
 		transition:
-			width 0.4s var(--cubic-bezier),
-			background-color 0.8s var(--cubic-bezier);
+			width 0.4s var(--cubic-bezier--regular),
+			background-color 0.8s var(--cubic-bezier--regular);
 	}
 
 	.loading {
 		background-color: var(--accent-color);
-		transition: width calc(1s * var(--loading-est)) var(--cubic-bezier);
+		transition: width calc(1s * var(--loading-est)) var(--cubic-bezier--regular);
 		width: 90%;
 	}
 
@@ -53,7 +53,7 @@
 			var(--background-color--transparent),
 			transparent
 		);
-		animation: 2s var(--cubic-bezier) calc(1s * var(--loading-est) - 1s) infinite backwards
+		animation: 2s var(--cubic-bezier--regular) calc(1s * var(--loading-est) - 1s) infinite backwards
 			extend-loading-est;
 	}
 

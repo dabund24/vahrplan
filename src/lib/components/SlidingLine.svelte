@@ -33,15 +33,15 @@
 			calc(var(--position) - var(--line-length) / 2);
 		height: var(--line-width);
 		transition:
-			background-color 0.4s var(--cubic-bezier),
-			margin-left 0.4s var(--cubic-bezier),
-			margin-right 0.4s var(--cubic-bezier) 0.1s;
+			background-color 0.4s var(--cubic-bezier--regular),
+			margin-left 0.4s var(--cubic-bezier--regular),
+			margin-right 0.4s var(--cubic-bezier--regular) 0.1s;
 	}
 	.line--accent.slides-to-right {
 		transition:
-			background-color 0.4s var(--cubic-bezier),
-			margin-left 0.4s var(--cubic-bezier) 0.1s,
-			margin-right 0.4s var(--cubic-bezier);
+			background-color 0.4s var(--cubic-bezier--regular),
+			margin-left 0.4s var(--cubic-bezier--regular) 0.1s,
+			margin-right 0.4s var(--cubic-bezier--regular);
 	}
 
 	.short {

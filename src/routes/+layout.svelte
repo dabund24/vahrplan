@@ -82,8 +82,8 @@
 		padding: 0 5px;
 		line-height: 1.4;
 		transition:
-			background-color 0.4s var(--cubic-bezier),
-			color 0.4s var(--cubic-bezier);
+			background-color 0.4s var(--cubic-bezier--regular),
+			color 0.4s var(--cubic-bezier--regular);
 	}
 
 	@media (display-mode: browser) {

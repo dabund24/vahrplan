@@ -271,7 +271,7 @@
 	.add-button,
 	.input-container:last-child:nth-child(2) .switch-button {
 		translate: 0 calc(-0.5lh - 0.5rem - 6px);
-		transition: translate 0.4s var(--cubic-bezier);
+		transition: translate 0.4s var(--cubic-bezier--regular);
 	}
 	.remove-button,
 	.add-button,

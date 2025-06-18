@@ -48,7 +48,8 @@
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--transparent);
 	--border--very-transparant: var(--line-width) solid var(--foreground-color--very-transparent);
-	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--cubic-bezier--regular: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--cubic-bezier--bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 	accent-color: var(--accent-color);
 	color-scheme: light dark;
@@ -178,9 +179,9 @@ a,
 input,
 button {
 	transition:
-		color 0.4s var(--cubic-bezier),
-		background 0.4s var(--cubic-bezier),
-		border-color 0.4s var(--cubic-bezier);
+		color 0.4s var(--cubic-bezier--regular),
+		background 0.4s var(--cubic-bezier--regular),
+		border-color 0.4s var(--cubic-bezier--regular);
 }
 
 svg {
@@ -197,8 +198,8 @@ svg line,
 svg path,
 svg circle {
 	transition:
-		stroke 0.4s var(--cubic-bezier),
-		fill 0.4s var(--cubic-bezier);
+		stroke 0.4s var(--cubic-bezier--regular),
+		fill 0.4s var(--cubic-bezier--regular);
 }
 
 button {
@@ -309,7 +310,7 @@ h2 {
 
 .line--accent {
 	background-color: var(--accent-color);
-	transition: background-color 0.4s var(--cubic-bezier);
+	transition: background-color 0.4s var(--cubic-bezier--regular);
 	border-radius: var(--border-radius--small);
 }
 
@@ -420,7 +421,7 @@ h2 {
 	cursor: pointer;
 	border-radius: 50vh;
 	border: var(--line-width) solid transparent;
-	transition: color 0.4s var(--cubic-bezier);
+	transition: color 0.4s var(--cubic-bezier--regular);
 	padding: 0.5rem;
 	display: flex;
 }
@@ -535,6 +536,15 @@ h2 {
 	}
 	100% {
 		opacity: 0.5;
+	}
+}
+
+@keyframes zoom {
+	from {
+		transform: scale(0.2);
+	}
+	to {
+		transform: scale(1);
 	}
 }
 

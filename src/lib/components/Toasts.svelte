@@ -79,7 +79,7 @@
 		margin: 0 -0.5rem calc(-1 * var(--line-width));
 		width: calc(100% + 1rem);
 		translate: 0 0.5rem;
-		transition: width 3s var(--cubic-bezier);
+		transition: width 3s var(--cubic-bezier--regular);
 		background-color: var(--color);
 	}
 

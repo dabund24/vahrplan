@@ -41,8 +41,8 @@
 		border-bottom: var(--border);
 		padding: max(0.5rem, env(safe-area-inset-top) + 0.2rem) 0.5rem 0.5rem;
 		transition:
-			background-color 0.4s var(--cubic-bezier),
-			border-color 0.4s var(--cubic-bezier);
+			background-color 0.4s var(--cubic-bezier--regular),
+			border-color 0.4s var(--cubic-bezier--regular);
 	}
 
 	@media screen and (max-width: 999px) {

@@ -140,7 +140,7 @@
 		}
 
 		[popover]:popover-open {
-			animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+			animation: zoom 0.3s var(--cubic-bezier--bounce);
 		}
 	}
 
@@ -172,7 +172,7 @@
 			height: 100vh;
 			border: none;
 			background-color: var(--background-color--transparent);
-			animation: fade-in 0.4s var(--cubic-bezier);
+			animation: fade-in 0.4s var(--cubic-bezier--regular);
 		}
 
 		:global(body):has(:popover-open) {
@@ -180,7 +180,7 @@
 		}
 
 		[popover]:popover-open .options-container {
-			animation: slide-in 0.4s var(--cubic-bezier);
+			animation: slide-in 0.4s var(--cubic-bezier--regular);
 		}
 
 		.close-button {
@@ -215,15 +215,6 @@
 				width: 20rem;
 				left: calc(50vw - 10rem);
 			}
-		}
-	}
-
-	@keyframes zoom {
-		from {
-			transform: scale(0.2);
-		}
-		to {
-			transform: scale(1);
 		}
 	}
 

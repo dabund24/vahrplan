@@ -33,8 +33,8 @@
 		height: 2.5rem;
 		gap: 0.5rem;
 		transition:
-			background-color 0.4s var(--cubic-bezier),
-			border-bottom-color 0.4s var(--cubic-bezier);
+			background-color 0.4s var(--cubic-bezier--regular),
+			border-bottom-color 0.4s var(--cubic-bezier--regular);
 		& > strong {
 			-webkit-line-clamp: 2;
 			line-clamp: 2;
