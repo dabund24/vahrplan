@@ -26,6 +26,10 @@
 </script>
 
 <div class="journeys-wrapper">
+	<DateDuration
+		date={displayedJourney.departure}
+		duration={dateDifference(displayedJourney.departure, displayedJourney.arrival)}
+	/>
 	{#if warningMessage !== undefined}
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
@@ -33,10 +37,6 @@
 		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning
 		>
 	{/if}
-	<DateDuration
-		date={displayedJourney.departure}
-		duration={dateDifference(displayedJourney.departure, displayedJourney.arrival)}
-	/>
 	{#each displayedJourney.blocks as subJourney (subJourney.key)}
 		<div in:scale animate:flip={{ duration: 400 }}>
 			{#each subJourney.value as block, i (i)}

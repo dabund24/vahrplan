@@ -21,10 +21,10 @@
 </script>
 
 {#if date !== undefined || duration !== undefined}
-	<div class="flex-row padded-top-bottom">
-		<div>{dateString}</div>
+	<p class="flex-row">
+		<span>{dateString}</span>
 		<Duration {duration} />
-	</div>
+	</p>
 {/if}
 
 <style>

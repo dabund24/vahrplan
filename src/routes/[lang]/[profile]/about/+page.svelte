@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Header from "$lib/components/Header.svelte";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
 	import { PUBLIC_PAYPAL_LINK, PUBLIC_IMPRINT_EMAIL_ADDRESS } from "$env/static/public";
 	import { version } from "$app/environment";
@@ -11,15 +10,15 @@
 	<meta name="description" content="Weiterführende Informationen über Vahrplan" />
 </svelte:head>
 
-<Header title="Über Vahrplan" isMobileOnly={true} />
-<div class="content-wrapper padded-top-bottom">
-	<h1>Name</h1>
+<div class="content-wrapper">
+	<h1>Über Vahrplan</h1>
+	<h2>Name</h2>
 	Vahrplan steht für
 	<i
 		><strong>V</strong>oll<strong>a</strong>utomatische <strong>H</strong>ilfe für
 		<strong>R</strong>outen<strong>plan</strong>ung</i
 	>.
-	<h1>Historie</h1>
+	<h2>Historie</h2>
 	Inspiration für Vahrplan war <a href="https://youtu.be/rD5iATcC9Mo">dieses tolle Video</a>, in
 	dem (neben einigen allgemein sehr hilfreichen Tipps zur Reiseplanung bei Bahnfahrten) das
 	Programm <a href="https://tespace.traines.eu/tstp">Tespace</a> vorgestellt wurde. In den Monaten
@@ -27,11 +26,11 @@
 	zugänglicher zu machen und dann schließlich im August 2023 mit dem Programmieren begonnen. Nach
 	vielen Erweiterungen, Änderungen und sogar einem vollständigen Neuschreiben des Codes im
 	Frühjahr 2024 konnte ich im September desselben Jahres Vahrplan endlich veröffentichen.
-	<h1>Quellcode</h1>
+	<h2>Quellcode</h2>
 	Der vollständige Quellcode für Vahrplan ist
 	<a href="https://github.com/dabund24/vahrplan">auf Github</a>
 	einsehbar.
-	<h1>FAQ</h1>
+	<h2>FAQ</h2>
 	{#snippet tool(useCase: string, name: string, link: string)}
 		<li>{useCase}: <a href={link}>{name}</a></li>
 	{/snippet}
@@ -66,7 +65,7 @@
 			{@render tool("Linter", "ESLint", "https://eslint.org/")}
 			{@render tool("Code Formatter", "Prettier", "https://prettier.io/")}
 		</ul>
-		<h2>Backend</h2>
+		<h3>Backend</h3>
 		<ul>
 			{@render tool("Laufzeitumgebung", "Node.js", "https://nodejs.org/")}
 			{@render tool("Nosql-Datenbank", "Valkey", "https://valkey.io/")}
@@ -76,14 +75,14 @@
 				"https://github.com/public-transport/db-vendo-client"
 			)}
 		</ul>
-		<h2>Frontend</h2>
+		<h3>Frontend</h3>
 		<ul>
 			{@render tool("Framework", "Svelte", "https://svelte.dev/")}
 			{@render tool("Build-Tool", "Vite", "https://vitejs.dev/")}
 			{@render tool("Karten-Bibliothek", "Leaflet", "https://leafletjs.com/")}
 			{@render tool("Karten-Kacheln", "OpenStreetMap", "https://www.openstreetmap.org/")}
 		</ul>
-		<h2>Das Drumherum</h2>
+		<h3>Das Drumherum</h3>
 		<ul>
 			{@render tool("Cloud-Hosting", "Hetzner", "https://www.hetzner.com/cloud/")}
 			{@render tool("Reverse-Proxy", "nginx", "https://nginx.org/")}
@@ -110,13 +109,6 @@
 		Wofür Vahrplan steht, ist ganz oben auf der Seite beschrieben. Ähnlichkeiten mit echten
 		Wörtern sind rein zufällig.
 	</AccordionElement>
-	<div class="mobile-only">
-		<h1>Rechtliches</h1>
-		<ul>
-			<li><a href="/de/privacy">Datenschutz</a></li>
-			<li><a href="/de/imprint">Impressum</a></li>
-		</ul>
-	</div>
 
 	<footer class="flex-column">
 		<small>Vahrplan {version}</small>
@@ -125,14 +117,6 @@
 </div>
 
 <style>
-	h1 {
-		font-size: 1.2rem;
-	}
-
-	h2 {
-		font-size: 1.1rem;
-	}
-
 	ul {
 		list-style: initial;
 		padding-left: 1rem;

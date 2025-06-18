@@ -86,6 +86,7 @@
 	<IconMap />
 {/snippet}
 {#snippet journeyOverview()}
+	<h1>Reisedetails</h1>
 	{#if formData === undefined && displayedFormData === undefined}
 		<Warning>
 			Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
@@ -121,7 +122,7 @@
 				</div>
 				<JourneyOptions />
 			</div>
-			<div class="content-wrapper padded-top-bottom">
+			<div class="content-wrapper">
 				{@render tabContent()}
 			</div>
 		{/snippet}

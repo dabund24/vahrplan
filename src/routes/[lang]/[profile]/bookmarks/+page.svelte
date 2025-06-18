@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
-	import Header from "$lib/components/Header.svelte";
 	import DiagramBookmarks from "./DiagramBookmarks.svelte";
 	import JourneyBookmarks from "./JourneyBookmarks.svelte";
 	import StationBookmarks from "./StationBookmarks.svelte";
@@ -38,7 +37,7 @@
 	<StationBookmarks />
 {/snippet}
 
-<Header title="Lesezeichen" isMobileOnly={true} />
 <div class="content-wrapper" data-sveltekit-preload-data="off">
+	<h1>Lesezeichen</h1>
 	<Tabs tabs={tabContent} isBelowHeaderMobile={true} />
 </div>
