@@ -40,7 +40,7 @@
 	--line-length--vertical: 1.5rem;
 	--connection-width: 24em;
 	--height--icon--small: 16px;
-	--navbar-space--bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
+	--navbar-space--bottom: calc(env(safe-area-inset-bottom) + 2 * var(--line-width) + 3rem);
 	--navbar-space--top: calc(
 		max(0.25rem, env(safe-area-inset-top)) + 1.25rem + 26px + 3 * var(--line-width)
 	);
@@ -571,8 +571,8 @@ h2 {
 
 @media screen and (min-width: 1000px) {
 	:root {
-		--navbar-space--bottom: 0rem;
-		--navbar-space--top: 0rem;
+		--navbar-space--bottom: 0;
+		--navbar-space--top: 0;
 	}
 	html,
 	body {
