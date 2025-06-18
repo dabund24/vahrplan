@@ -11,7 +11,6 @@
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
-	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { dateToString } from "$lib/util";
 	import { timeToString } from "$lib/util.js";
 	import { settings } from "$lib/state/settingStore";
@@ -200,13 +199,11 @@
 							: 1}
 					>
 						{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
-							<TitlelessHeader>
-								<div class="flex-row journey-actions">
-									{@render miniTabSelector()}
-									<JourneyOptions />
-									<TicketModal />
-								</div>
-							</TitlelessHeader>
+							<div class="flex-row journey-actions actions--desktop">
+								{@render miniTabSelector()}
+								<JourneyOptions />
+								<TicketModal />
+							</div>
 							{@render tabContent()}
 						{/snippet}
 					</MiniTabs>
@@ -290,7 +287,6 @@
 	}
 
 	.journey-actions {
-		padding: var(--line-width) 0.75rem;
 		justify-content: space-between;
 	}
 

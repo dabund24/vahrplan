@@ -13,7 +13,6 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { type Snippet } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
-	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte.js";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
@@ -88,141 +87,138 @@
 	}
 </script>
 
-<TitlelessHeader --header-width="calc(var(--connection-width) * var(--connection-count) - 2rem)">
+<div
+	id="journey-summary"
+	class="flex-column summary-background actions--desktop actions--mobile"
+	class:has-svg-diagram={activeSummaryTab === 1}
+>
 	<div
-		id="journey-summary"
-		class="flex-column summary-background"
-		class:has-svg-diagram={activeSummaryTab === 1}
+		class="flex-row actions actions--mobile"
+		class:all-selected={selectedData.isFullJourneySelected}
 	>
-		<div
-			class="flex-row actions actions--mobile"
-			class:all-selected={selectedData.isFullJourneySelected}
-		>
-			{#if selectedData.isFullJourneySelected}
-				<a
-					href={apiClient("GET", "journey").formatNonApiUrl(
-						displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "")
-					).href}
-					class="hoverable hoverable--accent"
-					title="Reisedetails anzeigen"
-					transition:scale
-				>
-					Reisedetails
-					<IconRightArrow />
-				</a>
-			{/if}
-			<div class="mini-tab-container">
-				{@render miniTabsSnippet()}
-			</div>
-			<DiagramOptions />
+		{#if selectedData.isFullJourneySelected}
+			<a
+				href={apiClient("GET", "journey").formatNonApiUrl(
+					displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "")
+				).href}
+				class="hoverable hoverable--accent"
+				title="Reisedetails anzeigen"
+				transition:scale
+			>
+				Reisedetails
+				<IconRightArrow />
+			</a>
+		{/if}
+		<div class="mini-tab-container">
+			{@render miniTabsSnippet()}
 		</div>
-		<div class="flex-row">
-			{#each displayedJourney?.locations ?? [] as location, i (location.key)}
-				<div
-					class="summary-element flex-column"
-					class:station--selected={journeyInfo[i].legs.length > 0}
-					transition:scale
-					animate:flip={{ duration: 400 }}
+		<DiagramOptions />
+	</div>
+	<div class="flex-row">
+		{#each displayedJourney?.locations ?? [] as location, i (location.key)}
+			<div
+				class="summary-element flex-column"
+				class:station--selected={journeyInfo[i].legs.length > 0}
+				transition:scale
+				animate:flip={{ duration: 400 }}
+			>
+				<strong class="station-name limit-lines"
+					>{location.value.type === "currentLocation"
+						? getGeolocationString(location.value.asAt)
+						: location.value.name}</strong
 				>
-					<strong class="station-name limit-lines"
-						>{location.value.type === "currentLocation"
-							? getGeolocationString(location.value.asAt)
-							: location.value.name}</strong
-					>
-					<div class="visuals-container flex-row">
-						<div class="station-icon-container">
-							<SummaryStationIcon
-								location={location.value}
-								locationIndex={i}
-								isStopover={areStopovers[i]}
-								isDisplayedLocation={true}
-								bind:pressedStationId
-							/>
-						</div>
-						<div class="visuals--selected">
-							<div class="intermediate-stations flex-row">
-								{#each journeyInfo[i]?.legs.slice(1) ?? [] as leg (leg.departureData.location.id)}
-									<div
-										class="station-icon-container"
-										transition:scale
-										animate:flip={{ duration: 400 }}
-									>
-										<SummaryStationIcon
-											location={leg.departureData.location}
-											locationIndex={i}
-											isDisplayedLocation={false}
-											bind:pressedStationId
-										></SummaryStationIcon>
-									</div>
-								{/each}
-							</div>
-							<div class="lines flex-row">
-								{#each journeyInfo[i]?.legs ?? [] as leg (leg.blockKey)}
-									<div
-										class="leg-container flex-row"
-										in:scale
-										animate:flip={{ duration: 400 }}
-									>
-										<TrainProgressIndicator
-											orientation="horizontal"
-											product={leg.product}
-											departureTime={new Date(
-												leg.departureData.time.departure?.time ?? 0
-											).getTime()}
-											arrivalTime={new Date(
-												leg.arrivalData.time.arrival?.time ?? 0
-											).getTime()}
-										/>
-										<button
-											class="line-container hoverable"
-											onclick={() => void showLegModal(leg)}
-											title={leg.name}
-											aria-label={leg.name}
-										>
-											<span class="line--product product--{leg.product}"
-											></span>
-										</button>
-									</div>
-								{/each}
-							</div>
-						</div>
+				<div class="visuals-container flex-row">
+					<div class="station-icon-container">
+						<SummaryStationIcon
+							location={location.value}
+							locationIndex={i}
+							isStopover={areStopovers[i]}
+							isDisplayedLocation={true}
+							bind:pressedStationId
+						/>
 					</div>
-					<div class="times-container flex-row">
-						<div class="times--station flex-row">
-							<span class="arrival-time">
-								<Time time={journeyInfo.at(i - 1)?.arrival ?? {}} />
-							</span>
-							<span class="wait-time">
-								<Duration
-									duration={dateDifference(
-										journeyInfo.at(i - 1)?.arrival.arrival?.time,
-										journeyInfo[i]?.departure.departure?.time
-									)}
-								/>
-							</span>
-							<span class="departure-time time">
-								<Time time={journeyInfo[i]?.departure ?? {}} />
-							</span>
+					<div class="visuals--selected">
+						<div class="intermediate-stations flex-row">
+							{#each journeyInfo[i]?.legs.slice(1) ?? [] as leg (leg.departureData.location.id)}
+								<div
+									class="station-icon-container"
+									transition:scale
+									animate:flip={{ duration: 400 }}
+								>
+									<SummaryStationIcon
+										location={leg.departureData.location}
+										locationIndex={i}
+										isDisplayedLocation={false}
+										bind:pressedStationId
+									></SummaryStationIcon>
+								</div>
+							{/each}
 						</div>
-						<div class="times--journey flex-row">
-							<Duration
-								duration={dateDifference(
-									journeyInfo[i]?.departure.departure?.time,
-									journeyInfo[i]?.arrival.arrival?.time
-								) ?? 0}
-							/>
+						<div class="lines flex-row">
+							{#each journeyInfo[i]?.legs ?? [] as leg (leg.blockKey)}
+								<div
+									class="leg-container flex-row"
+									in:scale
+									animate:flip={{ duration: 400 }}
+								>
+									<TrainProgressIndicator
+										orientation="horizontal"
+										product={leg.product}
+										departureTime={new Date(
+											leg.departureData.time.departure?.time ?? 0
+										).getTime()}
+										arrivalTime={new Date(
+											leg.arrivalData.time.arrival?.time ?? 0
+										).getTime()}
+									/>
+									<button
+										class="line-container hoverable"
+										onclick={() => void showLegModal(leg)}
+										title={leg.name}
+										aria-label={leg.name}
+									>
+										<span class="line--product product--{leg.product}"></span>
+									</button>
+								</div>
+							{/each}
 						</div>
 					</div>
 				</div>
-			{/each}
-		</div>
-		{#if activeSummaryTab === 1}
-			{#await diagramData then { svgData: { columns }, transferLocations }}
-				<SvgTransferStations {columns} {transferLocations} />
-			{/await}
-		{/if}
+				<div class="times-container flex-row">
+					<div class="times--station flex-row">
+						<span class="arrival-time">
+							<Time time={journeyInfo.at(i - 1)?.arrival ?? {}} />
+						</span>
+						<span class="wait-time">
+							<Duration
+								duration={dateDifference(
+									journeyInfo.at(i - 1)?.arrival.arrival?.time,
+									journeyInfo[i]?.departure.departure?.time
+								)}
+							/>
+						</span>
+						<span class="departure-time time">
+							<Time time={journeyInfo[i]?.departure ?? {}} />
+						</span>
+					</div>
+					<div class="times--journey flex-row">
+						<Duration
+							duration={dateDifference(
+								journeyInfo[i]?.departure.departure?.time,
+								journeyInfo[i]?.arrival.arrival?.time
+							) ?? 0}
+						/>
+					</div>
+				</div>
+			</div>
+		{/each}
 	</div>
-</TitlelessHeader>
+	{#if activeSummaryTab === 1}
+		{#await diagramData then { svgData: { columns }, transferLocations }}
+			<SvgTransferStations {columns} {transferLocations} />
+		{/await}
+	{/if}
+</div>
 {#if modalLeg}
 	<Modal showModalKey="showLegModal">
 		{#snippet title()}
@@ -233,16 +229,14 @@
 				lineShape={modalLeg?.lineShape}
 			/>
 		{/snippet}
-		<div class="padded-top-bottom">
-			{#each modalLeg.info.statuses as status, i (i)}
-				<Warning color="red">{status}</Warning>
-			{/each}
-			<DateDuration
-				date={modalLeg.departureData.time.departure?.time}
-				duration={modalLeg.duration}
-			/>
-			<LegRegular block={modalLeg} isCompact={true} />
-		</div>
+		{#each modalLeg.info.statuses as status, i (i)}
+			<Warning color="red">{status}</Warning>
+		{/each}
+		<DateDuration
+			date={modalLeg.departureData.time.departure?.time}
+			duration={modalLeg.duration}
+		/>
+		<LegRegular block={modalLeg} isCompact={true} />
 	</Modal>
 {/if}
 
@@ -278,20 +272,18 @@
 		}
 	}
 
-	#journey-summary,
-	#journey-summary ~ :global(.transition) {
-		padding: 0 var(--line-width);
-		margin: 0 calc(-1 * var(--line-width));
-	}
-
 	#journey-summary {
+		width: calc(var(--connection-width) * var(--connection-count));
+		margin-bottom: 1rem;
 		word-break: break-word;
 		--line-shift-distance: calc(var(--diagram-width) / (2 * var(--connection-count)));
 	}
 
 	@media screen and (max-width: 999px) {
 		#journey-summary {
-			padding-top: 0.5rem;
+			padding: 0.5rem 0 0;
+			position: sticky;
+			inset: var(--navbar-space--top) auto auto auto;
 		}
 	}
 

@@ -506,12 +506,6 @@ h2 {
 	--base-padding: 0rem;
 }
 
-.transition {
-	height: 0.5rem;
-	width: 100%;
-	background: linear-gradient(to bottom, var(--background-color--transparent), transparent);
-}
-
 .limit-lines {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -560,8 +554,8 @@ h2 {
 		width: 100%;
 		bottom: 0;
 		position: fixed;
-		z-index: 500;
-		box-shadow: var(--background-color--transparent) 0 -0.5rem 0.5rem;
+		z-index: 420;
+		box-shadow: var(--background-color--transparent) 0 0 0.5rem 0.5rem;
 	}
 }
 
@@ -585,10 +579,11 @@ h2 {
 		background-color: var(--background-color--transparent);
 		padding: 0.25rem 0;
 		box-sizing: border-box;
-		width: 100%;
+		width: calc(100% + 1rem);
 		top: 0;
 		position: sticky;
-		z-index: 500;
-		box-shadow: var(--background-color--transparent) 0 0.5rem 0.5rem;
+		z-index: 420;
+		margin: 0 -0.5rem 0.5rem;
+		box-shadow: var(--background-color--transparent) 0 -1rem 0.5rem 1.5rem;
 	}
 }

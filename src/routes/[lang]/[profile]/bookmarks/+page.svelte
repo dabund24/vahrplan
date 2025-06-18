@@ -39,5 +39,12 @@
 
 <div class="content-wrapper" data-sveltekit-preload-data="off">
 	<h1>Lesezeichen</h1>
-	<Tabs tabs={tabContent} isBelowHeaderMobile={true} />
+	<Tabs tabs={tabContent} />
 </div>
+
+<style>
+	h1 {
+		position: relative;
+		z-index: 450;
+	}
+</style>

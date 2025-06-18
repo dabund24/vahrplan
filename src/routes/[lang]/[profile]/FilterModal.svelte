@@ -42,7 +42,7 @@
 	<div class="button-content">Filter</div>
 </ModalToggle>
 <Modal showModalKey="showFilterModal" title="Verbindungsfilter" height="35rem">
-	<Tabs tabs={modalTabContent} isBelowHeaderMobile={true} isBelowHeaderDesktop={true} />
+	<Tabs tabs={modalTabContent} isAtTopOnMobile={true} isBelowHeader={true} />
 </Modal>
 
 {#snippet generalFilter()}
