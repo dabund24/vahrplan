@@ -112,5 +112,6 @@
 	dialog:popover-open {
 		display: flex;
 		flex-direction: column;
+		animation: zoom 0.2s var(--cubic-bezier--bounce);
 	}
 </style>

@@ -140,7 +140,7 @@
 		}
 
 		[popover]:popover-open {
-			animation: zoom 0.3s var(--cubic-bezier--bounce);
+			animation: zoom 0.2s var(--cubic-bezier--bounce);
 		}
 	}
 
