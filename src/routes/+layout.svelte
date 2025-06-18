@@ -101,6 +101,7 @@
 
 	@media screen and (max-width: 999px) {
 		main {
+			margin-top: var(--navbar-space--top);
 			overflow: unset;
 		}
 

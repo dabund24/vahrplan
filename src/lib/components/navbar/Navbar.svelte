@@ -48,8 +48,9 @@
 	@media screen and (max-width: 999px) {
 		nav {
 			padding: max(0.25rem, env(safe-area-inset-top) + 0.2rem) 0.25rem 0.25rem;
-			position: sticky;
+			position: fixed;
 			top: 0;
+			left: 0;
 			width: 100vw;
 			box-sizing: border-box;
 			z-index: 1000;

@@ -11,27 +11,21 @@
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { pushState } from "$app/navigation";
 	import Warning from "$lib/components/Warning.svelte";
-	import { shareDiagram } from "./share";
-	import IconShare from "$lib/components/icons/IconShare.svelte";
-	import { toggleDiagramBookmark, getBookmarks, type DiagramBookmark } from "$lib/bookmarks";
-	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
-	import { onMount, type Snippet } from "svelte";
+	import { type Snippet } from "svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
-	import { browser } from "$app/environment";
 	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte.js";
-	import ViaRecommendations from "./ViaRecommendations.svelte";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
 	import {
 		type DisplayedJourney,
 		getDisplayedJourney
 	} from "$lib/state/displayedJourney.svelte.js";
-	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 	import SvgTransferStations from "./SvgTransferStations.svelte";
+	import DiagramOptions from "./DiagramOptions.svelte";
 
 	type Props = {
 		miniTabsSnippet: Snippet;
@@ -42,7 +36,6 @@
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
-	const displayedFormData = $derived(getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
 
 	type SubJourneyInfo = {
@@ -93,26 +86,6 @@
 			.filter((_, index) => index % 2 === 0)
 			.map((block) => block?.value[0]?.type === "transfer" && block.value[0].isStopover);
 	}
-
-	const diagramApiClient = apiClient("GET", "diagram");
-	let diagramBookmarks: DiagramBookmark[] = $state([]);
-	let isBookmarked = $derived(
-		browser &&
-			displayedFormData !== undefined &&
-			diagramBookmarks.some(
-				(bookmark) =>
-					bookmark.link ===
-					diagramApiClient.formatNonApiUrl(
-						diagramApiClient.formDataToRequestData(displayedFormData)
-					).href
-			)
-	);
-
-	onMount(() => (diagramBookmarks = getBookmarks("diagram")));
-
-	function handleDiagramBookmarkClick(): void {
-		diagramBookmarks = toggleDiagramBookmark(displayedFormData);
-	}
 </script>
 
 <TitlelessHeader --header-width="calc(var(--connection-width) * var(--connection-count) - 2rem)">
@@ -121,27 +94,10 @@
 		class="flex-column summary-background"
 		class:has-svg-diagram={activeSummaryTab === 1}
 	>
-		<div class="flex-row actions" class:all-selected={selectedData.isFullJourneySelected}>
-			<div class="mini-tab-container">
-				{@render miniTabsSnippet()}
-			</div>
-			{#await diagramData then { recommendedVias }}
-				<ViaRecommendations {recommendedVias} />
-			{/await}
-			<button
-				class="hoverable hoverable--visible"
-				onclick={() => void shareDiagram(displayedFormData)}
-				title="Diagramm teilen"
-			>
-				<IconShare />
-			</button>
-			<button
-				class="hoverable hoverable--visible"
-				onclick={handleDiagramBookmarkClick}
-				title="Diagram merken"
-			>
-				<IconBookmark {isBookmarked} />
-			</button>
+		<div
+			class="flex-row actions actions--mobile"
+			class:all-selected={selectedData.isFullJourneySelected}
+		>
 			{#if selectedData.isFullJourneySelected}
 				<a
 					href={apiClient("GET", "journey").formatNonApiUrl(
@@ -151,9 +107,14 @@
 					title="Reisedetails anzeigen"
 					transition:scale
 				>
+					Reisedetails
 					<IconRightArrow />
 				</a>
 			{/if}
+			<div class="mini-tab-container">
+				{@render miniTabsSnippet()}
+			</div>
+			<DiagramOptions />
 		</div>
 		<div class="flex-row">
 			{#each displayedJourney?.locations ?? [] as location, i (location.key)}
@@ -287,35 +248,33 @@
 
 <style>
 	.actions {
-		position: sticky;
-		left: 0;
-		padding: 4px 0 0.5rem;
-		gap: 4px;
-		width: min(100%, 100cqw - 1rem); /* scrollbar is not part of container :/ */
-		.mini-tab-container {
-			margin-right: auto;
-		}
-		button:last-of-type {
-			transition: margin-right 0.4s var(--cubic-bezier);
-		}
+		gap: var(--line-width);
 		a {
-			display: none;
-			position: absolute;
-			right: 0;
+			gap: 0.5rem;
+			height: 1rem;
+			align-items: center;
+			text-decoration: none;
+		}
+	}
+
+	@media screen and (min-width: 1000px) {
+		.actions {
+			position: sticky;
+			left: 0;
+			padding: 4px 0 0.5rem;
+			width: min(100%, 100cqw - 1rem); /* scrollbar is not part of container :/ */
+			.mini-tab-container {
+				margin-right: auto;
+			}
+			a {
+				display: none;
+			}
 		}
 	}
 
 	@media screen and (max-width: 999px) {
-		.actions {
-			padding: 0.5rem 0;
-			left: 0.75rem;
-			width: min(100%, 100cqw - 1.5rem);
-			&.all-selected > button:last-of-type {
-				margin-right: calc(12px + 2rem);
-			}
-			a {
-				display: block;
-			}
+		.mini-tab-container {
+			margin-left: auto;
 		}
 	}
 
@@ -332,7 +291,7 @@
 
 	@media screen and (max-width: 999px) {
 		#journey-summary {
-			padding-top: env(safe-area-inset-top);
+			padding-top: 0.5rem;
 		}
 	}
 

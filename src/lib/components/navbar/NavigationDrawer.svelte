@@ -107,7 +107,7 @@
 		color: var(--foreground-color);
 		padding: 0.5rem 0;
 		scrollbar-width: thin;
-		inset: 5rem 0.5rem auto auto;
+		inset: calc(var(--navbar-space--top) + 0.5rem) 0.5rem auto auto;
 	}
 	dialog:popover-open {
 		display: flex;

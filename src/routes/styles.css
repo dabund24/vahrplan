@@ -41,6 +41,9 @@
 	--connection-width: 24em;
 	--height--icon--small: 16px;
 	--navbar-space--bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
+	--navbar-space--top: calc(
+		max(0.25rem, env(safe-area-inset-top)) + 1.25rem + 26px + 3 * var(--line-width)
+	);
 
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--transparent);
@@ -539,11 +542,24 @@ h3 {
 	.flex-row-column {
 		flex-direction: column;
 	}
+
+	.actions--mobile {
+		background-color: var(--background-color--transparent);
+		padding: 0.25rem 0.75rem calc(env(safe-area-inset-bottom) + 0.5rem);
+		box-sizing: border-box;
+		left: 0;
+		width: 100%;
+		bottom: 0;
+		position: fixed;
+		z-index: 500;
+		box-shadow: var(--background-color--transparent) 0 -0.5rem 0.5rem;
+	}
 }
 
 @media screen and (min-width: 1000px) {
 	:root {
 		--navbar-space--bottom: 0rem;
+		--navbar-space--top: 0rem;
 	}
 	html,
 	body {
@@ -555,5 +571,15 @@ h3 {
 	}
 	.content-wrapper {
 		padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+	}
+	.actions--desktop {
+		background-color: var(--background-color--transparent);
+		padding: 0.25rem 0;
+		box-sizing: border-box;
+		width: 100%;
+		top: 0;
+		position: sticky;
+		z-index: 500;
+		box-shadow: var(--background-color--transparent) 0 0.5rem 0.5rem;
 	}
 }

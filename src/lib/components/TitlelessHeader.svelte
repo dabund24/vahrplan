@@ -23,7 +23,7 @@
 	.titleless-header {
 		width: calc(var(--header-width, 100%) + 2rem);
 		position: sticky;
-		top: 0;
+		top: var(--navbar-space--top);
 		z-index: 500;
 		transition: width 0.4s var(--cubic-bezier);
 		margin: 0 -1rem;
