@@ -30,5 +30,6 @@
 <style>
 	.flex-row {
 		justify-content: space-between;
+		margin-bottom: 0.5rem;
 	}
 </style>
