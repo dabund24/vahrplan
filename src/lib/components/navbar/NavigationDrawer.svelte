@@ -8,6 +8,7 @@
 	import IconAbout from "$lib/components/icons/IconAbout.svelte";
 	import IconBookmarkLarge from "$lib/components/icons/IconBookmarkLarge.svelte";
 	import { beforeNavigate } from "$app/navigation";
+	import IconJourneySelection from "$lib/components/icons/IconJourneySelection.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -69,7 +70,7 @@
 			route="/[lang]/[profile]/diagram"
 			pageName="Reiseauswahl"
 		>
-			{#snippet icon()}<IconLogo />{/snippet}
+			{#snippet icon()}<IconJourneySelection />{/snippet}
 		</MobileNavbarItem>
 	{/if}
 	{#if journeyUrl !== undefined}
