@@ -115,4 +115,13 @@
 		flex-direction: column;
 		animation: zoom 0.2s var(--cubic-bezier--bounce);
 	}
+
+	/* TODO remove once desktop navbar is implemented */
+	@media screen and (min-width: 1000px) {
+		dialog {
+			top: calc(
+				max(0.25rem, env(safe-area-inset-top)) + 1.25rem + 26px + 3 * var(--line-width)
+			);
+		}
+	}
 </style>
