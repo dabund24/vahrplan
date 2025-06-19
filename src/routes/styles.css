@@ -571,8 +571,8 @@ h2 {
 
 @media screen and (min-width: 1000px) {
 	:root {
-		--navbar-space--bottom: 0;
-		--navbar-space--top: 0;
+		--navbar-space--bottom: 0rem;
+		--navbar-space--top: 0rem;
 	}
 	html,
 	body {
