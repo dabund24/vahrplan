@@ -34,8 +34,7 @@
 		<Warning color="red">{warningMessage}</Warning>
 	{/if}
 	{#if selectedData.selectedJourneys.length !== 0 && !selectedData.isFullJourneySelected}
-		<Warning>Wähle im Verbindungsdiagramm für jeden Reiseabschnitt eine Verbindung aus.</Warning
-		>
+		<Warning>Wähle in der Reiseauswahl für jeden Reiseabschnitt eine Verbindung aus.</Warning>
 	{/if}
 	{#each displayedJourney.blocks as subJourney (subJourney.key)}
 		<div in:scale animate:flip={{ duration: 400 }}>

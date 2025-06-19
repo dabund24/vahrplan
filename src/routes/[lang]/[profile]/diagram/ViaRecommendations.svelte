@@ -91,7 +91,7 @@
 		{#if recommendedVias.flat().length > 0}
 			<Warning>
 				Für die hier zusätzlich angezeigten Zwischenstationen lohnt es sich möglicherweise,
-				sie auch im Diagramm zu berücksichtigen.
+				sie auch in der Suchanfrage zu berücksichtigen.
 			</Warning>
 		{/if}
 		<div>

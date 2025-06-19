@@ -97,7 +97,7 @@
 		},
 		{
 			"name": "Lesezeichen",
-			"description": "Gemerkte Diagramme, Reisen und Stationen",
+			"description": "Gemerkte Suchanfragen, Reisen und Stationen",
 			"url": "/de/dbnav/bookmarks",
 			"icons": [
 				{

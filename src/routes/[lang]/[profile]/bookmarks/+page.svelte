@@ -7,7 +7,7 @@
 
 	const tabContent: ComponentProps<typeof Tabs>["tabs"] = [
 		{
-			title: "Diagramme",
+			title: "Suchen",
 			content: diagramBookmarks
 		},
 		{
@@ -24,7 +24,7 @@
 <svelte:head>
 	<title>Vahrplan - Lesezeichen</title>
 	<meta name="title" content="Vahrplan - Lesezeichen" />
-	<meta name="description" content="Gemerkte Diagramme, Reisen und Stationen in Vahrplan" />
+	<meta name="description" content="Gemerkte Suchen, Reisen und Stationen in Vahrplan" />
 </svelte:head>
 
 {#snippet diagramBookmarks()}

@@ -79,15 +79,15 @@
 				<p>
 					Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
 					Klick auf das
-					<q>Teilen</q>-Symbol (<IconShare />) über einem Verbindungsdiagramm bzw. einer
-					Reise einen Kurzlink.
+					<q>Teilen</q>-Symbol (<IconShare />) einer Suchanfrage bzw. einer Reise einen
+					Kurzlink.
 				</p>
 				<p>
-					Der Server speichert für einen Kurzlink bis 7 Tage nach dem Zeitpunkt des
-					Diagramms/des Endes der Reise, welches Diagramm/welche Reise ihm zugeordnet ist.
-					Dies ist technisch notwendig, damit beim Aufrufen des Links das richtige
-					Diagramm/die richtige Verbindung angezeigt werden kann. Zusätzliche Daten werden
-					nicht gespeichert.
+					Der Server speichert für einen Kurzlink bis 7 Tage nach der ausgewählten
+					Abfahrts-/Ankunftszeit einer Suchanfrage/des Endes der Reise, welche
+					Suche/welche Reise ihm zugeordnet ist. Dies ist technisch notwendig, damit beim
+					Aufrufen des Links das richtige Diagramm/die richtige Verbindung angezeigt
+					werden kann. Zusätzliche Daten werden nicht gespeichert.
 				</p>
 			</div>
 		</Modal>
@@ -96,7 +96,7 @@
 		</ButtonModal>
 	</div>
 	<Setting
-		settingName="Kurzlinks für Verbindungsdiagramme"
+		settingName="Kurzlinks für Suchanfragen"
 		bind:setting={$settings.general.shortLinksDiagrams}
 		settingInfo={{ type: "boolean" }}
 	/>

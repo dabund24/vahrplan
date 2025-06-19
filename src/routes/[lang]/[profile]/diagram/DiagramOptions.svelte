@@ -40,13 +40,13 @@
 	const basicOptions: ComponentProps<typeof Options>["options"] = [
 		{
 			type: "function",
-			name: "Diagramm teilen",
+			name: "Suchanfrage teilen",
 			onClick: () => shareDiagram(displayedFormData),
 			icon: iconShare
 		},
 		{
 			type: "function",
-			name: "Diagram merken",
+			name: "Suchanfrage merken",
 			onClick: handleDiagramBookmarkClick,
 			icon: iconBookmark
 		}

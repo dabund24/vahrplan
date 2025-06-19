@@ -36,8 +36,8 @@
 		const { departure, locations } = getDisplayedJourney();
 		if (locations.length === 0) {
 			return {
-				pageTitle: "Diagramm",
-				pageDescription: "Verbindungsdiagramm in Vahrplan"
+				pageTitle: "Reiseauswahl",
+				pageDescription: "Reiseauswahl in Vahrplan"
 			};
 		}
 		const viaString =
@@ -52,12 +52,12 @@
 						)}`;
 		return {
 			pageTitle:
-				"Diagramm: " +
+				"Reiseauswahl: " +
 				locations
 					.map((location) => location.value.name)
 					.reduce((acc, name) => `${acc} – ${name}`),
 			pageDescription:
-				`Verbindungsdiagramm für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
+				`Reiseauswahl für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
 				` am ${dateToString(departure)} mit Abfahrt ${timeToString(departure)} Uhr`
 		};
 	});

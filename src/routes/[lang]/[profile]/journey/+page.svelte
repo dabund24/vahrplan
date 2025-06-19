@@ -89,9 +89,9 @@
 	<h1>Reisedetails</h1>
 	{#if formData === undefined && displayedFormData === undefined}
 		<Warning>
-			Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
-			Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
-			hier angezeigt.
+			Suche auf der Startseite nach Verbindungen und wähle anschließend in der Reiseauswahl
+			für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann hier
+			angezeigt.
 		</Warning>
 	{/if}
 	<Journeys />

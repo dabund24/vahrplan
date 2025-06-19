@@ -114,9 +114,9 @@
 
 {#if bookmarks.length === 0}
 	<Warning
-		>Merke dir eine Reise, indem du auf <span class="desktop-only"
-			>das Lesezeichen-Symbol (<IconBookmark isBookmarked={false} />)</span
-		><span class="mobile-only">"Merken" in den Optionen (<IconOptions />)</span> darüber klickst.
+		>Merke dir eine Suche, indem du auf <span class="desktop-only"
+			>das Lesezeichen-Symbol (<IconBookmark isBookmarked={false} />) darüber</span
+		><span class="mobile-only">"Merken" in den Optionen (<IconOptions />) darunter</span> klickst.
 		Die Reise ist dann hier jederzeit verfügbar.</Warning
 	>
 {/if}
