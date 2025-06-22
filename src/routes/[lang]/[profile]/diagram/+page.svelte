@@ -134,6 +134,8 @@
 	<meta name="description" content={pageDescription} />
 </svelte:head>
 
+<h1 class="visually-hidden">Reiseauswahl</h1>
+
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
 		min="360px"

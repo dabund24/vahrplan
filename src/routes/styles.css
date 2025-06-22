@@ -251,7 +251,6 @@ hr {
 	border-radius: var(--border-radius--small);
 }
 
-header,
 h1,
 h2,
 h3 {
@@ -265,6 +264,17 @@ h1 {
 
 h2 {
 	font-size: 1.25rem;
+}
+
+/* see https://medium.com/web-dev-survey-from-kyoto/the-visually-hidden-technique-303f8e2bd409 */
+.visually-hidden {
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }
 
 .inline-icons svg {
