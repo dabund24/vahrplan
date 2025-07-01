@@ -157,7 +157,7 @@
 		translate: 0 calc((var(--input-container-height) + var(--line-width)) / 2 - 50%);
 	}
 
-    .input-container:last-child:nth-child(2) .switch-button {
+	.input-container:last-child:nth-child(2) .switch-button {
 		translate: 0 calc((var(--input-container-height) + var(--line-width)) / -2);
 	}
 
@@ -167,15 +167,13 @@
 		transition: translate 0.4s var(--cubic-bezier--regular);
 	}
 
-	.location-inputs:not(.first-station-defined) {
-		.input-container:first-child .add-button:first-child {
-			scale: 0;
-		}
+	.location-inputs:not(.first-station-defined)
+		.input-container:first-child
+		.add-button:first-child {
+		scale: 0;
 	}
 
-	.location-inputs:not(.last-station-defined) {
-		.input-container:last-child .add-button:last-child {
-			scale: 0;
-		}
+	.location-inputs:not(.last-station-defined) .input-container:last-child .add-button:last-child {
+		scale: 0;
 	}
 </style>
