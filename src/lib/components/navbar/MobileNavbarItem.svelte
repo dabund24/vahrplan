@@ -13,12 +13,14 @@
 	const { currentRoute, icon, pageName, link, route }: Props = $props();
 </script>
 
-<a href={link} class="hoverable" aria-current={currentRoute === route}>
-	{#if icon !== undefined}
-		{@render icon()}
-	{/if}
-	{pageName}
-</a>
+<li>
+	<a href={link} class="hoverable" aria-current={currentRoute === route}>
+		{#if icon !== undefined}
+			{@render icon()}
+		{/if}
+		{pageName}
+	</a>
+</li>
 
 <style>
 	a {

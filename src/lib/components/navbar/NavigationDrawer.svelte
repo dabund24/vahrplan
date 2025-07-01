@@ -23,7 +23,7 @@
 	<IconDrawer />
 </button>
 
-<dialog
+<ul
 	id="navigation-drawer"
 	popover="auto"
 	{@attach (el) => void beforeNavigate(() => void el.hidePopover())}
@@ -98,10 +98,10 @@
 		route="/[lang]/privacy"
 		pageName="Datenschutz"
 	/>
-</dialog>
+</ul>
 
 <style>
-	dialog {
+	[popover] {
 		border-radius: var(--border-radius--large);
 		border: var(--border);
 		background-color: var(--background-color);
@@ -110,7 +110,7 @@
 		scrollbar-width: thin;
 		inset: calc(var(--navbar-space--top) + 0.5rem) 0.5rem auto auto;
 	}
-	dialog:popover-open {
+	[popover]:popover-open {
 		display: flex;
 		flex-direction: column;
 		animation: zoom 0.2s var(--cubic-bezier--bounce);
@@ -118,7 +118,7 @@
 
 	/* TODO remove once desktop navbar is implemented */
 	@media screen and (min-width: 1000px) {
-		dialog {
+		[popover] {
 			top: calc(
 				max(0.25rem, env(safe-area-inset-top)) + 1.25rem + 26px + 3 * var(--line-width)
 			);
