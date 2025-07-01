@@ -38,13 +38,13 @@
 </script>
 
 <div class="location-inputs--outer flex-row">
-	<div
+	<ol
 		class="location-inputs"
 		class:first-station-defined={isFirstStationDefined}
 		class:last-station-defined={isLastStationDefined}
 	>
 		{#each stops as stop, i (stop.key)}
-			<div
+			<li
 				class="flex-row input-container"
 				transition:scale
 				onintrostart={(e) =>
@@ -105,9 +105,9 @@
 				>
 					<IconPlus />
 				</button>
-			</div>
+			</li>
 		{/each}
-	</div>
+	</ol>
 </div>
 
 <style>
