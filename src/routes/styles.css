@@ -174,11 +174,6 @@ body:has(dialog[open]) {
 	overflow: hidden;
 }
 
-/* TODO remove once https://bugs.webkit.org/show_bug.cgi?id=247416 is resolved */
-*:focus-visible {
-	outline: var(--accent-color) solid 2px;
-}
-
 body,
 a,
 input,
