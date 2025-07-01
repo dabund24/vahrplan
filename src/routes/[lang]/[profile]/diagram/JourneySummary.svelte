@@ -229,13 +229,13 @@
 				lineShape={modalLeg?.lineShape}
 			/>
 		{/snippet}
-		{#each modalLeg.info.statuses as status, i (i)}
-			<Warning color="red">{status}</Warning>
-		{/each}
 		<DateDuration
 			date={modalLeg.departureData.time.departure?.time}
 			duration={modalLeg.duration}
 		/>
+		{#each modalLeg.info.statuses as status, i (i)}
+			<Warning color="red">{status}</Warning>
+		{/each}
 		<LegRegular block={modalLeg} isCompact={true} />
 	</Modal>
 {/if}
