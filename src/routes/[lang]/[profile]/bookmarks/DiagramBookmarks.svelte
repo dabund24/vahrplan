@@ -11,6 +11,7 @@
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import IconOptions from "$lib/components/icons/IconOptions.svelte";
 
 	let bookmarks: DiagramBookmark[] = $state([]);
 	let { futureBookmarks, pastBookmarks } = $derived.by(() => {
@@ -32,7 +33,7 @@
 		return [
 			{
 				type: "link",
-				name: "Diagramm anzeigen",
+				name: "Suche anzeigen",
 				url: bookmark.link,
 				icon: iconRightArrow
 			},
@@ -92,11 +93,13 @@
 {/snippet}
 
 {#if bookmarks.length === 0}
-	<Warning
-		>Merke dir ein Verbindungs-Diagramm, indem du auf das Lesezeichen-Symbol (<IconBookmark
-			isBookmarked={false}
-		/>) darüber klickst. Das Diagramm ist dann jederzeit hier verfügbar.</Warning
-	>
+	<Warning>
+		Merke dir ein Suchanfrage, indem du auf <span class="desktop-only"
+			>das Lesezeichen-Symbol (<IconBookmark isBookmarked={false} />) darüber</span
+		><span class="mobile-only"
+			>"Suchanfrage merken" in den Optionen (<IconOptions />) darunter</span
+		> klickst. Die Suchanfrage ist dann jederzeit hier verfügbar.
+	</Warning>
 {/if}
 
 {#if futureBookmarks.length > 0}
@@ -104,7 +107,7 @@
 {/if}
 
 {#if pastBookmarks.length > 0}
-	<AccordionElement title="Alte Diagramme">
+	<AccordionElement title="Alte Suchanfragen">
 		{@render bookmarksSnippet(pastBookmarks, true)}
 	</AccordionElement>
 {/if}

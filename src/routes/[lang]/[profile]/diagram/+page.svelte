@@ -11,7 +11,6 @@
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
-	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import { dateToString } from "$lib/util";
 	import { timeToString } from "$lib/util.js";
 	import { settings } from "$lib/state/settingStore";
@@ -37,8 +36,8 @@
 		const { departure, locations } = getDisplayedJourney();
 		if (locations.length === 0) {
 			return {
-				pageTitle: "Diagramm",
-				pageDescription: "Verbindungsdiagramm in Vahrplan"
+				pageTitle: "Reiseauswahl",
+				pageDescription: "Reiseauswahl in Vahrplan"
 			};
 		}
 		const viaString =
@@ -53,12 +52,12 @@
 						)}`;
 		return {
 			pageTitle:
-				"Diagramm: " +
+				"Reiseauswahl: " +
 				locations
 					.map((location) => location.value.name)
 					.reduce((acc, name) => `${acc} – ${name}`),
 			pageDescription:
-				`Verbindungsdiagramm für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
+				`Reiseauswahl für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
 				` am ${dateToString(departure)} mit Abfahrt ${timeToString(departure)} Uhr`
 		};
 	});
@@ -135,6 +134,8 @@
 	<meta name="description" content={pageDescription} />
 </svelte:head>
 
+<h1 class="visually-hidden">Reiseauswahl</h1>
+
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
 		min="360px"
@@ -200,13 +201,11 @@
 							: 1}
 					>
 						{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
-							<TitlelessHeader>
-								<div class="flex-row journey-actions">
-									{@render miniTabSelector()}
-									<JourneyOptions />
-									<TicketModal />
-								</div>
-							</TitlelessHeader>
+							<div class="flex-row journey-actions actions--desktop">
+								{@render miniTabSelector()}
+								<JourneyOptions />
+								<TicketModal />
+							</div>
 							{@render tabContent()}
 						{/snippet}
 					</MiniTabs>
@@ -290,7 +289,6 @@
 	}
 
 	.journey-actions {
-		padding: var(--line-width) 0.75rem;
 		justify-content: space-between;
 	}
 

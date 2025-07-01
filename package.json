@@ -1,6 +1,6 @@
 {
 	"name": "vahrplan",
-	"version": "4.0.4",
+	"version": "4.1.0 beta 3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import "./styles.css";
-	import Navbar from "./[lang]/[profile]/Navbar.svelte";
+	import Navbar from "$lib/components/navbar/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
 	import { startLoading, stopLoading } from "$lib/state/loadingStore";
@@ -82,8 +82,8 @@
 		padding: 0 5px;
 		line-height: 1.4;
 		transition:
-			background-color 0.4s var(--cubic-bezier),
-			color 0.4s var(--cubic-bezier);
+			background-color 0.4s var(--cubic-bezier--regular),
+			color 0.4s var(--cubic-bezier--regular);
 	}
 
 	@media (display-mode: browser) {
@@ -100,11 +100,8 @@
 	}
 
 	@media screen and (max-width: 999px) {
-		.app {
-			grid-template-rows: 100% auto;
-		}
-
 		main {
+			margin-top: var(--navbar-space--top);
 			overflow: unset;
 		}
 

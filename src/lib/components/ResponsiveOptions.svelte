@@ -5,11 +5,11 @@
 
 	type Props = ComponentProps<typeof Options>;
 
-	let { id, options }: Props = $props();
+	let { id, options, isExpandedToTop }: Props = $props();
 </script>
 
 <div class="mobile-only">
-	<Options {id} {options} />
+	<Options {id} {options} {isExpandedToTop} />
 </div>
 <div class="flex-row desktop-only options">
 	{#each options as _, i (i)}

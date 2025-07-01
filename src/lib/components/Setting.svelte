@@ -85,8 +85,8 @@
 		background: var(--foreground-color);
 		border-radius: 90px;
 		transition:
-			margin-left 0.4s var(--cubic-bezier),
-			margin-right 0.4s var(--cubic-bezier) 0.1s;
+			margin-left 0.4s var(--cubic-bezier--regular),
+			margin-right 0.4s var(--cubic-bezier--regular) 0.1s;
 	}
 
 	input:checked {
@@ -97,8 +97,8 @@
 		margin: 4px 4px 4px calc(100% - 1rem + 4px);
 		background-color: var(--accent-color);
 		transition:
-			margin-left 0.4s var(--cubic-bezier) 0.1s,
-			margin-right 0.4s var(--cubic-bezier);
+			margin-left 0.4s var(--cubic-bezier--regular) 0.1s,
+			margin-right 0.4s var(--cubic-bezier--regular);
 	}
 
 	select {

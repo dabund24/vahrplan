@@ -115,7 +115,7 @@
 
 	.location-name {
 		position: absolute;
-		transition: left 0.4s var(--cubic-bezier);
+		transition: left 0.4s var(--cubic-bezier--regular);
 		bottom: 0;
 		width: 8rem;
 		line-clamp: 2;

@@ -286,7 +286,7 @@
 		width: var(--line-width);
 		border-radius: var(--border-radius--small);
 		background-color: var(--accent-color);
-		transition: height 0.4s var(--cubic-bezier);
+		transition: height 0.4s var(--cubic-bezier--regular);
 		margin: -1rem 0;
 	}
 
@@ -301,7 +301,7 @@
 		height: calc(1lh + 1rem + 6px);
 		background-color: var(--foreground-color);
 		border-radius: 2px;
-		transition: background-color 0.4s var(--cubic-bezier);
+		transition: background-color 0.4s var(--cubic-bezier--regular);
 	}
 
 	.suggestion-icon--input::after {

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Setting from "$lib/components/Setting.svelte";
 	import { settings } from "$lib/state/settingStore";
-	import Header from "$lib/components/Header.svelte";
 	import ButtonModal from "$lib/components/ModalToggle.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
@@ -13,9 +12,9 @@
 	<meta name="description" content="Einstellungen für Vahrplan" />
 </svelte:head>
 
-<Header title="Einstellungen" isMobileOnly={true} />
 <div class="content-wrapper">
-	<h1>Allgemein</h1>
+	<h1>Einstellungen</h1>
+	<h2>Allgemein</h2>
 	<Setting
 		settingName="Schema"
 		bind:setting={$settings.general.colorScheme}
@@ -48,9 +47,9 @@
 		bind:setting={$settings.general.isLineIcons}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<h1>
+	<h2>
 		<span class="mobile-only">Reisedetails</span><span class="desktop-only">Reisevorschau</span>
-	</h1>
+	</h2>
 	<Setting
 		settingName="Standardansicht"
 		bind:setting={$settings.general.journeyDetailsStandardView}
@@ -62,7 +61,7 @@
 			]
 		}}
 	/>
-	<h1>Karte</h1>
+	<h2>Karte</h2>
 	<Setting
 		settingName="Live-Standort auf Karte anzeigen"
 		bind:setting={$settings.general.mapGeolocation}
@@ -73,22 +72,22 @@
 		bind:setting={$settings.general.isMapAlwaysLight}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<h1>Generierung von Kurzlinks beim Teilen</h1>
+	<h2>Generierung von Kurzlinks beim Teilen</h2>
 	<div class="button-modal-container">
 		<Modal title="Datenschutzhinweis Kurzlinks" showModalKey="showPrivacyLinkModal">
 			<div class="inline-icons">
 				<p>
 					Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
 					Klick auf das
-					<q>Teilen</q>-Symbol (<IconShare />) über einem Verbindungsdiagramm bzw. einer
-					Reise einen Kurzlink.
+					<q>Teilen</q>-Symbol (<IconShare />) einer Suchanfrage bzw. einer Reise einen
+					Kurzlink.
 				</p>
 				<p>
-					Der Server speichert für einen Kurzlink bis 7 Tage nach dem Zeitpunkt des
-					Diagramms/des Endes der Reise, welches Diagramm/welche Reise ihm zugeordnet ist.
-					Dies ist technisch notwendig, damit beim Aufrufen des Links das richtige
-					Diagramm/die richtige Verbindung angezeigt werden kann. Zusätzliche Daten werden
-					nicht gespeichert.
+					Der Server speichert für einen Kurzlink bis 7 Tage nach der ausgewählten
+					Abfahrts-/Ankunftszeit einer Suchanfrage/des Endes der Reise, welche
+					Suche/welche Reise ihm zugeordnet ist. Dies ist technisch notwendig, damit beim
+					Aufrufen des Links das richtige Diagramm/die richtige Verbindung angezeigt
+					werden kann. Zusätzliche Daten werden nicht gespeichert.
 				</p>
 			</div>
 		</Modal>
@@ -97,7 +96,7 @@
 		</ButtonModal>
 	</div>
 	<Setting
-		settingName="Kurzlinks für Verbindungsdiagramme"
+		settingName="Kurzlinks für Suchanfragen"
 		bind:setting={$settings.general.shortLinksDiagrams}
 		settingInfo={{ type: "boolean" }}
 	/>
@@ -106,7 +105,7 @@
 		bind:setting={$settings.general.shortLinksJourneys}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<h1>Dauerhaftes Speichern von Einstellungen</h1>
+	<h2>Dauerhaftes Speichern von Einstellungen</h2>
 	<div class="button-modal-container">
 		<Modal title="Datenschutzhinweis Local Storage" showModalKey="showPrivacyStoreModal">
 			<div class="inline-icons">
@@ -143,11 +142,6 @@
 </div>
 
 <style>
-	h1 {
-		font-size: 1.2rem;
-		padding-top: 0.5rem;
-	}
-
 	.button-modal-container {
 		margin: 0.5rem 0;
 	}

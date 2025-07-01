@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
-	import Header from "$lib/components/Header.svelte";
 	import DiagramBookmarks from "./DiagramBookmarks.svelte";
 	import JourneyBookmarks from "./JourneyBookmarks.svelte";
 	import StationBookmarks from "./StationBookmarks.svelte";
@@ -8,7 +7,7 @@
 
 	const tabContent: ComponentProps<typeof Tabs>["tabs"] = [
 		{
-			title: "Diagramme",
+			title: "Suchen",
 			content: diagramBookmarks
 		},
 		{
@@ -25,7 +24,7 @@
 <svelte:head>
 	<title>Vahrplan - Lesezeichen</title>
 	<meta name="title" content="Vahrplan - Lesezeichen" />
-	<meta name="description" content="Gemerkte Diagramme, Reisen und Stationen in Vahrplan" />
+	<meta name="description" content="Gemerkte Suchen, Reisen und Stationen in Vahrplan" />
 </svelte:head>
 
 {#snippet diagramBookmarks()}
@@ -38,7 +37,14 @@
 	<StationBookmarks />
 {/snippet}
 
-<Header title="Lesezeichen" isMobileOnly={true} />
 <div class="content-wrapper" data-sveltekit-preload-data="off">
-	<Tabs tabs={tabContent} isBelowHeaderMobile={true} />
+	<h1>Lesezeichen</h1>
+	<Tabs tabs={tabContent} />
 </div>
+
+<style>
+	h1 {
+		position: relative;
+		z-index: 450;
+	}
+</style>

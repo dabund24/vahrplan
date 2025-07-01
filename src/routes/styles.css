@@ -40,12 +40,16 @@
 	--line-length--vertical: 1.5rem;
 	--connection-width: 24em;
 	--height--icon--small: 16px;
-	--navbar-space--bottom: calc(1.5rem + max(0.5rem, env(safe-area-inset-bottom)) + 38px);
+	--navbar-space--bottom: calc(env(safe-area-inset-bottom) + 2 * var(--line-width) + 3rem);
+	--navbar-space--top: calc(
+		max(0.25rem, env(safe-area-inset-top)) + 1.25rem + 26px + 3 * var(--line-width)
+	);
 
 	--map-filter: none;
 	--border: var(--line-width) solid var(--foreground-color--transparent);
 	--border--very-transparant: var(--line-width) solid var(--foreground-color--very-transparent);
-	--cubic-bezier: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--cubic-bezier--regular: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--cubic-bezier--bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 	accent-color: var(--accent-color);
 	color-scheme: light dark;
@@ -175,9 +179,9 @@ a,
 input,
 button {
 	transition:
-		color 0.4s var(--cubic-bezier),
-		background 0.4s var(--cubic-bezier),
-		border-color 0.4s var(--cubic-bezier);
+		color 0.4s var(--cubic-bezier--regular),
+		background 0.4s var(--cubic-bezier--regular),
+		border-color 0.4s var(--cubic-bezier--regular);
 }
 
 svg {
@@ -194,8 +198,8 @@ svg line,
 svg path,
 svg circle {
 	transition:
-		stroke 0.4s var(--cubic-bezier),
-		fill 0.4s var(--cubic-bezier);
+		stroke 0.4s var(--cubic-bezier--regular),
+		fill 0.4s var(--cubic-bezier--regular);
 }
 
 button {
@@ -234,11 +238,38 @@ select {
 	color: var(--foreground-color);
 }
 
-header,
+hr {
+	width: calc(100% - 2rem);
+	height: var(--line-width);
+	border: none;
+	background-color: var(--foreground-color--transparent);
+	border-radius: var(--border-radius--small);
+}
+
 h1,
 h2,
 h3 {
 	text-wrap: balance;
+	padding-top: 0.5rem;
+}
+
+h1 {
+	font-size: 1.5rem;
+}
+
+h2 {
+	font-size: 1.25rem;
+}
+
+/* see https://medium.com/web-dev-survey-from-kyoto/the-visually-hidden-technique-303f8e2bd409 */
+.visually-hidden {
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }
 
 .inline-icons svg {
@@ -289,7 +320,7 @@ h3 {
 
 .line--accent {
 	background-color: var(--accent-color);
-	transition: background-color 0.4s var(--cubic-bezier);
+	transition: background-color 0.4s var(--cubic-bezier--regular);
 	border-radius: var(--border-radius--small);
 }
 
@@ -400,7 +431,7 @@ h3 {
 	cursor: pointer;
 	border-radius: 50vh;
 	border: var(--line-width) solid transparent;
-	transition: color 0.4s var(--cubic-bezier);
+	transition: color 0.4s var(--cubic-bezier--regular);
 	padding: 0.5rem;
 	display: flex;
 }
@@ -486,12 +517,6 @@ h3 {
 	--base-padding: 0rem;
 }
 
-.transition {
-	height: 0.5rem;
-	width: 100%;
-	background: linear-gradient(to bottom, var(--background-color--transparent), transparent);
-}
-
 .limit-lines {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -524,6 +549,15 @@ h3 {
 	}
 }
 
+@keyframes zoom {
+	from {
+		transform: scale(0.8);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
 @media screen and (max-width: 999px) {
 	.desktop-only {
 		display: none;
@@ -531,11 +565,24 @@ h3 {
 	.flex-row-column {
 		flex-direction: column;
 	}
+
+	.actions--mobile {
+		background-color: var(--background-color--transparent);
+		padding: 0.25rem 0.75rem calc(env(safe-area-inset-bottom) + 0.5rem);
+		box-sizing: border-box;
+		left: 0;
+		width: 100%;
+		bottom: 0;
+		position: fixed;
+		z-index: 420;
+		box-shadow: var(--background-color--transparent) 0 0 0.5rem 0.5rem;
+	}
 }
 
 @media screen and (min-width: 1000px) {
 	:root {
 		--navbar-space--bottom: 0rem;
+		--navbar-space--top: 0rem;
 	}
 	html,
 	body {
@@ -547,5 +594,16 @@ h3 {
 	}
 	.content-wrapper {
 		padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+	}
+	.actions--desktop {
+		background-color: var(--background-color--transparent);
+		padding: 0.25rem 0;
+		box-sizing: border-box;
+		width: calc(100% + 1rem);
+		top: 0;
+		position: sticky;
+		z-index: 420;
+		margin: 0 -0.5rem 0.5rem;
+		box-shadow: var(--background-color--transparent) 0 -1rem 0.5rem 1.5rem;
 	}
 }

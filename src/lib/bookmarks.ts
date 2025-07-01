@@ -95,7 +95,7 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 		// bookmark already exists => remove it
 		bookmarks.splice(indexInOldData, 1);
 		setBookmarks({ type: "diagram", bookmarks });
-		toast("Lesezeichen für Diagramm entfernt.", "green");
+		toast("Lesezeichen für Suchanfrage entfernt.", "green");
 		return bookmarks;
 	}
 	// bookmark does not yet exist => add it
@@ -113,7 +113,7 @@ export function toggleDiagramBookmark(formData: DisplayedFormData | undefined): 
 	};
 	bookmarks.push(bookmark);
 	setBookmarks({ type: "diagram", bookmarks });
-	toast("Lesezeichen für Diagramm hinzugefügt.", "green");
+	toast("Lesezeichen für Suchanfrage hinzugefügt.", "green");
 	return bookmarks;
 }
 

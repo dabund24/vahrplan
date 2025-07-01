@@ -21,12 +21,12 @@
 	}
 </script>
 
-<div class="duration-container">
+<span class="duration-container">
 	<i class:align-right={isAlignedRight} class:text--red={(duration ?? 0) < 0}>
 		&lrm;{durationText}
 	</i>
-	<div class="width-setter">00:00</div>
-</div>
+	<span class="width-setter">00:00</span>
+</span>
 
 <style>
 	i {

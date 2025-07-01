@@ -26,9 +26,10 @@
 	type Props = {
 		id: string;
 		options: OptionElement[];
+		isExpandedToTop?: boolean;
 	};
 
-	let { id, options }: Props = $props();
+	let { id, options, isExpandedToTop = false }: Props = $props();
 
 	let popoverElement: HTMLElement;
 
@@ -80,6 +81,7 @@
 	<div
 		id="{id}-popover"
 		popover="auto"
+		class:expand-to-top={isExpandedToTop}
 		style="position-anchor: --{id}-popover-anchor"
 		bind:this={popoverElement}
 		onclick={() => void popoverElement.hidePopover()}
@@ -132,8 +134,13 @@
 			margin: 0 0 0 auto;
 		}
 
+		[popover].expand-to-top {
+			top: auto;
+			bottom: calc(anchor(top) + var(--line-width));
+		}
+
 		[popover]:popover-open {
-			animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+			animation: zoom 0.2s var(--cubic-bezier--bounce);
 		}
 	}
 
@@ -165,7 +172,7 @@
 			height: 100vh;
 			border: none;
 			background-color: var(--background-color--transparent);
-			animation: fade-in 0.4s var(--cubic-bezier);
+			animation: fade-in 0.4s var(--cubic-bezier--regular);
 		}
 
 		:global(body):has(:popover-open) {
@@ -173,7 +180,7 @@
 		}
 
 		[popover]:popover-open .options-container {
-			animation: slide-in 0.4s var(--cubic-bezier);
+			animation: slide-in 0.4s var(--cubic-bezier--regular);
 		}
 
 		.close-button {
@@ -208,15 +215,6 @@
 				width: 20rem;
 				left: calc(50vw - 10rem);
 			}
-		}
-	}
-
-	@keyframes zoom {
-		from {
-			transform: scale(0.2);
-		}
-		to {
-			transform: scale(1);
 		}
 	}
 

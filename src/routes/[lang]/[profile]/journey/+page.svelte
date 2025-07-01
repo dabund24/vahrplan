@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
-	import Header from "$lib/components/Header.svelte";
 	import { page } from "$app/state";
 	import { type Snippet } from "svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
 	import IconMap from "$lib/components/icons/IconMap.svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
-	import TitlelessHeader from "$lib/components/TitlelessHeader.svelte";
 	import Warning from "$lib/components/Warning.svelte";
 	import { dateToString, timeToString } from "$lib/util.js";
 	import { settings } from "$lib/state/settingStore";
@@ -20,6 +18,10 @@
 	import { getSelectedData, setSelectedData } from "$lib/state/selectedData.svelte.js";
 	import { setDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { browser } from "$app/environment";
+	import IconLeftArrow from "$lib/components/icons/IconLeftArrow.svelte";
+	import { apiClient } from "$lib/api-client/apiClientFactory";
+
+	const diagramApiClient = apiClient("GET", "diagram");
 
 	const displayedFormData = $derived(getDisplayedFormData());
 	const selectedData = $derived(getSelectedData());
@@ -51,6 +53,16 @@
 	}
 
 	let clientWidth: number = $state(0);
+
+	const diagramUrl = $derived.by(() => {
+		if (displayedFormData === undefined) {
+			return "/de/dbnav";
+		}
+
+		return diagramApiClient.formatNonApiUrl(
+			diagramApiClient.formDataToRequestData(displayedFormData)
+		).href;
+	});
 </script>
 
 <svelte:head>
@@ -74,11 +86,12 @@
 	<IconMap />
 {/snippet}
 {#snippet journeyOverview()}
+	<h1>Reisedetails</h1>
 	{#if formData === undefined && displayedFormData === undefined}
 		<Warning>
-			Suche auf der Startseite nach Verbindungen und wähle anschließend im generierten
-			Diagramm für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann
-			hier angezeigt.
+			Suche auf der Startseite nach Verbindungen und wähle anschließend in der Reiseauswahl
+			für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann hier
+			angezeigt.
 		</Warning>
 	{/if}
 	<Journeys />
@@ -99,11 +112,17 @@
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	>
 		{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
-			<Header title={pageTitle.length === 0 ? "Reisedetails" : pageTitle} isMobileOnly={true}>
-				{@render miniTabSelector()}
+			<div class="actions--mobile flex-row">
+				<a href={diagramUrl} class="hoverable hoverable--visible">
+					<IconLeftArrow />
+					Reiseauswahl
+				</a>
+				<div class="mini-tab-container">
+					{@render miniTabSelector()}
+				</div>
 				<JourneyOptions />
-			</Header>
-			<div class="content-wrapper padded-top-bottom">
+			</div>
+			<div class="content-wrapper">
 				{@render tabContent()}
 			</div>
 		{/snippet}
@@ -111,11 +130,9 @@
 {:else}
 	<div class="columns">
 		<section class="journeys content-wrapper">
-			<TitlelessHeader>
-				<div class="journey-options">
-					<JourneyOptions />
-				</div>
-			</TitlelessHeader>
+			<div class="actions--desktop">
+				<JourneyOptions />
+			</div>
 			{@render journeyOverview()}
 		</section>
 		<section class="map">
@@ -142,7 +159,17 @@
 		max-height: 100%;
 		overflow: auto;
 	}
-	.journey-options {
-		padding: var(--line-width) 0.75rem 0;
+
+	.actions--mobile {
+		gap: var(--line-width);
+		a {
+			gap: 0.5rem;
+			text-decoration: none;
+			height: 1rem;
+			align-items: center;
+		}
+		.mini-tab-container {
+			margin-left: auto;
+		}
 	}
 </style>

@@ -8,7 +8,10 @@
 	<meta name="description" content="Reiseplanung mit Verbindungsdiagrammen" />
 </svelte:head>
 
+<h1 class="visually-hidden">Vahrplan: Reiseplanung mit Verbindungsdiagrammen</h1>
+
 <section class="form">
+	<h2 class="visually-hidden">Verbindungssuche</h2>
 	<MainForm />
 </section>
 
