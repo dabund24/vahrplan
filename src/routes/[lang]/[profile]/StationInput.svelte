@@ -316,7 +316,7 @@
 	:global(.input-container:last-child) .suggestion-icon::after {
 		background-color: transparent;
 	}
-	:global(.input-container--transitioning:not(:first-child):not(:last-child)),
+	:global(.input-container--transitioning),
 	.input-summary:focus-within,
 	.inner-wrapper:active {
 		& .suggestion-icon--input::before,
