@@ -122,7 +122,7 @@
 </script>
 
 <form class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
-	<MainStationInputs {stops} />
+	<MainStationInputs bind:stops={stops} />
 
 	<div class="time-filter-submit">
 		<div class="flex-row">

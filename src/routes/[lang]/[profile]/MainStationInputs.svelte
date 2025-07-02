@@ -33,7 +33,7 @@
 		];
 	}
 	function reverseStops(): void {
-		stops = stops.toReversed();
+		stops = stops.reverse();
 	}
 </script>
 
