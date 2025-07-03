@@ -47,24 +47,6 @@
 		time = new Date(dateToInputDate(displayedFormData.timeData.time));
 	}
 
-	function removeVia(index: number): void {
-		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
-	}
-	function addVia(index: number): void {
-		if (stops.length > DIAGRAM_MAX_COLUMNS) {
-			toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS - 1} Zwischenstationen möglich.`, "red");
-			return;
-		}
-		stops = [
-			...stops.slice(0, index),
-			{ value: undefined, key: Math.random() },
-			...stops.slice(index, stops.length)
-		];
-	}
-	function reverseStops(): void {
-		stops = stops.toReversed();
-	}
-
 	function setTimePreset(minuteOffset: number): void {
 		const now = new Date();
 		now.setTime(now.getTime() + 60 * 1000 * minuteOffset);
