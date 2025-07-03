@@ -126,10 +126,6 @@
 					handleSuggestionClick(suggestions[focused]);
 					focused = 0;
 					break;
-				case "Tab":
-					inputText = suggestions[focused].name;
-					focused = 0;
-					break;
 				default:
 					focused = 0;
 			}
