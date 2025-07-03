@@ -218,7 +218,7 @@
 	}
 
 	.filter-submit {
-		margin-top: 1rem;
+		margin-top: 1.5rem;
 		justify-content: end;
 		gap: 0.5rem;
 		& > button {
