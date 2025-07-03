@@ -8,7 +8,6 @@
 	import { getCurrentGeolocation } from "$lib/geolocation.svelte.js";
 	import FilterModal from "./FilterModal.svelte";
 	import { searchDiagram, type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
-	import { DIAGRAM_MAX_COLUMNS } from "$lib/constants";
 	import MainStationInputs from "./MainStationInputs.svelte";
 
 	type Props = {
