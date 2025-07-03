@@ -44,6 +44,7 @@
 			bind:selectedLocation={toBeBookmarkedStation}
 			inputPlaceholder="Station hinzufügen..."
 			isSimpleInput={true}
+			stationInputId="bookmarks"
 		/>
 	</div>
 </div>

@@ -79,6 +79,7 @@
 						: i < stops.length - 1
 							? "Zwischenstation"
 							: "Ziel"}
+					stationInputId={i}
 				/>
 				<button
 					class="remove-button hoverable hoverable--visible"

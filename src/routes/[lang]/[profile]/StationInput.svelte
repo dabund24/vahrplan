@@ -11,6 +11,7 @@
 		selectedLocation: ParsedLocation | undefined;
 		inputPlaceholder: string;
 		isSimpleInput?: boolean;
+		stationInputId: number | string;
 	};
 
 	/**
@@ -21,11 +22,13 @@
 	let {
 		selectedLocation = $bindable(undefined),
 		inputPlaceholder,
-		isSimpleInput = false
+		isSimpleInput = false,
+		stationInputId
 	}: Props = $props();
 
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
+	let isFocused = $state(false);
 	let focused = $state(0);
 	let isInputBlurredBySelection = $state(true);
 
@@ -58,6 +61,7 @@
 	 * selects the first suggested location if the user leaves the input without a selection
 	 */
 	function handleInputBlur(): void {
+		isFocused = false;
 		isInputBlurredBySelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
 			if (inputText.trim().length === 0) {
@@ -155,7 +159,15 @@
 				bind:value={inputText}
 				onkeydown={handleInputKeydown}
 				onblur={handleInputBlur}
-				onfocus={() => void (isInputBlurredBySelection = false)}
+				onfocus={(): void => {
+					isInputBlurredBySelection = false;
+					isFocused = true;
+				}}
+				role="combobox"
+				aria-autocomplete="list"
+				aria-activedescendant="search-input__{stationInputId}--suggestions__{focused}"
+				aria-expanded={isFocused}
+				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
 			{#if inputText !== ""}
 				<button
@@ -168,7 +180,7 @@
 				</button>
 			{/if}
 		</label>
-		<ul>
+		<ul id="search-input__{stationInputId}--suggestions" role="listbox">
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
 					<li class="skeleton">
@@ -182,11 +194,15 @@
 				{/each}
 			{:then suggestions}
 				{#each suggestions as suggestion, i (i)}
-					<li>
+					<li
+						id="search-input__{stationInputId}--suggestions__{i}"
+						role="option"
+						aria-selected={inputText === suggestion.name}
+					>
 						<button
 							type="button"
 							class="flex-row padded-top-bottom suggestion"
-							aria-current={focused === i}
+							class:focused={focused === i}
 							tabindex="-1"
 							onclick={() => void handleSuggestionClick(suggestion)}
 						>
@@ -270,10 +286,10 @@
 		}
 	}
 	@media screen and (pointer: fine) {
-		.suggestion[aria-current="true"] .suggestion-icon {
+		.suggestion.focused .suggestion-icon {
 			--foreground-color: var(--accent-color);
 		}
-		.suggestion[aria-current="true"]::before {
+		.suggestion.focused::before {
 			height: var(--line-length--vertical);
 		}
 	}
