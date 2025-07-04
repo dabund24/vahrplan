@@ -1,20 +1,14 @@
 <script lang="ts">
-	import StationInput from "./StationInput.svelte";
 	import { type KeyedItem, type ParsedLocation, type RelativeTimeType } from "$lib/types.js";
 	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
-	import { scale } from "svelte/transition";
-	import { flip } from "svelte/animate";
 	import { settings } from "$lib/state/settingStore";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
 	import { get } from "svelte/store";
-	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import { toast } from "$lib/state/toastStore";
 	import { getCurrentGeolocation } from "$lib/geolocation.svelte.js";
-	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 	import FilterModal from "./FilterModal.svelte";
-	import IconSwap from "$lib/components/icons/IconSwap.svelte";
 	import { searchDiagram, type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
-	import { DIAGRAM_MAX_COLUMNS } from "$lib/constants";
+	import MainStationInputs from "./MainStationInputs.svelte";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -50,24 +44,6 @@
 		departureArrivalSelection =
 			displayedFormData.timeData.scrollDirection === "earlier" ? 1 : 0;
 		time = new Date(dateToInputDate(displayedFormData.timeData.time));
-	}
-
-	function removeVia(index: number): void {
-		stops = [...stops.slice(0, index), ...stops.slice(index + 1, stops.length)];
-	}
-	function addVia(index: number): void {
-		if (stops.length > DIAGRAM_MAX_COLUMNS) {
-			toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS - 1} Zwischenstationen möglich.`, "red");
-			return;
-		}
-		stops = [
-			...stops.slice(0, index),
-			{ value: undefined, key: Math.random() },
-			...stops.slice(index, stops.length)
-		];
-	}
-	function reverseStops(): void {
-		stops = stops.toReversed();
 	}
 
 	function setTimePreset(minuteOffset: number): void {
@@ -127,66 +103,8 @@
 </script>
 
 <form class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
-	<div class="location-inputs--outer flex-row">
-		<div class="location-inputs">
-			{#each stops as stop, i (stop.key)}
-				<div
-					class="flex-row input-container"
-					transition:scale
-					onintrostart={(e) =>
-						void (
-							e.target instanceof Element &&
-							e.target.classList.add("input-container--transitioning")
-						)}
-					onintroend={(e) =>
-						void (
-							e.target instanceof Element &&
-							e.target.classList.remove("input-container--transitioning")
-						)}
-					onoutrostart={(e) =>
-						void (
-							e.target instanceof Element &&
-							e.target.classList.add("input-container--transitioning")
-						)}
-					animate:flip={{ duration: 400 }}
-				>
-					<button
-						class="add-button hoverable hoverable--visible"
-						type="button"
-						onclick={() => void addVia(i)}
-						title="Station hinzufügen"
-					>
-						<IconPlus />
-					</button>
-					<StationInput
-						bind:selectedLocation={stop.value}
-						inputPlaceholder={i === 0
-							? "Start"
-							: i < stops.length - 1
-								? "Zwischenstation"
-								: "Ziel"}
-					/>
-					<button
-						class="remove-button hoverable hoverable--visible"
-						type="button"
-						onclick={() => void removeVia(i)}
-						title="Station entfernen"
-					>
-						<IconClose />
-					</button>
-					<button
-						class="hoverable hoverable--visible switch-button"
-						type="button"
-						onclick={reverseStops}
-						title="Stationsreihenfolge umkehren"
-						aria-label="Stationsreihenfolge umkehren"
-					>
-						<IconSwap />
-					</button>
-				</div>
-			{/each}
-		</div>
-	</div>
+	<MainStationInputs bind:stops />
+
 	<div class="time-filter-submit">
 		<div class="flex-row">
 			<SingleSelect
@@ -242,41 +160,6 @@
 		padding-top: calc(0.5rem + env(safe-area-inset-top));
 		width: 100%;
 		align-items: center;
-	}
-	.location-inputs--outer {
-		width: 30rem;
-		max-width: 100%;
-		align-items: center;
-	}
-
-	.location-inputs {
-		width: 100%;
-	}
-
-	.input-container {
-		height: calc(8px + 1rem + 1lh);
-		padding: calc(var(--line-width) / 2) 0;
-		gap: var(--line-width);
-	}
-
-	.input-container:first-child .add-button,
-	.input-container:first-child .remove-button {
-		visibility: hidden;
-	}
-	.input-container:last-child .remove-button,
-	.input-container:not(:last-child) .switch-button {
-		display: none;
-	}
-
-	.add-button,
-	.input-container:last-child:nth-child(2) .switch-button {
-		translate: 0 calc(-0.5lh - 0.5rem - 6px);
-		transition: translate 0.4s var(--cubic-bezier--regular);
-	}
-	.remove-button,
-	.add-button,
-	.switch-button {
-		align-self: center;
 	}
 
 	.time-filter-submit {
@@ -335,7 +218,7 @@
 	}
 
 	.filter-submit {
-		margin-top: 1rem;
+		margin-top: 1.5rem;
 		justify-content: end;
 		gap: 0.5rem;
 		& > button {

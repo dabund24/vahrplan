@@ -11,6 +11,7 @@
 		selectedLocation: ParsedLocation | undefined;
 		inputPlaceholder: string;
 		isSimpleInput?: boolean;
+		stationInputId: number;
 	};
 
 	/**
@@ -21,11 +22,13 @@
 	let {
 		selectedLocation = $bindable(undefined),
 		inputPlaceholder,
-		isSimpleInput = false
+		isSimpleInput = false,
+		stationInputId
 	}: Props = $props();
 
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
+	let isFocused = $state(false);
 	let focused = $state(0);
 	let isInputBlurredBySelection = $state(true);
 
@@ -58,6 +61,7 @@
 	 * selects the first suggested location if the user leaves the input without a selection
 	 */
 	function handleInputBlur(): void {
+		isFocused = false;
 		isInputBlurredBySelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
 			if (inputText.trim().length === 0) {
@@ -122,10 +126,6 @@
 					handleSuggestionClick(suggestions[focused]);
 					focused = 0;
 					break;
-				case "Tab":
-					inputText = suggestions[focused].name;
-					focused = 0;
-					break;
 				default:
 					focused = 0;
 			}
@@ -141,7 +141,7 @@
 
 <div class="outer-wrapper">
 	<div class="inner-wrapper hoverable hoverable--visible">
-		<label class="flex-row input-summary padded-top-bottom">
+		<div class="flex-row input-summary">
 			<span class="flex-column suggestion-icon suggestion-icon--input">
 				<IconStationLocation
 					color={selectedLocation === undefined ? "foreground" : "accent"}
@@ -155,7 +155,16 @@
 				bind:value={inputText}
 				onkeydown={handleInputKeydown}
 				onblur={handleInputBlur}
-				onfocus={() => void (isInputBlurredBySelection = false)}
+				onfocus={(): void => {
+					isInputBlurredBySelection = false;
+					isFocused = true;
+				}}
+				role="combobox"
+				aria-label="Station {stationInputId + 1}"
+				aria-autocomplete="list"
+				aria-activedescendant="search-input__{stationInputId}--suggestions__{focused}"
+				aria-expanded={isFocused}
+				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
 			{#if inputText !== ""}
 				<button
@@ -167,8 +176,8 @@
 					<IconClearInput />
 				</button>
 			{/if}
-		</label>
-		<ul>
+		</div>
+		<ul id="search-input__{stationInputId}--suggestions" role="listbox">
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
 					<li class="skeleton">
@@ -182,11 +191,15 @@
 				{/each}
 			{:then suggestions}
 				{#each suggestions as suggestion, i (i)}
-					<li>
+					<li
+						id="search-input__{stationInputId}--suggestions__{i}"
+						role="option"
+						aria-selected={inputText === suggestion.name}
+					>
 						<button
 							type="button"
 							class="flex-row padded-top-bottom suggestion"
-							aria-current={focused === i}
+							class:focused={focused === i}
 							tabindex="-1"
 							onclick={() => void handleSuggestionClick(suggestion)}
 						>
@@ -239,20 +252,20 @@
 
 	.input-summary {
 		align-items: center;
-		gap: 0.5rem;
-		padding: var(--line-width) calc(0.5rem + var(--line-width));
-		margin: calc(-1 * var(--line-width));
 	}
+
 	input {
-		padding: 0.5rem 0;
+		margin: calc(-1 * var(--line-width)) 0 calc(-1 * var(--line-width)) -1.5rem;
+		padding: calc(0.5rem + var(--line-width)) 2rem;
 		width: 100%;
 		outline: none;
 		text-overflow: ellipsis;
+		position: relative;
+		z-index: 5;
 	}
 
 	.clear-input {
-		padding: calc(0.5rem - 4px);
-		margin: 0 -0.5rem;
+		padding: calc(0.5rem - var(--line-width));
 	}
 
 	.suggestion {
@@ -270,10 +283,10 @@
 		}
 	}
 	@media screen and (pointer: fine) {
-		.suggestion[aria-current="true"] .suggestion-icon {
+		.suggestion.focused .suggestion-icon {
 			--foreground-color: var(--accent-color);
 		}
-		.suggestion[aria-current="true"]::before {
+		.suggestion.focused::before {
 			height: var(--line-length--vertical);
 		}
 	}
@@ -292,6 +305,10 @@
 
 	.suggestion-icon {
 		display: flex;
+	}
+
+	.suggestion-icon--input {
+		margin-left: 0.5rem;
 	}
 
 	.suggestion-icon--input::before,
@@ -316,7 +333,7 @@
 	:global(.input-container:last-child) .suggestion-icon::after {
 		background-color: transparent;
 	}
-	:global(.input-container--transitioning:not(:first-child):not(:last-child)),
+	:global(.input-container--transitioning),
 	.input-summary:focus-within,
 	.inner-wrapper:active {
 		& .suggestion-icon--input::before,
