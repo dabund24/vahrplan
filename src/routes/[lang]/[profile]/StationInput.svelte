@@ -11,7 +11,7 @@
 		selectedLocation: ParsedLocation | undefined;
 		inputPlaceholder: string;
 		isSimpleInput?: boolean;
-		stationInputId: number | string;
+		stationInputId: number;
 	};
 
 	/**
@@ -141,7 +141,7 @@
 
 <div class="outer-wrapper">
 	<div class="inner-wrapper hoverable hoverable--visible">
-		<label class="flex-row input-summary padded-top-bottom">
+		<div class="flex-row input-summary">
 			<span class="flex-column suggestion-icon suggestion-icon--input">
 				<IconStationLocation
 					color={selectedLocation === undefined ? "foreground" : "accent"}
@@ -160,6 +160,7 @@
 					isFocused = true;
 				}}
 				role="combobox"
+				aria-label="Station {stationInputId + 1}"
 				aria-autocomplete="list"
 				aria-activedescendant="search-input__{stationInputId}--suggestions__{focused}"
 				aria-expanded={isFocused}
@@ -175,7 +176,7 @@
 					<IconClearInput />
 				</button>
 			{/if}
-		</label>
+		</div>
 		<ul id="search-input__{stationInputId}--suggestions" role="listbox">
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
@@ -251,20 +252,20 @@
 
 	.input-summary {
 		align-items: center;
-		gap: 0.5rem;
-		padding: var(--line-width) calc(0.5rem + var(--line-width));
-		margin: calc(-1 * var(--line-width));
 	}
+
 	input {
-		padding: 0.5rem 0;
+		margin: calc(-1 * var(--line-width)) 0 calc(-1 * var(--line-width)) -1.5rem;
+		padding: calc(0.5rem + var(--line-width)) 2rem;
 		width: 100%;
 		outline: none;
 		text-overflow: ellipsis;
+		position: relative;
+		z-index: 5;
 	}
 
 	.clear-input {
-		padding: calc(0.5rem - 4px);
-		margin: 0 -0.5rem;
+		padding: calc(0.5rem - var(--line-width));
 	}
 
 	.suggestion {
@@ -304,6 +305,10 @@
 
 	.suggestion-icon {
 		display: flex;
+	}
+
+	.suggestion-icon--input {
+		margin-left: 0.5rem;
 	}
 
 	.suggestion-icon--input::before,
