@@ -157,3 +157,26 @@ export function toggleJourneyBookmark(journey: DisplayedJourney): JourneyBookmar
 	toast("Lesezeichen für Reise hinzugefügt.", "green");
 	return bookmarks;
 }
+
+/**
+ * either removes or adds a diagram bookmark
+ * @param location
+ * @returns all current bookmarks
+ */
+export function toggleLocationBookmark(location: ParsedLocation): ParsedLocation[] {
+	const bookmarks = getBookmarks("location");
+
+	const indexInOldData = bookmarks.findIndex((bookmark) => bookmark.id === location.id);
+	if (indexInOldData !== -1) {
+		// bookmark already exists => remove it
+		bookmarks.splice(indexInOldData, 1);
+		setBookmarks({ type: "location", bookmarks });
+		toast(`Lesezeichen für ${location.name} entfernt.`, "green");
+		return bookmarks;
+	}
+	// bookmark does not yet exist => add it
+	bookmarks.push(location);
+	setBookmarks({ type: "location", bookmarks });
+	toast(`${location.name} favorisiert.`, "green");
+	return bookmarks;
+}

@@ -160,6 +160,7 @@
 		padding-top: calc(0.5rem + env(safe-area-inset-top));
 		width: 100%;
 		align-items: center;
+		container-type: inline-size;
 	}
 
 	.time-filter-submit {
