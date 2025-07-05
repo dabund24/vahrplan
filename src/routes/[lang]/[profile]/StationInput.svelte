@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { getBookmarks } from "$lib/bookmarks";
+	import { getBookmarks, toggleLocationBookmark } from "$lib/bookmarks";
 	import { onMount } from "svelte";
 	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
 	import { getParsedGeolocation } from "$lib/geolocation.svelte.js";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import { flip } from "svelte/animate";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -28,7 +30,7 @@
 
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
-	let isFocused = $state(false);
+	let isExpanded = $state(false);
 	let focused = $state(0);
 	let isInputBlurredBySelection = $state(true);
 
@@ -61,7 +63,7 @@
 	 * selects the first suggested location if the user leaves the input without a selection
 	 */
 	function handleInputBlur(): void {
-		isFocused = false;
+		isExpanded = false;
 		isInputBlurredBySelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
 			if (inputText.trim().length === 0) {
@@ -126,6 +128,9 @@
 					handleSuggestionClick(suggestions[focused]);
 					focused = 0;
 					break;
+				case "ArrowRight":
+				case "ArrowLeft":
+					break;
 				default:
 					focused = 0;
 			}
@@ -136,6 +141,13 @@
 		inputText = "";
 		inputElement.focus();
 		selectedLocation = undefined;
+	}
+
+	function toggleBookmark(location: ParsedLocation): void {
+		bookmarkedLocations = [
+			getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
+			...toggleLocationBookmark(location)
+		];
 	}
 </script>
 
@@ -157,21 +169,37 @@
 				onblur={handleInputBlur}
 				onfocus={(): void => {
 					isInputBlurredBySelection = false;
-					isFocused = true;
+					isExpanded = true;
 				}}
 				role="combobox"
 				aria-label="Station {stationInputId + 1}"
 				aria-autocomplete="list"
 				aria-activedescendant="search-input__{stationInputId}--suggestions__{focused}"
-				aria-expanded={isFocused}
+				aria-expanded={isExpanded}
 				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
+			{#if selectedLocation !== undefined && selectedLocation.name !== "Standort"}
+				{@const l = selectedLocation}
+				{@const isBookmarked = bookmarkedLocations.some(
+					(l) => l.id === selectedLocation?.id
+				)}
+				<button
+					type="button"
+					role="checkbox"
+					aria-checked={isBookmarked}
+					aria-label="{l.name} favorisieren"
+					class="suggestion__bookmark-toggle hoverable visually-hidden visually-hidden--focusable"
+					onclick={() => void toggleBookmark(l)}
+				>
+					<IconBookmark {isBookmarked} />
+				</button>
+			{/if}
 			{#if inputText !== ""}
 				<button
 					type="button"
 					class="hoverable clear-input"
 					onclick={clearInput}
-					title="Eingabe löschen"
+					aria-label="Eingabe löschen"
 				>
 					<IconClearInput />
 				</button>
@@ -181,7 +209,7 @@
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
 					<li class="skeleton">
-						<span class="flex-row padded-top-bottom suggestion">
+						<span class="flex-row padded-top-bottom suggestion__button">
 							<span class="suggestion-icon">
 								<IconStationLocation color="foreground" iconType="station" />
 							</span>
@@ -190,15 +218,17 @@
 					</li>
 				{/each}
 			{:then suggestions}
-				{#each suggestions as suggestion, i (i)}
+				{#each suggestions as suggestion, i (suggestion.id)}
 					<li
 						id="search-input__{stationInputId}--suggestions__{i}"
+						class="suggestion flex-row"
 						role="option"
 						aria-selected={inputText === suggestion.name}
+						animate:flip
 					>
 						<button
 							type="button"
-							class="flex-row padded-top-bottom suggestion"
+							class="flex-row padded-top-bottom suggestion__button"
 							class:focused={focused === i}
 							tabindex="-1"
 							onclick={() => void handleSuggestionClick(suggestion)}
@@ -211,6 +241,23 @@
 							</span>
 							{suggestion.name}
 						</button>
+						{#if suggestion.name !== "Standort"}
+							<button
+								class="suggestion__bookmark-toggle hoverable"
+								tabindex="-1"
+								onclick={(): void => {
+									inputElement.focus();
+									isInputBlurredBySelection = true;
+									toggleBookmark(suggestion);
+								}}
+							>
+								<IconBookmark
+									isBookmarked={bookmarkedLocations.some(
+										(l) => l.name === suggestion.name
+									)}
+								/>
+							</button>
+						{/if}
 					</li>
 				{/each}
 			{:catch e}
@@ -248,6 +295,10 @@
 		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid var(--foreground-color--transparent);
 		background-color: var(--background-color--transparent);
+		.clear-input:active {
+			padding-left: calc(2.5rem + 3 * var(--line-width));
+			padding-right: 0.5rem;
+		}
 	}
 
 	.input-summary {
@@ -255,8 +306,10 @@
 	}
 
 	input {
-		margin: calc(-1 * var(--line-width)) 0 calc(-1 * var(--line-width)) -1.5rem;
-		padding: calc(0.5rem + var(--line-width)) 2rem;
+		margin: calc(-1 * var(--line-width)) 0 calc(-1 * var(--line-width))
+			calc(-0.5rem - var(--height--icon--small));
+		padding: calc(0.5rem + var(--line-width)) 0 calc(0.5rem + var(--line-width))
+			calc(1rem + var(--height--icon--small));
 		width: 100%;
 		outline: none;
 		text-overflow: ellipsis;
@@ -265,13 +318,18 @@
 	}
 
 	.clear-input {
-		padding: calc(0.5rem - var(--line-width));
+		padding: calc(0.5rem - var(--line-width)) 0.5rem;
 	}
 
 	.suggestion {
+		position: relative;
+		align-items: center;
+	}
+
+	.suggestion__button {
 		align-items: center;
 		gap: 0.5rem;
-		margin: 0 0 0 calc(var(--line-width) * -1);
+		margin-left: calc(var(--line-width) * -1);
 		text-align: left;
 		width: 100%;
 
@@ -282,16 +340,17 @@
 			--foreground-color: var(--accent-color);
 		}
 	}
+
 	@media screen and (pointer: fine) {
-		.suggestion.focused .suggestion-icon {
+		.suggestion__button.focused .suggestion-icon {
 			--foreground-color: var(--accent-color);
 		}
-		.suggestion.focused::before {
+		.suggestion__button.focused::before {
 			height: var(--line-length--vertical);
 		}
 	}
 
-	.suggestion::before {
+	.suggestion__button::before {
 		content: "";
 		display: flex;
 		flex-shrink: 0;
@@ -314,7 +373,7 @@
 	.suggestion-icon--input::before,
 	.suggestion-icon--input::after {
 		content: "";
-		width: 4px;
+		width: var(--line-width);
 		height: calc(1lh + 1rem + 6px);
 		background-color: var(--foreground-color);
 		border-radius: 2px;
@@ -334,11 +393,18 @@
 		background-color: transparent;
 	}
 	:global(.input-container--transitioning),
-	.input-summary:focus-within,
+	.inner-wrapper:focus-within,
 	.inner-wrapper:active {
 		& .suggestion-icon--input::before,
 		& .suggestion-icon--input::after {
 			display: none;
+		}
+	}
+
+	@container (width < 30rem) {
+		.inner-wrapper:focus-within,
+		.inner-wrapper:active {
+			margin: 0 calc(-2rem - 3 * var(--line-width));
 		}
 	}
 </style>

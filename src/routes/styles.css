@@ -262,7 +262,7 @@ h2 {
 }
 
 /* see https://medium.com/web-dev-survey-from-kyoto/the-visually-hidden-technique-303f8e2bd409 */
-.visually-hidden {
+.visually-hidden:not(.visually-hidden--focusable:focus) {
 	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
 	height: 1px;
