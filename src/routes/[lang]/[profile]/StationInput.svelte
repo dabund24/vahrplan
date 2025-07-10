@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { ParsedLocation } from "$lib/types";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import { getBookmarks, toggleLocationBookmark } from "$lib/bookmarks";
-	import { onMount } from "svelte";
 	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
-	import { getParsedGeolocation } from "$lib/geolocation.svelte.js";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
-	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { flip } from "svelte/animate";
+	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
+	import { getBookmarks } from "$lib/bookmarks.svelte";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -34,7 +32,7 @@
 	let focused = $state(0);
 	let isInputBlurredBySelection = $state(true);
 
-	let bookmarkedLocations: ParsedLocation[] = $state([]);
+	let bookmarkedLocations: ParsedLocation[] = $derived(getBookmarks.location());
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
 		getApiSuggestionsFromInput(inputText.trim())
 	);
@@ -48,15 +46,6 @@
 			)
 		);
 		return [...bookmarkSuggestions, ...filteredApiSuggestions];
-	});
-
-	onMount(() => {
-		if (!isSimpleInput) {
-			bookmarkedLocations = [
-				getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
-				...getBookmarks("location")
-			];
-		}
 	});
 
 	/**
@@ -142,13 +131,6 @@
 		inputElement.focus();
 		selectedLocation = undefined;
 	}
-
-	function toggleBookmark(location: ParsedLocation): void {
-		bookmarkedLocations = [
-			getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
-			...toggleLocationBookmark(location)
-		];
-	}
 </script>
 
 <div class="outer-wrapper">
@@ -179,20 +161,7 @@
 				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
 			{#if selectedLocation !== undefined && selectedLocation.name !== "Standort"}
-				{@const l = selectedLocation}
-				{@const isBookmarked = bookmarkedLocations.some(
-					(l) => l.id === selectedLocation?.id
-				)}
-				<button
-					type="button"
-					role="checkbox"
-					aria-checked={isBookmarked}
-					aria-label="{l.name} favorisieren"
-					class="suggestion__bookmark-toggle hoverable visually-hidden visually-hidden--focusable"
-					onclick={() => void toggleBookmark(l)}
-				>
-					<IconBookmark {isBookmarked} />
-				</button>
+				<BookmarkToggle type="location" value={selectedLocation} isVisuallyHidden={true} />
 			{/if}
 			{#if inputText !== ""}
 				<button
@@ -242,21 +211,14 @@
 							{suggestion.name}
 						</button>
 						{#if suggestion.name !== "Standort"}
-							<button
-								class="suggestion__bookmark-toggle hoverable"
-								tabindex="-1"
-								onclick={(): void => {
+							<BookmarkToggle
+								type="location"
+								value={suggestion}
+								preCallback={(): void => {
 									inputElement.focus();
 									isInputBlurredBySelection = true;
-									toggleBookmark(suggestion);
 								}}
-							>
-								<IconBookmark
-									isBookmarked={bookmarkedLocations.some(
-										(l) => l.name === suggestion.name
-									)}
-								/>
-							</button>
+							/>
 						{/if}
 					</li>
 				{/each}

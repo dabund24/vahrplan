@@ -2,6 +2,7 @@
 	import type { ComponentProps } from "svelte";
 	import Options from "$lib/components/Options.svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
+	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
 
 	type Props = ComponentProps<typeof Options>;
 
@@ -26,11 +27,17 @@
 			>
 				{@render option.icon()}
 			</button>
-		{:else}
+		{:else if option.type === "modal"}
 			<ModalToggle
 				showModalKey={option.showModalKey}
 				children={option.icon}
 				title={option.name}
+			/>
+		{:else if option.type === "bookmark"}
+			<BookmarkToggle
+				type={option.bookmarkType}
+				value={option.bookmarkValue()}
+				hasBorder={true}
 			/>
 		{/if}
 	{/each}
