@@ -16,6 +16,7 @@
 		isVisuallyHidden?: boolean;
 		hasBorder?: boolean;
 		hasText?: boolean;
+		tabindex?: 0 | -1;
 	};
 
 	const {
@@ -25,7 +26,8 @@
 		postCallback = () => void {},
 		isVisuallyHidden = false,
 		hasBorder = false,
-		hasText = false
+		hasText = false,
+		tabindex = 0
 	}: Props = $props();
 
 	const isBookmarked = $derived(getIsBookmarked(type, value));
@@ -47,6 +49,7 @@
 	class:visually-hidden={isVisuallyHidden}
 	class:visually-hidden--focusable={isVisuallyHidden}
 	onclick={handleClick}
+	{tabindex}
 >
 	{#if hasText && type === "diagram"}
 		Suchanfrage merken

@@ -218,6 +218,7 @@
 									inputElement.focus();
 									isInputBlurredBySelection = true;
 								}}
+								tabindex={-1}
 							/>
 						{/if}
 					</li>
