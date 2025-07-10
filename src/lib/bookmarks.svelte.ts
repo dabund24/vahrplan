@@ -62,6 +62,7 @@ if (browser) {
 export function initBookmarks<T extends BookmarkType>(type: T): void {
 	const stringifiedBookmarks = localStorage.getItem(`${type}Bookmarks`);
 	if (stringifiedBookmarks === null) {
+		bookmarks[type] = [];
 		return;
 	}
 	bookmarks[type] = JSON.parse(stringifiedBookmarks) as Bookmarks[T];
@@ -141,6 +142,11 @@ export function toggleBookmark<T extends BookmarkType>(
 		addBookmark[type](id, bookmarkData);
 		bookmarks[type] = sortBookmarks[type](bookmarks[type]);
 		toast(`${toastMessage} hinzugefügt.`, "green");
+	}
+
+	if (bookmarks[type].length === 0) {
+		localStorage.removeItem(`${type}Bookmarks`);
+		return;
 	}
 	localStorage.setItem(`${type}Bookmarks`, JSON.stringify(bookmarks[type]));
 }

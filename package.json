@@ -32,6 +32,7 @@
 		"eslint-plugin-svelte": "^3.9.1",
 		"globals": "^15.14.0",
 		"hafas-client": "^6.3.3",
+		"jsdom": "^26.1.0",
 		"leaflet": "^1.9.4",
 		"prettier": "^3.5.0",
 		"prettier-plugin-svelte": "^3.3.2",
