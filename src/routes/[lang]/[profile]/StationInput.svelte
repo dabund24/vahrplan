@@ -115,13 +115,8 @@
 					ev.preventDefault();
 					break;
 				case "Enter":
-					if (focused >= 0) {
-						// something is focused
-						handleSuggestionClick(suggestions[focused]);
-						focused = -1;
-					}
 					ev.preventDefault();
-					break;
+				// fallthrough
 				case "Tab":
 					if (focused >= 0) {
 						// something is focused

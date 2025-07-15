@@ -24,6 +24,10 @@ export default [
 		rules: {
 			"logical-assignment-operators": "error",
 			"no-console": "error",
+			"no-fallthrough": [
+				"error",
+				{ commentPattern: "fallthrough", reportUnusedFallthroughComment: true }
+			],
 			"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 			"@typescript-eslint/explicit-function-return-type": [
 				"error",
