@@ -29,7 +29,7 @@
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
 	let isExpanded = $state(false);
-	let focused = $state(0);
+	let focused = $state(-1);
 	let isInputBlurredBySelection = $state(true);
 
 	let bookmarkedLocations: ParsedLocation[] = $derived(getBookmarks.location());
@@ -68,7 +68,7 @@
 				void suggestions.then((suggestions) => {
 					selectedLocation = suggestions[0];
 					inputText = isSimpleInput ? "" : (suggestions[0]?.name ?? "");
-					focused = 0;
+					focused = -1;
 				});
 			}
 		}, 500);
@@ -98,7 +98,7 @@
 		inputElement.blur();
 		selectedLocation = suggestion;
 		inputText = isSimpleInput ? "" : suggestion.name;
-		focused = 0;
+		focused = -1;
 		isInputBlurredBySelection = true;
 	}
 
@@ -110,18 +110,30 @@
 					ev.preventDefault();
 					break;
 				case "ArrowUp":
-					focused = focused === 0 ? suggestions.length - 1 : focused - 1;
+					focused = focused <= 0 ? suggestions.length - 1 : focused - 1;
 					ev.preventDefault();
 					break;
 				case "Enter":
-					handleSuggestionClick(suggestions[focused]);
-					focused = 0;
+					if (focused >= 0) {
+						// something is focused
+						handleSuggestionClick(suggestions[focused]);
+						focused = -1;
+					}
+					ev.preventDefault();
+					break;
+				case "Tab":
+					if (focused >= 0) {
+						// something is focused
+						selectedLocation = suggestions[focused]; // do not use `handleSuggestionClick`, since the input does not need to be blurred
+						inputText = suggestions[focused].name;
+					}
+					focused = -1;
 					break;
 				case "ArrowRight":
 				case "ArrowLeft":
 					break;
 				default:
-					focused = 0;
+					focused = -1;
 			}
 		});
 	}
@@ -304,13 +316,11 @@
 		}
 	}
 
-	@media screen and (pointer: fine) {
-		.suggestion__button.focused .suggestion-icon {
-			--foreground-color: var(--accent-color);
-		}
-		.suggestion__button.focused::before {
-			height: var(--line-length--vertical);
-		}
+	.suggestion__button.focused .suggestion-icon {
+		--foreground-color: var(--accent-color);
+	}
+	.suggestion__button.focused::before {
+		height: var(--line-length--vertical);
 	}
 
 	.suggestion__button::before {
