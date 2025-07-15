@@ -307,6 +307,7 @@
 		margin-left: calc(var(--line-width) * -1);
 		text-align: left;
 		width: 100%;
+		align-self: stretch;
 
 		&:hover::before {
 			height: var(--line-length--vertical);
