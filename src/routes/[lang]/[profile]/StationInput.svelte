@@ -6,6 +6,7 @@
 	import { flip } from "svelte/animate";
 	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
 	import { getBookmarks } from "$lib/bookmarks.svelte";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -189,12 +190,15 @@
 		<ul id="search-input__{stationInputId}--suggestions" role="listbox">
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
-					<li class="skeleton">
+					<li class="suggestion flex-row skeleton">
 						<span class="flex-row padded-top-bottom suggestion__button">
 							<span class="suggestion-icon">
 								<IconStationLocation color="foreground" iconType="station" />
 							</span>
 							<span>&#8203;</span>
+						</span>
+						<span class="hoverable">
+							<IconBookmark isBookmarked={false} />
 						</span>
 					</li>
 				{/each}
@@ -377,8 +381,8 @@
 			margin: 0 calc(-2rem - 3 * var(--line-width));
 		}
 
-        .clear-input:active {
-            padding-left: calc(2.375rem + 3 * var(--line-width));
-        }
-    }
+		.clear-input:active {
+			padding-left: calc(2.375rem + 3 * var(--line-width));
+		}
+	}
 </style>
