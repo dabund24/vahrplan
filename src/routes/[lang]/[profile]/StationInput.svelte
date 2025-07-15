@@ -270,10 +270,6 @@
 		border-radius: var(--border-radius--large);
 		border: var(--line-width) solid var(--foreground-color--transparent);
 		background-color: var(--background-color--transparent);
-		.clear-input:active {
-			padding-left: calc(2.5rem + 3 * var(--line-width));
-			padding-right: 0.5rem;
-		}
 	}
 
 	.input-summary {
@@ -293,7 +289,7 @@
 	}
 
 	.clear-input {
-		padding: calc(0.5rem - var(--line-width)) 0.5rem;
+		padding: calc(0.5rem - var(--line-width)) 0.375rem;
 	}
 
 	.suggestion {
@@ -380,5 +376,9 @@
 		.inner-wrapper:active {
 			margin: 0 calc(-2rem - 3 * var(--line-width));
 		}
-	}
+
+        .clear-input:active {
+            padding-left: calc(2.375rem + 3 * var(--line-width));
+        }
+    }
 </style>
