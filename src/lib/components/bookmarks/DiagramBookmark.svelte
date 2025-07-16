@@ -12,7 +12,7 @@
 	const { bookmark, bookmarkIndex }: Props = $props();
 </script>
 
-<BookmarkShell bookmarkType="diagram" bookmarkId={bookmark.link ?? bookmark.id} {bookmarkIndex}>
+<BookmarkShell bookmarkType="diagram" {bookmark} {bookmarkIndex}>
 	<div class="time-data">
 		{bookmark.scrollDirection === "later" ? "Abfahrt" : "Ankunft"}: {dateToString(
 			bookmark.time

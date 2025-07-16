@@ -28,16 +28,17 @@
 	type OptionElementBookmark = {
 		type: "bookmark";
 		bookmarkType: T;
-		bookmarkValue: () => (Promise<BookmarkData<T>> | BookmarkData<T>);
+		bookmarkValue: () => Promise<BookmarkData<T>> | BookmarkData<T>;
 	};
 
 	type Props = {
 		id: string;
 		options: OptionElement[];
 		isExpandedToTop?: boolean;
+		isAccent?: boolean;
 	};
 
-	let { id, options, isExpandedToTop = false }: Props = $props();
+	let { id, options, isExpandedToTop = false, isAccent = false }: Props = $props();
 
 	let popoverElement: HTMLElement;
 
@@ -53,6 +54,7 @@
 		title="Optionen"
 		popovertarget="{id}-popover"
 		class="hoverable"
+		class:hoverable--accent={isAccent}
 		style="anchor-name: --{id}-popover-anchor;"
 	>
 		<IconOptions />
@@ -135,6 +137,11 @@
 	[popover] {
 		background-color: transparent;
 		padding: 0;
+	}
+
+	.hoverable--accent:not(:hover, :active) {
+		background-color: transparent;
+		border-color: transparent;
 	}
 
 	@supports (left: anchor(right)) {

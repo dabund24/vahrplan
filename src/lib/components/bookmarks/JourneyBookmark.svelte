@@ -14,7 +14,7 @@
 	const { bookmark, bookmarkIndex }: Props = $props();
 </script>
 
-<BookmarkShell bookmarkType="journey" bookmarkId={bookmark.link ?? bookmark.id} {bookmarkIndex}>
+<BookmarkShell bookmarkType="journey" {bookmark} {bookmarkIndex}>
 	<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
 
 	<div class="journey-data flex-row">
