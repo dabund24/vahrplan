@@ -5,16 +5,28 @@
 	import JourneyBookmark from "$lib/components/bookmarks/JourneyBookmark.svelte";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
+	import AccordionElement from "$lib/components/AccordionElement.svelte";
 
-	const diagramBookmarks = $derived(getBookmarks("diagram"));
-	const journeyBookmarks = $derived(getBookmarks("journey"));
+	function splitBookmarksByDate<T extends "diagram" | "journey">(
+		bookmarks: Bookmarks[T]
+	): { future: Bookmarks[T]; past: Bookmarks[T] } {
+		const now = new Date().getTime();
+		return {
+			past: bookmarks.filter((b) => new Date(b.arrival ?? 0).getTime() < now) as Bookmarks[T],
+			future: bookmarks.filter(
+				(b) => new Date(b.arrival ?? 0).getTime() >= now
+			) as Bookmarks[T]
+		};
+	}
 
 	type BookmarkList = (
 		| { type: "journey"; bookmark: Bookmarks["journey"][number] }
 		| { type: "diagram"; bookmark: Bookmarks["diagram"][number] }
 	)[];
-
-	const bookmarks: BookmarkList = $derived.by(() => {
+	function mergeBookmarksByType(
+		diagramBookmarks: Bookmarks["diagram"],
+		journeyBookmarks: Bookmarks["journey"]
+	): BookmarkList {
 		let journeyBookmarkIndex = 0;
 		return [
 			...diagramBookmarks.reduce((acc, diagramBookmark) => {
@@ -37,26 +49,49 @@
 				.slice(journeyBookmarkIndex)
 				.map((bookmark) => ({ type: "journey", bookmark }) as const)
 		];
-	});
+	}
+
+	const splitDiagramBookmarks = $derived(
+		splitBookmarksByDate<"diagram">(getBookmarks("diagram"))
+	);
+	const splitJourneyBookmarks = $derived(
+		splitBookmarksByDate<"journey">(getBookmarks("journey"))
+	);
+
+	const pastBookmarks = $derived(
+		mergeBookmarksByType(splitDiagramBookmarks.past, splitJourneyBookmarks.past).reverse()
+	);
+	const futureBookmarks = $derived(
+		mergeBookmarksByType(splitDiagramBookmarks.future, splitJourneyBookmarks.future)
+	);
 </script>
 
-{#if bookmarks.length === 0}
+{#if futureBookmarks.length === 0 && pastBookmarks.length === 0}
 	Keine Lesezeichen. Merke dir Suchanfragen und Reisen mit einem Klick auf das Lesezeichen-Symbol.
 {/if}
-<ol class="flex-column">
-	{#each bookmarks as bookmark, i (bookmark.bookmark.link ?? bookmark.bookmark.id)}
-		<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
-			{#if bookmark.type === "diagram"}
-				<DiagramBookmark bookmark={bookmark.bookmark} bookmarkIndex={i} />
-			{:else}
-				<JourneyBookmark bookmark={bookmark.bookmark} bookmarkIndex={i} />
-			{/if}
-		</li>
-	{/each}
-</ol>
+
+{#snippet bookmarks(bookmarkList: BookmarkList)}
+	<ol class="flex-column">
+		{#each bookmarkList as bookmark, i (bookmark.bookmark.link ?? bookmark.bookmark.id)}
+			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
+				{#if bookmark.type === "diagram"}
+					<DiagramBookmark bookmark={bookmark.bookmark} bookmarkIndex={i} />
+				{:else}
+					<JourneyBookmark bookmark={bookmark.bookmark} bookmarkIndex={i} />
+				{/if}
+			</li>
+		{/each}
+	</ol>
+{/snippet}
+
+{@render bookmarks(futureBookmarks)}
+<AccordionElement title="Alte Lesezeichen">
+	{@render bookmarks(pastBookmarks)}
+</AccordionElement>
 
 <style>
 	ol {
 		gap: 0.5rem;
+		margin-bottom: 1rem;
 	}
 </style>
