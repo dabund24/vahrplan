@@ -50,6 +50,7 @@ const bookmarkData: BookmarkData<"diagram"> = {
 
 const bookmark: Bookmarks["diagram"][number] = {
 	id: "http://localhost/de/dbnav/diagram?stops%5B%5D=bodacious&stops%5B%5D=serendipitous&time=1970-01-01T00%3A00%3A00.069Z&time-role=departure&regional-express=&max-transfers=0&min-transfer-time=0",
+	profile: "dbnav",
 	stops: [
 		{ type: "station", name: "Waaa" },
 		{ type: "poi", name: "Weee" }

@@ -12,7 +12,7 @@ const bookmarkData: BookmarkData<"location"> = {
 	position: { lat: -1, lng: -1 }
 };
 
-const bookmark: Bookmarks["location"][number] = bookmarkData;
+const bookmark: Bookmarks["location"][number] = { ...bookmarkData, profile: "dbnav" };
 
 test("format location bookmark", () => {
 	const spy = vi.spyOn(Storage.prototype, "setItem");
