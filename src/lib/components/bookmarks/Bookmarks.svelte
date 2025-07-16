@@ -85,9 +85,12 @@
 {/snippet}
 
 {@render bookmarks(futureBookmarks)}
-<AccordionElement title="Alte Lesezeichen">
-	{@render bookmarks(pastBookmarks)}
-</AccordionElement>
+
+{#if pastBookmarks.length !== 0}
+	<AccordionElement title="Alte Lesezeichen">
+		{@render bookmarks(pastBookmarks)}
+	</AccordionElement>
+{/if}
 
 <style>
 	ol {
