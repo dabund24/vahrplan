@@ -27,7 +27,7 @@
 		left: 0;
 		z-index: 700;
 		margin-bottom: 1rem;
-    }
+	}
 
 	@media screen and (max-width: 999px) {
 		.form {
