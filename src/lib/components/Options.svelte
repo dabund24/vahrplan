@@ -3,7 +3,7 @@
 	import type { Snippet } from "svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import type { BookmarkData, BookmarkType } from "$lib/bookmarks.svelte";
-	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
+	import BookmarkToggle from "$lib/components/bookmarks/BookmarkToggle.svelte";
 
 	type OptionElement = {
 		name: string;
@@ -28,7 +28,7 @@
 	type OptionElementBookmark = {
 		type: "bookmark";
 		bookmarkType: T;
-		bookmarkValue: () => BookmarkData<T>;
+		bookmarkValue: () => (Promise<BookmarkData<T>> | BookmarkData<T>);
 	};
 
 	type Props = {
@@ -80,12 +80,14 @@
 				{:else if option.type === "modal"}
 					<ModalToggle showModalKey={option.showModalKey} children={buttonContent} />
 				{:else if option.type === "bookmark"}
-					<BookmarkToggle
-						type={option.bookmarkType}
-						value={option.bookmarkValue()}
-						hasText={true}
-						postCallback={() => void popoverElement.hidePopover()}
-					/>
+					{#await option.bookmarkValue() then value}
+						<BookmarkToggle
+							type={option.bookmarkType}
+							{value}
+							hasText={true}
+							postCallback={() => void popoverElement.hidePopover()}
+						/>
+					{/await}
 				{/if}
 			</li>
 		{/each}

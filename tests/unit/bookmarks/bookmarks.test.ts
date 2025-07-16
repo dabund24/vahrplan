@@ -9,7 +9,8 @@ import {
 	getIsBookmarked,
 	toggleBookmark,
 	getBookmarks,
-	initBookmarks
+	initBookmarks,
+	removeBookmark
 } from "$lib/bookmarks.svelte";
 
 const sunBookmarkData: BookmarkData<"location"> = {
@@ -34,13 +35,13 @@ describe("load initial bookmarks", () => {
 	test("both sun and moon stored", () => {
 		localStorage.setItem("locationBookmarks", JSON.stringify([moonBookmark, sunBookmark]));
 		initBookmarks("location");
-		expect(getBookmarks.location()).toEqual([moonBookmark, sunBookmark]);
+		expect(getBookmarks("location")).toEqual([moonBookmark, sunBookmark]);
 	});
 
 	test("no bookmarks stored", () => {
 		localStorage.removeItem("locationBookmarks");
 		initBookmarks("location");
-		expect(getBookmarks.location()).toEqual([]);
+		expect(getBookmarks("location")).toEqual([]);
 	});
 });
 
@@ -58,7 +59,7 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("variable is synced with localStorage", () => {
-			expect(getBookmarks.location()).toEqual(storedBookmarks);
+			expect(getBookmarks("location")).toEqual(storedBookmarks);
 		});
 
 		test("isBookmarked gives correct values", () => {
@@ -80,7 +81,7 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("variable is synced with localStorage", () => {
-			expect(getBookmarks.location()).toEqual(storedBookmarks);
+			expect(getBookmarks("location")).toEqual(storedBookmarks);
 		});
 
 		test("isBookmarked gives correct values", () => {
@@ -90,7 +91,7 @@ describe.sequential("add and remove bookmarks", () => {
 	});
 
 	describe("remove second bookmark", () => {
-		beforeAll(() => toggleBookmark("location", sunBookmarkData));
+		beforeAll(() => removeBookmark("location", "sun"));
 
 		test("localStorage is set correctly", () => {
 			const storedBookmarksStr = localStorage.getItem("locationBookmarks");
@@ -102,7 +103,7 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("variable is synced with localStorage", () => {
-			expect(getBookmarks.location()).toEqual(storedBookmarks);
+			expect(getBookmarks("location")).toEqual(storedBookmarks);
 		});
 
 		test("isBookmarked gives correct values", () => {
@@ -120,7 +121,7 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("variable is synced with localStorage", () => {
-			expect(getBookmarks.location()).toEqual([]);
+			expect(getBookmarks("location")).toEqual([]);
 		});
 
 		test("isBookmarked gives correct values", () => {

@@ -30,7 +30,10 @@
 				name: "Suchanfrage merken",
 				icon: iconShare,
 				bookmarkType: "diagram",
-				bookmarkValue: () => displayedFormData
+				bookmarkValue: async () => ({
+					formData: displayedFormData,
+					diagramData: await diagramData
+				})
 			}
 		];
 
