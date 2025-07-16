@@ -7,6 +7,7 @@
 	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
 	import { getBookmarks } from "$lib/bookmarks.svelte";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import { getParsedGeolocation } from "$lib/geolocation.svelte";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -26,7 +27,10 @@
 	let focused = $state(-1);
 	let isInputBlurredBySelection = $state(true);
 
-	let bookmarkedLocations: ParsedLocation[] = $derived(getBookmarks.location());
+	let bookmarkedLocations: ParsedLocation[] = $derived([
+		getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
+		...getBookmarks.location()
+	]);
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
 		getApiSuggestionsFromInput(inputText.trim())
 	);
@@ -91,7 +95,7 @@
 		}
 		inputElement.blur();
 		selectedLocation = suggestion;
-		inputText =  suggestion.name;
+		inputText = suggestion.name;
 		focused = -1;
 		isInputBlurredBySelection = true;
 	}
