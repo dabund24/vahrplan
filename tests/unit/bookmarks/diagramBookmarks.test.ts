@@ -54,7 +54,7 @@ const bookmarkData: BookmarkData<"diagram"> = {
 		columns: [
 			{
 				journeys: [
-					{ departureTime: { time: new Date(69).toISOString() } } as SubJourney,
+					{ departureTime: { time: new Date(95).toISOString() } } as SubJourney,
 					{ departureTime: { time: new Date(100).toISOString() } } as SubJourney
 				],
 				earlierRef: "",

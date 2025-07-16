@@ -100,8 +100,23 @@ const formatBookmarkId: { [K in BookmarkType]: (bookmarkData: BookmarkData<K>) =
 const addBookmark: {
 	[K in BookmarkType]: (id: string, bookmarkData: BookmarkData<K>) => void;
 } = {
-	diagram: (id, { formData, diagramData }) =>
-		void bookmarks.diagram.push({
+	diagram: (id, { formData, diagramData }) => {
+		const time = formData.timeData.time;
+		const scrollDirection = formData.timeData.scrollDirection;
+		const departure =
+			scrollDirection === "later"
+				? time
+				: new Date(
+						diagramData.columns[0].journeys[0].departureTime?.time ?? 0
+					).toISOString();
+		const arrival =
+			scrollDirection === "earlier"
+				? time
+				: new Date(
+						diagramData.columns.at(-1)?.journeys.at(-1)?.arrivalTime?.time ?? 0
+					).toISOString();
+
+		bookmarks.diagram.push({
 			id,
 			profile: "dbnav",
 			stops: formData.locations.map((location) => {
@@ -110,16 +125,13 @@ const addBookmark: {
 					name: location.value.name
 				};
 			}),
-			time: formData.timeData.time,
-			departure: new Date(
-				diagramData.columns[0].journeys[0].departureTime?.time ?? 0
-			).toISOString(),
-			arrival: new Date(
-				diagramData.columns.at(-1)?.journeys.at(-1)?.arrivalTime?.time ?? 0
-			).toISOString(),
-			scrollDirection: formData.timeData.scrollDirection,
+			time,
+			departure,
+			arrival,
+			scrollDirection,
 			type: "absolute"
-		}),
+		});
+	},
 	journey: (id, bookmarkData) =>
 		void bookmarks.journey.push({
 			id,
