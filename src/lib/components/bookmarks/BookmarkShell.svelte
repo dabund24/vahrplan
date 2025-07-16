@@ -70,7 +70,7 @@
 		text-decoration: none;
 		padding: 0 1rem;
 		width: 100%;
-		margin-right: calc(-24px - 1rem);
+		margin-right: calc(-2 * var(--line-width) - 2rem);
 		border-radius: var(--border-radius--large);
 	}
 
