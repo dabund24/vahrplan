@@ -1,38 +1,19 @@
 <script lang="ts">
-	import { type ComponentProps, onMount } from "svelte";
+	import { type ComponentProps } from "svelte";
 	import Options from "$lib/components/Options.svelte";
 	import { shareJourney } from "./share";
-	import { getBookmarks, type JourneyBookmark, toggleJourneyBookmark } from "$lib/bookmarks";
-	import { browser } from "$app/environment";
 	import IconTickets from "$lib/components/icons/IconTickets.svelte";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
-	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import ResponsiveOptions from "$lib/components/ResponsiveOptions.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
-	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import { refreshDiagramData } from "$lib/state/diagramData.svelte.js";
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
 
-	let journeyBookmarks: JourneyBookmark[] = $state([]);
-
-	onMount(() => (journeyBookmarks = getBookmarks("journey")));
-
-	const isBookmarked = $derived.by(() => {
-		const currentJourneyUrl = apiClient("GET", "journey").formatNonApiUrl(
-			displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "")
-		).href;
-		return browser && journeyBookmarks.some((bookmark) => bookmark.link === currentJourneyUrl);
-	});
-
-	function handleJourneyBookmarkClick(): void {
-		journeyBookmarks = toggleJourneyBookmark(displayedJourney);
-	}
-
-	const options: ComponentProps<typeof Options>["options"] = [
+	const options: ComponentProps<typeof Options<"journey">>["options"] = [
 		{
 			type: "function",
 			name: "Aktualisieren",
@@ -46,10 +27,11 @@
 			onClick: async () => shareJourney(displayedJourney, selectedData)
 		},
 		{
-			type: "function",
+			type: "bookmark",
 			name: "Merken",
-			icon: iconBookmark,
-			onClick: handleJourneyBookmarkClick
+			icon: iconRefresh,
+			bookmarkType: "journey",
+			bookmarkValue: () => displayedJourney
 		},
 		{
 			type: "modal",
@@ -62,9 +44,6 @@
 
 {#snippet iconRefresh()}
 	<IconRefresh />
-{/snippet}
-{#snippet iconBookmark()}
-	<IconBookmark {isBookmarked} />
 {/snippet}
 {#snippet iconShare()}
 	<IconShare />

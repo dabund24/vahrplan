@@ -1,12 +1,14 @@
-<script lang="ts">
+<script lang="ts" generics="T extends BookmarkType">
 	import IconOptions from "$lib/components/icons/IconOptions.svelte";
 	import type { Snippet } from "svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
+	import type { BookmarkData, BookmarkType } from "$lib/bookmarks.svelte";
+	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
 
 	type OptionElement = {
 		name: string;
 		icon: Snippet;
-	} & (OptionElementLink | OptionElementFunction | OptionElementModal);
+	} & (OptionElementLink | OptionElementFunction | OptionElementModal | OptionElementBookmark);
 
 	type OptionElementLink = {
 		type: "link";
@@ -21,6 +23,12 @@
 	type OptionElementModal = {
 		type: "modal";
 		showModalKey: keyof App.PageState;
+	};
+
+	type OptionElementBookmark = {
+		type: "bookmark";
+		bookmarkType: T;
+		bookmarkValue: () => BookmarkData<T>;
 	};
 
 	type Props = {
@@ -69,8 +77,15 @@
 					>
 						{@render buttonContent()}
 					</button>
-				{:else}
+				{:else if option.type === "modal"}
 					<ModalToggle showModalKey={option.showModalKey} children={buttonContent} />
+				{:else if option.type === "bookmark"}
+					<BookmarkToggle
+						type={option.bookmarkType}
+						value={option.bookmarkValue()}
+						hasText={true}
+						postCallback={() => void popoverElement.hidePopover()}
+					/>
 				{/if}
 			</li>
 		{/each}

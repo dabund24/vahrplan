@@ -69,6 +69,7 @@
 					type="button"
 					onclick={() => void addVia(i)}
 					title="Station hinzufügen"
+					tabindex={stop.value === undefined ? -1 : 0}
 				>
 					<IconPlus />
 				</button>
@@ -99,10 +100,11 @@
 					<IconSwap />
 				</button>
 				<button
-					class="add-button a2 hoverable hoverable--visible"
+					class="add-button hoverable hoverable--visible"
 					type="button"
 					onclick={() => void addVia(i + 1)}
 					title="Station hinzufügen"
+					tabindex={i === stops.length - 1 && stop.value === undefined ? -1 : 0}
 				>
 					<IconPlus />
 				</button>

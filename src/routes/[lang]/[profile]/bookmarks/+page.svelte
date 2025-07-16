@@ -1,8 +1,5 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
-	import DiagramBookmarks from "./DiagramBookmarks.svelte";
-	import JourneyBookmarks from "./JourneyBookmarks.svelte";
-	import StationBookmarks from "./StationBookmarks.svelte";
 	import type { ComponentProps } from "svelte";
 
 	const tabContent: ComponentProps<typeof Tabs>["tabs"] = [
@@ -28,13 +25,13 @@
 </svelte:head>
 
 {#snippet diagramBookmarks()}
-	<DiagramBookmarks />
+	<!--	<DiagramBookmarks />-->
 {/snippet}
 {#snippet journeyBookmarks()}
-	<JourneyBookmarks />
+	<!--	<JourneyBookmarks />-->
 {/snippet}
 {#snippet stationBookmarks()}
-	<StationBookmarks />
+	<!--	<StationBookmarks />-->
 {/snippet}
 
 <div class="content-wrapper" data-sveltekit-preload-data="off">
