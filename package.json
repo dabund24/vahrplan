@@ -30,7 +30,7 @@
 		"eslint": "^9.28.0",
 		"eslint-config-prettier": "^10.1.5",
 		"eslint-plugin-svelte": "^3.9.1",
-		"globals": "^15.14.0",
+		"globals": "^16.3.0",
 		"hafas-client": "^6.3.3",
 		"jsdom": "^26.1.0",
 		"leaflet": "^1.9.4",
