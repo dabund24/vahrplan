@@ -28,7 +28,7 @@
 		return [
 			{
 				type: "link",
-				name: "Verbindung anzeigen",
+				name: `${bookmarkType === "diagram" ? "Suchanfrage" : "Reise"} anzeigen`,
 				url,
 				icon: iconRightArrow
 			},
