@@ -10,12 +10,13 @@ export type BookmarkType = "diagram" | "journey" | "location";
 export type Bookmarks = {
 	diagram: DiagramBookmark[];
 	journey: JourneyBookmark[];
-	location: ParsedLocation[];
+	location: (ParsedLocation & { profile: "dbnav" })[];
 };
 
 type DiagramBookmark = {
 	/** the link of the bookmark */
 	id: string;
+	profile: "dbnav";
 	stops: Pick<ParsedLocation, "name" | "type">[];
 	scrollDirection: RelativeTimeType;
 	time: string;
@@ -26,6 +27,7 @@ type DiagramBookmark = {
 
 type JourneyBookmark = {
 	id: string;
+	profile: "dbnav";
 	start: Pick<ParsedLocation, "name" | "type">;
 	destination: Pick<ParsedLocation, "name" | "type">;
 	arrival: string;
@@ -100,6 +102,7 @@ const addBookmark: {
 	diagram: (id, bookmarkData) =>
 		void bookmarks.diagram.push({
 			id,
+			profile: "dbnav",
 			stops: bookmarkData.locations.map((location) => {
 				return {
 					type: location.value.type,
@@ -113,6 +116,7 @@ const addBookmark: {
 	journey: (id, bookmarkData) =>
 		void bookmarks.journey.push({
 			id,
+			profile: "dbnav",
 			start: {
 				type: bookmarkData.locations.at(0)?.value.type ?? "station",
 				name: bookmarkData.locations.at(0)?.value.name ?? ""
@@ -124,7 +128,8 @@ const addBookmark: {
 			departure: bookmarkData.departure ?? new Date(0).toISOString(),
 			arrival: bookmarkData.arrival ?? new Date(0).toISOString()
 		}),
-	location: (_id, bookmarkData) => void bookmarks.location.push(bookmarkData)
+	location: (_id, bookmarkData) =>
+		void bookmarks.location.push({ ...bookmarkData, profile: "dbnav" })
 };
 
 export function toggleBookmark<T extends BookmarkType>(
