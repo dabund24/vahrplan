@@ -6,6 +6,8 @@
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
+	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
+	import IconOptions from "$lib/components/icons/IconOptions.svelte";
 
 	function splitBookmarksByDate<T extends "diagram" | "journey">(
 		bookmarks: Bookmarks[T]
@@ -67,7 +69,13 @@
 </script>
 
 {#if futureBookmarks.length === 0 && pastBookmarks.length === 0}
-	Keine Lesezeichen. Merke dir Suchanfragen und Reisen mit einem Klick auf das Lesezeichen-Symbol.
+	<p class="inline-icons">
+		Noch keine Lesezeichen vorhanden. Merke dir Suchanfragen und Reisen
+		<span class="desktop-only">
+			mit einem Klick auf das Lesezeichen-Symbol (<IconBookmark isBookmarked={false} />)
+		</span>
+		<span class="mobile-only"> über das jeweilige Menü (<IconOptions />)</span>.
+	</p>
 {/if}
 
 {#snippet bookmarks(bookmarkList: BookmarkList)}
