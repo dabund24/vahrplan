@@ -222,15 +222,17 @@
 							{suggestion.name}
 						</button>
 						{#if suggestion.name !== "Standort"}
-							<BookmarkToggle
-								type="location"
-								value={suggestion}
-								preCallback={(): void => {
-									inputElement.focus();
-									isInputBlurredBySelection = true;
-								}}
-								tabindex={-1}
-							/>
+							<span aria-hidden="true">
+								<BookmarkToggle
+									type="location"
+									value={suggestion}
+									preCallback={(): void => {
+										inputElement.focus();
+										isInputBlurredBySelection = true;
+									}}
+									tabindex={-1}
+								/>
+							</span>
 						{/if}
 					</li>
 				{/each}
