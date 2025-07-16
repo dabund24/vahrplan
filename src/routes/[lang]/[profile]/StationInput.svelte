@@ -11,19 +11,12 @@
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
 		inputPlaceholder: string;
-		isSimpleInput?: boolean;
 		stationInputId: number;
 	};
 
-	/**
-	 * if `isSimpleInput` is true, behavior changes like this:
-	 * - current location and bookmarks are not getting suggested
-	 * - after selecting a suggestion, the input text is cleared instead of being set to the name of the selected item
-	 */
 	let {
 		selectedLocation = $bindable(undefined),
 		inputPlaceholder,
-		isSimpleInput = false,
 		stationInputId
 	}: Props = $props();
 
@@ -68,7 +61,7 @@
 				// select the first suggested location
 				void suggestions.then((suggestions) => {
 					selectedLocation = suggestions[0];
-					inputText = isSimpleInput ? "" : (suggestions[0]?.name ?? "");
+					inputText = suggestions[0]?.name ?? "";
 					focused = -1;
 				});
 			}
@@ -98,7 +91,7 @@
 		}
 		inputElement.blur();
 		selectedLocation = suggestion;
-		inputText = isSimpleInput ? "" : suggestion.name;
+		inputText =  suggestion.name;
 		focused = -1;
 		isInputBlurredBySelection = true;
 	}
