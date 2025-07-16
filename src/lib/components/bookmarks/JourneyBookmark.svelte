@@ -18,7 +18,9 @@
 	<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
 
 	<div class="journey-data flex-row">
-		<Time time={{ departure: { time: bookmark.departure } }} />
+		<div class="time">
+			<Time time={{ departure: { time: bookmark.departure } }} />
+		</div>
 		<div class="icon">
 			<IconStationLocation color="foreground" iconType={bookmark.start.type} />
 		</div>
@@ -35,7 +37,9 @@
 			<div class="line--neutral"></div>
 		</div>
 		<div></div>
-		<Time time={{ arrival: { time: bookmark.arrival } }} />
+		<div class="time">
+			<Time time={{ arrival: { time: bookmark.arrival } }} />
+		</div>
 		<div class="icon">
 			<IconStationLocation color="foreground" iconType={bookmark.destination.type} />
 		</div>
@@ -57,6 +61,9 @@
 	}
 	.journey-data > :nth-child(3n + 2) {
 		padding: 0 0.5rem;
+	}
+	.time {
+		font-weight: bolder;
 	}
 	.icon {
 		position: relative;
