@@ -4,7 +4,7 @@
 	import IconClearInput from "$lib/components/icons/IconClearInput.svelte";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import { flip } from "svelte/animate";
-	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
+	import BookmarkToggle from "$lib/components/bookmarks/BookmarkToggle.svelte";
 	import { getBookmarks } from "$lib/bookmarks.svelte";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { getParsedGeolocation } from "$lib/geolocation.svelte";
@@ -29,7 +29,7 @@
 
 	let bookmarkedLocations: ParsedLocation[] = $derived([
 		getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
-		...getBookmarks.location()
+		...getBookmarks("location")
 	]);
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
 		getApiSuggestionsFromInput(inputText.trim())

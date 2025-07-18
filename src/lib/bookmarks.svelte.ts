@@ -4,6 +4,7 @@ import { toast } from "$lib/state/toastStore";
 import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { browser } from "$app/environment";
+import type { DiagramData } from "$lib/state/diagramData.svelte";
 
 export type BookmarkType = "diagram" | "journey" | "location";
 
@@ -19,7 +20,12 @@ type DiagramBookmark = {
 	profile: "dbnav";
 	stops: Pick<ParsedLocation, "name" | "type">[];
 	scrollDirection: RelativeTimeType;
+	/** time entered by user */
 	time: string;
+	/** same as time if user has defined departure time, otherwise estimated departure time; TODO turn into mandatory property */
+	departure?: string;
+	/** same as time if user has defined arrival time, otherwise estimated arrival time; TODO turn into mandatory property */
+	arrival?: string;
 	type: "absolute";
 	/** @deprecated use id instead */
 	link?: string;
@@ -37,7 +43,7 @@ type JourneyBookmark = {
 };
 
 export type BookmarkData<T extends BookmarkType> = T extends "diagram"
-	? DisplayedFormData
+	? { formData: DisplayedFormData; diagramData: DiagramData }
 	: T extends "journey"
 		? DisplayedJourney
 		: T extends "location"
@@ -57,10 +63,6 @@ if (browser) {
 	}
 }
 
-/**
- * read and return all bookmarks of a certain type from localStorage
- * @param type `"diagram"`, `"journey"` or `"station"` depending on the type of the bookmark
- */
 export function initBookmarks<T extends BookmarkType>(type: T): void {
 	const stringifiedBookmarks = localStorage.getItem(`${type}Bookmarks`);
 	if (stringifiedBookmarks === null) {
@@ -83,11 +85,10 @@ const sortBookmarks: { [K in BookmarkType]: (b: Bookmarks[K]) => Bookmarks[K] } 
 };
 
 const formatBookmarkId: { [K in BookmarkType]: (bookmarkData: BookmarkData<K>) => string } = {
-	diagram: (bookmarkData) => {
+	diagram: ({ formData }) => {
 		const diagramApiClient = apiClient("GET", "diagram");
-		return diagramApiClient.formatNonApiUrl(
-			diagramApiClient.formDataToRequestData(bookmarkData)
-		).href;
+		return diagramApiClient.formatNonApiUrl(diagramApiClient.formDataToRequestData(formData))
+			.href;
 	},
 	journey: (bookmarkData) => {
 		const tokens = bookmarkData.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
@@ -99,20 +100,38 @@ const formatBookmarkId: { [K in BookmarkType]: (bookmarkData: BookmarkData<K>) =
 const addBookmark: {
 	[K in BookmarkType]: (id: string, bookmarkData: BookmarkData<K>) => void;
 } = {
-	diagram: (id, bookmarkData) =>
-		void bookmarks.diagram.push({
+	diagram: (id, { formData, diagramData }) => {
+		const time = formData.timeData.time;
+		const scrollDirection = formData.timeData.scrollDirection;
+		const departure =
+			scrollDirection === "later"
+				? time
+				: new Date(
+						diagramData.columns[0].journeys[0].departureTime?.time ?? 0
+					).toISOString();
+		const arrival =
+			scrollDirection === "earlier"
+				? time
+				: new Date(
+						diagramData.columns.at(-1)?.journeys.at(-1)?.arrivalTime?.time ?? 0
+					).toISOString();
+
+		bookmarks.diagram.push({
 			id,
 			profile: "dbnav",
-			stops: bookmarkData.locations.map((location) => {
+			stops: formData.locations.map((location) => {
 				return {
 					type: location.value.type,
 					name: location.value.name
 				};
 			}),
-			time: bookmarkData.timeData.time,
-			scrollDirection: bookmarkData.timeData.scrollDirection,
+			time,
+			departure,
+			arrival,
+			scrollDirection,
 			type: "absolute"
-		}),
+		});
+	},
 	journey: (id, bookmarkData) =>
 		void bookmarks.journey.push({
 			id,
@@ -132,6 +151,19 @@ const addBookmark: {
 		void bookmarks.location.push({ ...bookmarkData, profile: "dbnav" })
 };
 
+function syncLocalStorage(type: BookmarkType): void {
+	if (bookmarks[type].length === 0) {
+		localStorage.removeItem(`${type}Bookmarks`);
+		return;
+	}
+	localStorage.setItem(`${type}Bookmarks`, JSON.stringify(bookmarks[type]));
+}
+
+/**
+ * turns passed bookmark data into bookmark and adds it if the bookmark does not yet exist. otherwise, removes the bookmark
+ * @param type bookmark type
+ * @param bookmarkData
+ */
 export function toggleBookmark<T extends BookmarkType>(
 	type: T,
 	bookmarkData: BookmarkData<T>
@@ -149,13 +181,14 @@ export function toggleBookmark<T extends BookmarkType>(
 		toast(`${toastMessage} hinzugefügt.`, "green");
 	}
 
-	if (bookmarks[type].length === 0) {
-		localStorage.removeItem(`${type}Bookmarks`);
-		return;
-	}
-	localStorage.setItem(`${type}Bookmarks`, JSON.stringify(bookmarks[type]));
+	syncLocalStorage(type);
 }
 
+/**
+ * check if something is bookmarked
+ * @param type bookmark type
+ * @param bookmarkData
+ */
 export function getIsBookmarked<T extends BookmarkType>(
 	type: T,
 	bookmarkData: BookmarkData<T>
@@ -171,8 +204,27 @@ export const bookmarkToString: { [T in BookmarkType]: (bookmarkData: BookmarkDat
 		location: (bookmarkData) => bookmarkData.name
 	};
 
-export const getBookmarks: { [T in BookmarkType]: () => Bookmarks[T] } = {
-	diagram: () => bookmarks.diagram,
-	journey: () => bookmarks.journey,
-	location: () => bookmarks.location
+/**
+ * get all bookmarks of a type
+ * @param type
+ */
+export function getBookmarks<T extends BookmarkType>(type: T): Bookmarks[T] {
+	return bookmarks[type];
+}
+
+/**
+ * remove a bookmark
+ * @param type
+ * @param id id of the bookmark to be removed
+ */
+export function removeBookmark<T extends BookmarkType>(type: T, id: string): void {
+	bookmarks[type] = remove[type](id);
+	toast("Lesezeichen gelöscht", "green");
+	syncLocalStorage(type);
+}
+
+const remove: { [T in BookmarkType]: (id: string) => Bookmarks[T] } = {
+	diagram: (id) => bookmarks.diagram.filter((b) => (b.link ?? b.id) !== id),
+	journey: (id) => bookmarks.journey.filter((b) => (b.link ?? b.id) !== id),
+	location: (id) => bookmarks.location.filter((b) => b.id !== id)
 };

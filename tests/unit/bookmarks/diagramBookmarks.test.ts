@@ -4,48 +4,72 @@
 
 import { expect, test, vi } from "vitest";
 import { type BookmarkData, type Bookmarks, toggleBookmark } from "$lib/bookmarks.svelte";
+import type { SubJourney } from "$lib/types";
+import type { DiagramData } from "$lib/state/diagramData.svelte";
 
 const bookmarkData: BookmarkData<"diagram"> = {
-	locations: [
-		{
-			key: 0,
-			value: {
-				id: "bodacious",
-				type: "station",
-				position: { lat: 99, lng: 101 },
-				name: "Waaa"
+	formData: {
+		locations: [
+			{
+				key: 0,
+				value: {
+					id: "bodacious",
+					type: "station",
+					position: { lat: 99, lng: 101 },
+					name: "Waaa"
+				}
+			},
+			{
+				key: 1,
+				value: {
+					id: "serendipitous",
+					type: "poi",
+					position: { lat: 99, lng: 101 },
+					name: "Weee"
+				}
 			}
+		],
+		options: {
+			products: {
+				longDistanceExpress: false,
+				longDistance: false,
+				regionalExpress: true,
+				regional: false,
+				suburban: false,
+				subway: false,
+				tram: false,
+				bus: false,
+				taxi: false,
+				ferry: false
+			},
+			bike: false,
+			maxTransfers: 0,
+			minTransferTime: 0,
+			accessible: false
 		},
-		{
-			key: 1,
-			value: {
-				id: "serendipitous",
-				type: "poi",
-				position: { lat: 99, lng: 101 },
-				name: "Weee"
-			}
-		}
-	],
-	options: {
-		products: {
-			longDistanceExpress: false,
-			longDistance: false,
-			regionalExpress: true,
-			regional: false,
-			suburban: false,
-			subway: false,
-			tram: false,
-			bus: false,
-			taxi: false,
-			ferry: false
-		},
-		bike: false,
-		maxTransfers: 0,
-		minTransferTime: 0,
-		accessible: false
+		timeData: { time: new Date(69).toISOString(), type: "absolute", scrollDirection: "later" },
+		geolocationDate: new Date(68)
 	},
-	timeData: { time: new Date(69).toISOString(), type: "absolute", scrollDirection: "later" },
-	geolocationDate: new Date(68)
+	diagramData: {
+		columns: [
+			{
+				journeys: [
+					{ departureTime: { time: new Date(95).toISOString() } } as SubJourney,
+					{ departureTime: { time: new Date(100).toISOString() } } as SubJourney
+				],
+				earlierRef: "",
+				laterRef: ""
+			},
+			{
+				journeys: [
+					{ arrivalTime: { time: new Date(196).toISOString() } } as SubJourney,
+					{ arrivalTime: { time: new Date(420).toISOString() } } as SubJourney
+				],
+				earlierRef: "",
+				laterRef: ""
+			}
+		]
+	} as DiagramData
 };
 
 const bookmark: Bookmarks["diagram"][number] = {
@@ -56,6 +80,8 @@ const bookmark: Bookmarks["diagram"][number] = {
 		{ type: "poi", name: "Weee" }
 	],
 	time: new Date(69).toISOString(),
+	departure: new Date(69).toISOString(),
+	arrival: new Date(420).toISOString(),
 	scrollDirection: "later",
 	type: "absolute"
 };

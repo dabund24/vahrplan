@@ -1,5 +1,6 @@
 <script lang="ts">
 	import MainForm from "./MainForm.svelte";
+	import Bookmarks from "$lib/components/bookmarks/Bookmarks.svelte";
 </script>
 
 <svelte:head>
@@ -14,19 +15,18 @@
 	<h2 class="visually-hidden">Verbindungssuche</h2>
 	<MainForm />
 </section>
+<section class="bookmarks content-wrapper" data-sveltekit-preload-data="off">
+	<hr />
+	<h2>Lesezeichen</h2>
+	<Bookmarks />
+</section>
 
 <style>
 	.form {
 		position: sticky;
 		left: 0;
 		z-index: 700;
-	}
-
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+		margin-bottom: 1rem;
 	}
 
 	@media screen and (max-width: 999px) {

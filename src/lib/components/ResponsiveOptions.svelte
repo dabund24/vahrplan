@@ -2,7 +2,7 @@
 	import type { ComponentProps } from "svelte";
 	import Options from "$lib/components/Options.svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
-	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
+	import BookmarkToggle from "$lib/components/bookmarks/BookmarkToggle.svelte";
 
 	type Props = ComponentProps<typeof Options>;
 
@@ -34,11 +34,9 @@
 				title={option.name}
 			/>
 		{:else if option.type === "bookmark"}
-			<BookmarkToggle
-				type={option.bookmarkType}
-				value={option.bookmarkValue()}
-				hasBorder={true}
-			/>
+			{#await option.bookmarkValue() then value}
+				<BookmarkToggle type={option.bookmarkType} {value} hasBorder={true} />
+			{/await}
 		{/if}
 	{/each}
 </div>

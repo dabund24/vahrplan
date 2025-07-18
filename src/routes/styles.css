@@ -54,6 +54,7 @@
 	accent-color: var(--accent-color);
 	color-scheme: light dark;
 	--accent-color: light-dark(var(--accent-base), var(--accent--dark));
+	--accent-color--constant: light-dark(var(--accent-base), var(--accent--dark));
 	--accent--red: light-dark(
 		var(--accent-base--red),
 		oklch(from var(--accent-base--red) 0.8 0.1 h)
@@ -70,7 +71,15 @@
 		oklch(from var(--accent-base) 0.25 0.02 h),
 		oklch(from var(--accent-base) 0.95 0.002 h)
 	);
+	--foreground-color--constant: light-dark(
+		oklch(from var(--accent-base) 0.25 0.02 h),
+		oklch(from var(--accent-base) 0.95 0.002 h)
+	);
 	--background-color: light-dark(
+		oklch(from var(--accent-base) 0.99 0.002 h),
+		oklch(from var(--accent-base) 0.15 0.015 h)
+	);
+	--background-color--constant: light-dark(
 		oklch(from var(--accent-base) 0.99 0.002 h),
 		oklch(from var(--accent-base) 0.15 0.015 h)
 	);
@@ -443,12 +452,10 @@ h2 {
 
 .hoverable--accent {
 	background-color: var(--accent-color);
-	color: var(--background-color);
 	border: var(--border);
+	--foreground-color: var(--background-color--constant);
+	--background-color: var(--accent-color--constant);
 	font-weight: bolder;
-	svg {
-		--foreground-color: var(--background-color);
-	}
 }
 
 .hoverable:hover,
@@ -459,7 +466,7 @@ h2 {
 
 .hoverable--accent:hover,
 .hoverable--accent:active {
-	border-color: var(--foreground-color);
+	border-color: var(--foreground-color--constant);
 	background-color: var(--accent-color);
 }
 

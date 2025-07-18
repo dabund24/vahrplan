@@ -3,7 +3,7 @@
 	import type { Snippet } from "svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import type { BookmarkData, BookmarkType } from "$lib/bookmarks.svelte";
-	import BookmarkToggle from "$lib/components/BookmarkToggle.svelte";
+	import BookmarkToggle from "$lib/components/bookmarks/BookmarkToggle.svelte";
 
 	type OptionElement = {
 		name: string;
@@ -28,16 +28,17 @@
 	type OptionElementBookmark = {
 		type: "bookmark";
 		bookmarkType: T;
-		bookmarkValue: () => BookmarkData<T>;
+		bookmarkValue: () => Promise<BookmarkData<T>> | BookmarkData<T>;
 	};
 
 	type Props = {
 		id: string;
 		options: OptionElement[];
 		isExpandedToTop?: boolean;
+		isAccent?: boolean;
 	};
 
-	let { id, options, isExpandedToTop = false }: Props = $props();
+	let { id, options, isExpandedToTop = false, isAccent = false }: Props = $props();
 
 	let popoverElement: HTMLElement;
 
@@ -53,6 +54,7 @@
 		title="Optionen"
 		popovertarget="{id}-popover"
 		class="hoverable"
+		class:hoverable--accent={isAccent}
 		style="anchor-name: --{id}-popover-anchor;"
 	>
 		<IconOptions />
@@ -80,12 +82,14 @@
 				{:else if option.type === "modal"}
 					<ModalToggle showModalKey={option.showModalKey} children={buttonContent} />
 				{:else if option.type === "bookmark"}
-					<BookmarkToggle
-						type={option.bookmarkType}
-						value={option.bookmarkValue()}
-						hasText={true}
-						postCallback={() => void popoverElement.hidePopover()}
-					/>
+					{#await option.bookmarkValue() then value}
+						<BookmarkToggle
+							type={option.bookmarkType}
+							{value}
+							hasText={true}
+							postCallback={() => void popoverElement.hidePopover()}
+						/>
+					{/await}
 				{/if}
 			</li>
 		{/each}
@@ -133,6 +137,11 @@
 	[popover] {
 		background-color: transparent;
 		padding: 0;
+	}
+
+	.hoverable--accent:not(:hover, :active) {
+		background-color: transparent;
+		border-color: transparent;
 	}
 
 	@supports (left: anchor(right)) {
