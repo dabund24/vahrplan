@@ -2,13 +2,13 @@ import {
 	JourneyDataService,
 	type JourneyNodesWithRefs
 } from "$lib/server/journey-data/JourneyDataService";
-import {
-	type HafasClient,
-	type Journeys,
-	type JourneyWithRealtimeData,
-	type Location,
-	type Station,
-	type Stop
+import type {
+	HafasClient,
+	Journeys,
+	JourneyWithRealtimeData,
+	Location,
+	Station,
+	Stop
 } from "hafas-client";
 import { RateLimiter } from "$lib/server/RateLimiter";
 import type { JourneysOptions, ParsedLocation, SubJourney, TimeData } from "$lib/types";
