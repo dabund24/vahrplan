@@ -31,7 +31,7 @@
 		"eslint-config-prettier": "^10.1.5",
 		"eslint-plugin-svelte": "^3.9.1",
 		"globals": "^16.3.0",
-		"hafas-client": "^6.3.3",
+		"hafas-client": "^6.3.5",
 		"jsdom": "^26.1.0",
 		"leaflet": "^1.9.4",
 		"prettier": "^3.5.0",
@@ -47,7 +47,7 @@
 	"type": "module",
 	"dependencies": {
 		"db-vendo-client": "^6.8.2",
-		"hafas-client": "^6.3.3",
+		"hafas-client": "^6.3.5",
 		"leaflet": "^1.9.4",
 		"redis": "^4.7.0"
 	}
