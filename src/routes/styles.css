@@ -67,18 +67,16 @@
 		var(--accent-base--green),
 		oklch(from var(--accent-base--green) 0.8 0.1 h)
 	);
-	--foreground-color: light-dark(
-		oklch(from var(--accent-base) 0.25 0.02 h),
-		oklch(from var(--accent-base) 0.95 0.002 h)
-	);
+	--foreground-color: oklch(
+		from var(--accent-base) 0.25 0.02 h
+	); /* TODO not using light-dark() due to https://github.com/dabund24/vahrplan/issues/170. Change back later */
 	--foreground-color--constant: light-dark(
 		oklch(from var(--accent-base) 0.25 0.02 h),
 		oklch(from var(--accent-base) 0.95 0.002 h)
 	);
-	--background-color: light-dark(
-		oklch(from var(--accent-base) 0.99 0.002 h),
-		oklch(from var(--accent-base) 0.15 0.015 h)
-	);
+	--background-color: oklch(
+		from var(--accent-base) 0.99 0.002 h
+	); /* TODO not using light-dark() due to https://github.com/dabund24/vahrplan/issues/170. Change back later */
 	--background-color--constant: light-dark(
 		oklch(from var(--accent-base) 0.99 0.002 h),
 		oklch(from var(--accent-base) 0.15 0.015 h)
@@ -135,6 +133,8 @@
 	color-scheme: dark;
 	--external-ref-icon--inverse: var(--external-ref-icon--light);
 	--external-ref-icon: var(--external-ref-icon--dark);
+	--foreground-color: oklch(from var(--accent-base) 0.95 0.002 h);
+	--background-color: oklch(from var(--accent-base) 0.15 0.015 h);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -143,6 +143,8 @@
 		color-scheme: dark;
 		--external-ref-icon--inverse: var(--external-ref-icon--light);
 		--external-ref-icon: var(--external-ref-icon--dark);
+		--foreground-color: oklch(from var(--accent-base) 0.95 0.002 h);
+		--background-color: oklch(from var(--accent-base) 0.15 0.015 h);
 	}
 }
 
