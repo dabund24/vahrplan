@@ -78,8 +78,8 @@
 			"label": "Lesezeichen"
 		}
 	],
-	"background_color": "oklch(0.15 0.015 170)",
-	"theme_color": "oklch(0.15 0.015 170)",
+	"background_color": "#1B735B",
+	"theme_color": "#1B735B",
 	"start_url": ".",
 	"shortcuts": [
 		{
