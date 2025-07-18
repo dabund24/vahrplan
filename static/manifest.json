@@ -90,7 +90,7 @@
 				{
 					"src": "shortcut-icons/home.svg",
 					"sizes": "512x512",
-					"type": " image/svg+xml",
+					"type": "image/svg+xml",
 					"purpose": "any"
 				}
 			]
@@ -103,7 +103,7 @@
 				{
 					"src": "shortcut-icons/bookmarks.svg",
 					"sizes": "512x512",
-					"type": " image/svg+xml",
+					"type": "image/svg+xml",
 					"purpose": "any"
 				}
 			]
@@ -116,7 +116,7 @@
 				{
 					"src": "shortcut-icons/settings.svg",
 					"sizes": "512x512",
-					"type": " image/svg+xml",
+					"type": "image/svg+xml",
 					"purpose": "any"
 				}
 			]
@@ -129,7 +129,7 @@
 				{
 					"src": "shortcut-icons/about.svg",
 					"sizes": "512x512",
-					"type": " image/svg+xml",
+					"type": "image/svg+xml",
 					"purpose": "any"
 				}
 			]
