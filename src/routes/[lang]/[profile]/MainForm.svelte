@@ -103,7 +103,7 @@
 	}
 </script>
 
-<form class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
+<form autocomplete="off" class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
 	<MainStationInputs bind:stops />
 
 	<div class="time-filter-submit">

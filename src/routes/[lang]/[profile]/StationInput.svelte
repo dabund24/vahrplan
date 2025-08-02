@@ -26,6 +26,7 @@
 	let isExpanded = $state(false);
 	let focused = $state(-1);
 	let isInputBlurredBySelection = $state(true);
+	let isSuggestionsHidden = $state(false);
 
 	let bookmarkedLocations: ParsedLocation[] = $derived([
 		getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
@@ -51,6 +52,7 @@
 	 */
 	function handleInputBlur(): void {
 		isExpanded = false;
+		isSuggestionsHidden = false;
 		isInputBlurredBySelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
 			if (inputText.trim().length === 0) {
@@ -98,6 +100,7 @@
 		inputText = suggestion.name;
 		focused = -1;
 		isInputBlurredBySelection = true;
+		isSuggestionsHidden = true;
 	}
 
 	function handleInputKeydown(ev: KeyboardEvent): void {
@@ -112,6 +115,9 @@
 					ev.preventDefault();
 					break;
 				case "Enter":
+					if (focused >= 0) {
+						isSuggestionsHidden = true;
+					}
 					ev.preventDefault();
 				// fallthrough
 				case "Tab":
@@ -126,6 +132,7 @@
 				case "ArrowLeft":
 					break;
 				default:
+					isSuggestionsHidden = false;
 					focused = -1;
 			}
 		});
@@ -157,12 +164,13 @@
 				onfocus={(): void => {
 					isInputBlurredBySelection = false;
 					isExpanded = true;
+					isSuggestionsHidden = false;
 				}}
 				role="combobox"
 				aria-label="Station {stationInputId + 1}"
 				aria-autocomplete="list"
 				aria-activedescendant="search-input__{stationInputId}--suggestions__{focused}"
-				aria-expanded={isExpanded}
+				aria-expanded={isExpanded && !isSuggestionsHidden}
 				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
 			{#if selectedLocation !== undefined && selectedLocation.name !== "Standort"}
@@ -179,7 +187,11 @@
 				</button>
 			{/if}
 		</div>
-		<ul id="search-input__{stationInputId}--suggestions" role="listbox">
+		<ul
+			class:hide-suggestions={isSuggestionsHidden}
+			id="search-input__{stationInputId}--suggestions"
+			role="listbox"
+		>
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
 					<li class="suggestion flex-row skeleton">
@@ -258,8 +270,8 @@
 		flex-direction: column;
 		display: none;
 	}
-	.inner-wrapper:focus-within ul,
-	ul:active {
+	.inner-wrapper:focus-within ul:not(.hide-suggestions),
+	ul:active:not(.hide-suggestions) {
 		display: block;
 	}
 	.inner-wrapper:focus-within,
