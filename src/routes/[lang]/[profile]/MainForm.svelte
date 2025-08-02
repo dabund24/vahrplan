@@ -9,6 +9,7 @@
 	import FilterModal from "./FilterModal.svelte";
 	import { searchDiagram, type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 	import MainStationInputs from "./MainStationInputs.svelte";
+	import { SvelteDate } from "svelte/reactivity";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -47,7 +48,7 @@
 	}
 
 	function setTimePreset(minuteOffset: number): void {
-		const now = new Date();
+		const now = new SvelteDate();
 		now.setTime(now.getTime() + 60 * 1000 * minuteOffset);
 		time = now;
 	}
@@ -58,7 +59,7 @@
 		if (!verifyUserInput(stopsToBeDisplayed.map((s) => s.value))) {
 			return;
 		}
-		const journeyTime = new Date(time);
+		const journeyTime = new SvelteDate(time);
 		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
 		const scrollDirection: RelativeTimeType =
 			departureArrivalSelection === 0 ? "later" : "earlier";

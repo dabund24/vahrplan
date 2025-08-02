@@ -4,6 +4,7 @@ import { settings } from "$lib/state/settingStore";
 import { toast } from "$lib/state/toastStore";
 import { startLoading, stopLoading } from "$lib/state/loadingStore";
 import type { Location } from "hafas-client";
+import { SvelteDate } from "svelte/reactivity";
 
 export type CurrentPositionData = {
 	position: ParsedLocation["position"] | undefined;
@@ -167,7 +168,7 @@ export async function getCurrentGeolocation(): Promise<ParsedGeolocation | undef
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
 				const currentLocation: ParsedLocation = getParsedGeolocation(
-					new Date(position.timestamp),
+					new SvelteDate(position.timestamp),
 					{
 						lat: position.coords.latitude,
 						lng: position.coords.longitude
