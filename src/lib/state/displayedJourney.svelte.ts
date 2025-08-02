@@ -15,6 +15,7 @@ import {
 } from "$lib/state/displayedFormData.svelte.js";
 import { getMergingBlock } from "$lib/merge";
 import { browser } from "$app/environment";
+import { SvelteSet } from "svelte/reactivity";
 
 export type DisplayedJourney = {
 	blocks: KeyedItem<JourneyBlock[], string>[];
@@ -59,7 +60,7 @@ export function getDisplayedJourney(): DisplayedJourney {
 			blocks: [],
 			selectedSubJourneys: [],
 			locations: [],
-			statuses: new Set()
+			statuses: new SvelteSet()
 		};
 	}
 	return displayedJourney;
@@ -151,7 +152,7 @@ function computeDisplayedBlocks(
 function computeStatuses(
 	displayedBlocks: DisplayedJourney["blocks"]
 ): DisplayedJourney["statuses"] {
-	const statuses: DisplayedJourney["statuses"] = new Set();
+	const statuses: DisplayedJourney["statuses"] = new SvelteSet();
 
 	const flatBlocks = displayedBlocks.flatMap((journey) => journey.value);
 
