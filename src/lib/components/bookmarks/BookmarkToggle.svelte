@@ -17,6 +17,7 @@
 		hasBorder?: boolean;
 		hasText?: boolean;
 		tabindex?: 0 | -1;
+		iconType?: "bookmark" | "star";
 	};
 
 	const {
@@ -27,7 +28,8 @@
 		isVisuallyHidden = false,
 		hasBorder = false,
 		hasText = false,
-		tabindex = 0
+		tabindex = 0,
+		iconType = "bookmark"
 	}: Props = $props();
 
 	const isBookmarked = $derived(getIsBookmarked(type, value));
@@ -56,5 +58,5 @@
 	{:else if hasText}
 		Merken
 	{/if}
-	<IconBookmark {isBookmarked} />
+	<IconBookmark {isBookmarked} type={iconType} />
 </button>
