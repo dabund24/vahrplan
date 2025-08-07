@@ -283,7 +283,6 @@
 			);
 			--diagram--beginning-end-offset: calc(4.4ch * 0.8 + var(--line-width));
 		}
-		width: fit-content;
 		min-width: fit-content;
 		margin: auto;
 	}

@@ -174,7 +174,12 @@
 				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
 			{#if selectedLocation !== undefined && selectedLocation.name !== "Standort"}
-				<BookmarkToggle type="location" value={selectedLocation} isVisuallyHidden={true} />
+				<BookmarkToggle
+					type="location"
+					value={selectedLocation}
+					isVisuallyHidden={true}
+					iconType="star"
+				/>
 			{/if}
 			{#if inputText !== ""}
 				<button
@@ -202,7 +207,7 @@
 							<span>&#8203;</span>
 						</span>
 						<span class="hoverable">
-							<IconBookmark isBookmarked={false} />
+							<IconBookmark isBookmarked={false} type="star" />
 						</span>
 					</li>
 				{/each}
@@ -240,6 +245,7 @@
 										isInputBlurredBySelection = true;
 									}}
 									tabindex={-1}
+									iconType="star"
 								/>
 							</span>
 						{/if}
