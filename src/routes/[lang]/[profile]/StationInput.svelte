@@ -276,9 +276,13 @@
 		flex-direction: column;
 		display: none;
 	}
-	.inner-wrapper:focus-within ul:not(.hide-suggestions),
-	ul:active:not(.hide-suggestions) {
+	.inner-wrapper:focus-within ul,
+	ul:active {
 		display: block;
+	}
+	ul.hide-suggestions {
+		height: 0;
+		visibility: hidden;
 	}
 	.inner-wrapper:focus-within,
 	.inner-wrapper:active {
