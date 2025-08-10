@@ -23,8 +23,8 @@
 
 	let inputText = $state(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
-	let isExpanded = $state(false);
-	let focused = $state(-1);
+	let isFocused = $state(false);
+	let focusedId = $state(-1);
 	let isInputBlurredBySelection = $state(true);
 	let isSuggestionsHidden = $state(false);
 
@@ -51,7 +51,7 @@
 	 * selects the first suggested location if the user leaves the input without a selection
 	 */
 	function handleInputBlur(): void {
-		isExpanded = false;
+		isFocused = false;
 		isSuggestionsHidden = false;
 		isInputBlurredBySelection = false; // this is reset to `true` in `handleSuggestionClick()`, otherwise it remains `false`
 		setTimeout(() => {
@@ -68,7 +68,7 @@
 				void suggestions.then((suggestions) => {
 					selectedLocation = suggestions[0];
 					inputText = suggestions[0]?.name ?? "";
-					focused = -1;
+					focusedId = -1;
 				});
 			}
 		}, 500);
@@ -98,7 +98,7 @@
 		inputElement.blur();
 		selectedLocation = suggestion;
 		inputText = suggestion.name;
-		focused = -1;
+		focusedId = -1;
 		isInputBlurredBySelection = true;
 		isSuggestionsHidden = true;
 	}
@@ -107,33 +107,33 @@
 		void suggestions.then((suggestions) => {
 			switch (ev.key) {
 				case "ArrowDown":
-					focused = (focused + 1) % suggestions.length;
+					focusedId = (focusedId + 1) % suggestions.length;
 					ev.preventDefault();
 					break;
 				case "ArrowUp":
-					focused = focused <= 0 ? suggestions.length - 1 : focused - 1;
+					focusedId = focusedId <= 0 ? suggestions.length - 1 : focusedId - 1;
 					ev.preventDefault();
 					break;
 				case "Enter":
-					if (focused >= 0) {
+					if (focusedId >= 0) {
 						isSuggestionsHidden = true;
 					}
 					ev.preventDefault();
 				// fallthrough
 				case "Tab":
-					if (focused >= 0) {
+					if (focusedId >= 0) {
 						// something is focused
-						selectedLocation = suggestions[focused]; // do not use `handleSuggestionClick`, since the input does not need to be blurred
-						inputText = suggestions[focused].name;
+						selectedLocation = suggestions[focusedId]; // do not use `handleSuggestionClick`, since the input does not need to be blurred
+						inputText = suggestions[focusedId].name;
 					}
-					focused = -1;
+					focusedId = -1;
 					break;
 				case "ArrowRight":
 				case "ArrowLeft":
 					break;
 				default:
 					isSuggestionsHidden = false;
-					focused = -1;
+					focusedId = -1;
 			}
 		});
 	}
@@ -163,14 +163,16 @@
 				onblur={handleInputBlur}
 				onfocus={(): void => {
 					isInputBlurredBySelection = false;
-					isExpanded = true;
+					isFocused = true;
 					isSuggestionsHidden = false;
 				}}
 				role="combobox"
 				aria-label="Station {stationInputId + 1}"
 				aria-autocomplete="list"
-				aria-activedescendant="search-input__{stationInputId}--suggestions__{focused}"
-				aria-expanded={isExpanded && !isSuggestionsHidden}
+				aria-activedescendant={focusedId !== -1
+					? `search-input__${stationInputId}--suggestions__${focusedId}`
+					: ""}
+				aria-expanded={isFocused && !isSuggestionsHidden}
 				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
 			{#if selectedLocation !== undefined && selectedLocation.name !== "Standort"}
@@ -223,7 +225,7 @@
 						<button
 							type="button"
 							class="flex-row padded-top-bottom suggestion__button"
-							class:focused={focused === i}
+							class:focused={focusedId === i}
 							tabindex="-1"
 							onclick={() => void handleSuggestionClick(suggestion)}
 						>
