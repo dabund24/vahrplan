@@ -18,10 +18,10 @@ class DbnavProfile extends Profile<
 	| "ferry",
 	["bike", "accessible", "maxTransfers", "minTransferTime"]
 > {
-	protected readonly id = "dbnav";
-	protected readonly name = { de: "Deutschland" };
-	protected readonly products = {
-		longDistanceExpress: { name: "InterCityExpress/InterCity" },
+	protected override readonly id = "dbnav";
+	protected override readonly name = { de: "Deutschland" };
+	protected override readonly products = {
+		longDistanceExpress: { name: "InterCityExpress" },
 		longDistance: { name: "InterCity" },
 		regionalExpress: { name: { de: "sonst. Fernzug" } },
 		regional: { name: { de: "Regionalexpress/-bahn" } },
@@ -32,7 +32,7 @@ class DbnavProfile extends Profile<
 		taxi: { name: { de: "Ruftaxi" } },
 		ferry: { name: { de: "Schiff" } }
 	};
-	protected readonly options = [
+	protected override readonly options = [
 		"bike",
 		"accessible",
 		"maxTransfers",
