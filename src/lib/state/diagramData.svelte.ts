@@ -12,10 +12,10 @@ import {
 } from "$lib/state/selectedData.svelte";
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
-import type { LocationEquivalenceSystem } from "../../routes/[lang]/[profile]/api/diagram/locationRepresentativesUtils";
+import type { LocationEquivalenceSystem } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
 import { MAX_DATE } from "$lib/constants";
-import type { RecommendedVia } from "../../routes/[lang]/[profile]/api/diagram/viaRecommendations.server";
+import type { RecommendedVia } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/viaRecommendations.server";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];

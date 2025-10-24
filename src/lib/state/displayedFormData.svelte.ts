@@ -1,7 +1,7 @@
 import { setDiagramDataFromFormData } from "$lib/state/diagramData.svelte";
 import { setSelectedData } from "$lib/state/selectedData.svelte";
 import { toast } from "$lib/state/toastStore";
-import type { JourneysOptions, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
+import type { JourneysFilters, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
@@ -10,7 +10,7 @@ import { DIAGRAM_MAX_COLUMNS, DIAGRAM_MIN_COLUMNS } from "$lib/constants";
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	timeData: TimeData;
-	options: JourneysOptions;
+	options: JourneysFilters;
 	geolocationDate: Date;
 };
 

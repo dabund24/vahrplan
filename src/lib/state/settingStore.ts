@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
-import type { GetDiagramApiClient } from "../../routes/[lang]/[profile]/api/diagram/getClient";
-import type { JourneysOptions, Product } from "$lib/types";
+import type { GetDiagramApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/getClient";
+import type { JourneysFilters, Product } from "$lib/types";
 
 export const products: Record<Product, string> = {
 	longDistanceExpress: "Intercity-Express",
@@ -31,7 +31,7 @@ export type Settings = {
 	storage: Record<Exclude<keyof Settings, "storage">, boolean>;
 };
 
-export const defaultJourneysOptions: JourneysOptions = {
+export const defaultJourneysOptions: JourneysFilters = {
 	products: {
 		longDistanceExpress: true,
 		longDistance: true,

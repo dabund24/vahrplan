@@ -3,7 +3,7 @@ import type { TransitType } from "$lib/types";
 import {
 	buildTree,
 	unfoldTree
-} from "../../src/routes/[lang]/[profile]/api/diagram/treePlantation.server";
+} from "../../src/routes/[lang=lang]/[profile=profileId]/api/diagram/treePlantation.server";
 
 function mockTime(date: number): string {
 	return new Date(date).toISOString();

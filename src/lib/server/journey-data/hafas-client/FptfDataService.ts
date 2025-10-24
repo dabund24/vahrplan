@@ -5,20 +5,20 @@ import {
 import type {
 	HafasClient,
 	Journeys,
+	JourneysOptions as FptfJourneysOptions,
 	JourneyWithRealtimeData,
 	Location,
 	Station,
 	Stop
 } from "hafas-client";
 import { RateLimiter } from "$lib/server/RateLimiter";
-import type { JourneysOptions, ParsedLocation, SubJourney, TimeData } from "$lib/types";
+import type { JourneysFilters, ParsedLocation, Product, SubJourney, TimeData } from "$lib/types";
 import {
 	parseStationStopLocation,
 	parseSubJourney
 } from "$lib/server/journey-data/hafas-client/parse/parse";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
-import { formatOptions, formatStop } from "$lib/server/journey-data/hafas-client/formatOptions";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = Error & {
@@ -29,14 +29,23 @@ export type HafasError = Error & {
 	hafasDescription: string;
 };
 
-export class HafasClientDataService extends JourneyDataService {
+type FptfDataServiceConfig<ProductT extends Product> = {
 	client: HafasClient;
+	productMapping: Record<ProductT, string>;
+};
+
+export class FptfDataService<ProductT extends Product> extends JourneyDataService<
+	ProductT,
+	"bike" | "accessible" | "maxTransfers" | "minTransferTime"
+> {
+	private readonly client: HafasClient;
+	private readonly productMapping: { vahrplanProduct: ProductT; fptfClientProduct: string }[];
 
 	/**
 	 * Create a JourneyDataService from a HafasClient
-	 * @param client hafas-client
+	 * @param config information about how this client should work
 	 */
-	constructor(client: HafasClient) {
+	constructor(config: FptfDataServiceConfig<ProductT>) {
 		super();
 
 		const rateLimiterIntervalSeconds = 60;
@@ -52,14 +61,21 @@ export class HafasClientDataService extends JourneyDataService {
 				const result = hafasGlobalRateLimiter.accessResource("global", () => target[prop]);
 				if (result.isError) {
 					// Pretend as if hafas client threw an error
-					return async () =>
-						Promise.resolve(HafasClientDataService.throwHafasQuotaError());
+					return async () => Promise.resolve(FptfDataService.throwHafasQuotaError());
 				}
 				return result.content;
 			}
 		};
+		this.client = new Proxy(config.client, hafasClientHandler);
 
-		this.client = new Proxy(client, hafasClientHandler);
+		this.productMapping = [];
+		let vahrplanProduct: keyof FptfDataServiceConfig<ProductT>["productMapping"];
+		for (vahrplanProduct in config.productMapping) {
+			this.productMapping.push({
+				vahrplanProduct,
+				fptfClientProduct: config.productMapping[vahrplanProduct]
+			});
+		}
 	}
 
 	private parseJourneysResponseCallback = (hafasJourneys: Journeys): JourneyNodesWithRefs => {
@@ -73,23 +89,78 @@ export class HafasClientDataService extends JourneyDataService {
 		};
 	};
 
-	async journeys(
-		{ from, to }: Parameters<JourneyDataService["journeys"]>[0],
+	/**
+	 * format options of the fptf request for journeys
+	 * @param timeData
+	 * @param filters
+	 * @private
+	 */
+	private formatOptions(
 		timeData: TimeData,
-		options: JourneysOptions
+		filters: JourneysFilters<
+			ProductT,
+			"bike" | "accessible" | "maxTransfers" | "minTransferTime"
+		>
+	): FptfJourneysOptions {
+		const products: Record<string, boolean> = {};
+		for (const { vahrplanProduct, fptfClientProduct } of this.productMapping) {
+			products[fptfClientProduct] = filters.products[vahrplanProduct];
+		}
+
+		const fptfOptions: FptfJourneysOptions = {
+			products,
+			transferTime: filters.options.minTransferTime,
+			transfers: filters.options.maxTransfers,
+			accessibility: filters.options.accessible ? "complete" : "none",
+			results: 10,
+			stopovers: true,
+			tickets: true,
+			language: "de"
+		};
+
+		if (timeData.type === "absolute") {
+			fptfOptions[timeData.scrollDirection === "later" ? "departure" : "arrival"] = new Date(
+				timeData.time
+			);
+		} else {
+			fptfOptions[`${timeData.scrollDirection}Than`] = timeData.time;
+		}
+
+		return fptfOptions;
+	}
+
+	/**
+	 * format a stop for the fptf journeys or stop request
+	 * @param stop
+	 * @private
+	 */
+	private formatStop(stop: string): string | Station | Stop | Location {
+		if (stop.startsWith("{")) {
+			return JSON.parse(stop) as Station | Stop | Location;
+		}
+		return stop;
+	}
+
+	public override async journeys(
+		{ from, to }: Parameters<JourneyDataService<ProductT, never>["journeys"]>[0],
+		timeData: TimeData,
+		options: JourneysFilters<
+			ProductT,
+			"bike" | "accessible" | "maxTransfers" | "minTransferTime"
+		>
 	): Promise<VahrplanResult<JourneyNodesWithRefs>> {
 		return this.performRequest(
 			() =>
 				this.client.journeys(
-					formatStop(from),
-					formatStop(to),
-					formatOptions(timeData, options)
+					this.formatStop(from),
+					this.formatStop(to),
+					this.formatOptions(timeData, options)
 				),
 			this.parseJourneysResponseCallback
 		);
 	}
 
-	async refresh(tokens: string[]): Promise<VahrplanResult<SubJourney[]>> {
+	public override async refresh(tokens: string[]): Promise<VahrplanResult<SubJourney[]>> {
 		return this.performRequest(
 			() =>
 				Promise.all(
@@ -109,30 +180,27 @@ export class HafasClientDataService extends JourneyDataService {
 		);
 	}
 
-	async location(token: ParsedLocation["id"]): Promise<VahrplanResult<ParsedLocation>> {
-		if (token.startsWith("{")) {
-			// token is location object
-			return Promise.resolve(
-				new VahrplanSuccess(
-					parseStationStopLocation(JSON.parse(token) as Station | Stop | Location)
-				)
-			);
+	public override async location(
+		token: ParsedLocation["id"]
+	): Promise<VahrplanResult<ParsedLocation>> {
+		const stop = this.formatStop(token);
+		if (typeof stop === "string") {
+			return this.performRequest(() => this.client.stop(token, {}), parseStationStopLocation);
 		}
-
-		return this.performRequest(() => this.client.stop(token, {}), parseStationStopLocation);
+		return new VahrplanSuccess(parseStationStopLocation(stop));
 	}
 
-	async locations(name: string): Promise<VahrplanResult<ParsedLocation[]>> {
+	public override async locations(name: string): Promise<VahrplanResult<ParsedLocation[]>> {
 		return this.performRequest(
 			() => this.client.locations(name, { results: 10 }),
 			(locations) => locations.map(parseStationStopLocation)
 		);
 	}
 
-	parseError(err: unknown): VahrplanError {
+	protected override parseError(err: unknown): VahrplanError {
 		let errorType: VahrplanError["type"] = "ERROR";
 		let message = "Hafas: Server-Fehler. Die Anfrage ist möglicherweise ungültig.";
-		if (HafasClientDataService.isHafasError(err)) {
+		if (FptfDataService.isHafasError(err)) {
 			if (err.code === "QUOTA_EXCEEDED") {
 				// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
 				return new VahrplanError("QUOTA_EXCEEDED");

@@ -1,4 +1,5 @@
 import type { LineShape } from "$lib/server/journey-data/lineShapes";
+import type { Profile } from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -89,12 +90,16 @@ export type Product =
 	| "taxi"
 	| "ferry";
 
-export type JourneysOptions = {
-	products: Record<Product, boolean>;
-	bike: boolean;
-	accessible: boolean;
-	maxTransfers: number;
-	minTransferTime: number;
+export type JourneysFilters<
+	ProductT extends Product,
+	OptionT extends keyof typeof Profile.availableOptions
+> = {
+	products: Record<ProductT, boolean>;
+	options: {
+		[K in OptionT]: (typeof Profile.availableOptions)[K] extends { possibleValues: (infer T)[] }
+			? T
+			: boolean;
+	};
 };
 
 export type SubJourney = {

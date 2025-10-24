@@ -1,5 +1,5 @@
 import { ApiClient } from "$lib/api-client/ApiClient";
-import type { JourneysOptions, RelativeTimeType, TreeNode } from "$lib/types";
+import type { JourneysFilters, RelativeTimeType, TreeNode } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
@@ -15,7 +15,7 @@ type ReqType = {
 	scrollDirection: RelativeTimeType;
 	stops: string[];
 	tokens: string[];
-	options: JourneysOptions;
+	options: JourneysFilters;
 	tree: TreeNode[];
 	transferLocations: LocationEquivalenceSystem;
 	recommendedVias: RecommendedVia[][];

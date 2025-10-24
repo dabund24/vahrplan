@@ -1,4 +1,4 @@
-import type { JourneysOptions, RelativeTimeType, SubJourney, TimeData } from "$lib/types";
+import type { JourneysFilters, RelativeTimeType, SubJourney, TimeData } from "$lib/types";
 import { journeyDataService } from "$lib/server/setup";
 import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
@@ -8,13 +8,13 @@ import { VahrplanError } from "$lib/VahrplanError";
 type RequestData = {
 	fromTo: { from: string; to: string };
 	timeData: TimeData;
-	options: JourneysOptions;
+	options: JourneysFilters;
 };
 
 export async function fetchJourneys(
 	stops: string[],
 	timeStart: TimeData[] | TimeData,
-	options: JourneysOptions
+	options: JourneysFilters
 ): Promise<VahrplanResult<JourneyNodesWithRefs[]>> {
 	const scrollDirection = (Array.isArray(timeStart) ? timeStart[0] : timeStart).scrollDirection;
 

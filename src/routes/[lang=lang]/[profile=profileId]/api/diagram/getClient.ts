@@ -1,4 +1,4 @@
-import type { JourneysOptions, Product, RelativeTimeType, TimeData } from "$lib/types";
+import type { JourneysFilters, Product, RelativeTimeType, TimeData } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { error } from "@sveltejs/kit";
 import { QueryParamSettable } from "$lib/api-client/QueryParamSettableApiClient";
@@ -18,11 +18,16 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
+import { Profile } from "../profile/profile.server";
 
 type ReqType = {
 	stops: string[];
 	timeData: TimeData;
-	options: JourneysOptions;
+	options: {
+		[K in keyof JourneysFilters<Product, keyof typeof Profile.availableOptions>]: Partial<
+			JourneysFilters<Product, keyof typeof Profile.availableOptions>[K]
+		>;
+	};
 };
 
 export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, RequestEvent>()(

@@ -30,7 +30,7 @@ export abstract class ApiClient<
 	RequestEventT extends RequestEvent<object, string>
 > {
 	protected abstract readonly methodType: MethodT;
-	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang]/[profile]/api/${infer RouteT}`
+	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang=lang]/[profile=profileId]/api/${infer RouteT}`
 		? RouteT
 		: never;
 	protected abstract readonly cacheMaxAge: number;

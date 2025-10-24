@@ -1,8 +1,7 @@
 import type { Product } from "$lib/types";
 import type { AssertUniqueTuple } from "$lib/utilityTypes";
-
-export type ProfileId = "dbnav";
-export type Language = "de";
+import type { ProfileId } from "../../../../../params/profileId";
+import type { Language } from "../../../../../params/lang";
 
 type LocaleString = Record<Language, string>;
 

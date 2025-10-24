@@ -1,4 +1,5 @@
 export const YEAR_IN_SECONDS = 31_536_000;
+export const DAY_IN_SECONDS = 86400;
 export const HOUR_IN_MINUTES = 60;
 export const MINUTE_IN_SECONDS = 60;
 export const MINUTE_IN_MS = 60_000;

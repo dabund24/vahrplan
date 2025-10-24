@@ -1,7 +1,14 @@
-import type { JourneysOptions } from "hafas-client";
-import type { LegBlock, ParsedLocation, SubJourney, TimeData } from "$lib/types";
+import type {
+	JourneysFilters,
+	LegBlock,
+	ParsedLocation,
+	Product,
+	SubJourney,
+	TimeData
+} from "$lib/types";
 import type { VahrplanError } from "$lib/VahrplanError";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
+import type { Profile } from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 export type JourneyNodesWithRefs = {
 	journeys: SubJourney[];
@@ -17,18 +24,24 @@ type ExtractResultType<T> = T extends VahrplanResult<infer X> ? X : never;
 /**
  * all types a JourneyDataService can return
  */
-export type Fetchable = ExtractResultType<
+type Fetchable = ExtractResultType<
 	// e.g. `ZugResponse<ParsedLocation>`
 	Awaited<
 		// e.g. `Promise<ZugResponse<ParsedLocation>>`
 		ReturnType<
 			// all data serving class methods, e.g. `location`
-			JourneyDataService[Exclude<keyof JourneyDataService, "parseError" | "performRequest">]
+			JourneyDataService<Product, keyof typeof Profile.availableOptions>[Exclude<
+				keyof JourneyDataService<Product, keyof typeof Profile.availableOptions>,
+				"parseError" | "performRequest"
+			>]
 		>
 	>
 >;
 
-export abstract class JourneyDataService {
+export abstract class JourneyDataService<
+	ProductT extends Product,
+	OptionT extends keyof typeof Profile.availableOptions
+> {
 	/**
 	 * get journeys between two stations
 	 * @param stops where to start and where to go
@@ -38,7 +51,7 @@ export abstract class JourneyDataService {
 	abstract journeys(
 		stops: { from: string; to: string },
 		timeData: TimeData,
-		options: JourneysOptions
+		options: JourneysFilters<ProductT, OptionT>
 	): Promise<VahrplanResult<JourneyNodesWithRefs>>;
 
 	/**
@@ -63,7 +76,7 @@ export abstract class JourneyDataService {
 	 * parse an error that may be thrown when data fetching goes wrong
 	 * @param err
 	 */
-	abstract parseError(err: unknown): VahrplanError;
+	protected abstract parseError(err: unknown): VahrplanError;
 
 	/**
 	 * perform a request and return a `VahrplanResult` wrapping the result or a corresponding error
@@ -91,23 +104,23 @@ export abstract class JourneyDataService {
 	protected static setMergingProperties(subJourneys: SubJourney[]): SubJourney[] {
 		for (let i = 1; i < subJourneys.length; i++) {
 			const arrivingSubJourneyBlock = subJourneys[i - 1].blocks.at(-1);
-			const departungSubJourneyBlock = subJourneys[i].blocks.at(0);
+			const departingSubJourneyBlock = subJourneys[i].blocks.at(0);
 			if (
 				arrivingSubJourneyBlock?.type !== "leg" ||
-				departungSubJourneyBlock?.type !== "leg"
+				departingSubJourneyBlock?.type !== "leg"
 			) {
 				// do nothing
-			} else if (arrivingSubJourneyBlock.blockKey === departungSubJourneyBlock.blockKey) {
+			} else if (arrivingSubJourneyBlock.blockKey === departingSubJourneyBlock.blockKey) {
 				arrivingSubJourneyBlock.succeededBy = "stopover";
-				departungSubJourneyBlock.precededBy = "stopover";
+				departingSubJourneyBlock.precededBy = "stopover";
 			} else if (
 				JourneyDataService.legsHaveSameLocations(
 					arrivingSubJourneyBlock,
-					departungSubJourneyBlock
+					departingSubJourneyBlock
 				)
 			) {
 				arrivingSubJourneyBlock.succeededBy = "transfer";
-				departungSubJourneyBlock.precededBy = "transfer";
+				departingSubJourneyBlock.precededBy = "transfer";
 			}
 		}
 		return subJourneys;
