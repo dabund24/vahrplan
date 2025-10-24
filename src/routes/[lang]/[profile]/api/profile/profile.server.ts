@@ -29,10 +29,10 @@ type OptionConfig<T extends string[] | number[] | boolean> = {
 			});
 
 type ProductConfig = {
-	name: LocaleString | string;
+	name: LocaleString;
 };
 
-type NameWithKnownLocale<T extends { name: LocaleString | string }> = Omit<T, "name"> & {
+type NameWithKnownLocale<T extends { name: LocaleString }> = Omit<T, "name"> & {
 	name: string;
 };
 
@@ -114,16 +114,14 @@ export abstract class Profile<
 	 * @param obj an object with properties, where their values all have a name property mapping languages to names
 	 * @private
 	 */
-	private assignLangNames<T extends Record<string, { name: LocaleString | string }>>(
+	private assignLangNames<T extends Record<string, { name: LocaleString }>>(
 		lang: Language,
 		obj: T
 	): { [K in keyof T]: NameWithKnownLocale<T[K]> } {
 		const res = {} as { [K in keyof T]: NameWithKnownLocale<T[K]> };
 		let feature: keyof T;
 		for (feature in obj) {
-			const localeName = obj[feature].name;
-			const name = typeof localeName === "string" ? localeName : localeName[lang];
-			res[feature] = Object.assign({}, obj[feature], { name });
+			res[feature] = Object.assign({}, obj[feature], { name: obj[feature].name[lang] });
 		}
 		return res;
 	}

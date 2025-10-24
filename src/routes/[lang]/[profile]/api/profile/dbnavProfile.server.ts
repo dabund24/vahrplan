@@ -21,8 +21,8 @@ export class DbnavProfile extends Profile<
 	protected override readonly id = "dbnav";
 	protected override readonly name = { de: "Deutschland" };
 	protected override readonly products = {
-		longDistanceExpress: { name: "InterCityExpress" },
-		longDistance: { name: "InterCity" },
+		longDistanceExpress: { name: Profile.translingual("InterCityExpress") },
+		longDistance: { name: Profile.translingual("InterCity") },
 		regionalExpress: { name: { de: "sonst. Fernzug" } },
 		regional: { name: { de: "Regionalexpress/-bahn" } },
 		suburban: { name: { de: "S-Bahn" } },
