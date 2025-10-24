@@ -4,7 +4,7 @@ import { Profile } from "./profile.server";
  * uses https://github.com/public-transport/hafas-client/tree/main/p/db
  * via https://github.com/public-transport/db-vendo-client/tree/main/p/dbnav
  */
-class DbnavProfile extends Profile<
+export class DbnavProfile extends Profile<
 	"dbnav",
 	| "longDistanceExpress"
 	| "longDistance"
