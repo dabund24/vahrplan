@@ -37,8 +37,8 @@ type NameWithKnownLocale<T extends { name: LocaleString }> = Omit<T, "name"> & {
 
 export type ProfileConfig<
 	IdT extends ProfileId = ProfileId,
-	ProductT extends Product = Product,
-	OptionT extends keyof typeof Profile.availableOptions = keyof typeof Profile.availableOptions
+	ProductT extends Product = never,
+	OptionT extends keyof typeof Profile.availableOptions = never
 > = {
 	/** very short identifier used for urls */
 	id: IdT;
@@ -53,8 +53,8 @@ export type ProfileConfig<
  */
 export abstract class Profile<
 	IdT extends ProfileId,
-	ProductT extends Product,
-	OptionT extends keyof typeof Profile.availableOptions
+	ProductT extends Product = never,
+	OptionT extends keyof typeof Profile.availableOptions = never
 > {
 	/** all options ever available. a profile uses a subset of those */
 	static readonly availableOptions = {
