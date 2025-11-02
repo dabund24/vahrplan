@@ -5,11 +5,13 @@ import { ApiClient } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import { browser } from "$app/environment";
+import type { Language } from "../../../../../../../params/lang";
+import type { ProfileId } from "../../../../../../../params/profileId";
 
 type ResT = Parameters<GetDiagramApiClient["request"]>[0];
 
-export class GetDiagramShortUrlApiClient extends NonApiUsable<string, ResT, RequestEvent>()(
-	PathParamSettable<string, ResT, RequestEvent>()(ApiClient<string, ResT, "GET", RequestEvent>)
+export class GetDiagramShortUrlApiClient extends PathParamSettable<string, ResT, RequestEvent>()(
+	NonApiUsable<string, ResT, RequestEvent>()(ApiClient<string, ResT, "GET", RequestEvent>)
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "diagram/shorturl/[shortDiagramId]";
@@ -17,8 +19,11 @@ export class GetDiagramShortUrlApiClient extends NonApiUsable<string, ResT, Requ
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 	protected override readonly nonApiRoute = "/de/dbnav/diagram/shorturl/[shortDiagramId]";
 
-	protected override formatUrlPath(content: string): `/de/dbnav/api/${string}` {
-		return `/de/dbnav/api/diagram/shorturl/${content}`;
+	protected override formatUrlPath(
+		apiPathBase: `/${Language}/${ProfileId}/api/`,
+		content: string
+	): `/${Language}/${ProfileId}/api/${string}` {
+		return `${apiPathBase}diagram/shorturl/${content}`;
 	}
 
 	override parse(reqEvent: RequestEvent): string {

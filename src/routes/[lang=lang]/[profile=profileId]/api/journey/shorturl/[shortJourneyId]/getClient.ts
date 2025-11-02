@@ -4,6 +4,8 @@ import { ApiClient } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import { browser } from "$app/environment";
+import type { Language } from "../../../../../../../params/lang";
+import type { ProfileId } from "../../../../../../../params/profileId";
 
 export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], RequestEvent>()(
 	PathParamSettable<string, string[], RequestEvent>()(
@@ -16,8 +18,11 @@ export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], 
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 	protected override readonly nonApiRoute = "/de/dbnav/journey/shorturl/[shortJourneyId]";
 
-	protected override formatUrlPath(content: string): `/de/dbnav/api/${string}` {
-		return `/de/dbnav/api/journey/shorturl/${content}`;
+	protected override formatUrlPath(
+		apiPathBase: `/${Language}/${ProfileId}/api/`,
+		content: string
+	): `/${Language}/${ProfileId}/api/${string}` {
+		return `${apiPathBase}journey/shorturl/${content}`;
 	}
 
 	override parse(reqEvent: RequestEvent): string {

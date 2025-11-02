@@ -10,6 +10,8 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
+import type { Language } from "../../../../../../../params/lang";
+import type { ProfileId } from "../../../../../../../params/profileId";
 
 type ReqType = {
 	scrollDirection: RelativeTimeType;
@@ -37,8 +39,11 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 		return content.tokens.length;
 	}
 
-	protected override formatUrlPath(content: ReqType): `/de/dbnav/api/${string}` {
-		return `/de/dbnav/api/diagram/scroll/${content.scrollDirection}`;
+	protected override formatUrlPath(
+		apiPathBase: `/${Language}/${ProfileId}/api/`,
+		content: ReqType
+	): `/${Language}/${ProfileId}/api/${string}` {
+		return `${apiPathBase}diagram/scroll/${content.scrollDirection}`;
 	}
 
 	protected override formatBody(content: ReqType): string {

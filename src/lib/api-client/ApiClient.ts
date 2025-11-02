@@ -6,9 +6,13 @@ import { json, type RequestEvent, type RouteDefinition } from "@sveltejs/kit";
 import { browser } from "$app/environment";
 import { untrack } from "svelte";
 import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
+import { page } from "$app/state";
 
 export type RequestData = {
 	url: URL;
+	apiPathBase: `/${Language}/${ProfileId}/api/`;
 	requestInit: RequestInit;
 	plausibleProps: Partial<Record<PlausibleProp, string | number>>;
 };
@@ -50,8 +54,10 @@ export abstract class ApiClient<
 			urlBase = location.origin;
 		}
 		urlBase ??= "http://localhost";
+		const apiPathBase = `/${page.data.lang}/${page.data.profile}/api/` as const;
 		const requestData: RequestData = {
-			url: new URL(`/de/dbnav/api/${this.route}`, urlBase),
+			url: new URL(`${apiPathBase}${this.route}`, urlBase),
+			apiPathBase,
 			requestInit: {},
 			plausibleProps: {}
 		};

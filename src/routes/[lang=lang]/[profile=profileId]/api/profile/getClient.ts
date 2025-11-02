@@ -27,7 +27,10 @@ export class GetProfileApiClient extends PathParamSettable<ReqType, ResType, Req
 		};
 	}
 
-	protected override formatUrlPath(content: ReqType): `/de/dbnav/api/${string}` {
+	protected override formatUrlPath(
+		_apiPathBase: `/${Language}/${ProfileId}/api/`,
+		content: ReqType
+	): `/${Language}/${ProfileId}/api/${string}` {
 		const { language, profile } = content;
 		return `/${language}/${profile}/api/profile`;
 	}
