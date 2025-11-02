@@ -16,7 +16,7 @@ export class DbnavProfile extends Profile<
 	| "bus"
 	| "taxi"
 	| "ferry",
-	["bike", "accessible", "maxTransfers", "minTransferTime"]
+	"bike" | "accessible" | "maxTransfers" | "minTransferTime"
 > {
 	protected override readonly id = "dbnav";
 	protected override readonly name = { de: "Deutschland" };
@@ -32,10 +32,10 @@ export class DbnavProfile extends Profile<
 		taxi: { name: { de: "Ruftaxi" } },
 		ferry: { name: { de: "Schiff" } }
 	};
-	protected override readonly options = [
-		"bike",
-		"accessible",
-		"maxTransfers",
-		"minTransferTime"
-	] as const satisfies string[];
+	protected override readonly options = {
+		bike: {},
+		accessible: {},
+		maxTransfers: {},
+		minTransferTime: {}
+	};
 }

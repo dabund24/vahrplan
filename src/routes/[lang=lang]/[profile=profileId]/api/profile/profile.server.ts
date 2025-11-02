@@ -53,9 +53,8 @@ export type ProfileConfig<
  */
 export abstract class Profile<
 	IdT extends ProfileId,
-	ProductT extends Product = Product,
-	OptionT extends
-		readonly (keyof typeof Profile.availableOptions)[] = readonly (keyof typeof Profile.availableOptions)[]
+	ProductT extends Product = never,
+	OptionT extends keyof typeof Profile.availableOptions = never
 > {
 	/** all options ever available. a profile uses a subset of those */
 	static readonly availableOptions = {
@@ -68,11 +67,11 @@ export abstract class Profile<
 			defaultValue: false
 		},
 		maxTransfers: {
-			name: { de: "Maximale Umstiegs-Anzahl" },
+			name: { de: "Maximalanzahl an Umstiegen" },
 			possibleValues: [0, 1, 2, 3, 4, 5, -1],
 			defaultValue: -1,
 			optionNames: {
-				0: { de: "Direkt-Verbindungen" },
+				0: { de: "nur Direkt-Verbindungen" },
 				1: Profile.translingual("1"),
 				2: Profile.translingual("2"),
 				3: Profile.translingual("3"),
@@ -105,7 +104,7 @@ export abstract class Profile<
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	protected abstract readonly name: LocaleString;
 	protected abstract readonly products: Record<ProductT, ProductConfig>;
-	protected abstract readonly options: AssertUniqueTuple<OptionT>;
+	protected abstract readonly options: Record<OptionT, Record<never, never>>;
 
 	/**
 	 * fix the languages for all features of a feature set
@@ -134,14 +133,11 @@ export abstract class Profile<
 	 * @param lang
 	 * @sealed
 	 */
-	public ofLanguage(lang: Language): ProfileConfig<IdT, ProductT, OptionT[number]> {
-		const opt = this.options.reduce<Pick<typeof Profile.availableOptions, OptionT[number]>>(
-			(acc, key: OptionT[number]) => {
-				acc[key] = Profile.availableOptions[key];
-				return acc;
-			},
-			{} as Pick<typeof Profile.availableOptions, OptionT[number]>
-		);
+	public ofLanguage(lang: Language): ProfileConfig<IdT, ProductT, OptionT> {
+		const opt = {} as Pick<typeof Profile.availableOptions, OptionT>;
+		for (const optionKey in this.options) {
+			opt[optionKey] = Profile.availableOptions[optionKey];
+		}
 
 		return {
 			name: this.name[lang],
