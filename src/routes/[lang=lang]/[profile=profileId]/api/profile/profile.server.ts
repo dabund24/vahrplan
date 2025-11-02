@@ -1,5 +1,5 @@
 import type { Product } from "$lib/types";
-import type { AssertUniqueTuple } from "$lib/utilityTypes";
+import type { AssertUniqueTuple, EmptyRecord } from "$lib/utilityTypes";
 import type { ProfileId } from "../../../../../params/profileId";
 import type { Language } from "../../../../../params/lang";
 
@@ -53,8 +53,8 @@ export type ProfileConfig<
  */
 export abstract class Profile<
 	IdT extends ProfileId,
-	ProductT extends Product = never,
-	OptionT extends keyof typeof Profile.availableOptions = never
+	ProductT extends Product,
+	OptionT extends keyof typeof Profile.availableOptions
 > {
 	/** all options ever available. a profile uses a subset of those */
 	static readonly availableOptions = {
@@ -104,7 +104,7 @@ export abstract class Profile<
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	protected abstract readonly name: LocaleString;
 	protected abstract readonly products: Record<ProductT, ProductConfig>;
-	protected abstract readonly options: Record<OptionT, Record<never, never>>;
+	protected abstract readonly options: Record<OptionT, EmptyRecord>;
 
 	/**
 	 * fix the languages for all features of a feature set

@@ -14,3 +14,5 @@ type IsTupleUnique<T extends readonly unknown[]> = T extends [infer Head, ...inf
 	: true;
 export type AssertUniqueTuple<T extends readonly unknown[]> =
 	IsTupleUnique<T> extends true ? T : never;
+
+export type EmptyRecord = Record<string | number | symbol, never>;
