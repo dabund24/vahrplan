@@ -36,9 +36,9 @@ type NameWithKnownLocale<T extends { name: LocaleString }> = Omit<T, "name"> & {
 };
 
 export type ProfileConfig<
-	IdT extends ProfileId,
-	ProductT extends Product,
-	OptionT extends keyof typeof Profile.availableOptions
+	IdT extends ProfileId = ProfileId,
+	ProductT extends Product = Product,
+	OptionT extends keyof typeof Profile.availableOptions = keyof typeof Profile.availableOptions
 > = {
 	/** very short identifier used for urls */
 	id: IdT;

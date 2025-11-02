@@ -54,7 +54,7 @@ export abstract class ApiClient<
 			urlBase = location.origin;
 		}
 		urlBase ??= "http://localhost";
-		const apiPathBase = `/${page.data.lang}/${page.data.profile}/api/` as const;
+		const apiPathBase = `/${page.data.lang}/${page.data?.profile.id ?? "dbnav"}/api/` as const;
 		const requestData: RequestData = {
 			url: new URL(`${apiPathBase}${this.route}`, urlBase),
 			apiPathBase,

@@ -4,8 +4,8 @@
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import { type VahrplanError } from "$lib/VahrplanError";
-import type { ProfileId } from "./params/profileId";
 import type { Language } from "./params/lang";
+import type { ProfileConfig } from "./routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 /**
  * can be used for modals showing trip info. suffix is id of block
@@ -21,7 +21,7 @@ declare global {
 		// interface Locals {}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageData {
-			profile: ProfileId;
+			profile: ProfileConfig;
 			lang: Language;
 			formData?: DisplayedFormData | undefined;
 			diagramData?: DiagramData;
