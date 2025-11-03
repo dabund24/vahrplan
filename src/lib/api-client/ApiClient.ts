@@ -8,7 +8,6 @@ import { untrack } from "svelte";
 import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
-import { page } from "$app/state";
 
 export type RequestData = {
 	url: URL;
@@ -48,13 +47,20 @@ export abstract class ApiClient<
 	 * @param content
 	 * @param fetchFn
 	 */
-	public request(content: ReqT, fetchFn?: RequestEventT["fetch"]): Promise<VahrplanResult<ResT>> {
+	public async request(
+		content: ReqT,
+		fetchFn?: RequestEventT["fetch"]
+	): Promise<VahrplanResult<ResT>> {
 		let urlBase: string;
+		let apiPathBase: `/${Language}/${ProfileId}/api/`;
 		if (browser) {
 			urlBase = location.origin;
+			apiPathBase = await import("$app/state").then(
+				({ page }) => `/${page.data.lang}/${page.data.profile.id}/api/` as const
+			);
 		}
 		urlBase ??= "http://localhost";
-		const apiPathBase = `/${page.data.lang}/${page.data?.profile.id ?? "dbnav"}/api/` as const;
+		apiPathBase ??= "/de/empty/api/" as const;
 		const requestData: RequestData = {
 			url: new URL(`${apiPathBase}${this.route}`, urlBase),
 			apiPathBase,
