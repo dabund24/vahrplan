@@ -6,6 +6,8 @@ import { Profile } from "./profile.server";
 export class EmptyProfile extends Profile<"empty"> {
 	protected override readonly id = "empty";
 	protected override readonly name = Profile.translingual("");
+	protected override readonly supportedLanguages = [];
+	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {};
 	protected override readonly options = {};
 }

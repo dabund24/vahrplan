@@ -20,6 +20,8 @@ export class DbnavProfile extends Profile<
 > {
 	protected override readonly id = "dbnav";
 	protected override readonly name = { de: "Deutschland" };
+	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
+	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {
 		longDistanceExpress: { name: Profile.translingual("InterCityExpress") },
 		longDistance: { name: Profile.translingual("InterCity") },

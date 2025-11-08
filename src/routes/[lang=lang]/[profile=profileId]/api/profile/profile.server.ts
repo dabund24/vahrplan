@@ -103,6 +103,8 @@ export abstract class Profile<
 	protected abstract readonly id: IdT;
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	protected abstract readonly name: LocaleString;
+	protected abstract readonly supportedLanguages: Language[];
+	protected abstract readonly fallbackLanguage: Language;
 	protected abstract readonly products: Record<ProductT, ProductConfig>;
 	protected abstract readonly options: Record<OptionT, EmptyRecord>;
 
