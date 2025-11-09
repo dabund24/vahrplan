@@ -10,6 +10,8 @@ import { GetLocationsApiClient } from "../../routes/[lang=lang]/[profile=profile
 import { PutDiagramShortApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/shorturl/putClient";
 import { PutJourneyShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/shorturl/putClient";
 import { GetProfileApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/getClient";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
 
 /**
  * this contains all api paths without the preceding `/[lang]/[profile]/api/`
@@ -63,7 +65,10 @@ const clients = {
 			unknown,
 			unknown,
 			MethodT, // ensure the mapped client handles the correct http method
-			RequestEvent<object, RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT> // ensure the mapped client handles the correct route
+			RequestEvent<
+				{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+				RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT
+			> // ensure the mapped client handles the correct route
 		>;
 	};
 };
@@ -75,7 +80,12 @@ const clients = {
  */
 function clientEntries<
 	RouteT extends ApiRouteShort,
-	ClientT extends ApiClient<unknown, unknown, HttpMethod, RequestEvent<object, LongRoute<RouteT>>>
+	ClientT extends ApiClient<
+		unknown,
+		unknown,
+		HttpMethod,
+		RequestEvent<{ lang: Language; profile: Exclude<ProfileId, "empty"> }, LongRoute<RouteT>>
+	>
 >(route: RouteT, clientClass: new () => ClientT): Record<RouteT | LongRoute<RouteT>, ClientT> {
 	const client = new clientClass();
 	return {
