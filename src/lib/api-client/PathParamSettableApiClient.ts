@@ -8,7 +8,6 @@ import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { RequestEvent } from "@sveltejs/kit";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
-import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
@@ -17,7 +16,10 @@ import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]
 export function PathParamSettable<
 	ReqT,
 	ResT,
-	RequestEventT extends RequestEvent<object, string>
+	RequestEventT extends RequestEvent<
+		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		`/[lang=lang]/[profile=profileId]/api/${string}`
+	>
 >() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <

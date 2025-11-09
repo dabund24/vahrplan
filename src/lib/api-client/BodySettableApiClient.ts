@@ -6,6 +6,8 @@ import {
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { RequestEvent } from "@sveltejs/kit";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
 
 type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
 
@@ -13,7 +15,14 @@ type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information through the request body
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function BodySettable<ReqT, ResT, RequestEventT extends RequestEvent<object, string>>() {
+export function BodySettable<
+	ReqT,
+	ResT,
+	RequestEventT extends RequestEvent<
+		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		`/[lang=lang]/[profile=profileId]/api/${string}`
+	>
+>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends BodyfulHttpMethod,

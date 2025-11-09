@@ -6,6 +6,8 @@ import {
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
 
 export type PlausibleProp = "viaCount";
 
@@ -16,7 +18,10 @@ export type PlausibleProp = "viaCount";
 export function PlausiblePropSettable<
 	ReqT,
 	ResT,
-	RequestEventT extends RequestEvent<object, string>
+	RequestEventT extends RequestEvent<
+		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		`/[lang=lang]/[profile=profileId]/api/${string}`
+	>
 >() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
