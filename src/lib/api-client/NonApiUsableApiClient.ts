@@ -42,7 +42,7 @@ export function NonApiUsable<
 			): URL;
 
 			/**
-			 * mock a request event from an url. The request event should be passable to the `parse()` method
+			 * mock a request event from an url. The request event should be passable to the `parseRequest()` method
 			 * @param url the url the request event is formatted from
 			 * @protected
 			 */
@@ -53,9 +53,9 @@ export function NonApiUsable<
 			 * @sealed
 			 * @param url the url to parse
 			 */
-			public parseNonApiUrl(url: URL): ReqT | Promise<ReqT> {
+			public parseNonApiUrl(url: URL): ReturnType<typeof this.parseRequest> {
 				const reqEvent = this.requestEventFromUrl(url);
-				return this.parse(reqEvent);
+				return this.parseRequest(reqEvent);
 			}
 		}
 		return NonApiUsable;
