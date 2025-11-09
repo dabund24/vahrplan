@@ -1,5 +1,12 @@
-import { type AbstractConstructor, ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
+import {
+	type AbstractConstructor,
+	ApiClient,
+	type HttpMethod,
+	type RequestData
+} from "$lib/api-client/ApiClient";
 import type { RequestEvent } from "@sveltejs/kit";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
 
 type NonBodyfulHttpMethod = Exclude<HttpMethod, "POST" | "PUT">;
 
@@ -15,13 +22,17 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends RequestEvent<obje
 		// BaseT extends ReturnType<typeof QueryParamSettable<ReqT, ResT>>
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
-			protected abstract readonly nonApiRoute: `/de/dbnav/${string}`;
+			protected abstract readonly nonApiRoute: `/${Language}/${ProfileId}/${string}`;
 
 			/**
 			 * format a url for non-api purposes
 			 * @param content
+			 * @param ctx
 			 */
-			public abstract formatNonApiUrl(content: ReqT): URL;
+			public abstract formatNonApiUrl(
+				content: ReqT,
+				ctx: Pick<RequestData, "profileConfig">
+			): URL;
 
 			/**
 			 * mock a request event from an url. The request event should be passable to the `parse()` method

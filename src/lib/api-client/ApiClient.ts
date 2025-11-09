@@ -8,10 +8,13 @@ import { untrack } from "svelte";
 import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
+import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import { EMPTY_PROFILE } from "$lib/constants";
 
 export type RequestData = {
 	url: URL;
 	apiPathBase: `/${Language}/${ProfileId}/api/`;
+	profileConfig: ProfileConfig;
 	requestInit: RequestInit;
 	plausibleProps: Partial<Record<PlausibleProp, string | number>>;
 };
@@ -52,17 +55,20 @@ export abstract class ApiClient<
 		fetchFn?: RequestEventT["fetch"]
 	): Promise<VahrplanResult<ResT>> {
 		let urlBase: string;
+		let profileConfig: ProfileConfig;
 		let apiPathBase: `/${Language}/${ProfileId}/api/`;
 		if (browser) {
 			urlBase = location.origin;
-			apiPathBase = await import("$app/state").then(
-				({ page }) => `/${page.data.lang}/${page.data.profile.id}/api/` as const
-			);
+			const pageData = await import("$app/state").then(({ page }) => page.data);
+			profileConfig = pageData.profile;
+			apiPathBase = `/${pageData.lang}/${pageData.profile.id}/api/` as const;
 		}
+		profileConfig ??= EMPTY_PROFILE;
 		urlBase ??= "http://localhost";
 		apiPathBase ??= "/de/empty/api/" as const;
 		const requestData: RequestData = {
 			url: new URL(`${apiPathBase}${this.route}`, urlBase),
+			profileConfig,
 			apiPathBase,
 			requestInit: {},
 			plausibleProps: {}

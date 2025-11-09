@@ -8,6 +8,7 @@ import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { RequestEvent } from "@sveltejs/kit";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
+import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
@@ -26,13 +27,13 @@ export function PathParamSettable<
 		abstract class PathParamSettable extends base {
 			/**
 			 * format the url path
-			 * @param apiPathBase api base with profile id and language
 			 * @param content
+			 * @param ctx
 			 * @protected
 			 */
 			protected abstract formatUrlPath(
-				apiPathBase: `/${Language}/${ProfileId}/api/`,
-				content: ReqT
+				content: ReqT,
+				ctx: Pick<RequestData, "apiPathBase" | "profileConfig">
 			): `/${Language}/${ProfileId}/api/${string}`;
 
 			protected override requestInternal(
@@ -40,7 +41,11 @@ export function PathParamSettable<
 				requestData: RequestData,
 				fetchFn?: typeof fetch
 			): Promise<VahrplanResult<ResT>> {
-				requestData.url.pathname = this.formatUrlPath(requestData.apiPathBase, content);
+				const ctx = {
+					apiPathBase: requestData.apiPathBase,
+					profileConfig: requestData.profileConfig
+				};
+				requestData.url.pathname = this.formatUrlPath(content, ctx);
 				return super.requestInternal(content, requestData, fetchFn);
 			}
 		}

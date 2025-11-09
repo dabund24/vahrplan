@@ -23,16 +23,21 @@ export function BodySettable<ReqT, ResT, RequestEventT extends RequestEvent<obje
 			/**
 			 * override to generate body of http request
 			 * @param content
+			 * @param ctx
 			 * @protected
 			 */
-			protected abstract formatBody(content: ReqT): string;
+			protected abstract formatBody(
+				content: ReqT,
+				ctx: Pick<RequestData, "profileConfig">
+			): string;
 
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
 				fetchFn?: typeof fetch
 			): Promise<VahrplanResult<ResT>> {
-				requestData.requestInit.body = this.formatBody(content);
+				const ctx = { profileConfig: requestData.profileConfig };
+				requestData.requestInit.body = this.formatBody(content, ctx);
 				return super.requestInternal(content, requestData, fetchFn);
 			}
 		}

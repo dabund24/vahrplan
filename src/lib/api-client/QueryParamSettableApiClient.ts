@@ -31,9 +31,13 @@ export function QueryParamSettable<
 			/**
 			 * override to generate query params
 			 * @param content
-=			 * @protected
+			 * @param ctx
+			 * @protected
 			 */
-			protected abstract formatQueryParams(content: ReqT): URLSearchParams;
+			protected abstract formatQueryParams(
+				content: ReqT,
+				ctx: Pick<RequestData, "profileConfig">
+			): URLSearchParams;
 
 			protected writeArrayQueryParameter(
 				queryParams: URLSearchParams,
@@ -67,7 +71,8 @@ export function QueryParamSettable<
 				requestData: RequestData,
 				fetchFn?: typeof fetch
 			): Promise<VahrplanResult<ResT>> {
-				const queryParams = this.formatQueryParams(content);
+				const ctx = { profileConfig: requestData.profileConfig };
+				const queryParams = this.formatQueryParams(content, ctx);
 				for (const [queryParamKey, queryParamValue] of queryParams) {
 					requestData.url.searchParams.append(queryParamKey, queryParamValue);
 				}
