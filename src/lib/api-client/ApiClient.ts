@@ -10,6 +10,7 @@ import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
 import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import { EMPTY_PROFILE } from "$lib/constants";
+import type { MaybePromise } from "$lib/utilityTypes";
 
 export type RequestData = {
 	url: URL;
@@ -24,6 +25,12 @@ export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
 
+type ParsedRequest<T> = {
+	content: MaybePromise<T>;
+	language: Language;
+	profile: Exclude<ProfileId, "empty">;
+};
+
 /**
  * An abstract utility class simplifying the process of making fetch requests in Vahrplan.
  *
@@ -33,7 +40,10 @@ export abstract class ApiClient<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends RequestEvent<object, string>
+	RequestEventT extends RequestEvent<
+		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		`/[lang=lang]/[profile=profileId]/api/${string}`
+	>
 > {
 	protected abstract readonly methodType: MethodT;
 	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang=lang]/[profile=profileId]/api/${infer RouteT}`
@@ -162,9 +172,25 @@ export abstract class ApiClient<
 	}
 
 	/**
+	 * parse request content from reqEvent
+	 *
+	 * override in client implementation
+	 * @param reqEvent
+	 * @protected
+	 */
+	protected abstract parseRequestContent(reqEvent: RequestEventT): ReqT | Promise<ReqT>;
+
+	/**
 	 * parse a request on the server
-	 * must be overridden by a client implementation
+	 * must not be overridden by a client implementation; override `parseRequestContent` instead!
+	 * @sealed
 	 * @param reqEvent
 	 */
-	abstract parse(reqEvent: RequestEventT): ReqT | Promise<ReqT>;
+	public parseRequest(reqEvent: RequestEventT): ParsedRequest<ReqT> {
+		return {
+			content: this.parseRequestContent(reqEvent),
+			language: reqEvent.params.lang,
+			profile: reqEvent.params.profile
+		};
+	}
 }

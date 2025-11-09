@@ -16,3 +16,5 @@ export type AssertUniqueTuple<T extends readonly unknown[]> =
 	IsTupleUnique<T> extends true ? T : never;
 
 export type EmptyRecord = Record<string | number | symbol, never>;
+
+export type MaybePromise<T> = T | Promise<T>;
