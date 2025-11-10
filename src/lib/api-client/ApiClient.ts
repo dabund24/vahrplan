@@ -187,9 +187,9 @@ export abstract class ApiClient<
 	 * @param reqEvent
 	 * @protected
 	 */
-	protected abstract parseRequestContent(
+	protected abstract parseRequestContent: (
 		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
-	): ReqT | Promise<ReqT>;
+	) => ReqT | Promise<ReqT>;
 
 	/**
 	 * parse a request on the server

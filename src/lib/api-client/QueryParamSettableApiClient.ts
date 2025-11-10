@@ -34,10 +34,10 @@ export function QueryParamSettable<
 			 * @param ctx
 			 * @protected
 			 */
-			protected abstract formatQueryParams(
+			protected abstract formatQueryParams: (
 				content: ReqT,
 				ctx: Pick<RequestData, "profileConfig">
-			): URLSearchParams;
+			) => URLSearchParams;
 
 			protected writeArrayQueryParameter(
 				queryParams: URLSearchParams,

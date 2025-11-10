@@ -29,10 +29,10 @@ export function NonApiUsable<
 			 * @param content
 			 * @param ctx
 			 */
-			protected abstract formatNonApiUrlSuffix(
+			protected abstract formatNonApiUrlSuffix: (
 				content: ReqT,
 				ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
-			): URL;
+			) => URL;
 
 			/**
 			 * format a url for non-api purposes
@@ -54,10 +54,10 @@ export function NonApiUsable<
 			 * @param ctx
 			 * @protected
 			 */
-			protected abstract requestEventFromUrl(
+			protected abstract requestEventFromUrl: (
 				url: URL,
 				ctx: Pick<RequestData, "profileConfig">
-			): MinimalRequestEvent<MethodT, RequestEventT>;
+			) => MinimalRequestEvent<MethodT, RequestEventT>;
 
 			/**
 			 * parse a url for non-api purposes

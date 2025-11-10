@@ -30,10 +30,10 @@ export function PathParamSettable<
 			 * @param ctx
 			 * @protected
 			 */
-			protected abstract formatUrlPath(
+			protected abstract formatUrlPath: (
 				content: ReqT,
 				ctx: Pick<RequestData, "apiPathBase" | "profileConfig">
-			): `/${Language}/${ProfileId}/api/${string}`;
+			) => `/${Language}/${ProfileId}/api/${string}`;
 
 			protected override requestInternal(
 				content: ReqT,

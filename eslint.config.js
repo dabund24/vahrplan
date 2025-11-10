@@ -82,6 +82,14 @@ export default [
 					selector: "typeLike",
 					format: ["PascalCase"]
 				}
+			],
+			"@typescript-eslint/method-signature-style": ["error", "method"],
+			"no-restricted-syntax": [
+				"error",
+				{
+					selector: "TSAbstractMethodDefinition",
+					message: "method syntax is not allowed. use an arrow function instead"
+				}
 			]
 		}
 	},

@@ -28,10 +28,10 @@ export function BodySettable<
 			 * @param ctx
 			 * @protected
 			 */
-			protected abstract formatBody(
+			protected abstract formatBody: (
 				content: ReqT,
 				ctx: Pick<RequestData, "profileConfig">
-			): string;
+			) => string;
 
 			protected override requestInternal(
 				content: ReqT,

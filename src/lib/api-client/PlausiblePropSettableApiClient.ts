@@ -29,7 +29,9 @@ export function PlausiblePropSettable<
 			 * @param content
 			 * @protected
 			 */
-			protected abstract formatProps(content: ReqT): Record<PlausibleProp, string | number>;
+			protected abstract formatProps: (
+				content: ReqT
+			) => Record<PlausibleProp, string | number>;
 
 			protected override requestInternal(
 				content: ReqT,
