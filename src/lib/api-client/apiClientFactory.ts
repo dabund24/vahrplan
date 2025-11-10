@@ -62,13 +62,13 @@ const clients = {
 } as const satisfies {
 	[MethodT in HttpMethod]?: {
 		[RouteT in ApiRouteShort | ApiRoute]?: ApiClient<
-			unknown,
-			unknown,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			any, // see https://github.com/microsoft/TypeScript/issues/32794. Inferring this would be better :(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			any,
 			MethodT, // ensure the mapped client handles the correct http method
-			RequestEvent<
-				{ lang: Language; profile: ProfileId },
-				RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT
-			> // ensure the mapped client handles the correct route
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			RequestEvent<any, RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT> // ensure the mapped client handles the correct route
 		>;
 	};
 };
@@ -78,15 +78,17 @@ const clients = {
  * @param route
  * @param clientClass
  */
-function clientEntries<
-	RouteT extends ApiRouteShort,
-	ClientT extends ApiClient<
-		unknown,
-		unknown,
-		HttpMethod,
-		RequestEvent<{ lang: Language; profile: ProfileId }, LongRoute<RouteT>>
+function clientEntries<RouteT extends ApiRouteShort, ClientT>(
+	route: RouteT,
+	clientClass: ClientT extends ApiClient<
+		infer _A,
+		infer _B,
+		infer _C,
+		RequestEvent<infer _D extends { lang: Language; profile: ProfileId }, LongRoute<RouteT>>
 	>
->(route: RouteT, clientClass: new () => ClientT): Record<RouteT | LongRoute<RouteT>, ClientT> {
+		? new () => ClientT
+		: never
+): Record<RouteT | LongRoute<RouteT>, ClientT> {
 	const client = new clientClass();
 	return {
 		[route]: client,
