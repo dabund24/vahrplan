@@ -1,14 +1,13 @@
 import {
 	type AbstractConstructor,
 	ApiClient,
-	type HttpMethod,
+	type ApiClientRequestEvent,
+	type MinimalRequestEvent,
+	type NonBodyfulHttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
-import type { RequestEvent } from "@sveltejs/kit";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
-
-type NonBodyfulHttpMethod = Exclude<HttpMethod, "POST" | "PUT">;
 
 /**
  * @mixin NonApiUsable Provides methods in {@linkcode ApiClient}s for parsing and formatting urls in non-api context
@@ -17,16 +16,12 @@ type NonBodyfulHttpMethod = Exclude<HttpMethod, "POST" | "PUT">;
 export function NonApiUsable<
 	ReqT,
 	ResT,
-	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: ProfileId },
-		`/[lang=lang]/[profile=profileId]/api/${string}`
-	>
+	MethodT extends NonBodyfulHttpMethod,
+	RequestEventT extends ApiClientRequestEvent
 >() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
-		MethodT extends NonBodyfulHttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
-		// BaseT extends ReturnType<typeof QueryParamSettable<ReqT, ResT>>
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
 			/**
@@ -62,7 +57,7 @@ export function NonApiUsable<
 			protected abstract requestEventFromUrl(
 				url: URL,
 				ctx: Pick<RequestData, "profileConfig">
-			): Pick<RequestEventT, "url" | "params">;
+			): MinimalRequestEvent<MethodT, RequestEventT>;
 
 			/**
 			 * parse a url for non-api purposes
@@ -74,7 +69,7 @@ export function NonApiUsable<
 				url: URL,
 				ctx: Pick<RequestData, "profileConfig">
 			): ReturnType<typeof this.parseRequest> {
-				const reqEvent: RequestEventT = this.requestEventFromUrl(url, ctx) as RequestEventT;
+				const reqEvent = this.requestEventFromUrl(url, ctx);
 				return this.parseRequest(reqEvent);
 			}
 		}

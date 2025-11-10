@@ -1,15 +1,11 @@
 import {
 	type AbstractConstructor,
 	ApiClient,
-	type HttpMethod,
+	type ApiClientRequestEvent,
+	type BodyfulHttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
-import type { RequestEvent } from "@sveltejs/kit";
-import type { Language } from "../../params/lang";
-import type { ProfileId } from "../../params/profileId";
-
-type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information through the request body
@@ -18,14 +14,11 @@ type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
 export function BodySettable<
 	ReqT,
 	ResT,
-	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: ProfileId },
-		`/[lang=lang]/[profile=profileId]/api/${string}`
-	>
+	MethodT extends BodyfulHttpMethod,
+	RequestEventT extends ApiClientRequestEvent
 >() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
-		MethodT extends BodyfulHttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class BodySettable extends base {

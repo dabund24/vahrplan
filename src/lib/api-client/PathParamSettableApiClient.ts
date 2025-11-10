@@ -1,11 +1,11 @@
 import {
 	type AbstractConstructor,
 	ApiClient,
+	type ApiClientRequestEvent,
 	type HttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
-import type { RequestEvent } from "@sveltejs/kit";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
 
@@ -16,14 +16,11 @@ import type { ProfileId } from "../../params/profileId";
 export function PathParamSettable<
 	ReqT,
 	ResT,
-	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: ProfileId },
-		`/[lang=lang]/[profile=profileId]/api/${string}`
-	>
+	MethodT extends HttpMethod,
+	RequestEventT extends ApiClientRequestEvent
 >() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
-		MethodT extends HttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class PathParamSettable extends base {

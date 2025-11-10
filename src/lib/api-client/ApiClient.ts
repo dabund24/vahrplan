@@ -21,6 +21,8 @@ export type RequestData = {
 };
 
 export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">;
+export type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
+export type NonBodyfulHttpMethod = Exclude<HttpMethod, BodyfulHttpMethod>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
@@ -32,6 +34,19 @@ type ParsedRequest<T> = {
 };
 
 /**
+ * this is the minimal constraint a generated RequestEvent type needs to satisfy in api client implementations
+ */
+export type ApiClientRequestEvent = RequestEvent<
+	{ lang: Language; profile: ProfileId },
+	`/[lang=lang]/[profile=profileId]/api/${string}`
+>;
+
+export type MinimalRequestEvent<
+	MethodT extends HttpMethod,
+	RequestEventT extends ApiClientRequestEvent
+> = Pick<RequestEventT, "url" | "params" | (MethodT extends BodyfulHttpMethod ? "request" : never)>;
+
+/**
  * An abstract utility class simplifying the process of making fetch requests in Vahrplan.
  *
  * Can be extended with mixins
@@ -40,10 +55,7 @@ export abstract class ApiClient<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: ProfileId },
-		`/[lang=lang]/[profile=profileId]/api/${string}`
-	>
+	RequestEventT extends ApiClientRequestEvent
 > {
 	protected abstract readonly methodType: MethodT;
 	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang=lang]/[profile=profileId]/api/${infer RouteT}`
@@ -60,10 +72,7 @@ export abstract class ApiClient<
 	 * @param content
 	 * @param fetchFn
 	 */
-	public async request(
-		content: ReqT,
-		fetchFn?: RequestEventT["fetch"]
-	): Promise<VahrplanResult<ResT>> {
+	public async request(content: ReqT, fetchFn?: typeof fetch): Promise<VahrplanResult<ResT>> {
 		let urlBase: string;
 		let profileConfig: ProfileConfig;
 		let apiPathBase: `/${Language}/${ProfileId}/api/`;
@@ -178,7 +187,9 @@ export abstract class ApiClient<
 	 * @param reqEvent
 	 * @protected
 	 */
-	protected abstract parseRequestContent(reqEvent: RequestEventT): ReqT | Promise<ReqT>;
+	protected abstract parseRequestContent(
+		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
+	): ReqT | Promise<ReqT>;
 
 	/**
 	 * parse a request on the server
@@ -186,7 +197,9 @@ export abstract class ApiClient<
 	 * @sealed
 	 * @param reqEvent
 	 */
-	public parseRequest(reqEvent: RequestEventT): ParsedRequest<ReqT> {
+	public parseRequest(
+		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
+	): ParsedRequest<ReqT> {
 		return {
 			content: this.parseRequestContent(reqEvent),
 			language: reqEvent.params.lang,
