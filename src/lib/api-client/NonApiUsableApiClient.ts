@@ -29,32 +29,52 @@ export function NonApiUsable<
 		// BaseT extends ReturnType<typeof QueryParamSettable<ReqT, ResT>>
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
-			protected abstract readonly nonApiRoute: `/${Language}/${ProfileId}/${string}`;
-
 			/**
-			 * format a url for non-api purposes
+			 * format the suffix of a url for non-api purposes. The prefix is passed in `basePath`
 			 * @param content
-			 * @param ctx
+			 * @param basePath already includes correct language and profile
 			 */
-			public abstract formatNonApiUrl(
+			protected abstract formatNonApiUrlSuffix(
 				content: ReqT,
-				ctx: Pick<RequestData, "profileConfig">
+				basePath: `/${Language}/${ProfileId}/`
 			): URL;
 
 			/**
-			 * mock a request event from an url. The request event should be passable to the `parseRequest()` method
-			 * @param url the url the request event is formatted from
-			 * @protected
+			 * format a url for non-api purposes
+			 *
+			 * must not be overridden by api client implementations. override `formatNonApiUrlSuffix` instead
+			 * @param content
+			 * @param ctx
+			 * @sealed
 			 */
-			protected abstract requestEventFromUrl(url: URL): RequestEventT;
+			public formatNonApiUrl(content: ReqT, ctx: Pick<RequestData, "profileConfig">): URL {
+				const { lang, id } = ctx.profileConfig;
+				const basePath: `/${Language}/${ProfileId}/` = `/${lang}/${id}/`;
+				return this.formatNonApiUrlSuffix(content, basePath);
+			}
 
 			/**
-			 * parse an url for non-api purposes
+			 * mock a request event from a url. The request event should be passable to the `parseRequest()` method
+			 * @param url the url the request event is formatted from
+			 * @param ctx
+			 * @protected
+			 */
+			protected abstract requestEventFromUrl(
+				url: URL,
+				ctx: Pick<RequestData, "profileConfig">
+			): RequestEventT;
+
+			/**
+			 * parse a url for non-api purposes
 			 * @sealed
 			 * @param url the url to parse
+			 * @param ctx
 			 */
-			public parseNonApiUrl(url: URL): ReturnType<typeof this.parseRequest> {
-				const reqEvent = this.requestEventFromUrl(url);
+			public parseNonApiUrl(
+				url: URL,
+				ctx: Pick<RequestData, "profileConfig">
+			): ReturnType<typeof this.parseRequest> {
+				const reqEvent = this.requestEventFromUrl(url, ctx);
 				return this.parseRequest(reqEvent);
 			}
 		}
