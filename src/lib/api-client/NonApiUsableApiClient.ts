@@ -18,7 +18,7 @@ export function NonApiUsable<
 	ReqT,
 	ResT,
 	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		{ lang: Language; profile: ProfileId },
 		`/[lang=lang]/[profile=profileId]/api/${string}`
 	>
 >() {
@@ -32,11 +32,11 @@ export function NonApiUsable<
 			/**
 			 * format the suffix of a url for non-api purposes. The prefix is passed in `basePath`
 			 * @param content
-			 * @param basePath already includes correct language and profile
+			 * @param ctx
 			 */
 			protected abstract formatNonApiUrlSuffix(
 				content: ReqT,
-				basePath: `/${Language}/${ProfileId}/`
+				ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
 			): URL;
 
 			/**
@@ -49,8 +49,8 @@ export function NonApiUsable<
 			 */
 			public formatNonApiUrl(content: ReqT, ctx: Pick<RequestData, "profileConfig">): URL {
 				const { lang, id } = ctx.profileConfig;
-				const basePath: `/${Language}/${ProfileId}/` = `/${lang}/${id}/`;
-				return this.formatNonApiUrlSuffix(content, basePath);
+				const pathBase: `/${Language}/${ProfileId}/` = `/${lang}/${id}/`;
+				return this.formatNonApiUrlSuffix(content, { ...ctx, pathBase });
 			}
 
 			/**
@@ -62,7 +62,7 @@ export function NonApiUsable<
 			protected abstract requestEventFromUrl(
 				url: URL,
 				ctx: Pick<RequestData, "profileConfig">
-			): RequestEventT;
+			): Pick<RequestEventT, "url" | "params">;
 
 			/**
 			 * parse a url for non-api purposes
@@ -74,7 +74,7 @@ export function NonApiUsable<
 				url: URL,
 				ctx: Pick<RequestData, "profileConfig">
 			): ReturnType<typeof this.parseRequest> {
-				const reqEvent = this.requestEventFromUrl(url, ctx);
+				const reqEvent: RequestEventT = this.requestEventFromUrl(url, ctx) as RequestEventT;
 				return this.parseRequest(reqEvent);
 			}
 		}

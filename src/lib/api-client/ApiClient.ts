@@ -28,7 +28,7 @@ export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T
 type ParsedRequest<T> = {
 	content: MaybePromise<T>;
 	language: Language;
-	profile: Exclude<ProfileId, "empty">;
+	profile: ProfileId;
 };
 
 /**
@@ -41,7 +41,7 @@ export abstract class ApiClient<
 	ResT,
 	MethodT extends HttpMethod,
 	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		{ lang: Language; profile: ProfileId },
 		`/[lang=lang]/[profile=profileId]/api/${string}`
 	>
 > {

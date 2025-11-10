@@ -66,7 +66,7 @@ const clients = {
 			unknown,
 			MethodT, // ensure the mapped client handles the correct http method
 			RequestEvent<
-				{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+				{ lang: Language; profile: ProfileId },
 				RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT
 			> // ensure the mapped client handles the correct route
 		>;
@@ -84,7 +84,7 @@ function clientEntries<
 		unknown,
 		unknown,
 		HttpMethod,
-		RequestEvent<{ lang: Language; profile: Exclude<ProfileId, "empty"> }, LongRoute<RouteT>>
+		RequestEvent<{ lang: Language; profile: ProfileId }, LongRoute<RouteT>>
 	>
 >(route: RouteT, clientClass: new () => ClientT): Record<RouteT | LongRoute<RouteT>, ClientT> {
 	const client = new clientClass();

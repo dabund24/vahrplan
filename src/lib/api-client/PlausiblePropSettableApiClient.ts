@@ -19,7 +19,7 @@ export function PlausiblePropSettable<
 	ReqT,
 	ResT,
 	RequestEventT extends RequestEvent<
-		{ lang: Language; profile: Exclude<ProfileId, "empty"> },
+		{ lang: Language; profile: ProfileId },
 		`/[lang=lang]/[profile=profileId]/api/${string}`
 	>
 >() {
