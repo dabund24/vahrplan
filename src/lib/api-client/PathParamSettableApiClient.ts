@@ -13,14 +13,10 @@ import type { ProfileId } from "../../params/profileId";
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function PathParamSettable<
-	ReqT,
-	ResT,
-	MethodT extends HttpMethod,
-	RequestEventT extends ApiClientRequestEvent
->() {
+export function PathParamSettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
+		MethodT extends HttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class PathParamSettable extends base {

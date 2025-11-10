@@ -100,12 +100,12 @@ export abstract class ApiClient<
 	 * @sealed
 	 * @param content response payload
 	 */
-	public formatResponse(content: VahrplanResult<ResT>): Response {
+	public formatResponse = (content: VahrplanResult<ResT>): Response => {
 		content.throwIfError();
 		const response = json(content, { status: 200 });
 		response.headers.set("Cache-Control", `max-age=${this.cacheMaxAge}`);
 		return response;
-	}
+	};
 
 	/**
 	 * ***must not be used or overridden by a client implementation!!!***
@@ -176,9 +176,7 @@ export abstract class ApiClient<
 	 * @param _reqContent
 	 * @protected
 	 */
-	protected estimateUpstreamCalls(_reqContent: ReqT): number {
-		return 1;
-	}
+	protected estimateUpstreamCalls = (_reqContent: ReqT): number => 1;
 
 	/**
 	 * parse request content from reqEvent
@@ -197,13 +195,11 @@ export abstract class ApiClient<
 	 * @sealed
 	 * @param reqEvent
 	 */
-	public parseRequest(
+	public parseRequest = (
 		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
-	): ParsedRequest<ReqT> {
-		return {
-			content: this.parseRequestContent(reqEvent),
-			language: reqEvent.params.lang,
-			profile: reqEvent.params.profile
-		};
-	}
+	): ParsedRequest<ReqT> => ({
+		content: this.parseRequestContent(reqEvent),
+		language: reqEvent.params.lang,
+		profile: reqEvent.params.profile
+	});
 }

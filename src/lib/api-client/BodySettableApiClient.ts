@@ -11,14 +11,10 @@ import type { VahrplanResult } from "$lib/VahrplanResult";
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information through the request body
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function BodySettable<
-	ReqT,
-	ResT,
-	MethodT extends BodyfulHttpMethod,
-	RequestEventT extends ApiClientRequestEvent
->() {
+export function BodySettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
+		MethodT extends BodyfulHttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class BodySettable extends base {

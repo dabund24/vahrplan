@@ -13,14 +13,10 @@ export type PlausibleProp = "viaCount";
  * @mixin PlausiblePropSettable Lets {@linkcode ApiClient}s report custom properties to plausible
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function PlausiblePropSettable<
-	ReqT,
-	ResT,
-	MethodT extends HttpMethod,
-	RequestEventT extends ApiClientRequestEvent
->() {
+export function PlausiblePropSettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
+		MethodT extends HttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class PlausiblePropSettable extends base {

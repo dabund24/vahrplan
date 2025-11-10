@@ -13,14 +13,10 @@ import type { ProfileId } from "../../params/profileId";
  * @mixin NonApiUsable Provides methods in {@linkcode ApiClient}s for parsing and formatting urls in non-api context
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function NonApiUsable<
-	ReqT,
-	ResT,
-	MethodT extends NonBodyfulHttpMethod,
-	RequestEventT extends ApiClientRequestEvent
->() {
+export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
+		MethodT extends NonBodyfulHttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
