@@ -18,7 +18,7 @@ export class PutJourneyShortUrlApiClient extends BodySettable<ReqType, string, R
 		return JSON.stringify(content);
 	}
 
-	override async parse(reqEvent: RequestEvent): Promise<ReqType> {
+	protected override async parseRequestContent(reqEvent: RequestEvent): Promise<ReqType> {
 		return (await reqEvent.request.json()) as ReqType;
 	}
 }

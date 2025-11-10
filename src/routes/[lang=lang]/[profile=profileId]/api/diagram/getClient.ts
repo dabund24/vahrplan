@@ -6,7 +6,7 @@ import type { CamelToKebab } from "$lib/utilityTypes";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
-import { ApiClient } from "$lib/api-client/ApiClient";
+import { ApiClient, type RequestData } from "$lib/api-client/ApiClient";
 import {
 	DIAGRAM_COLUMN_MAX_REQUESTS,
 	DIAGRAM_MAX_COLUMNS,
@@ -64,7 +64,10 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 	};
 	protected override nonApiRoute = "/de/dbnav/diagram" as const;
 
-	public override formatQueryParams(content: ReqType): URLSearchParams {
+	protected override formatQueryParams(
+		content: ReqType,
+		ctx: Pick<RequestData, "profileConfig">
+	): URLSearchParams {
 		const queryParams = new URLSearchParams();
 		this.writeArrayQueryParameter(queryParams, this.queryParamNames.stops, content.stops);
 		queryParams.set(this.queryParamNames.time, content.timeData.time);
@@ -101,7 +104,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		return queryParams;
 	}
 
-	parse(reqEvent: RequestEvent): ReqType {
+	protected override parseRequestContent(reqEvent: RequestEvent): ReqType {
 		const url = reqEvent.url;
 		const stops = this.readArrayQueryParameter(url.searchParams, this.queryParamNames.stops);
 		const timeParam = url.searchParams.get(this.queryParamNames.time);
@@ -161,9 +164,12 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		};
 	}
 
-	public override formatNonApiUrl(content: ReqType): URL {
+	public override formatNonApiUrl(
+		content: ReqType,
+		ctx: Pick<RequestData, "profileConfig">
+	): URL {
+		const queryParams = this.formatQueryParams(content, ctx);
 		const url = new URL(this.nonApiRoute, browser ? location.origin : "http://localhost");
-		const queryParams = this.formatQueryParams(content);
 		for (const [queryParamKey, queryParamValue] of queryParams) {
 			url.searchParams.append(queryParamKey, queryParamValue);
 		}

@@ -1,6 +1,6 @@
 import type { RequestEvent } from "./$types";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
-import { ApiClient } from "$lib/api-client/ApiClient";
+import { ApiClient, type RequestData } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import { browser } from "$app/environment";
@@ -19,17 +19,18 @@ export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], 
 	protected override readonly nonApiRoute = "/de/dbnav/journey/shorturl/[shortJourneyId]";
 
 	protected override formatUrlPath(
-		apiPathBase: `/${Language}/${ProfileId}/api/`,
-		content: string
+		content: string,
+		ctx: Pick<RequestData, "apiPathBase">
 	): `/${Language}/${ProfileId}/api/${string}` {
+		const { apiPathBase } = ctx;
 		return `${apiPathBase}journey/shorturl/${content}`;
 	}
 
-	override parse(reqEvent: RequestEvent): string {
+	protected override parseRequestContent(reqEvent: RequestEvent): string {
 		return reqEvent.params.shortJourneyId;
 	}
 
-	override formatNonApiUrl(content: string): URL {
+	public override formatNonApiUrl(content: string): URL {
 		const pathname = this.nonApiRoute.replace("[shortJourneyId]", content);
 		return new URL(pathname, browser ? location.origin : "http://localhost");
 	}

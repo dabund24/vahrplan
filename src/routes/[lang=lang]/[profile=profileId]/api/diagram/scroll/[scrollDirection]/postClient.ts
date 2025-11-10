@@ -1,5 +1,5 @@
-import { ApiClient } from "$lib/api-client/ApiClient";
-import type { JourneysFilters, RelativeTimeType, TreeNode } from "$lib/types";
+import { ApiClient, type RequestData } from "$lib/api-client/ApiClient";
+import type { JourneysFilters, Product, RelativeTimeType, TreeNode } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
@@ -12,12 +12,13 @@ import {
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 import type { Language } from "../../../../../../../params/lang";
 import type { ProfileId } from "../../../../../../../params/profileId";
+import type { Profile } from "../../../profile/profile.server";
 
 type ReqType = {
 	scrollDirection: RelativeTimeType;
 	stops: string[];
 	tokens: string[];
-	options: JourneysFilters;
+	options: JourneysFilters<Product, keyof typeof Profile.availableOptions>;
 	tree: TreeNode[];
 	transferLocations: LocationEquivalenceSystem;
 	recommendedVias: RecommendedVia[][];
@@ -40,9 +41,10 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 	}
 
 	protected override formatUrlPath(
-		apiPathBase: `/${Language}/${ProfileId}/api/`,
-		content: ReqType
+		content: ReqType,
+		ctx: Pick<RequestData, "apiPathBase" | "profileConfig">
 	): `/${Language}/${ProfileId}/api/${string}` {
+		const { apiPathBase } = ctx;
 		return `${apiPathBase}diagram/scroll/${content.scrollDirection}`;
 	}
 
@@ -58,7 +60,7 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 		return JSON.stringify(bodyContent);
 	}
 
-	override async parse(reqEvent: RequestEvent): Promise<ReqType> {
+	protected override async parseRequestContent(reqEvent: RequestEvent): Promise<ReqType> {
 		return {
 			scrollDirection: reqEvent.params.scrollDirection as RelativeTimeType,
 			...((await reqEvent.request.json()) as Omit<ReqType, "scrollDirection">)

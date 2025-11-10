@@ -39,7 +39,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 		return queryParams;
 	}
 
-	override parse(reqEvent: RequestEvent): string[] {
+	protected override parseRequestContent(reqEvent: RequestEvent): string[] {
 		return this.readArrayQueryParameter(reqEvent.url.searchParams, this.queryParamNames.tokens);
 	}
 
@@ -47,7 +47,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 		return reqContent.length - 1;
 	}
 
-	override formatNonApiUrl(content: string[]): URL {
+	public override formatNonApiUrl(content: string[]): URL {
 		const url = new URL(this.nonApiRoute, browser ? location.origin : "http://localhost");
 		const queryParams = this.formatQueryParams(content);
 		for (const [queryParamKey, queryParamValue] of queryParams) {
@@ -56,7 +56,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 		return url;
 	}
 
-	protected requestEventFromUrl(url: URL): RequestEvent {
+	protected override requestEventFromUrl(url: URL): RequestEvent {
 		return { url } as RequestEvent;
 	}
 
