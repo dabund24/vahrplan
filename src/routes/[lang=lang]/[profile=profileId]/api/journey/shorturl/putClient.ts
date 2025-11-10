@@ -1,7 +1,7 @@
 import type { KeylessDatabaseEntry } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
-import { ApiClient } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 
 type ReqType = KeylessDatabaseEntry<string[]>;
@@ -14,11 +14,9 @@ export class PutJourneyShortUrlApiClient extends BodySettable<ReqType, string, R
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 
-	protected override formatBody(content: ReqType): string {
-		return JSON.stringify(content);
-	}
+	protected override formatBody = (content: ReqType): string => JSON.stringify(content);
 
-	protected override async parseRequestContent(reqEvent: RequestEvent): Promise<ReqType> {
-		return (await reqEvent.request.json()) as ReqType;
-	}
+	protected override parseRequestContent = (
+		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>
+	): Promise<ReqType> => reqEvent.request.json() as Promise<ReqType>;
 }

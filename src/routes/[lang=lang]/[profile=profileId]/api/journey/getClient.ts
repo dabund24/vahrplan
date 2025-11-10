@@ -2,7 +2,7 @@ import type { SubJourney } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { QueryParamSettable } from "$lib/api-client/QueryParamSettableApiClient";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
-import { ApiClient } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
 import { browser } from "$app/environment";
 import type { LocationEquivalenceSystem } from "../diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
@@ -10,6 +10,8 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
+import type { Language } from "../../../../../params/lang";
+import type { ProfileId } from "../../../../../params/profileId";
 
 type ResType = {
 	subJourneys: SubJourney[];
@@ -31,38 +33,46 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 	protected override readonly queryParamNames = {
 		tokens: "tokens"
 	} as const;
-	protected override readonly nonApiRoute = "/de/dbnav/journey";
 
-	protected override formatQueryParams(content: string[]): URLSearchParams {
+	protected override formatQueryParams = (content: string[]): URLSearchParams => {
 		const queryParams = new URLSearchParams();
 		this.writeArrayQueryParameter(queryParams, this.queryParamNames.tokens, content);
 		return queryParams;
-	}
+	};
 
-	protected override parseRequestContent(reqEvent: RequestEvent): string[] {
-		return this.readArrayQueryParameter(reqEvent.url.searchParams, this.queryParamNames.tokens);
-	}
+	protected override parseRequestContent = (
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+	): string[] =>
+		this.readArrayQueryParameter(reqEvent.url.searchParams, this.queryParamNames.tokens);
 
-	protected override estimateUpstreamCalls(reqContent: string[]): number {
-		return reqContent.length - 1;
-	}
+	protected override estimateUpstreamCalls = (reqContent: string[]): number =>
+		reqContent.length - 1;
 
-	public override formatNonApiUrl(content: string[]): URL {
-		const url = new URL(this.nonApiRoute, browser ? location.origin : "http://localhost");
+	public override formatNonApiUrlSuffix = (
+		content: string[],
+		ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
+	): URL => {
+		const { pathBase } = ctx;
+		const path = `${pathBase}journey`;
+		const url = new URL(path, browser ? location.origin : "http://localhost");
 		const queryParams = this.formatQueryParams(content);
 		for (const [queryParamKey, queryParamValue] of queryParams) {
 			url.searchParams.append(queryParamKey, queryParamValue);
 		}
 		return url;
-	}
+	};
 
-	protected override requestEventFromUrl(url: URL): RequestEvent {
-		return { url } as RequestEvent;
-	}
+	protected override requestEventFromUrl = (
+		url: URL,
+		ctx: Pick<RequestData, "profileConfig">
+	): MinimalRequestEvent<"GET", RequestEvent> => ({
+		url,
+		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id }
+	});
 
-	protected override formatProps(content: string[]): Record<PlausibleProp, string | number> {
-		return {
-			viaCount: content.length - 1
-		};
-	}
+	protected override formatProps = (
+		content: string[]
+	): Record<PlausibleProp, string | number> => ({
+		viaCount: content.length - 1
+	});
 }

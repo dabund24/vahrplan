@@ -6,7 +6,7 @@ import type { CamelToKebab } from "$lib/utilityTypes";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
-import { ApiClient, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
 import {
 	DIAGRAM_COLUMN_MAX_REQUESTS,
 	DIAGRAM_MAX_COLUMNS,
@@ -19,6 +19,8 @@ import {
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 import { Profile } from "../profile/profile.server";
+import type { Language } from "../../../../../params/lang";
+import type { ProfileId } from "../../../../../params/profileId";
 
 type ReqType = {
 	stops: string[];
@@ -62,12 +64,11 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 	} as const satisfies Record<string, string> & {
 		[K in keyof ReqType["options"]["products"]]: CamelToKebab<K>;
 	};
-	protected override nonApiRoute = "/de/dbnav/diagram" as const;
 
-	protected override formatQueryParams(
+	protected override formatQueryParams = (
 		content: ReqType,
 		ctx: Pick<RequestData, "profileConfig">
-	): URLSearchParams {
+	): URLSearchParams => {
 		const queryParams = new URLSearchParams();
 		this.writeArrayQueryParameter(queryParams, this.queryParamNames.stops, content.stops);
 		queryParams.set(this.queryParamNames.time, content.timeData.time);
@@ -102,9 +103,11 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 			String(content.options.minTransferTime)
 		);
 		return queryParams;
-	}
+	};
 
-	protected override parseRequestContent(reqEvent: RequestEvent): ReqType {
+	protected override parseRequestContent = (
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+	): ReqType => {
 		const url = reqEvent.url;
 		const stops = this.readArrayQueryParameter(url.searchParams, this.queryParamNames.stops);
 		const timeParam = url.searchParams.get(this.queryParamNames.time);
@@ -152,39 +155,42 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 				minTransferTime: Number(url.searchParams.get(this.queryParamNames.minTransferTime))
 			}
 		};
-	}
+	};
 
-	protected override estimateUpstreamCalls(reqContent: ReqType): number {
-		return 1 + (reqContent.stops.length - 2) * DIAGRAM_COLUMN_MAX_REQUESTS; // first column is always one request
-	}
+	protected override estimateUpstreamCalls = (reqContent: ReqType): number =>
+		1 + (reqContent.stops.length - 2) * DIAGRAM_COLUMN_MAX_REQUESTS; // first column is always one request
 
-	protected override formatProps(content: ReqType): Record<PlausibleProp, string | number> {
-		return {
-			viaCount: content.stops.length - 2
-		};
-	}
+	protected override formatProps = (
+		content: ReqType
+	): Record<PlausibleProp, string | number> => ({
+		viaCount: content.stops.length - 2
+	});
 
-	public override formatNonApiUrl(
+	protected override formatNonApiUrlSuffix = (
 		content: ReqType,
-		ctx: Pick<RequestData, "profileConfig">
-	): URL {
+		ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
+	): URL => {
 		const queryParams = this.formatQueryParams(content, ctx);
-		const url = new URL(this.nonApiRoute, browser ? location.origin : "http://localhost");
+		const { pathBase } = ctx;
+		const path = `${pathBase}diagram`;
+		const url = new URL(path, browser ? location.origin : "http://localhost");
 		for (const [queryParamKey, queryParamValue] of queryParams) {
 			url.searchParams.append(queryParamKey, queryParamValue);
 		}
 		return url;
-	}
+	};
 
-	protected override requestEventFromUrl(url: URL): RequestEvent {
-		return { url } as RequestEvent;
-	}
+	protected override requestEventFromUrl = (
+		url: URL,
+		ctx: Pick<RequestData, "profileConfig">
+	): MinimalRequestEvent<"GET", RequestEvent> => ({
+		url,
+		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id }
+	});
 
-	public formDataToRequestData(formData: DisplayedFormData): ReqType {
-		return {
-			stops: formData.locations.map((l) => l.value.id),
-			timeData: formData.timeData,
-			options: formData.options
-		};
-	}
+	public formDataToRequestData = (formData: DisplayedFormData): ReqType => ({
+		stops: formData.locations.map((l) => l.value.id),
+		timeData: formData.timeData,
+		options: formData.options
+	});
 }

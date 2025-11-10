@@ -2,10 +2,12 @@ import { type GetDiagramApiClient } from "../getClient";
 import type { KeylessDatabaseEntry } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
-import { ApiClient, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 
-type ReqType = KeylessDatabaseEntry<Parameters<GetDiagramApiClient["request"]>[0]>;
+type ReqType = KeylessDatabaseEntry<
+	GetDiagramApiClient extends ApiClient<infer ReqT, infer _A, infer _B, infer _C> ? ReqT : never
+>;
 
 export class PutDiagramShortApiClient extends BodySettable<ReqType, string, RequestEvent>()(
 	ApiClient<ReqType, string, "PUT", RequestEvent>
@@ -15,14 +17,12 @@ export class PutDiagramShortApiClient extends BodySettable<ReqType, string, Requ
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 
-	protected override formatBody(
+	protected override formatBody = (
 		content: ReqType,
-		_ctx: Pick<RequestData, "apiPathBase" | "profileConfig">
-	): string {
-		return JSON.stringify(content);
-	}
+		_ctx: Pick<RequestData, "profileConfig">
+	): string => JSON.stringify(content);
 
-	protected override async parseRequestContent(reqEvent: RequestEvent): Promise<ReqType> {
-		return (await reqEvent.request.json()) as ReqType;
-	}
+	protected override parseRequestContent = (
+		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>
+	): Promise<ReqType> => reqEvent.request.json() as Promise<ReqType>;
 }

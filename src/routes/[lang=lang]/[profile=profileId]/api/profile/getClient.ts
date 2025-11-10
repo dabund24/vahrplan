@@ -1,4 +1,4 @@
-import { ApiClient } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import type { profileConfig } from "./profileConfigFactory.server";
 import { DAY_IN_SECONDS } from "$lib/constants";
 import type { ProfileId } from "../../../../../params/profileId";
@@ -20,18 +20,15 @@ export class GetProfileApiClient extends PathParamSettable<ReqType, ResType, Req
 	protected override readonly isLoadingAnimated = false;
 	protected override readonly cacheMaxAge = DAY_IN_SECONDS;
 
-	public override parse(reqEvent: RequestEvent): ReqType {
-		return {
-			language: reqEvent.params.lang,
-			profile: reqEvent.params.profile
-		};
-	}
+	public override parseRequestContent = (
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+	): ReqType => ({
+		language: reqEvent.params.lang,
+		profile: reqEvent.params.profile
+	});
 
-	protected override formatUrlPath(
-		_apiPathBase: `/${Language}/${ProfileId}/api/`,
-		content: ReqType
-	): `/${Language}/${ProfileId}/api/${string}` {
-		const { language, profile } = content;
-		return `/${language}/${profile}/api/profile`;
-	}
+	protected override formatUrlPath = ({
+		language,
+		profile
+	}: ReqType): `/${Language}/${ProfileId}/api/${string}` => `/${language}/${profile}/api/profile`;
 }
