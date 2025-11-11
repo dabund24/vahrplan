@@ -3,11 +3,9 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type MinimalRequestEvent,
-	type NonBodyfulHttpMethod,
-	type RequestData
+	type NonBodyfulHttpMethod
 } from "$lib/api-client/ApiClient";
-import type { Language } from "../../params/lang";
-import type { ProfileId } from "../../params/profileId";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin NonApiUsable Provides methods in {@linkcode ApiClient}s for parsing and formatting urls in non-api context
@@ -27,7 +25,7 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			protected abstract formatNonApiUrlSuffix: (
 				content: ReqT,
-				ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
+				ctx: Pick<Ctx, "profileConfig" | "pathBase">
 			) => URL;
 
 			/**
@@ -38,11 +36,11 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 * @param ctx
 			 * @sealed
 			 */
-			public formatNonApiUrl(content: ReqT, ctx: Pick<RequestData, "profileConfig">): URL {
+			public formatNonApiUrl = (content: ReqT, ctx: Pick<Ctx, "profileConfig">): URL => {
 				const { lang, id } = ctx.profileConfig;
-				const pathBase: `/${Language}/${ProfileId}/` = `/${lang}/${id}/`;
+				const pathBase: Ctx["pathBase"] = `/${lang}/${id}/`;
 				return this.formatNonApiUrlSuffix(content, { ...ctx, pathBase });
-			}
+			};
 
 			/**
 			 * mock a request event from a url. The request event should be passable to the `parseRequest()` method
@@ -52,7 +50,7 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			protected abstract requestEventFromUrl: (
 				url: URL,
-				ctx: Pick<RequestData, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">
 			) => MinimalRequestEvent<MethodT, RequestEventT>;
 
 			/**
@@ -61,13 +59,13 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 * @param url the url to parse
 			 * @param ctx
 			 */
-			public parseNonApiUrl(
+			public parseNonApiUrl = (
 				url: URL,
-				ctx: Pick<RequestData, "profileConfig">
-			): ReturnType<typeof this.parseRequest> {
+				ctx: Pick<Ctx, "profileConfig">
+			): ReturnType<typeof this.parseRequest> => {
 				const reqEvent = this.requestEventFromUrl(url, ctx);
 				return this.parseRequest(reqEvent);
-			}
+			};
 		}
 		return NonApiUsable;
 	};

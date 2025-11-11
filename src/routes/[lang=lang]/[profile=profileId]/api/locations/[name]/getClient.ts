@@ -1,10 +1,8 @@
-import type { ParsedLocation } from "$lib/types";
+import type { Ctx, ParsedLocation } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
-import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
-import type { Language } from "../../../../../../params/lang";
-import type { ProfileId } from "../../../../../../params/profileId";
 
 export class GetLocationsApiClient extends PathParamSettable<
 	string,
@@ -18,9 +16,8 @@ export class GetLocationsApiClient extends PathParamSettable<
 
 	protected override formatUrlPath = (
 		content: string,
-		{ apiPathBase }: Pick<RequestData, "apiPathBase">
-	): `/${Language}/${ProfileId}/api/${string}` =>
-		`${apiPathBase}locations/${encodeURIComponent(content)}`;
+		{ apiPathBase }: Pick<Ctx, "apiPathBase">
+	): `${Ctx["apiPathBase"]}${string}` => `${apiPathBase}locations/${encodeURIComponent(content)}`;
 
 	protected override parseRequestContent = (
 		reqEvent: MinimalRequestEvent<"GET", RequestEvent>

@@ -1,8 +1,8 @@
-import type { SubJourney } from "$lib/types";
+import type { Ctx, SubJourney } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { QueryParamSettable } from "$lib/api-client/QueryParamSettableApiClient";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
-import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import { browser } from "$app/environment";
 import type { LocationEquivalenceSystem } from "../diagram/locationRepresentativesUtils";
 import type { SvgData } from "$lib/server/svgData/svgData.server";
@@ -10,8 +10,6 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
-import type { Language } from "../../../../../params/lang";
-import type { ProfileId } from "../../../../../params/profileId";
 
 type ResType = {
 	subJourneys: SubJourney[];
@@ -50,7 +48,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 
 	public override formatNonApiUrlSuffix = (
 		content: string[],
-		ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
+		ctx: Pick<Ctx, "profileConfig" | "pathBase">
 	): URL => {
 		const { pathBase } = ctx;
 		const path = `${pathBase}journey`;
@@ -64,7 +62,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 
 	protected override requestEventFromUrl = (
 		url: URL,
-		ctx: Pick<RequestData, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">
 	): MinimalRequestEvent<"GET", RequestEvent> => ({
 		url,
 		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id }

@@ -1,8 +1,8 @@
 import { type GetDiagramApiClient } from "../getClient";
-import type { KeylessDatabaseEntry } from "$lib/types";
+import type { Ctx, KeylessDatabaseEntry } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
-import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 
 type ReqType = KeylessDatabaseEntry<
@@ -17,10 +17,8 @@ export class PutDiagramShortApiClient extends BodySettable<ReqType, string, Requ
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = YEAR_IN_SECONDS;
 
-	protected override formatBody = (
-		content: ReqType,
-		_ctx: Pick<RequestData, "profileConfig">
-	): string => JSON.stringify(content);
+	protected override formatBody = (content: ReqType, _ctx: Pick<Ctx, "profileConfig">): string =>
+		JSON.stringify(content);
 
 	protected override parseRequestContent = (
 		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>

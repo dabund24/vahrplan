@@ -6,6 +6,7 @@ import {
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin QueryParamSettable Lets {@linkcode ApiClient}s pass information through query parameters
@@ -32,7 +33,7 @@ export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRe
 			 */
 			protected abstract formatQueryParams: (
 				content: ReqT,
-				ctx: Pick<RequestData, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">
 			) => URLSearchParams;
 
 			protected writeArrayQueryParameter(

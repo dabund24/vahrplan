@@ -1,12 +1,11 @@
 import type { GetDiagramApiClient } from "../../getClient";
 import type { RequestEvent } from "./$types";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
-import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import { browser } from "$app/environment";
-import type { Language } from "../../../../../../../params/lang";
-import type { ProfileId } from "../../../../../../../params/profileId";
+import type { Ctx } from "$lib/types";
 
 type ResType =
 	GetDiagramApiClient extends ApiClient<infer _A, infer ResT, infer _B, infer _C> ? ResT : never;
@@ -21,8 +20,8 @@ export class GetDiagramShortUrlApiClient extends PathParamSettable<string, ResTy
 
 	protected override formatUrlPath = (
 		content: string,
-		{ apiPathBase }: Pick<RequestData, "apiPathBase" | "profileConfig">
-	): `/${Language}/${ProfileId}/api/${string}` => `${apiPathBase}diagram/shorturl/${content}`;
+		{ apiPathBase }: Pick<Ctx, "apiPathBase" | "profileConfig">
+	): `${Ctx["apiPathBase"]}${string}` => `${apiPathBase}diagram/shorturl/${content}`;
 
 	protected override parseRequestContent = (
 		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
@@ -30,7 +29,7 @@ export class GetDiagramShortUrlApiClient extends PathParamSettable<string, ResTy
 
 	protected override formatNonApiUrlSuffix = (
 		content: string,
-		ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
+		ctx: Pick<Ctx, "profileConfig" | "pathBase">
 	): URL => {
 		const { pathBase } = ctx;
 		const pathname = `${pathBase}diagram/shorturl/${content}`;
@@ -39,7 +38,7 @@ export class GetDiagramShortUrlApiClient extends PathParamSettable<string, ResTy
 
 	protected override requestEventFromUrl = (
 		url: URL,
-		{ profileConfig }: Pick<RequestData, "profileConfig">
+		{ profileConfig }: Pick<Ctx, "profileConfig">
 	): MinimalRequestEvent<"GET", RequestEvent> => ({
 		url,
 		params: {

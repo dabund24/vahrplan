@@ -1,5 +1,10 @@
 import type { LineShape } from "$lib/server/journey-data/lineShapes";
-import type { Profile } from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type {
+	Profile,
+	ProfileConfig
+} from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { Language } from "../params/lang";
+import type { ProfileId } from "../params/profileId";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -272,3 +277,9 @@ export type DatabaseEntry<T> = {
 export type KeylessDatabaseEntry<T> = Omit<DatabaseEntry<T>, "key">;
 
 export type DatabaseEntryType = "journey" | "journeys";
+
+export type Ctx = {
+	profileConfig: ProfileConfig;
+	pathBase: `/${Language}/${ProfileId}/`;
+	apiPathBase: `${Ctx["pathBase"]}api/`;
+};

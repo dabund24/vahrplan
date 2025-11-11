@@ -1,5 +1,5 @@
-import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
-import type { JourneysFilters, Product, RelativeTimeType, TreeNode } from "$lib/types";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
+import type { Ctx, JourneysFilters, Product, RelativeTimeType, TreeNode } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
@@ -10,8 +10,6 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
-import type { Language } from "../../../../../../../params/lang";
-import type { ProfileId } from "../../../../../../../params/profileId";
 import type { Profile } from "../../../profile/profile.server";
 
 type ReqType = {
@@ -40,8 +38,8 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 
 	protected override formatUrlPath = (
 		content: ReqType,
-		{ apiPathBase }: Pick<RequestData, "apiPathBase" | "profileConfig">
-	): `/${Language}/${ProfileId}/api/${string}` =>
+		{ apiPathBase }: Pick<Ctx, "apiPathBase" | "profileConfig">
+	): `${Ctx["apiPathBase"]}${string}` =>
 		`${apiPathBase}diagram/scroll/${content.scrollDirection}`;
 
 	protected override formatBody = (content: ReqType): string => {

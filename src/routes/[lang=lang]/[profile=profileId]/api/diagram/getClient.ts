@@ -1,4 +1,4 @@
-import type { JourneysFilters, Product, RelativeTimeType, TimeData } from "$lib/types";
+import type { Ctx, JourneysFilters, Product, RelativeTimeType, TimeData } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { error } from "@sveltejs/kit";
 import { QueryParamSettable } from "$lib/api-client/QueryParamSettableApiClient";
@@ -6,7 +6,7 @@ import type { CamelToKebab } from "$lib/utilityTypes";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
-import { ApiClient, type MinimalRequestEvent, type RequestData } from "$lib/api-client/ApiClient";
+import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import {
 	DIAGRAM_COLUMN_MAX_REQUESTS,
 	DIAGRAM_MAX_COLUMNS,
@@ -19,8 +19,6 @@ import {
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 import { Profile } from "../profile/profile.server";
-import type { Language } from "../../../../../params/lang";
-import type { ProfileId } from "../../../../../params/profileId";
 
 type ReqType = {
 	stops: string[];
@@ -67,7 +65,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 
 	protected override formatQueryParams = (
 		content: ReqType,
-		ctx: Pick<RequestData, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">
 	): URLSearchParams => {
 		const queryParams = new URLSearchParams();
 		this.writeArrayQueryParameter(queryParams, this.queryParamNames.stops, content.stops);
@@ -168,7 +166,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 
 	protected override formatNonApiUrlSuffix = (
 		content: ReqType,
-		ctx: Pick<RequestData, "profileConfig"> & { pathBase: `/${Language}/${ProfileId}/` }
+		ctx: Pick<Ctx, "profileConfig" | "pathBase">
 	): URL => {
 		const queryParams = this.formatQueryParams(content, ctx);
 		const { pathBase } = ctx;
@@ -182,7 +180,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 
 	protected override requestEventFromUrl = (
 		url: URL,
-		ctx: Pick<RequestData, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">
 	): MinimalRequestEvent<"GET", RequestEvent> => ({
 		url,
 		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id }

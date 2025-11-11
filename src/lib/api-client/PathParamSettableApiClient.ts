@@ -6,8 +6,7 @@ import {
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
-import type { Language } from "../../params/lang";
-import type { ProfileId } from "../../params/profileId";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
@@ -28,8 +27,8 @@ export function PathParamSettable<ReqT, ResT, RequestEventT extends ApiClientReq
 			 */
 			protected abstract formatUrlPath: (
 				content: ReqT,
-				ctx: Pick<RequestData, "apiPathBase" | "profileConfig">
-			) => `/${Language}/${ProfileId}/api/${string}`;
+				ctx: Pick<Ctx, "apiPathBase" | "profileConfig">
+			) => `${Ctx["apiPathBase"]}${string}`;
 
 			protected override requestInternal(
 				content: ReqT,

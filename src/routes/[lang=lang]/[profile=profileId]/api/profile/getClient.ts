@@ -5,6 +5,7 @@ import type { ProfileId } from "../../../../../params/profileId";
 import type { Language } from "../../../../../params/lang";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
 import type { RequestEvent } from "./$types";
+import type { Ctx } from "$lib/types";
 
 type ReqType = {
 	language: Language;
@@ -30,5 +31,5 @@ export class GetProfileApiClient extends PathParamSettable<ReqType, ResType, Req
 	protected override formatUrlPath = ({
 		language,
 		profile
-	}: ReqType): `/${Language}/${ProfileId}/api/${string}` => `/${language}/${profile}/api/profile`;
+	}: ReqType): `${Ctx["apiPathBase"]}${string}` => `/${language}/${profile}/api/profile`;
 }

@@ -10,14 +10,13 @@ import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
 import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import { EMPTY_PROFILE } from "$lib/constants";
+import type { Ctx } from "$lib/types";
 
 export type RequestData = {
 	url: URL;
-	apiPathBase: `/${Language}/${ProfileId}/api/`;
-	profileConfig: ProfileConfig;
 	requestInit: RequestInit;
 	plausibleProps: Partial<Record<PlausibleProp, string | number>>;
-};
+} & Pick<Ctx, "apiPathBase" | "profileConfig">;
 
 export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">;
 export type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;

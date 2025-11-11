@@ -1,17 +1,18 @@
-import type { ParsedLocation, RelativeTimeType } from "$lib/types";
+import type { Ctx, ParsedLocation, RelativeTimeType } from "$lib/types";
 import { type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 import { toast } from "$lib/state/toastStore";
 import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { browser } from "$app/environment";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
+import type { ProfileId } from "../params/profileId";
 
 export type BookmarkType = "diagram" | "journey" | "location";
 
 export type Bookmarks = {
 	diagram: DiagramBookmark[];
 	journey: JourneyBookmark[];
-	location: (ParsedLocation & { profile: "dbnav" })[];
+	location: (ParsedLocation & { profile: ProfileId })[];
 };
 
 type DiagramBookmark = {
@@ -84,15 +85,19 @@ const sortBookmarks: { [K in BookmarkType]: (b: Bookmarks[K]) => Bookmarks[K] } 
 	}
 };
 
-const formatBookmarkId: { [K in BookmarkType]: (bookmarkData: BookmarkData<K>) => string } = {
-	diagram: ({ formData }) => {
+const formatBookmarkId: {
+	[K in BookmarkType]: (bookmarkData: BookmarkData<K>, ctx: Pick<Ctx, "profileConfig">) => string;
+} = {
+	diagram: ({ formData }, ctx) => {
 		const diagramApiClient = apiClient("GET", "diagram");
-		return diagramApiClient.formatNonApiUrl(diagramApiClient.formDataToRequestData(formData))
-			.href;
+		return diagramApiClient.formatNonApiUrl(
+			diagramApiClient.formDataToRequestData(formData),
+			ctx
+		).href;
 	},
-	journey: (bookmarkData) => {
+	journey: (bookmarkData, ctx) => {
 		const tokens = bookmarkData.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
-		return apiClient("GET", "journey").formatNonApiUrl(tokens).href;
+		return apiClient("GET", "journey").formatNonApiUrl(tokens, ctx).href;
 	},
 	location: (bookmarkData) => bookmarkData.id
 };
@@ -163,12 +168,14 @@ function syncLocalStorage(type: BookmarkType): void {
  * turns passed bookmark data into bookmark and adds it if the bookmark does not yet exist. otherwise, removes the bookmark
  * @param type bookmark type
  * @param bookmarkData
+ * @param ctx contains the current profile config
  */
 export function toggleBookmark<T extends BookmarkType>(
 	type: T,
-	bookmarkData: BookmarkData<T>
+	bookmarkData: BookmarkData<T>,
+	ctx: Pick<Ctx, "profileConfig">
 ): void {
-	const id = formatBookmarkId[type](bookmarkData);
+	const id = formatBookmarkId[type](bookmarkData, ctx);
 	const indexInOldData = bookmarks[type].findIndex((bookmark) => bookmark.id === id);
 	const toastMessage = `Lesezeichen für ${bookmarkToString[type](bookmarkData)}`;
 	if (indexInOldData !== -1) {
@@ -188,12 +195,14 @@ export function toggleBookmark<T extends BookmarkType>(
  * check if something is bookmarked
  * @param type bookmark type
  * @param bookmarkData
+ * @param ctx contains the current profile config
  */
 export function getIsBookmarked<T extends BookmarkType>(
 	type: T,
-	bookmarkData: BookmarkData<T>
+	bookmarkData: BookmarkData<T>,
+	ctx: Pick<Ctx, "profileConfig">
 ): boolean {
-	const bookmarkId = formatBookmarkId[type](bookmarkData);
+	const bookmarkId = formatBookmarkId[type](bookmarkData, ctx);
 	return bookmarks[type].some(({ id }) => id === bookmarkId);
 }
 

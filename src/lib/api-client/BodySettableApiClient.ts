@@ -6,6 +6,7 @@ import {
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information through the request body
@@ -26,7 +27,7 @@ export function BodySettable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			protected abstract formatBody: (
 				content: ReqT,
-				ctx: Pick<RequestData, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">
 			) => string;
 
 			protected override requestInternal(
