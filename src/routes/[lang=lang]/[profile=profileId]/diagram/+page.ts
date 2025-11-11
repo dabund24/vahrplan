@@ -1,5 +1,5 @@
 import type { PageLoad } from "./$types";
-import type { KeyedItem, ParsedLocation } from "$lib/types";
+import type { Ctx, KeyedItem, ParsedLocation } from "$lib/types";
 import { browser } from "$app/environment";
 import { error, redirect } from "@sveltejs/kit";
 import { apiClient } from "$lib/api-client/apiClientFactory";
@@ -12,20 +12,21 @@ import { VahrplanError } from "$lib/VahrplanError";
 
 const diagramApiClient = apiClient("GET", "diagram");
 
-export const load: PageLoad = async ({ url, fetch }) => {
+export const load: PageLoad = async ({ url, fetch, parent }) => {
 	if (url.searchParams.size === 0) {
 		redirect(303, "/");
 	}
+	const profileConfig = (await parent()).profile;
 
-	if (browser && formDataMatchesUrl(url, getDisplayedFormData())) {
+	if (browser && formDataMatchesUrl(url, getDisplayedFormData(), { profileConfig })) {
 		// no need to re-fetch the diagram, displayed diagram is already correct
 		return {
 			formData: undefined
 		};
 	}
 
-	const requestData = await diagramApiClient.parseNonApiUrl(url);
-	const formData = await diagramRequestDataToFormData(requestData, fetch);
+	const { reqContent } = diagramApiClient.parseNonApiUrl(url, { profileConfig });
+	const formData = await diagramRequestDataToFormData(reqContent, fetch);
 	return {
 		formData
 	};
@@ -35,8 +36,13 @@ export const load: PageLoad = async ({ url, fetch }) => {
  * checks if the passed form data matches the passed url
  * @param url
  * @param formData
+ * @param ctx
  */
-function formDataMatchesUrl(url: URL, formData: DisplayedFormData | undefined): boolean {
+function formDataMatchesUrl(
+	url: URL,
+	formData: DisplayedFormData | undefined,
+	ctx: Pick<Ctx, "profileConfig">
+): boolean {
 	if (formData === undefined) {
 		return false;
 	}
@@ -46,7 +52,8 @@ function formDataMatchesUrl(url: URL, formData: DisplayedFormData | undefined): 
 		timeData: formData.timeData,
 		options: formData.options
 	};
-	return diagramApiClient.formatNonApiUrl(currentDiagramData).href === url.href;
+
+	return diagramApiClient.formatNonApiUrl(currentDiagramData, ctx).href === url.href;
 }
 
 async function diagramRequestDataToFormData(

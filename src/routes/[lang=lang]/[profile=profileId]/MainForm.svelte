@@ -10,6 +10,7 @@
 	import { searchDiagram, type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 	import MainStationInputs from "./MainStationInputs.svelte";
 	import { SvelteDate } from "svelte/reactivity";
+	import { page } from "$app/state";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -70,6 +71,7 @@
 			options,
 			geolocationDate: new Date()
 		};
+		const profileConfig = page.data.profile;
 		// handle current position
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
 			const currentLocation = await getCurrentGeolocation();
@@ -85,7 +87,7 @@
 			});
 		}
 
-		void searchDiagram(formData);
+		void searchDiagram(formData, { profileConfig });
 	}
 
 	function verifyUserInput(stops: ParsedLocation[]): boolean {

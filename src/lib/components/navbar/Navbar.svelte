@@ -6,7 +6,6 @@
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 	import MobileNavbar from "$lib/components/navbar/MobileNavbar.svelte";
-	import type { Route } from "$lib/components/navbar/util";
 
 	const displayedFormData = $derived(getDisplayedFormData());
 	const selectedData = $derived(getSelectedData());
@@ -20,7 +19,8 @@
 			return undefined;
 		}
 		const reqData = diagramApiClient.formDataToRequestData(displayedFormData);
-		return diagramApiClient.formatNonApiUrl(reqData).href;
+		const profileConfig = page.data.profile;
+		return diagramApiClient.formatNonApiUrl(reqData, { profileConfig }).href;
 	});
 
 	let journeyUrl = $derived.by(() => {
@@ -28,7 +28,8 @@
 			return undefined;
 		}
 		const tokens = displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
-		return journeyApiClient.formatNonApiUrl(tokens).href;
+		const profileConfig = page.data.profile;
+		return journeyApiClient.formatNonApiUrl(tokens, { profileConfig }).href;
 	});
 </script>
 

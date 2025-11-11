@@ -4,6 +4,7 @@ import { toast } from "$lib/state/toastStore";
 import { settings } from "$lib/state/settingStore";
 import { get } from "svelte/store";
 import { apiClient } from "$lib/api-client/apiClientFactory";
+import { page } from "$app/state";
 
 /**
  * shares a diagram and shows the share dialog if supported.
@@ -21,9 +22,9 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 	}
 
 	const diagramApiClient = apiClient("GET", "diagram");
-	urlHref ??= diagramApiClient.formatNonApiUrl(
-		diagramApiClient.formDataToRequestData(formData)
-	).href;
+	urlHref ??= diagramApiClient.formatNonApiUrl(diagramApiClient.formDataToRequestData(formData), {
+		profileConfig: page.data.profile
+	}).href;
 
 	if (navigator.share) {
 		void navigator.share({
@@ -42,6 +43,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
  * @param formData
  */
 async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL | undefined> {
+	const profileConfig = page.data.profile;
 	const diagramRequestData = apiClient("GET", "diagram").formDataToRequestData(formData);
 
 	const keylessDatabaseEntry: KeylessDatabaseEntry<typeof diagramRequestData> = {
@@ -56,5 +58,7 @@ async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL
 		return undefined;
 	}
 
-	return apiClient("GET", "diagram/shorturl/[shortDiagramId]").formatNonApiUrl(response.content);
+	return apiClient("GET", "diagram/shorturl/[shortDiagramId]").formatNonApiUrl(response.content, {
+		profileConfig
+	});
 }

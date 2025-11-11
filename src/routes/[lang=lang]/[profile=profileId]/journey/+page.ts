@@ -1,5 +1,5 @@
 import type { PageLoad } from "./$types";
-import type { KeyedItem, ParsedLocation, SubJourney, TreeNode } from "$lib/types";
+import type { Ctx, KeyedItem, ParsedLocation, SubJourney, TreeNode } from "$lib/types";
 import { getBlockEnd, getBlockStart } from "$lib/util";
 import { error } from "@sveltejs/kit";
 import { browser } from "$app/environment";
@@ -11,8 +11,10 @@ import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 
 const journeyApiClient = apiClient("GET", "journey");
 
-export const load: PageLoad = async function ({ url, fetch }) {
-	if (browser && displayedJourneyMatchesUrl(url, getDisplayedJourney())) {
+export const load: PageLoad = async function ({ url, fetch, parent }) {
+	const profileConfig = (await parent()).profile;
+
+	if (browser && displayedJourneyMatchesUrl(url, getDisplayedJourney(), { profileConfig })) {
 		// no need to refetch the journey, displayed journey is already correct
 		return {
 			formData: undefined,
@@ -20,14 +22,14 @@ export const load: PageLoad = async function ({ url, fetch }) {
 		};
 	}
 
-	const tokens = await journeyApiClient.parseNonApiUrl(url);
-	if (tokens.length === 0) {
+	const { reqContent } = journeyApiClient.parseNonApiUrl(url, { profileConfig });
+	if (reqContent.length === 0) {
 		// use selected journey
 		return;
 	}
 
 	// get journey from refresh tokens
-	const diagramData = await diagramDataFromTokens(tokens, fetch);
+	const diagramData = await diagramDataFromTokens(reqContent, fetch);
 	const formData = formDataFromDiagramData(diagramData);
 
 	return { diagramData, formData };
@@ -37,12 +39,17 @@ export const load: PageLoad = async function ({ url, fetch }) {
  * checks if the passed form data matches the passed url
  * @param url
  * @param displayedJourney
+ * @param ctx
  */
-function displayedJourneyMatchesUrl(url: URL, displayedJourney: DisplayedJourney): boolean {
+function displayedJourneyMatchesUrl(
+	url: URL,
+	displayedJourney: DisplayedJourney,
+	ctx: Pick<Ctx, "profileConfig">
+): boolean {
 	const currentTokens: string[] = displayedJourney.selectedSubJourneys.map(
 		(j) => j?.refreshToken ?? ""
 	);
-	return journeyApiClient.formatNonApiUrl(currentTokens).href === url.href;
+	return journeyApiClient.formatNonApiUrl(currentTokens, ctx).href === url.href;
 }
 
 async function diagramDataFromTokens(

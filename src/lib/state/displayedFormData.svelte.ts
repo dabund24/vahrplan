@@ -1,16 +1,25 @@
 import { setDiagramDataFromFormData } from "$lib/state/diagramData.svelte";
 import { setSelectedData } from "$lib/state/selectedData.svelte";
 import { toast } from "$lib/state/toastStore";
-import type { JourneysFilters, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
+import type {
+	Ctx,
+	JourneysFilters,
+	KeyedItem,
+	ParsedLocation,
+	Product,
+	TimeData
+} from "$lib/types";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { DIAGRAM_MAX_COLUMNS, DIAGRAM_MIN_COLUMNS } from "$lib/constants";
+import type { Profile } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import { page } from "$app/state";
 
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	timeData: TimeData;
-	options: JourneysFilters;
+	options: JourneysFilters<Product, keyof typeof Profile.availableOptions>;
 	geolocationDate: Date;
 };
 
@@ -36,12 +45,17 @@ export function setDisplayedFormData(newFormData: DisplayedFormData): void {
  * - fetches the diagram for the passed form data and updates the `diagramData` store to the result
  * - unselects all columns
  * @param newFormData
+ * @param ctx
  * @returns a promise that resolves once the page has navigated to the correct url
  */
-export async function searchDiagram(newFormData: DisplayedFormData): Promise<void> {
+export async function searchDiagram(
+	newFormData: DisplayedFormData,
+	ctx: Pick<Ctx, "profileConfig">
+): Promise<void> {
 	const diagramApiClient = apiClient("GET", "diagram");
 	const diagramUrl = diagramApiClient.formatNonApiUrl(
-		diagramApiClient.formDataToRequestData(newFormData)
+		diagramApiClient.formDataToRequestData(newFormData),
+		ctx
 	);
 	displayedFormData = { ...newFormData };
 	if (location.href !== diagramUrl.href) {
@@ -74,7 +88,9 @@ export function updateDisplayedLocations(
 		return;
 	}
 
-	void searchDiagram(newFormData);
+	const profileConfig = page.data.profile;
+
+	void searchDiagram(newFormData, { profileConfig });
 }
 
 /**
