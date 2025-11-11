@@ -44,6 +44,7 @@ export type ProfileConfig<
 	id: IdT;
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	name: string;
+	lang: Language;
 	products: Record<ProductT, NameWithKnownLocale<ProductConfig>>;
 	options: { [K in OptionT]: NameWithKnownLocale<(typeof Profile.availableOptions)[K]> };
 };
@@ -144,6 +145,7 @@ export abstract class Profile<
 		return {
 			name: this.name[lang],
 			id: this.id,
+			lang,
 			products: this.assignLangNames(lang, this.products),
 			options: this.assignLangNames(lang, opt)
 		};
