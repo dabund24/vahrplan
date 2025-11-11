@@ -5,8 +5,8 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 
 export const PUT: RequestHandler = async function (reqEvent) {
 	const client = apiClient("PUT", reqEvent.route.id);
-	const keylessEntryData = await client.parse(reqEvent);
-	const entryData = generateHashedDatabaseEntry(keylessEntryData);
+	const { reqContent } = client.parseRequest(reqEvent);
+	const entryData = generateHashedDatabaseEntry(await reqContent);
 	await setDatabaseEntry(entryData);
 	return client.formatResponse(new VahrplanSuccess(entryData.key));
 };

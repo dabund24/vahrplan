@@ -5,7 +5,7 @@ import { VahrplanSuccess } from "$lib/VahrplanResult";
 
 export const GET: RequestHandler = (reqEvent) => {
 	const client = apiClient("GET", reqEvent.route.id);
-	const { language, profile } = client.parse(reqEvent);
+	const { language, profile } = client.parseRequest(reqEvent);
 	const result = profileConfig(profile, language);
 	return client.formatResponse(new VahrplanSuccess(result));
 };

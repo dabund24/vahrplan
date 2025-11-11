@@ -8,8 +8,8 @@ import type { SubJourney, TransitType } from "$lib/types";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
-	const tokens = client.parse(reqEvent);
-	const { content: subJourneys } = (await journeyDataService.refresh(tokens)).throwIfError();
+	const { language, profile, reqContent } = client.parseRequest(reqEvent);
+	const { content: subJourneys } = (await journeyDataService.refresh(reqContent)).throwIfError();
 
 	const transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(subJourneys);
 

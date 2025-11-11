@@ -6,9 +6,9 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
-	const shortToken = client.parse(reqEvent);
-	const hafasTokens = await getDatabaseEntry<string[]>("journey", shortToken);
-	if (hafasTokens === undefined) {
+	const { reqContent } = client.parseRequest(reqEvent);
+	const journeyIds = await getDatabaseEntry<string[]>("journey", reqContent);
+	if (journeyIds === undefined) {
 		// invalid token
 		return client.formatResponse(
 			VahrplanError.withMessage(
@@ -17,5 +17,5 @@ export const GET: RequestHandler = async function (reqEvent) {
 			)
 		);
 	}
-	return client.formatResponse(new VahrplanSuccess(hafasTokens));
+	return client.formatResponse(new VahrplanSuccess(journeyIds));
 };

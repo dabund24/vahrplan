@@ -10,9 +10,9 @@ import { generateSvgData } from "$lib/server/svgData/svgData.server";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
-	const reqData = await client.parse(reqEvent);
-	const { scrollDirection, tokens, stops, tree, options, recommendedVias } = reqData;
-	let { transferLocations } = reqData;
+	const { reqContent } = client.parseRequest(reqEvent);
+	const { scrollDirection, tokens, stops, tree, options, recommendedVias } = await reqContent;
+	let { transferLocations } = await reqContent;
 
 	const timeData: TimeData[] = tokens.map((token) => ({
 		type: "relative",

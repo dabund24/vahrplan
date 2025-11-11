@@ -1,6 +1,5 @@
 import type { RequestHandler } from "./$types";
 import { buildTree, subJourneyToNodeData } from "./treePlantation.server";
-import { VahrplanError } from "$lib/VahrplanError";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { fetchJourneys } from "./fetchJourneys.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
@@ -11,16 +10,12 @@ import { generateSvgData } from "$lib/server/svgData/svgData.server";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
-	const diagramData = client.parse(reqEvent);
-
-	if (diagramData === undefined) {
-		return client.formatResponse(new VahrplanError("NOT_FOUND"));
-	}
+	const { reqContent } = client.parseRequest(reqEvent);
 
 	const journeyColumns = await fetchJourneys(
-		diagramData.stops,
-		diagramData.timeData,
-		diagramData.options
+		reqContent.stops,
+		reqContent.timeData,
+		reqContent.options
 	);
 	if (journeyColumns.isError) {
 		return client.formatResponse(journeyColumns);

@@ -4,7 +4,7 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 
 export const GET: RequestHandler = async (reqEvent) => {
 	const client = apiClient("GET", reqEvent.route.id);
-	const locationId = client.parse(reqEvent);
-	const result = await journeyDataService.location(locationId);
+	const { language, profile, reqContent } = client.parseRequest(reqEvent);
+	const result = await journeyDataService.location(reqContent);
 	return client.formatResponse(result);
 };

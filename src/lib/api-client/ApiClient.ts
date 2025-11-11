@@ -10,7 +10,6 @@ import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
 import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import { EMPTY_PROFILE } from "$lib/constants";
-import type { MaybePromise } from "$lib/utilityTypes";
 
 export type RequestData = {
 	url: URL;
@@ -27,8 +26,8 @@ export type NonBodyfulHttpMethod = Exclude<HttpMethod, BodyfulHttpMethod>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
 
-type ParsedRequest<T> = {
-	content: MaybePromise<T>;
+type ParsedRequest<MethodT extends HttpMethod, ReqT> = {
+	reqContent: MethodT extends BodyfulHttpMethod ? Promise<ReqT> : ReqT;
 	language: Language;
 	profile: ProfileId;
 };
@@ -187,7 +186,7 @@ export abstract class ApiClient<
 	 */
 	protected abstract parseRequestContent: (
 		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
-	) => ReqT | Promise<ReqT>;
+	) => MethodT extends BodyfulHttpMethod ? Promise<ReqT> : ReqT;
 
 	/**
 	 * parse a request on the server
@@ -197,8 +196,8 @@ export abstract class ApiClient<
 	 */
 	public parseRequest = (
 		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
-	): ParsedRequest<ReqT> => ({
-		content: this.parseRequestContent(reqEvent),
+	): ParsedRequest<MethodT, ReqT> => ({
+		reqContent: this.parseRequestContent(reqEvent),
 		language: reqEvent.params.lang,
 		profile: reqEvent.params.profile
 	});
