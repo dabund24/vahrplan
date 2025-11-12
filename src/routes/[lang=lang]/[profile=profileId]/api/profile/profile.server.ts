@@ -13,6 +13,8 @@ type OptionValues = {
 	minTransferTime: [0, 2, 5, 10, 15, 20, 30, 40, 50, 60];
 };
 
+export type OptionId = keyof OptionValues;
+
 type OptionConfig<T extends string[] | number[] | boolean> = {
 	name: LocaleString;
 	defaultValue: T extends number[] | string[] ? T[number] : boolean;
@@ -44,9 +46,7 @@ export type ProfileConfig = {
 	lang: Language;
 	products: Partial<Record<Product, NameWithKnownLocale<ProductConfig>>>;
 	options: {
-		[K in keyof typeof Profile.availableOptions]?: NameWithKnownLocale<
-			(typeof Profile.availableOptions)[K]
-		>;
+		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>;
 	};
 };
 

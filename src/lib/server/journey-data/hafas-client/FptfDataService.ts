@@ -19,6 +19,7 @@ import {
 } from "$lib/server/journey-data/hafas-client/parse/parse";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
+import type { OptionId } from "../../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = Error & {
@@ -146,16 +147,8 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	};
 
 	public override journeys = (
-		{
-			from,
-			to
-		}: Parameters<
-			JourneyDataService<ProductT, keyof JourneysFilters["options"]>["journeys"]
-		>[0],
-		{
-			timeData,
-			filters
-		}: Parameters<JourneyDataService<ProductT, keyof JourneysFilters["options"]>["journeys"]>[1]
+		{ from, to }: Parameters<JourneyDataService<ProductT, OptionId>["journeys"]>[0],
+		{ timeData, filters }: Parameters<JourneyDataService<ProductT, OptionId>["journeys"]>[1]
 	): Promise<VahrplanResult<JourneyNodesWithRefs>> =>
 		this.performRequest(
 			() =>

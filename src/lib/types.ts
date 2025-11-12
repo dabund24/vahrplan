@@ -1,5 +1,6 @@
 import type { LineShape } from "$lib/server/journey-data/lineShapes";
 import type {
+	OptionId,
 	Profile,
 	ProfileConfig
 } from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
@@ -98,7 +99,7 @@ export type Product =
 
 export type JourneysFilters<
 	ProductT extends Product = Product,
-	OptionT extends keyof typeof Profile.availableOptions = keyof typeof Profile.availableOptions
+	OptionT extends OptionId = OptionId
 > = {
 	products: Record<ProductT, boolean>;
 	options: {

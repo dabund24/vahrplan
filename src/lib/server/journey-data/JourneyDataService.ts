@@ -8,7 +8,7 @@ import type {
 } from "$lib/types";
 import type { VahrplanError } from "$lib/VahrplanError";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
-import type { Profile } from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { OptionId } from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 export type JourneyNodesWithRefs = {
 	journeys: SubJourney[];
@@ -30,17 +30,14 @@ type Fetchable = ExtractResultType<
 		// e.g. `Promise<ZugResponse<ParsedLocation>>`
 		ReturnType<
 			// all data serving class methods, e.g. `location`
-			JourneyDataService<Product, keyof typeof Profile.availableOptions>[Exclude<
-				keyof JourneyDataService<Product, keyof typeof Profile.availableOptions>,
-				"parseError" | "performRequest"
-			>]
+			JourneyDataService[Exclude<keyof JourneyDataService, "parseError" | "performRequest">]
 		>
 	>
 >;
 
 export abstract class JourneyDataService<
 	ProductT extends Product = Product,
-	OptionT extends keyof typeof Profile.availableOptions = keyof typeof Profile.availableOptions
+	OptionT extends OptionId = OptionId
 > {
 	/**
 	 * get journeys between two stations
