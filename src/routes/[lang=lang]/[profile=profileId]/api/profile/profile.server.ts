@@ -2,6 +2,7 @@ import type { Product } from "$lib/types";
 import type { AssertUniqueTuple, EmptyRecord } from "$lib/utilityTypes";
 import type { ProfileId } from "../../../../../params/profileId";
 import type { Language } from "../../../../../params/lang";
+import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 
 type LocaleString = Record<Language, string>;
 
@@ -104,10 +105,14 @@ export abstract class Profile<
 	protected abstract readonly id: IdT;
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	protected abstract readonly name: LocaleString;
+	/** all languages the upstream api can return responses of */
 	protected abstract readonly supportedLanguages: Language[];
 	protected abstract readonly fallbackLanguage: Language;
 	protected abstract readonly products: Record<ProductT, ProductConfig>;
 	protected abstract readonly options: Record<OptionT, EmptyRecord>;
+
+	/** the thing that talks with the upstream api */
+	protected abstract readonly journeyDataService: JourneyDataService<ProductT, OptionT>;
 
 	/**
 	 * fix the languages for all features of a feature set
@@ -136,7 +141,7 @@ export abstract class Profile<
 	 * @param lang
 	 * @sealed
 	 */
-	public ofLanguage(lang: Language): ProfileConfig<IdT, ProductT, OptionT> {
+	public configOfLanguage(lang: Language): ProfileConfig<IdT, ProductT, OptionT> {
 		const opt = {} as Pick<typeof Profile.availableOptions, OptionT>;
 		for (const optionKey in this.options) {
 			opt[optionKey] = Profile.availableOptions[optionKey];
@@ -149,5 +154,9 @@ export abstract class Profile<
 			products: this.assignLangNames(lang, this.products),
 			options: this.assignLangNames(lang, opt)
 		};
+	}
+
+	public get dataService(): JourneyDataService<ProductT, OptionT> {
+		return this.journeyDataService;
 	}
 }

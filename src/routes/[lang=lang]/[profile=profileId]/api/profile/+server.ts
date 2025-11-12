@@ -1,6 +1,6 @@
 import type { RequestHandler } from "./$types";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { profileConfig } from "./profileConfigFactory.server";
+import { profileConfig } from "./profileRegistry.server";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 
 export const GET: RequestHandler = (reqEvent) => {

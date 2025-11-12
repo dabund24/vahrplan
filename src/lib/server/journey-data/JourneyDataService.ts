@@ -39,8 +39,8 @@ type Fetchable = ExtractResultType<
 >;
 
 export abstract class JourneyDataService<
-	ProductT extends Product,
-	OptionT extends keyof typeof Profile.availableOptions
+	ProductT extends Product = Product,
+	OptionT extends keyof typeof Profile.availableOptions = keyof typeof Profile.availableOptions
 > {
 	/**
 	 * get journeys between two stations

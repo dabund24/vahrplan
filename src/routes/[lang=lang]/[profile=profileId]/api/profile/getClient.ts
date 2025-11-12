@@ -1,5 +1,5 @@
 import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
-import type { profileConfig } from "./profileConfigFactory.server";
+import type { profileConfig } from "./profileRegistry.server";
 import { DAY_IN_SECONDS } from "$lib/constants";
 import type { ProfileId } from "../../../../../params/profileId";
 import type { Language } from "../../../../../params/lang";

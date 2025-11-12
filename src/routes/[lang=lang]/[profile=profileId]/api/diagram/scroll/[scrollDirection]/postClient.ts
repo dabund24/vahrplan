@@ -1,5 +1,5 @@
 import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
-import type { Ctx, JourneysFilters, Product, RelativeTimeType, TreeNode } from "$lib/types";
+import type { Ctx, JourneysFilters, RelativeTimeType, TreeNode } from "$lib/types";
 import type { RequestEvent } from "./$types";
 import { BodySettable } from "$lib/api-client/BodySettableApiClient";
 import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
@@ -10,13 +10,12 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
-import type { Profile } from "../../../profile/profile.server";
 
 type ReqType = {
 	scrollDirection: RelativeTimeType;
 	stops: string[];
 	tokens: string[];
-	options: JourneysFilters<Product, keyof typeof Profile.availableOptions>;
+	options: JourneysFilters;
 	tree: TreeNode[];
 	transferLocations: LocationEquivalenceSystem;
 	recommendedVias: RecommendedVia[][];

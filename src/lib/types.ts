@@ -96,8 +96,8 @@ export type Product =
 	| "ferry";
 
 export type JourneysFilters<
-	ProductT extends Product,
-	OptionT extends keyof typeof Profile.availableOptions
+	ProductT extends Product = Product,
+	OptionT extends keyof typeof Profile.availableOptions = keyof typeof Profile.availableOptions
 > = {
 	products: Record<ProductT, boolean>;
 	options: {
