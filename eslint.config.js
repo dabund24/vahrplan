@@ -83,7 +83,7 @@ export default [
 					format: ["PascalCase"]
 				}
 			],
-			"@typescript-eslint/method-signature-style": ["error", "method"],
+			"@typescript-eslint/method-signature-style": ["error", "property"],
 			"no-restricted-syntax": [
 				"error",
 				{

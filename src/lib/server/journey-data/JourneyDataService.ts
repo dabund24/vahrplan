@@ -48,60 +48,63 @@ export abstract class JourneyDataService<
 	 * @param timeData when to depart or when to arrive
 	 * @param options additional options
 	 */
-	abstract journeys(
+	public abstract journeys: (
 		stops: { from: string; to: string },
 		timeData: TimeData,
 		options: JourneysFilters<ProductT, OptionT>
-	): Promise<VahrplanResult<JourneyNodesWithRefs>>;
+	) => Promise<VahrplanResult<JourneyNodesWithRefs>>;
 
 	/**
 	 * get a journey consisting of multiple sub-journeys
 	 * @param tokens refresh tokens of the sub-journeys
 	 */
-	abstract refresh(tokens: string[]): Promise<VahrplanResult<SubJourney[]>>;
+	public abstract refresh: (tokens: string[]) => Promise<VahrplanResult<SubJourney[]>>;
 
 	/**
 	 * suggest locations based on a string. Can be used for autocomplete inputs
 	 * @param name the location to find
 	 */
-	abstract locations(name: string): Promise<VahrplanResult<ParsedLocation[]>>;
+	public abstract locations: (name: string) => Promise<VahrplanResult<ParsedLocation[]>>;
 
 	/**
 	 * get a single location based on a token
 	 * @param token the request token of the location
 	 */
-	abstract location(token: ParsedLocation["id"]): Promise<VahrplanResult<ParsedLocation>>;
+	public abstract location: (
+		token: ParsedLocation["id"]
+	) => Promise<VahrplanResult<ParsedLocation>>;
 
 	/**
 	 * parse an error that may be thrown when data fetching goes wrong
 	 * @param err
 	 */
-	protected abstract parseError(err: unknown): VahrplanError;
+	protected abstract parseError: (err: unknown) => VahrplanError;
 
 	/**
 	 * perform a request and return a `VahrplanResult` wrapping the result or a corresponding error
 	 * @param reqCallback the callback performing the request
 	 * @param parseResponseCallback the callback performing some additional parsing of the raw response
+	 * @sealed
 	 */
-	performRequest<ResultType extends Fetchable, IntermediateType>(
+	protected performRequest = <ResultType extends Fetchable, IntermediateType>(
 		reqCallback: () => Promise<IntermediateType>,
 		parseResponseCallback: (intermediateType: IntermediateType) => ResultType
-	): Promise<VahrplanResult<ResultType>> {
-		return reqCallback().then(
-			(immediateResult) => {
-				const parsedResult = parseResponseCallback(immediateResult);
+	): Promise<VahrplanResult<ResultType>> =>
+		reqCallback().then(
+			(intermediateResult) => {
+				const parsedResult = parseResponseCallback(intermediateResult);
 				return new VahrplanSuccess(parsedResult);
 			},
 			(err: unknown) => this.parseError(err)
 		);
-	}
 
 	/**
 	 * sets `precededBy` and `succeededBy` properties of sub-journeys
 	 * @param subJourneys the sub-journeys to modify
 	 * @private
+	 * @sealed
 	 */
-	protected static setMergingProperties(subJourneys: SubJourney[]): SubJourney[] {
+	protected static setMergingProperties = (subJourneys: SubJourney[]): SubJourney[] => {
 		for (let i = 1; i < subJourneys.length; i++) {
 			const arrivingSubJourneyBlock = subJourneys[i - 1].blocks.at(-1);
 			const departingSubJourneyBlock = subJourneys[i].blocks.at(0);
@@ -124,20 +127,21 @@ export abstract class JourneyDataService<
 			}
 		}
 		return subJourneys;
-	}
+	};
 
 	/**
 	 * returns whether the destination and origin of two legs are the same
 	 * @param arrivingLeg the leg with the destination to check
 	 * @param departingLeg the leg with the origin to check
 	 * @private
+	 * @sealed
 	 */
-	private static legsHaveSameLocations(arrivingLeg: LegBlock, departingLeg: LegBlock): boolean {
-		return (
-			arrivingLeg.arrivalData.location.position.lng ===
-				departingLeg.departureData.location.position.lng &&
-			arrivingLeg.arrivalData.location.position.lat ===
-				departingLeg.departureData.location.position.lat
-		);
-	}
+	private static legsHaveSameLocations = (
+		arrivingLeg: LegBlock,
+		departingLeg: LegBlock
+	): boolean =>
+		arrivingLeg.arrivalData.location.position.lng ===
+			departingLeg.departureData.location.position.lng &&
+		arrivingLeg.arrivalData.location.position.lat ===
+			departingLeg.departureData.location.position.lat;
 }

@@ -45,7 +45,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	 * Create a JourneyDataService from a HafasClient
 	 * @param config information about how this client should work
 	 */
-	constructor(config: FptfDataServiceConfig<ProductT>) {
+	public constructor(config: FptfDataServiceConfig<ProductT>) {
 		super();
 
 		const rateLimiterIntervalSeconds = 60;
@@ -95,13 +95,13 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	 * @param filters
 	 * @private
 	 */
-	private formatOptions(
+	private formatOptions = (
 		timeData: TimeData,
 		filters: JourneysFilters<
 			ProductT,
 			"bike" | "accessible" | "maxTransfers" | "minTransferTime"
 		>
-	): FptfJourneysOptions {
+	): FptfJourneysOptions => {
 		const products: Record<string, boolean> = {};
 		for (const { vahrplanProduct, fptfClientProduct } of this.productMapping) {
 			products[fptfClientProduct] = filters.products[vahrplanProduct];
@@ -127,29 +127,29 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		}
 
 		return fptfOptions;
-	}
+	};
 
 	/**
 	 * format a stop for the fptf journeys or stop request
 	 * @param stop
 	 * @private
 	 */
-	private formatStop(stop: string): string | Station | Stop | Location {
+	private formatStop = (stop: string): string | Station | Stop | Location => {
 		if (stop.startsWith("{")) {
 			return JSON.parse(stop) as Station | Stop | Location;
 		}
 		return stop;
-	}
+	};
 
-	public override async journeys(
+	public override journeys = (
 		{ from, to }: Parameters<JourneyDataService<ProductT, never>["journeys"]>[0],
 		timeData: TimeData,
 		options: JourneysFilters<
 			ProductT,
 			"bike" | "accessible" | "maxTransfers" | "minTransferTime"
 		>
-	): Promise<VahrplanResult<JourneyNodesWithRefs>> {
-		return this.performRequest(
+	): Promise<VahrplanResult<JourneyNodesWithRefs>> =>
+		this.performRequest(
 			() =>
 				this.client.journeys(
 					this.formatStop(from),
@@ -158,10 +158,9 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				),
 			this.parseJourneysResponseCallback
 		);
-	}
 
-	public override async refresh(tokens: string[]): Promise<VahrplanResult<SubJourney[]>> {
-		return this.performRequest(
+	public override refresh = (tokens: string[]): Promise<VahrplanResult<SubJourney[]>> =>
+		this.performRequest(
 			() =>
 				Promise.all(
 					tokens.map(
@@ -178,26 +177,24 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				return JourneyDataService.setMergingProperties(blocks);
 			}
 		);
-	}
 
-	public override async location(
+	public override location = async (
 		token: ParsedLocation["id"]
-	): Promise<VahrplanResult<ParsedLocation>> {
+	): Promise<VahrplanResult<ParsedLocation>> => {
 		const stop = this.formatStop(token);
 		if (typeof stop === "string") {
 			return this.performRequest(() => this.client.stop(token, {}), parseStationStopLocation);
 		}
 		return new VahrplanSuccess(parseStationStopLocation(stop));
-	}
+	};
 
-	public override async locations(name: string): Promise<VahrplanResult<ParsedLocation[]>> {
-		return this.performRequest(
+	public override locations = (name: string): Promise<VahrplanResult<ParsedLocation[]>> =>
+		this.performRequest(
 			() => this.client.locations(name, { results: 10 }),
 			(locations) => locations.map(parseStationStopLocation)
 		);
-	}
 
-	protected override parseError(err: unknown): VahrplanError {
+	protected override parseError = (err: unknown): VahrplanError => {
 		let errorType: VahrplanError["type"] = "ERROR";
 		let message = "Hafas: Server-Fehler. Die Anfrage ist möglicherweise ungültig.";
 		if (FptfDataService.isHafasError(err)) {
@@ -209,28 +206,28 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			errorType = `HAFAS_${err.code ?? "SERVER_ERROR"}`;
 		}
 		return VahrplanError.withMessage(errorType, message);
-	}
+	};
 
 	/**
 	 * Checks if a given error is an instance of HafasError
 	 * @param error
 	 * @private
 	 */
-	private static isHafasError(error: unknown): error is HafasError {
+	private static isHafasError = (error: unknown): error is HafasError => {
 		return (
 			typeof error === "object" &&
 			error !== null &&
 			"isHafasError" in error &&
 			error.isHafasError === true
 		);
-	}
+	};
 
 	/**
 	 * always throws an error indicating error 429
 	 * @throws HafasError
 	 * @private
 	 */
-	private static throwHafasQuotaError(): never {
+	private static throwHafasQuotaError = (): never => {
 		throw {
 			isHafasError: true,
 			code: "QUOTA_EXCEEDED",
@@ -238,5 +235,5 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			hafasCode: "",
 			hafasDescription: ""
 		} as HafasError;
-	}
+	};
 }
