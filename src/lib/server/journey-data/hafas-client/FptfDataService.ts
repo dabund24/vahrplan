@@ -32,6 +32,7 @@ export type HafasError = Error & {
 type FptfDataServiceConfig<ProductT extends Product> = {
 	client: HafasClient;
 	productMapping: Record<ProductT, string>;
+	hasTickets?: true;
 };
 
 export class FptfDataService<ProductT extends Product> extends JourneyDataService<
@@ -40,6 +41,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 > {
 	private readonly client: HafasClient;
 	private readonly productMapping: { vahrplanProduct: ProductT; fptfClientProduct: string }[];
+	private readonly hasTickets?: true;
 
 	/**
 	 * Create a JourneyDataService from a HafasClient
@@ -76,6 +78,8 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				fptfClientProduct: config.productMapping[vahrplanProduct]
 			});
 		}
+
+		this.hasTickets = config.hasTickets;
 	}
 
 	private parseJourneysResponseCallback = (hafasJourneys: Journeys): JourneyNodesWithRefs => {
@@ -114,7 +118,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			accessibility: filters.options.accessible ? "complete" : "none",
 			results: 10,
 			stopovers: true,
-			tickets: true,
+			tickets: this.hasTickets,
 			language: "de"
 		};
 
@@ -142,19 +146,23 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	};
 
 	public override journeys = (
-		{ from, to }: Parameters<JourneyDataService<ProductT, never>["journeys"]>[0],
-		timeData: TimeData,
-		options: JourneysFilters<
-			ProductT,
-			"bike" | "accessible" | "maxTransfers" | "minTransferTime"
-		>
+		{
+			from,
+			to
+		}: Parameters<
+			JourneyDataService<ProductT, keyof JourneysFilters["options"]>["journeys"]
+		>[0],
+		{
+			timeData,
+			filters
+		}: Parameters<JourneyDataService<ProductT, keyof JourneysFilters["options"]>["journeys"]>[1]
 	): Promise<VahrplanResult<JourneyNodesWithRefs>> =>
 		this.performRequest(
 			() =>
 				this.client.journeys(
 					this.formatStop(from),
 					this.formatStop(to),
-					this.formatOptions(timeData, options)
+					this.formatOptions(timeData, filters)
 				),
 			this.parseJourneysResponseCallback
 		);
