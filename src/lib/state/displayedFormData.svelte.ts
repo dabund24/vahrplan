@@ -6,20 +6,18 @@ import type {
 	JourneysFilters,
 	KeyedItem,
 	ParsedLocation,
-	Product,
 	TimeData
 } from "$lib/types";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { DIAGRAM_MAX_COLUMNS, DIAGRAM_MIN_COLUMNS } from "$lib/constants";
-import type { Profile } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import { page } from "$app/state";
 
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	timeData: TimeData;
-	options: JourneysFilters<Product, keyof typeof Profile.availableOptions>;
+	filters: JourneysFilters;
 	geolocationDate: Date;
 };
 

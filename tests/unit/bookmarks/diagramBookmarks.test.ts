@@ -29,7 +29,7 @@ const bookmarkData: BookmarkData<"diagram"> = {
 				}
 			}
 		],
-		options: {
+		filters: {
 			products: {
 				longDistanceExpress: false,
 				longDistance: false,

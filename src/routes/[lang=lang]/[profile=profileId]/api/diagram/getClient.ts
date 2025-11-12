@@ -18,16 +18,11 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
-import { Profile } from "../profile/profile.server";
 
 type ReqType = {
 	stops: string[];
 	timeData: TimeData;
-	options: {
-		[K in keyof JourneysFilters<Product, keyof typeof Profile.availableOptions>]: Partial<
-			JourneysFilters<Product, keyof typeof Profile.availableOptions>[K]
-		>;
-	};
+	filters: JourneysFilters;
 };
 
 export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, RequestEvent>()(
@@ -60,7 +55,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		maxTransfers: "max-transfers",
 		minTransferTime: "min-transfer-time"
 	} as const satisfies Record<string, string> & {
-		[K in keyof ReqType["options"]["products"]]: CamelToKebab<K>;
+		[K in keyof ReqType["filters"]["products"]]: CamelToKebab<K>;
 	};
 
 	protected override formatQueryParams = (
@@ -77,28 +72,28 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		// url.searchParams.set("passengers[]", null); TODO handle ticket data
 
 		let product: Product;
-		for (product in content.options.products) {
+		for (product in content.filters.products) {
 			this.writeBooleanQueryParameter(
 				queryParams,
 				this.queryParamNames[product],
-				content.options.products[product]
+				content.filters.products[product]
 			);
 		}
 
 		this.writeBooleanQueryParameter(
 			queryParams,
 			this.queryParamNames.bike,
-			content.options.bike
+			content.filters.bike
 		);
 		this.writeBooleanQueryParameter(
 			queryParams,
 			this.queryParamNames.accessible,
-			content.options.accessible
+			content.filters.accessible
 		);
-		queryParams.set(this.queryParamNames.maxTransfers, String(content.options.maxTransfers));
+		queryParams.set(this.queryParamNames.maxTransfers, String(content.filters.maxTransfers));
 		queryParams.set(
 			this.queryParamNames.minTransferTime,
-			String(content.options.minTransferTime)
+			String(content.filters.minTransferTime)
 		);
 		return queryParams;
 	};
@@ -132,7 +127,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 				time: timeParam,
 				scrollDirection
 			},
-			options: {
+			filters: {
 				products: {
 					longDistanceExpress: url.searchParams.has(
 						this.queryParamNames.longDistanceExpress
@@ -189,6 +184,6 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 	public formDataToRequestData = (formData: DisplayedFormData): ReqType => ({
 		stops: formData.locations.map((l) => l.value.id),
 		timeData: formData.timeData,
-		options: formData.options
+		filters: formData.filters
 	});
 }

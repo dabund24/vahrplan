@@ -74,7 +74,7 @@ export async function setDiagramDataFromFormData(formData: DisplayedFormData): P
 		.request({
 			stops: formData.locations.map((l) => l.value.id),
 			timeData: formData.timeData,
-			options: formData.options
+			filters: formData.filters
 		})
 		.then((result) => {
 			if (!result.isError) {
@@ -175,7 +175,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		tree,
 		transferLocations,
 		recommendedVias,
-		options: displayedFormData.options
+		filters: displayedFormData.filters
 	});
 
 	if (res.isError || oldDiagramData !== diagramData) {

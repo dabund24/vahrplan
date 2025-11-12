@@ -127,7 +127,7 @@ function getKeyedLocationsFromDiagramData(
 
 function formDataFromDiagramData(diagramData: DiagramData): DisplayedFormData {
 	return {
-		options: defaultJourneysOptions,
+		filters: defaultJourneysOptions,
 		locations: getKeyedLocationsFromDiagramData(diagramData),
 		timeData: {
 			type: "absolute",

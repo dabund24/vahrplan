@@ -50,8 +50,7 @@ export abstract class JourneyDataService<
 	 */
 	public abstract journeys: (
 		stops: { from: string; to: string },
-		timeData: TimeData,
-		options: JourneysFilters<ProductT, OptionT>
+		options: { timeData: TimeData; filters: JourneysFilters<ProductT, OptionT> }
 	) => Promise<VahrplanResult<JourneyNodesWithRefs>>;
 
 	/**

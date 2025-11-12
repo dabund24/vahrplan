@@ -1,10 +1,11 @@
 import type { RequestHandler } from "./$types";
-import { journeyDataService } from "$lib/server/setup";
 import { apiClient } from "$lib/api-client/apiClientFactory";
+import { journeyDataService } from "../../profile/profileRegistry.server";
 
-export const GET: RequestHandler = async (reqEvent) => {
-	const client = apiClient("GET", reqEvent.route.id);
-	const { language, profile, reqContent } = client.parseRequest(reqEvent);
-	const result = await journeyDataService.locations(reqContent);
+export const GET: RequestHandler = async ({ url, route, params }) => {
+	const client = apiClient("GET", route.id);
+	const { language, profile, reqContent } = client.parseRequest({ url, params });
+	const dataService = journeyDataService(profile, language);
+	const result = await dataService.locations(reqContent);
 	return client.formatResponse(result);
 };

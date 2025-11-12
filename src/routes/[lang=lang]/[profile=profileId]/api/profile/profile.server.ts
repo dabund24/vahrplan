@@ -36,18 +36,18 @@ type NameWithKnownLocale<T extends { name: LocaleString }> = Omit<T, "name"> & {
 	name: string;
 };
 
-export type ProfileConfig<
-	IdT extends ProfileId = ProfileId,
-	ProductT extends Product = never,
-	OptionT extends keyof typeof Profile.availableOptions = never
-> = {
+export type ProfileConfig = {
 	/** very short identifier used for urls */
-	id: IdT;
+	id: ProfileId;
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	name: string;
 	lang: Language;
-	products: Record<ProductT, NameWithKnownLocale<ProductConfig>>;
-	options: { [K in OptionT]: NameWithKnownLocale<(typeof Profile.availableOptions)[K]> };
+	products: Partial<Record<Product, NameWithKnownLocale<ProductConfig>>>;
+	options: {
+		[K in keyof typeof Profile.availableOptions]?: NameWithKnownLocale<
+			(typeof Profile.availableOptions)[K]
+		>;
+	};
 };
 
 /**
@@ -119,6 +119,7 @@ export abstract class Profile<
 	 * @param lang the language
 	 * @param obj an object with properties, where their values all have a name property mapping languages to names
 	 * @private
+	 * @sealed
 	 */
 	private assignLangNames<T extends Record<string, { name: LocaleString }>>(
 		lang: Language,
@@ -141,7 +142,7 @@ export abstract class Profile<
 	 * @param lang
 	 * @sealed
 	 */
-	public configOfLanguage(lang: Language): ProfileConfig<IdT, ProductT, OptionT> {
+	public configOfLanguage(lang: Language): ProfileConfig {
 		const opt = {} as Pick<typeof Profile.availableOptions, OptionT>;
 		for (const optionKey in this.options) {
 			opt[optionKey] = Profile.availableOptions[optionKey];
@@ -156,6 +157,9 @@ export abstract class Profile<
 		};
 	}
 
+	/**
+	 * get the journey data service of the profile
+	 */
 	public get dataService(): JourneyDataService<ProductT, OptionT> {
 		return this.journeyDataService;
 	}

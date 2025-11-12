@@ -15,7 +15,7 @@ type ReqType = {
 	scrollDirection: RelativeTimeType;
 	stops: string[];
 	tokens: string[];
-	options: JourneysFilters;
+	filters: JourneysFilters;
 	tree: TreeNode[];
 	transferLocations: LocationEquivalenceSystem;
 	recommendedVias: RecommendedVia[][];
@@ -45,7 +45,7 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 		const bodyContent: Omit<ReqType, "scrollDirection"> = {
 			tokens: content.tokens,
 			stops: content.stops,
-			options: content.options,
+			filters: content.filters,
 			tree: content.tree,
 			transferLocations: content.transferLocations,
 			recommendedVias: content.recommendedVias

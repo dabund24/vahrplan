@@ -7,16 +7,18 @@ import recommendVias from "./viaRecommendations.server";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "./locationRepresentatives.server";
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
+import { journeyDataService } from "../profile/profileRegistry.server";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
-	const { reqContent } = client.parseRequest(reqEvent);
+	const {
+		language,
+		profile,
+		reqContent: { stops, timeData: timeStart, filters }
+	} = client.parseRequest(reqEvent);
+	const dataService = journeyDataService(profile, language);
 
-	const journeyColumns = await fetchJourneys(
-		reqContent.stops,
-		reqContent.timeData,
-		reqContent.options
-	);
+	const journeyColumns = await fetchJourneys(stops, { timeStart, filters }, { dataService });
 	if (journeyColumns.isError) {
 		return client.formatResponse(journeyColumns);
 	}

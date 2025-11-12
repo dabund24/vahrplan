@@ -50,7 +50,7 @@ function formDataMatchesUrl(
 	const currentDiagramData: Parameters<(typeof diagramApiClient)["formatNonApiUrl"]>[0] = {
 		stops: formData.locations.map((l) => l.value.id),
 		timeData: formData.timeData,
-		options: formData.options
+		filters: formData.filters
 	};
 
 	return diagramApiClient.formatNonApiUrl(currentDiagramData, ctx).href === url.href;
@@ -81,7 +81,7 @@ async function diagramRequestDataToFormData(
 	return {
 		locations: stopObjects,
 		timeData: diagramRequestData.timeData,
-		options: diagramRequestData.options,
+		filters: diagramRequestData.filters,
 		geolocationDate: new Date()
 	};
 }

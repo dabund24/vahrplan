@@ -5,6 +5,7 @@ import type {
 } from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import type { Language } from "../params/lang";
 import type { ProfileId } from "../params/profileId";
+import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -282,4 +283,6 @@ export type Ctx = {
 	profileConfig: ProfileConfig;
 	pathBase: `/${Language}/${ProfileId}/`;
 	apiPathBase: `${Ctx["pathBase"]}api/`;
+	dataService: JourneyDataService;
+	lang: Language;
 };

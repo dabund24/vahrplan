@@ -12,7 +12,7 @@ const userAgent = `https://vahrplan.de ${version}`;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const hafasClient = createHafasClient(dbProfile, userAgent) as HafasClient;
-export const journeyDataService: JourneyDataService = new FptfDataService(hafasClient);
+// export const journeyDataService: JourneyDataService = new FptfDataService(hafasClient);
 
 // Valkey stuff
 

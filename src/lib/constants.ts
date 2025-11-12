@@ -11,4 +11,10 @@ export const DIAGRAM_COLUMN_MAX_REQUESTS = 3;
 export const DIAGRAM_MIN_COLUMNS = 1;
 export const DIAGRAM_MAX_COLUMNS = 5;
 
-export const EMPTY_PROFILE: ProfileConfig = { name: "", id: "empty", products: {}, options: {} };
+export const EMPTY_PROFILE: ProfileConfig = {
+	name: "",
+	id: "empty",
+	lang: "de",
+	products: {},
+	options: {}
+};

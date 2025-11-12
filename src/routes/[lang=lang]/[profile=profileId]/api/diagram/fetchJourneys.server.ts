@@ -1,8 +1,5 @@
-import type { JourneysFilters, RelativeTimeType, SubJourney, TimeData } from "$lib/types";
-import {
-	JourneyDataService,
-	type JourneyNodesWithRefs
-} from "$lib/server/journey-data/JourneyDataService";
+import type { Ctx, JourneysFilters, RelativeTimeType, SubJourney, TimeData } from "$lib/types";
+import { type JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { DIAGRAM_COLUMN_MAX_REQUESTS, MAX_DATE } from "$lib/constants";
 import { VahrplanError } from "$lib/VahrplanError";
@@ -10,14 +7,13 @@ import { VahrplanError } from "$lib/VahrplanError";
 type RequestData = {
 	fromTo: { from: string; to: string };
 	timeData: TimeData;
-	options: JourneysFilters;
+	filters: JourneysFilters;
 };
 
 export async function fetchJourneys(
 	stops: string[],
-	timeStart: TimeData[] | TimeData,
-	options: RequestData["options"],
-	journeyDataService: JourneyDataService
+	{ timeStart, filters }: { timeStart: TimeData[] | TimeData; filters: JourneysFilters },
+	ctx: Pick<Ctx, "dataService">
 ): Promise<VahrplanResult<JourneyNodesWithRefs[]>> {
 	const scrollDirection = (Array.isArray(timeStart) ? timeStart[0] : timeStart).scrollDirection;
 
@@ -36,9 +32,9 @@ export async function fetchJourneys(
 		const from = stops[i];
 		const to = stops[i + 1];
 		const column = await fetchUntil(
-			{ fromTo: { from, to }, timeData: nextColumnStart, options },
+			{ fromTo: { from, to }, timeData: nextColumnStart, filters },
 			nextColumnTimeLimit,
-			journeyDataService
+			ctx
 		);
 		if (column.isError || column.content.journeys.length === 0) {
 			const errMessage = `Keine Verbindungen von ${i + 1}. zu ${i + 2}. Station gefunden`;
@@ -85,9 +81,9 @@ function determineNextCoulumnStart(
 }
 
 async function fetchUntil(
-	{ fromTo, timeData, options }: RequestData,
+	{ fromTo, timeData, filters }: RequestData,
 	timeLimit: string,
-	journeyDataService: JourneyDataService
+	{ dataService }: Pick<Ctx, "dataService">
 ): Promise<VahrplanResult<JourneyNodesWithRefs>> {
 	const reverseScrollDirection: RelativeTimeType =
 		timeData.scrollDirection === "earlier" ? "later" : "earlier";
@@ -95,7 +91,7 @@ async function fetchUntil(
 	const result: JourneyNodesWithRefs = { journeys: [], earlierRef: "", laterRef: "" };
 
 	do {
-		const j = await journeyDataService.journeys(fromTo, timeData, options);
+		const j = await dataService.journeys(fromTo, { timeData, filters });
 		if (j.isError) {
 			return j;
 		}
