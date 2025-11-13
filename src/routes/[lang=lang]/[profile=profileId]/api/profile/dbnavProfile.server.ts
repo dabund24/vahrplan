@@ -1,4 +1,10 @@
 import { Profile } from "./profile.server";
+import { FptfDataService } from "$lib/server/journey-data/hafas-client/FptfDataService";
+// @ts-expect-error no types for db-vendo-client yet
+import { createClient } from "db-vendo-client";
+// @ts-expect-error no types for db-vendo-client yet
+import { profile } from "db-vendo-client/p/dbnav";
+import type { HafasClient } from "hafas-client";
 
 /**
  * uses https://github.com/public-transport/hafas-client/tree/main/p/db
@@ -40,4 +46,21 @@ export class DbnavProfile extends Profile<
 		maxTransfers: {},
 		minTransferTime: {}
 	};
+
+	protected override readonly journeyDataService = new FptfDataService({
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		client: createClient(profile, this.userAgent) as HafasClient,
+		productMapping: {
+			longDistanceExpress: "nationalExpress",
+			longDistance: "national",
+			regionalExpress: "regionalExpress",
+			regional: "regional",
+			suburban: "suburban",
+			subway: "subway",
+			tram: "tram",
+			bus: "bus",
+			ferry: "ferry",
+			taxi: "taxi"
+		}
+	});
 }

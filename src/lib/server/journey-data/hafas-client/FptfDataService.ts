@@ -1,5 +1,6 @@
 import {
 	JourneyDataService,
+	type JourneyDataServiceConfig,
 	type JourneyNodesWithRefs
 } from "$lib/server/journey-data/JourneyDataService";
 import type {
@@ -21,6 +22,11 @@ import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 import type { OptionId } from "../../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
+type FptfDataServiceOptionId = Extract<
+	OptionId,
+	"bike" | "accessible" | "maxTransfers" | "minTransferTime"
+>;
+
 // see https://github.com/public-transport/hafas-client/blob/336a9ba115d6a7e6b946349376270907f5c0742c/lib/errors.js
 export type HafasError = Error & {
 	isHafasError: true;
@@ -30,9 +36,11 @@ export type HafasError = Error & {
 	hafasDescription: string;
 };
 
-type FptfDataServiceConfig<ProductT extends Product> = {
+type FptfDataServiceConfig<ProductT extends Product> = Pick<
+	JourneyDataServiceConfig<ProductT, FptfDataServiceOptionId>,
+	"productMapping"
+> & {
 	client: HafasClient;
-	productMapping: Record<ProductT, string>;
 	hasTickets?: true;
 };
 
@@ -41,7 +49,6 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	"bike" | "accessible" | "maxTransfers" | "minTransferTime"
 > {
 	private readonly client: HafasClient;
-	private readonly productMapping: { vahrplanProduct: ProductT; fptfClientProduct: string }[];
 	private readonly hasTickets?: true;
 
 	/**
@@ -49,7 +56,15 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	 * @param config information about how this client should work
 	 */
 	public constructor(config: FptfDataServiceConfig<ProductT>) {
-		super();
+		super({
+			productMapping: config.productMapping,
+			optionMapping: {
+				bike: "bike",
+				accessible: "accessibility",
+				maxTransfers: "transfers",
+				minTransferTime: "transferTime"
+			}
+		});
 
 		const rateLimiterIntervalSeconds = 60;
 		const rateLimiterAccessThreshold = 200;
@@ -70,15 +85,6 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			}
 		};
 		this.client = new Proxy(config.client, hafasClientHandler);
-
-		this.productMapping = [];
-		let vahrplanProduct: keyof FptfDataServiceConfig<ProductT>["productMapping"];
-		for (vahrplanProduct in config.productMapping) {
-			this.productMapping.push({
-				vahrplanProduct,
-				fptfClientProduct: config.productMapping[vahrplanProduct]
-			});
-		}
 
 		this.hasTickets = config.hasTickets;
 	}
@@ -108,8 +114,8 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		>
 	): FptfJourneysOptions => {
 		const products: Record<string, boolean> = {};
-		for (const { vahrplanProduct, fptfClientProduct } of this.productMapping) {
-			products[fptfClientProduct] = filters.products[vahrplanProduct];
+		for (const vahrplanProduct in this.products) {
+			products[this.products[vahrplanProduct]] = filters.products[vahrplanProduct];
 		}
 
 		const fptfOptions: FptfJourneysOptions = {
@@ -147,8 +153,8 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	};
 
 	public override journeys = (
-		{ from, to }: Parameters<JourneyDataService<ProductT, OptionId>["journeys"]>[0],
-		{ timeData, filters }: Parameters<JourneyDataService<ProductT, OptionId>["journeys"]>[1]
+		{ from, to }: Parameters<JourneyDataService<ProductT>["journeys"]>[0],
+		{ timeData, filters }: Parameters<JourneyDataService<ProductT>["journeys"]>[1]
 	): Promise<VahrplanResult<JourneyNodesWithRefs>> =>
 		this.performRequest(
 			() =>

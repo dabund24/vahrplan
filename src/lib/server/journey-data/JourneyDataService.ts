@@ -30,15 +30,31 @@ type Fetchable = ExtractResultType<
 		// e.g. `Promise<ZugResponse<ParsedLocation>>`
 		ReturnType<
 			// all data serving class methods, e.g. `location`
-			JourneyDataService[Exclude<keyof JourneyDataService, "parseError" | "performRequest">]
+			JourneyDataService[Exclude<
+				keyof JourneyDataService,
+				"parseError" | "performRequest" | "products" | "optionIds"
+			>]
 		>
 	>
 >;
+
+export type JourneyDataServiceConfig<ProductT extends Product, OptionT extends OptionId> = {
+	productMapping: Record<ProductT, string>;
+	optionMapping: Record<OptionT, string>;
+};
 
 export abstract class JourneyDataService<
 	ProductT extends Product = Product,
 	OptionT extends OptionId = OptionId
 > {
+	protected products: Record<ProductT, string>;
+	protected optionIds: Record<OptionT, string>;
+
+	protected constructor(config: JourneyDataServiceConfig<ProductT, OptionT>) {
+		this.products = config.productMapping;
+		this.optionIds = config.optionMapping;
+	}
+
 	/**
 	 * get journeys between two stations
 	 * @param stops where to start and where to go

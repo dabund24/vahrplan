@@ -3,6 +3,7 @@ import type { AssertUniqueTuple, EmptyRecord } from "$lib/utilityTypes";
 import type { ProfileId } from "../../../../../params/profileId";
 import type { Language } from "../../../../../params/lang";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
+import { version } from "$app/environment";
 
 type LocaleString = Record<Language, string>;
 
@@ -58,7 +59,10 @@ export abstract class Profile<
 	ProductT extends Product = never,
 	OptionT extends keyof typeof Profile.availableOptions = never
 > {
-	/** all options ever available. a profile uses a subset of those */
+	/**
+	 * all options ever available. a profile uses a subset of those
+	 * @sealed
+	 */
 	static readonly availableOptions = {
 		bike: {
 			name: { de: "Fahrradmitnahme" },
@@ -100,6 +104,8 @@ export abstract class Profile<
 			}
 		}
 	} as const satisfies { [K in keyof OptionValues]: OptionConfig<OptionValues[K]> };
+	/** @sealed */
+	protected readonly userAgent = `https://vahrplan.de ${version}`;
 
 	/** very short identifier used for urls */
 	protected abstract readonly id: IdT;
@@ -133,6 +139,12 @@ export abstract class Profile<
 		return res;
 	}
 
+	/**
+	 * use this to create a locale string, which is the same in every language
+	 * @param name
+	 * @protected
+	 * @sealed
+	 */
 	protected static translingual(name: string): LocaleString {
 		return { de: name };
 	}
@@ -159,6 +171,7 @@ export abstract class Profile<
 
 	/**
 	 * get the journey data service of the profile
+	 * @sealed
 	 */
 	public get dataService(): JourneyDataService<ProductT, OptionT> {
 		return this.journeyDataService;
