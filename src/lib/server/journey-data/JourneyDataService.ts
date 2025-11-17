@@ -6,9 +6,10 @@ import type {
 	SubJourney,
 	TimeData
 } from "$lib/types";
-import type { VahrplanError } from "$lib/VahrplanError";
+import { VahrplanError } from "$lib/VahrplanError";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import type { OptionId } from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import { RateLimiter } from "$lib/server/RateLimiter";
 
 export type JourneyNodesWithRefs = {
 	journeys: SubJourney[];
@@ -91,6 +92,29 @@ export abstract class JourneyDataService<
 	 * @param err
 	 */
 	protected abstract parseError: (err: unknown) => VahrplanError;
+
+	protected abstract throwQuotaError: () => never;
+
+	protected wrapClientWithRateLimiter = <
+		T extends Record<string | symbol, (...args: any[]) => Promise<unknown>>
+	>(
+		client: T,
+		quota: ConstructorParameters<typeof RateLimiter>[0]
+	): T => {
+		const rateLimiter = new RateLimiter(quota);
+
+		const proxyHandler = {
+			get: (target: T, prop: keyof T): T[keyof T] => {
+				const result = rateLimiter.accessResource("global", () => target[prop]);
+				if (result.isError) {
+					// Pretend as if client threw an error
+					return this.throwQuotaError();
+				}
+				return result.content;
+			}
+		};
+		return new Proxy(client, proxyHandler);
+	};
 
 	/**
 	 * perform a request and return a `VahrplanResult` wrapping the result or a corresponding error

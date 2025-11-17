@@ -42,6 +42,7 @@ type FptfDataServiceConfig<ProductT extends Product> = Pick<
 > & {
 	client: HafasClient;
 	hasTickets?: true;
+	quota: ConstructorParameters<typeof RateLimiter>[0];
 };
 
 export class FptfDataService<ProductT extends Product> extends JourneyDataService<
@@ -66,25 +67,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			}
 		});
 
-		const rateLimiterIntervalSeconds = 60;
-		const rateLimiterAccessThreshold = 200;
-		const hafasGlobalRateLimiter = new RateLimiter(
-			rateLimiterIntervalSeconds,
-			rateLimiterAccessThreshold
-		);
-
-		// wrap hafas client with rate limiter
-		const hafasClientHandler: ProxyHandler<HafasClient> = {
-			get(target: HafasClient, prop: keyof HafasClient): HafasClient[keyof HafasClient] {
-				const result = hafasGlobalRateLimiter.accessResource("global", () => target[prop]);
-				if (result.isError) {
-					// Pretend as if hafas client threw an error
-					return async () => Promise.resolve(FptfDataService.throwHafasQuotaError());
-				}
-				return result.content;
-			}
-		};
-		this.client = new Proxy(config.client, hafasClientHandler);
+		this.client = this.wrapClientWithRateLimiter({ ...config.client }, config.quota);
 
 		this.hasTickets = config.hasTickets;
 	}
@@ -234,7 +217,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	 * @throws HafasError
 	 * @private
 	 */
-	private static throwHafasQuotaError = (): never => {
+	protected override throwQuotaError = (): never => {
 		throw {
 			isHafasError: true,
 			code: "QUOTA_EXCEEDED",
