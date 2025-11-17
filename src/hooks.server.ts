@@ -2,9 +2,7 @@ import { sequence } from "@sveltejs/kit/hooks";
 import { type Handle, json } from "@sveltejs/kit";
 import { RateLimiter } from "$lib/server/RateLimiter";
 
-const rateLimiterIntervalSeconds = 60;
-const rateLimiterAccessThreshold = 40;
-const userRateLimiter = new RateLimiter(rateLimiterIntervalSeconds, rateLimiterAccessThreshold);
+const userRateLimiter = new RateLimiter({ interval: 60, threshold: 40 });
 
 /**
  * limits api access for each user
