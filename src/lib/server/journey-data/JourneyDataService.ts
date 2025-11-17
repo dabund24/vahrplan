@@ -96,7 +96,7 @@ export abstract class JourneyDataService<
 	protected abstract throwQuotaError: () => never;
 
 	protected wrapClientWithRateLimiter = <
-		T extends Record<string | symbol, (...args: any[]) => Promise<unknown>>
+		T extends Record<string | symbol, (...args: unknown[]) => Promise<unknown>>
 	>(
 		client: T,
 		quota: ConstructorParameters<typeof RateLimiter>[0]

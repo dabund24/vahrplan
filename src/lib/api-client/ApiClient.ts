@@ -22,6 +22,7 @@ export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">
 export type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
 export type NonBodyfulHttpMethod = Exclude<HttpMethod, BodyfulHttpMethod>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
 
 type ParsedRequest<MethodT extends HttpMethod, ReqT> = {

@@ -28,7 +28,6 @@ export default [
 				"error",
 				{ commentPattern: "fallthrough", reportUnusedFallthroughComment: true }
 			],
-			"@typescript-eslint/no-explicit-any": ["error", { ignoreRestArgs: true }],
 			"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 			"@typescript-eslint/explicit-function-return-type": [
 				"error",
