@@ -10,6 +10,8 @@ import { VahrplanError } from "$lib/VahrplanError";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import type { OptionId } from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import { RateLimiter } from "$lib/server/RateLimiter";
+import type { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDataRequestFormatter";
+import type { JourneyDataResponseParser } from "$lib/server/journey-data/JourneyDataResponseParser";
 
 export type JourneyNodesWithRefs = {
 	journeys: SubJourney[];
@@ -42,6 +44,9 @@ type Fetchable = ExtractResultType<
 export type JourneyDataServiceConfig<ProductT extends Product, OptionT extends OptionId> = {
 	productMapping: Record<ProductT, string>;
 	optionMapping: Record<OptionT, string>;
+	requestFormatter: JourneyDataRequestFormatter<ProductT, OptionT>;
+	responseParser: JourneyDataResponseParser<ProductT, OptionT>;
+	hasTickets: boolean;
 };
 
 export abstract class JourneyDataService<
@@ -50,10 +55,12 @@ export abstract class JourneyDataService<
 > {
 	protected products: Record<ProductT, string>;
 	protected optionIds: Record<OptionT, string>;
+	protected readonly requestFormatter: JourneyDataRequestFormatter<ProductT, OptionT>;
 
 	protected constructor(config: JourneyDataServiceConfig<ProductT, OptionT>) {
 		this.products = config.productMapping;
 		this.optionIds = config.optionMapping;
+		this.requestFormatter = config.requestFormatter;
 	}
 
 	/**
@@ -96,7 +103,7 @@ export abstract class JourneyDataService<
 	protected abstract throwQuotaError: () => never;
 
 	protected wrapClientWithRateLimiter = <
-		T extends Record<string | symbol, (...args: unknown[]) => Promise<unknown>>
+		T extends Record<string | symbol, (...args: never[]) => Promise<unknown>>
 	>(
 		client: T,
 		quota: ConstructorParameters<typeof RateLimiter>[0]
