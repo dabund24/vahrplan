@@ -50,6 +50,7 @@ export type ProfileConfig = {
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	name: string;
 	lang: Language;
+	supportedLanguages: Language[];
 	products: Partial<Record<Product, NameWithKnownLocale<ProductConfig>>>;
 	options: {
 		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>;
@@ -169,6 +170,7 @@ export abstract class Profile<
 			name: this.name[lang],
 			id: this.id,
 			lang,
+			supportedLanguages: this.supportedLanguages,
 			products: this.assignLangNames(lang, this.products),
 			options: this.assignLangNames(lang, opt)
 		};
