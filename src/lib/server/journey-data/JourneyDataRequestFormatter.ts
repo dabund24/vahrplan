@@ -7,11 +7,16 @@ import type {
 	JourneyDataService,
 	JourneyDataServiceConfig
 } from "$lib/server/journey-data/JourneyDataService";
-import type { Language } from "../../../params/lang";
 
-export abstract class JourneyDataRequestFormatter<ProductT extends Product, OptionT extends OptionId> {
+export abstract class JourneyDataRequestFormatter<
+	ProductT extends Product,
+	OptionT extends OptionId
+> {
 	public constructor(
-		config: Omit<JourneyDataServiceConfig<ProductT, OptionT>, "requestFormatter">
+		config: Omit<
+			JourneyDataServiceConfig<ProductT, OptionT>,
+			"requestFormatter" | "responseParser"
+		>
 	) {
 		this.optionMapping = config.optionMapping;
 		this.productMapping = config.productMapping;
@@ -22,14 +27,20 @@ export abstract class JourneyDataRequestFormatter<ProductT extends Product, Opti
 	protected readonly optionMapping: Record<OptionT, string>;
 	protected readonly hasTickets: boolean;
 
+	/**
+	 * map option values to their representative in the upstream api
+	 * @protected
+	 */
 	protected abstract readonly formatOptionValues: {
 		[K in OptionT]: (value: PossibleOptionValues<K>) => unknown;
 	};
 
+	/**
+	 * format requests for the upstream api
+	 */
 	public abstract readonly formatRequest: {
-		[K in keyof JourneyDataService]: (
-			lang: Language,
-			...params: Parameters<JourneyDataService[K]>
+		[K in keyof JourneyDataService<ProductT, OptionT>]: (
+			...params: Parameters<JourneyDataService<ProductT, OptionT>[K]>
 		) => unknown;
 	};
 }

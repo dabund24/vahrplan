@@ -179,6 +179,13 @@ export type LegBlock = {
 	productName?: string;
 	product: Product;
 	lineShape?: LineShape;
+	operator?: string;
+	loadFactor?: "low" | "medium" | "high" | "very-high";
+	cycle?: {
+		min: number;
+		max: number;
+	};
+	tripNumber?: string;
 	info: {
 		statuses: string[];
 		hints: string[];
@@ -284,6 +291,6 @@ export type Ctx = {
 	profileConfig: ProfileConfig;
 	pathBase: `/${Language}/${ProfileId}/`;
 	apiPathBase: `${Ctx["pathBase"]}api/`;
-	dataService: JourneyDataService;
+	dataService: JourneyDataService<Product, OptionId>;
 	lang: Language;
 };

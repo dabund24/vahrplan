@@ -3,7 +3,6 @@ import { DbnavProfile } from "./dbnavProfile.server";
 import type { ProfileId } from "../../../../../params/profileId";
 import type { Language } from "../../../../../params/lang";
 import { EmptyProfile } from "./emptyProfile.server";
-import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 
 const profiles = {
 	empty: new EmptyProfile(),
@@ -17,7 +16,10 @@ export function profileRegistry<T extends ProfileId>(id: T): (typeof profiles)[T
 	return profiles[id];
 }
 
-export function journeyDataService(profile: ProfileId, _lang: Language): JourneyDataService {
+export function journeyDataService<ProfileT extends ProfileId>(
+	profile: ProfileT,
+	_lang: Language
+): (typeof profiles)[ProfileT]["dataService"] {
 	return profiles[profile].dataService;
 	// TODO proxy data service such that the future language parameter doesn't need to be specified
 }

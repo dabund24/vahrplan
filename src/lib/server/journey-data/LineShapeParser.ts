@@ -10,13 +10,17 @@ export type LineShape = {
 	shape: "circle" | "hexagon" | "rectangle" | "rectangle-rounded-corner" | "pill" | "trapezoid";
 };
 
-export abstract class LineShapeParser {
-	private static readonly buildLineShapes = async (): Promise<
+/**
+ * extend to parse line shapes
+ * @typeParam T - the type line details should be parsed from
+ */
+export abstract class LineShapeParser<T> {
+	private static readonly buildTraewellingLineShapes = async (): Promise<
 		typeof this.traewellingLineShapes
 	> => {
 		const result: typeof this.traewellingLineShapes = [];
 
-		const csvLines = await this.lineShapeCsvIterator();
+		const csvLines = await this.lineShapeCsvIterator(lineShapesCsv);
 
 		for (const line of csvLines) {
 			const [
@@ -46,8 +50,12 @@ export abstract class LineShapeParser {
 		return result;
 	};
 
-	private static lineShapeCsvIterator = async (): Promise<Iterable<string>> => {
-		const fileContent = await read(lineShapesCsv).text();
+	/**
+	 * iterate over csv
+	 * @param route
+	 */
+	private static lineShapeCsvIterator = async (route: string): Promise<Iterable<string>> => {
+		const fileContent = await read(route).text();
 		const lines = fileContent.split("\n");
 		lines.shift(); // remove first element
 		lines.pop(); // remove last element
@@ -60,8 +68,13 @@ export abstract class LineShapeParser {
 	})[] = [];
 
 	static {
-		void this.buildLineShapes().then((lineShapes) => (this.traewellingLineShapes = lineShapes));
+		void this.buildTraewellingLineShapes().then(
+			(lineShapes) => (this.traewellingLineShapes = lineShapes)
+		);
 	}
 
-	public abstract readonly getLineShape: (lineDetails: never) => LineShape | undefined;
+	/**
+	 * parse line shape details from an object
+	 */
+	public abstract readonly getLineShape: (lineDetails: T | undefined) => LineShape | undefined;
 }
