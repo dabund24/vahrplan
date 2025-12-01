@@ -18,6 +18,7 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
+import type { OptionId, PossibleOptionValues, Profile } from "../profile/profile.server";
 
 type ReqType = {
 	stops: string[];
@@ -60,7 +61,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 
 	protected override formatQueryParams = (
 		content: ReqType,
-		ctx: Pick<Ctx, "profileConfig">
+		{ profileConfig }: Pick<Ctx, "profileConfig">
 	): URLSearchParams => {
 		const queryParams = new URLSearchParams();
 		this.writeArrayQueryParameter(queryParams, this.queryParamNames.stops, content.stops);
@@ -69,10 +70,10 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 			this.queryParamNames.timeRole,
 			content.timeData.scrollDirection === "later" ? "departure" : "arrival"
 		);
-		// url.searchParams.set("passengers[]", null); TODO handle ticket data
 
 		let product: Product;
-		for (product in content.filters.products) {
+		for (product in profileConfig.products) {
+			// only set products from profile config
 			this.writeBooleanQueryParameter(
 				queryParams,
 				this.queryParamNames[product],
@@ -80,22 +81,46 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 			);
 		}
 
-		this.writeBooleanQueryParameter(
-			queryParams,
-			this.queryParamNames.bike,
-			content.filters.bike
-		);
-		this.writeBooleanQueryParameter(
-			queryParams,
-			this.queryParamNames.accessible,
-			content.filters.accessible
-		);
-		queryParams.set(this.queryParamNames.maxTransfers, String(content.filters.maxTransfers));
-		queryParams.set(
-			this.queryParamNames.minTransferTime,
-			String(content.filters.minTransferTime)
-		);
+		let optionKey: OptionId;
+		for (optionKey in profileConfig.options) {
+			// only set options from profile config
+			const value = content.filters.options[optionKey];
+			if (typeof value === "boolean") {
+				this.writeBooleanQueryParameter(
+					queryParams,
+					this.queryParamNames[optionKey],
+					value
+				);
+			} else {
+				queryParams.set(this.queryParamNames[optionKey], String(value));
+			}
+		}
+
 		return queryParams;
+	};
+
+	/**
+	 * read an option value from a query parameter; return the default value if it doesn't exist
+	 * @param key option key
+	 * @param defaultValue
+	 * @param queryParams
+	 */
+	private readNonBooleanOptionValue = <
+		KeyT extends {
+			[K in OptionId]: PossibleOptionValues<K> extends boolean ? never : K;
+		}[OptionId]
+	>(
+		key: KeyT,
+		defaultValue: PossibleOptionValues<KeyT> &
+			(typeof Profile.availableOptions)[KeyT]["defaultValue"],
+		queryParams: URLSearchParams
+	): PossibleOptionValues<KeyT> => {
+		const paramValue = queryParams.get(this.queryParamNames[key]);
+		if (paramValue === null) {
+			return defaultValue;
+		}
+		return Number(paramValue) as PossibleOptionValues<KeyT>;
+		// disambiguate between string and number param once a number param exists
 	};
 
 	protected override parseRequestContent = (
@@ -120,6 +145,27 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		if (timeParam === null) {
 			error(400, VahrplanError.withMessage("HAFAS_INVALID_REQUEST", "Ungültige Zeitangabe."));
 		}
+
+		const products: Record<Product, boolean> = {
+			longDistanceExpress: url.searchParams.has(this.queryParamNames.longDistanceExpress),
+			longDistance: url.searchParams.has(this.queryParamNames.longDistance),
+			regionalExpress: url.searchParams.has(this.queryParamNames.regionalExpress),
+			regional: url.searchParams.has(this.queryParamNames.regional),
+			suburban: url.searchParams.has(this.queryParamNames.suburban),
+			subway: url.searchParams.has(this.queryParamNames.subway),
+			tram: url.searchParams.has(this.queryParamNames.tram),
+			bus: url.searchParams.has(this.queryParamNames.bus),
+			taxi: url.searchParams.has(this.queryParamNames.taxi),
+			ferry: url.searchParams.has(this.queryParamNames.ferry)
+		};
+
+		const options: { [K in OptionId]: PossibleOptionValues<K> } = {
+			bike: url.searchParams.has(this.queryParamNames.bike),
+			accessible: url.searchParams.has(this.queryParamNames.accessible),
+			maxTransfers: this.readNonBooleanOptionValue("maxTransfers", -1, url.searchParams),
+			minTransferTime: this.readNonBooleanOptionValue("minTransferTime", 0, url.searchParams)
+		};
+
 		return {
 			stops,
 			timeData: {
@@ -128,24 +174,8 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 				scrollDirection
 			},
 			filters: {
-				products: {
-					longDistanceExpress: url.searchParams.has(
-						this.queryParamNames.longDistanceExpress
-					),
-					longDistance: url.searchParams.has(this.queryParamNames.longDistance),
-					regionalExpress: url.searchParams.has(this.queryParamNames.regionalExpress),
-					regional: url.searchParams.has(this.queryParamNames.regional),
-					suburban: url.searchParams.has(this.queryParamNames.suburban),
-					subway: url.searchParams.has(this.queryParamNames.subway),
-					tram: url.searchParams.has(this.queryParamNames.tram),
-					bus: url.searchParams.has(this.queryParamNames.bus),
-					taxi: url.searchParams.has(this.queryParamNames.taxi),
-					ferry: url.searchParams.has(this.queryParamNames.ferry)
-				} as Record<Product, boolean>,
-				bike: url.searchParams.has(this.queryParamNames.bike),
-				accessible: url.searchParams.has(this.queryParamNames.accessible),
-				maxTransfers: Number(url.searchParams.get(this.queryParamNames.maxTransfers)),
-				minTransferTime: Number(url.searchParams.get(this.queryParamNames.minTransferTime))
+				products,
+				options
 			}
 		};
 	};

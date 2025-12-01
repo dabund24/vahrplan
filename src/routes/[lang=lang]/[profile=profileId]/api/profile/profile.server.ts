@@ -34,7 +34,7 @@ type OptionConfig<T extends string[] | number[] | boolean> = {
 export type PossibleOptionValues<T extends OptionId> =
 	(typeof Profile.availableOptions)[T] extends OptionConfig<string[] | number[]>
 		? (typeof Profile.availableOptions)[T]["possibleValues"][number]
-		: true | false;
+		: boolean;
 
 type ProductConfig = {
 	name: LocaleString;

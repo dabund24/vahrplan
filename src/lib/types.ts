@@ -1,7 +1,7 @@
 import type { LineShape } from "$lib/server/journey-data/lineShapes";
 import type {
 	OptionId,
-	Profile,
+	PossibleOptionValues,
 	ProfileConfig
 } from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 import type { Language } from "../params/lang";
@@ -102,11 +102,7 @@ export type JourneysFilters<
 	OptionT extends OptionId = OptionId
 > = {
 	products: Record<ProductT, boolean>;
-	options: {
-		[K in OptionT]: (typeof Profile.availableOptions)[K] extends { possibleValues: (infer T)[] }
-			? T
-			: boolean;
-	};
+	options: { [K in OptionT]: PossibleOptionValues<K> };
 };
 
 export type SubJourney = {
