@@ -4,5 +4,7 @@ export abstract class TicketUrlParser {
 	/**
 	 * generate a ticket url from a sub journey object
 	 */
-	public abstract readonly generateTicketUrl: (subJourney: SubJourney) => string;
+	public abstract readonly generateTicketUrl: (
+		subJourneyData: Pick<SubJourney, "refreshToken" | "departureTime" | "arrivalTime" | "blocks">
+	) => string;
 }

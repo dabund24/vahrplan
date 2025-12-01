@@ -77,6 +77,8 @@ export abstract class JourneyDataResponseParser<ProductT extends Product> {
 
 	protected abstract readonly parseCycle: (...params: never[]) => LegBlock["cycle"];
 
+	protected abstract readonly parseTicketData: (...params: never[]) => SubJourney["ticketData"];
+
 	protected readonly parseProduct = (upstreamProduct: string | undefined): Product =>
 		upstreamProduct !== undefined && upstreamProduct in this.productMapping
 			? this.productMapping[upstreamProduct]

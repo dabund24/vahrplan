@@ -116,7 +116,7 @@ export type SubJourney = {
 		minPrice?: number;
 		currency: string;
 		hint?: string;
-		url: string;
+		url?: string;
 	};
 } & { [K in TransitType as `${K}Time`]: ParsedTime[K] };
 

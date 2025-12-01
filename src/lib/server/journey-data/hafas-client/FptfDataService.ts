@@ -12,6 +12,7 @@ import type { OptionId } from "../../../../routes/[lang=lang]/[profile=profileId
 import { FptfRequestFormatter } from "$lib/server/journey-data/hafas-client/FptfRequestFormatter";
 import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
 import { FptfResponseParser } from "$lib/server/journey-data/hafas-client/FptfResponseParser";
+import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 
 export type FptfOptionT = Extract<
 	OptionId,
@@ -27,16 +28,15 @@ export type HafasError = Error & {
 	hafasDescription: string;
 };
 
-type FptfDataServiceConfig<ProductT extends Product> = Pick<
+export type FptfDataServiceConfig<ProductT extends Product> = Pick<
 	JourneyDataServiceConfig<ProductT, FptfOptionT>,
 	"productMapping"
 > & {
 	client: HafasClient;
-	requestFormatter: FptfRequestFormatter<ProductT>;
-	responseParser: FptfResponseParser<ProductT>;
 	hasTickets: boolean;
-	quota: ConstructorParameters<typeof RateLimiter>[0];
+	quota?: ConstructorParameters<typeof RateLimiter>[0];
 	lineShapeParser: LineShapeParser<Line>;
+	ticketUrlParser?: TicketUrlParser;
 };
 
 /**
@@ -68,7 +68,10 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			hasTickets: config.hasTickets
 		});
 
-		this.client = this.wrapClientWithRateLimiter({ ...config.client }, config.quota);
+		this.client = this.wrapClientWithRateLimiter(
+			{ ...config.client },
+			config.quota ?? { interval: 60, threshold: 60 }
+		);
 		this.requestFormatter = new FptfRequestFormatter({
 			optionMapping,
 			productMapping: config.productMapping,
@@ -76,7 +79,8 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		});
 		this.responseParser = new FptfResponseParser({
 			productMapping: config.productMapping,
-			lineShapeParser: config.lineShapeParser
+			lineShapeParser: config.lineShapeParser,
+			ticketUrlParser: config.ticketUrlParser
 		});
 	}
 

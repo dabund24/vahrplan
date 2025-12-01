@@ -14,9 +14,11 @@ import type {
 	TransitType,
 	WalkingBlock
 } from "$lib/types";
-import type { FptfDataService } from "$lib/server/journey-data/hafas-client/FptfDataService";
+import type {
+	FptfDataService,
+	FptfDataServiceConfig
+} from "$lib/server/journey-data/hafas-client/FptfDataService";
 import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
-import { type JourneyDataServiceConfig } from "$lib/server/journey-data/JourneyDataService";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 import type { UnpackedVahrplanResult } from "$lib/VahrplanResult";
 import { dateDifference, getFirstAndLastTime } from "$lib/util";
@@ -24,12 +26,9 @@ import type { Journey, Leg, Line, Location, Station, Stop, StopOver } from "hafa
 import { transferToBlock } from "$lib/merge";
 
 type FptfResponseFormatterConfig<ProductT extends Product> = Pick<
-	JourneyDataServiceConfig<ProductT, never>,
-	"productMapping"
-> & {
-	lineShapeParser: LineShapeParser<Line>;
-	ticketUrlParser?: TicketUrlParser;
-};
+	FptfDataServiceConfig<ProductT>,
+	"productMapping" | "lineShapeParser" | "ticketUrlParser"
+>;
 
 type HafasTimeData = {
 	time: Leg[TransitType];
@@ -40,8 +39,8 @@ type HafasTimeData = {
 export class FptfResponseParser<
 	ProductT extends Product
 > extends JourneyDataResponseParser<ProductT> {
-	private lineShapeParser: LineShapeParser<Line>;
-	private ticketUrlParser: TicketUrlParser | undefined;
+	private readonly lineShapeParser: LineShapeParser<Line>;
+	private readonly ticketUrlParser?: TicketUrlParser;
 
 	public constructor({
 		lineShapeParser,
@@ -56,12 +55,20 @@ export class FptfResponseParser<
 	protected override readonly parseSubJourney = (journey: Journey): SubJourney => {
 		const blocks = this.parseJourneyBlocks(journey);
 		const { arrival, departure } = getFirstAndLastTime(blocks);
-
-		return {
+		const ticketData = this.parseTicketData(journey);
+		const res = {
 			refreshToken: journey.refreshToken ?? "",
 			blocks,
 			arrivalTime: arrival.arrival ?? { time: new Date(0).toISOString() },
 			departureTime: departure.departure ?? { time: new Date(0).toISOString() }
+		};
+		if (this.ticketUrlParser !== undefined && ticketData !== undefined) {
+			ticketData.url = this.ticketUrlParser.generateTicketUrl(res);
+		}
+
+		return {
+			...res,
+			ticketData
 		};
 	};
 
@@ -514,6 +521,14 @@ export class FptfResponseParser<
 			return undefined;
 		}
 		return { min, max };
+	};
+
+	protected override readonly parseTicketData = (journey: Journey): SubJourney["ticketData"] => {
+		return {
+			hint: journey.price?.hint,
+			currency: journey.price?.currency ?? "EUR",
+			minPrice: journey.price?.amount
+		};
 	};
 
 	public override readonly parseResponse = {

@@ -5,6 +5,8 @@ import { createClient } from "db-vendo-client";
 // @ts-expect-error no types for db-vendo-client yet
 import { profile } from "db-vendo-client/p/dbnav";
 import type { HafasClient } from "hafas-client";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/hafas-client/DbnavLineShapeParser";
+import { DbnavTicketUrlParser } from "$lib/server/journey-data/hafas-client/DbnavTicketUrlParser";
 
 /**
  * uses https://github.com/public-transport/hafas-client/tree/main/p/db
@@ -61,6 +63,13 @@ export class DbnavProfile extends Profile<
 			bus: "bus",
 			ferry: "ferry",
 			taxi: "taxi"
+		},
+		lineShapeParser: new DbnavLineShapeParser(),
+		hasTickets: true,
+		ticketUrlParser: new DbnavTicketUrlParser(),
+		quota: {
+			threshold: 60,
+			interval: 60
 		}
 	});
 }
