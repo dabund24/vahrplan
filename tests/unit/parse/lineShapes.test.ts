@@ -13,31 +13,6 @@ vi.mock("$app/server", () => ({
 	read: (): object => ({ text: readLinesCsv })
 }));
 
-test("line shapes last entry", () => {
-	const hafasLine = {
-		type: "line",
-		id: "str-13575",
-		fahrtNr: "13575",
-		name: "STR N17",
-		public: true,
-		adminCode: "nasLVT",
-		productName: "STR",
-		mode: "train",
-		product: "tram",
-		operator: undefined
-	} as const;
-	const expected = {
-		linePrefix: "STR",
-		lineName: "N17",
-		backgroundColor: "#67b337",
-		textColor: "#ffffff",
-		borderColor: undefined,
-		shape: "rectangle"
-	};
-	const actual = lineShapeParser.getLineShape(hafasLine);
-	expect(actual).toEqual(expected);
-});
-
 test("line shapes first entry", () => {
 	const hafasLine = {
 		type: "line",
@@ -55,6 +30,31 @@ test("line shapes first entry", () => {
 		linePrefix: "ag",
 		lineName: "RB 15",
 		backgroundColor: "#24b27d",
+		textColor: "#ffffff",
+		borderColor: undefined,
+		shape: "rectangle"
+	};
+	const actual = lineShapeParser.getLineShape(hafasLine);
+	expect(actual).toEqual(expected);
+});
+
+test("line shapes last entry", () => {
+	const hafasLine = {
+		type: "line",
+		id: "str-13575",
+		fahrtNr: "13575",
+		name: "STR N17",
+		public: true,
+		adminCode: "nasLVT",
+		productName: "STR",
+		mode: "train",
+		product: "tram",
+		operator: undefined
+	} as const;
+	const expected = {
+		linePrefix: "STR",
+		lineName: "N17",
+		backgroundColor: "#67b337",
 		textColor: "#ffffff",
 		borderColor: undefined,
 		shape: "rectangle"
