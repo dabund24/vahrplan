@@ -16,7 +16,7 @@ const bookmarkData: BookmarkData<"location"> = {
 const bookmark: Bookmarks["location"][number] = { ...bookmarkData, profile: "dbnav" };
 
 test("format location bookmark", () => {
-	vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
+	vi.mock("../../../../assets/line-shapes.csv?url", () => "");
 	const spy = vi.spyOn(Storage.prototype, "setItem");
 	toggleBookmark("location", bookmarkData, { profileConfig: getProfileConfig() });
 	expect(spy).toHaveBeenCalledExactlyOnceWith("locationBookmarks", JSON.stringify([bookmark]));
