@@ -1,13 +1,7 @@
 import { setDiagramDataFromFormData } from "$lib/state/diagramData.svelte";
 import { setSelectedData } from "$lib/state/selectedData.svelte";
 import { toast } from "$lib/state/toastStore";
-import type {
-	Ctx,
-	JourneysFilters,
-	KeyedItem,
-	ParsedLocation,
-	TimeData
-} from "$lib/types";
+import type { Ctx, JourneysFilters, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
