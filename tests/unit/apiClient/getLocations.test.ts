@@ -4,7 +4,7 @@ import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
 
 const route = "locations/[name]";
 const client = apiClient("GET", route);
-let input: Awaited<ReturnType<(typeof client)["parse"]>>;
+let input: Parameters<(typeof client)["request"]>[0];
 
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "Nordpol";

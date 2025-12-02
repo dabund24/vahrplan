@@ -4,7 +4,7 @@ import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
 
 const route = "journey/shorturl";
 const client = apiClient("PUT", route);
-let input: Awaited<ReturnType<(typeof client)["parse"]>>;
+let input: Parameters<(typeof client)["request"]>[0];
 
 test(`PUT ${route} api client parsing and formatting`, async () => {
 	input = {

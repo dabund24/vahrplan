@@ -1,5 +1,5 @@
 import { read } from "$app/server";
-import lineShapesCsv from "*?url";
+import lineShapesCsv from "../../../../assets/line-shapes.csv?url";
 
 export type LineShape = {
 	linePrefix?: string;

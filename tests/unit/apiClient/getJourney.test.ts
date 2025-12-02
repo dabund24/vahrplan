@@ -4,7 +4,7 @@ import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
 
 const route = "journey";
 const client = apiClient("GET", route);
-let input: ReturnType<(typeof client)["parse"]>;
+let input: Parameters<(typeof client)["request"]>[0];
 
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = ["@#$^&*()", "fjewghiue", "qwerty"];

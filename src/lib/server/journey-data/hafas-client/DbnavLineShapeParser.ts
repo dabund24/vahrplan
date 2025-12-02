@@ -1,6 +1,5 @@
-import { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
+import { type LineShape, LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
 import type { Line } from "hafas-client";
-import type { LineShape } from "$lib/server/journey-data/lineShapes";
 
 export class DbnavLineShapeParser extends LineShapeParser<Line> {
 	public override getLineShape = (line?: Line): LineShape | undefined => {

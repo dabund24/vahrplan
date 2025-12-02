@@ -1,30 +1,60 @@
-import { ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
+import {
+	ApiClient,
+	type ApiClientRequestEvent,
+	type HttpMethod,
+	type MinimalRequestEvent
+} from "$lib/api-client/ApiClient";
 import { type PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
-import { type RequestEvent } from "@sveltejs/kit";
 import { expect, vi } from "vitest";
+import { type ProfileConfig } from "../../../src/routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import { profileRegistry } from "../../../src/routes/[lang=lang]/[profile=profileId]/api/profile/profileRegistry.server";
+
+export function getProfileConfig(): ProfileConfig {
+	const rawDbnavProfile = profileRegistry("dbnav").configOfLanguage("de");
+
+	return {
+		...rawDbnavProfile,
+		products: {
+			longDistanceExpress: rawDbnavProfile.products.longDistanceExpress,
+			bus: rawDbnavProfile.products.bus
+		},
+		options: {
+			minTransferTime: rawDbnavProfile.options.minTransferTime,
+			bike: rawDbnavProfile.options.bike
+		}
+	};
+}
 
 export async function apiClientParseFormatTest<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends RequestEvent<object, string>
+	RequestEventT extends ApiClientRequestEvent
 >(
 	client: ApiClient<ReqT, ResT, MethodT, RequestEventT>,
 	input: ReqT,
 	paramInfo: {
 		expectedPath: string;
 		params: Omit<RequestEventT["params"], "lang" | "profile">;
-	}
+	},
+	expected?: ReqT
 ): Promise<void> {
 	let url: URL | undefined = undefined;
-	let parsed: ReqT | undefined = undefined;
+	let parsed = {} as ReturnType<typeof client.parseRequest>;
 
+	vi.mock("$app/state", () => ({ page: { data: { profile: getProfileConfig(), lang: "de" } } }));
+	vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
+	vi.mock("$app/environment", () => ({ version: (): string => "test" }));
 	// @ts-expect-error plausible
 	global.plausible = () => void {};
 	global.location = { origin: "http://localhost", href: "http://localhost" } as Location;
 	global.fetch = vi.fn(async (request: RequestInfo | URL, _?: RequestInit) => {
 		url = new URL((request as Request).url);
-		parsed = await client.parse({ params: paramInfo.params, url, request } as RequestEventT);
+		parsed = client.parseRequest({
+			url,
+			params: { ...paramInfo.params, lang: "de", profile: "dbnav" },
+			...({ request } as Record<never, never>)
+		} as MinimalRequestEvent<MethodT, RequestEventT>);
 		return Promise.resolve(new Response());
 	});
 
@@ -34,20 +64,25 @@ export async function apiClientParseFormatTest<
 	expect(decodeURIComponent(url!.pathname), "path is resolved correctly").toBe(
 		paramInfo.expectedPath
 	);
-	expect(parsed, "parsing formatted request is input").toEqual(input);
+	expect(
+		await (parsed.reqContent as Promise<unknown>),
+		"parsing formatted request is input"
+	).toEqual(expected ?? input);
 }
 
 export async function apiClientPlausibleTest<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends RequestEvent<object, string>
+	RequestEventT extends ApiClientRequestEvent
 >(
 	client: ApiClient<ReqT, ResT, MethodT, RequestEventT>,
 	input: ReqT,
 	expected: { goal: string; props: Partial<Record<PlausibleProp, string | number>> }
 ): Promise<void> {
-	vi.mock("$app/state", () => ({ page: { route: { id: "/foo/bar/baz" } } }));
+	vi.mock("$app/state", () => ({
+		page: { route: { id: "/foo/bar/baz" }, data: { profile: getProfileConfig(), lang: "de" } }
+	}));
 
 	global.location = { ...global.location, origin: "https://vahrplan.de" };
 

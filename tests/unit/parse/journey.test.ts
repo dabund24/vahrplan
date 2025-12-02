@@ -1,7 +1,9 @@
 import { beforeAll, expect, test, vi } from "vitest";
-import { parseSubJourney } from "$lib/server/journey-data/hafas-client/parse/parse";
 import { berlinToBerlinFernsehturmJourney } from "../fixtures/journeyRealtimeArrivingWalk";
 import { lindauInselToAugsburgJourney } from "../fixtures/journeyRealtimeStartingOnwardJourney";
+import { FptfResponseParser } from "$lib/server/journey-data/hafas-client/FptfResponseParser";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/hafas-client/DbnavLineShapeParser";
+import { DbnavTicketUrlParser } from "$lib/server/journey-data/hafas-client/DbnavTicketUrlParser";
 
 const berlinToBerlinFernsehturmExpected = {
 	refreshToken:
@@ -10,11 +12,8 @@ const berlinToBerlinFernsehturmExpected = {
 		{
 			type: "leg",
 			tripId: "2|#VN#1#ST#1747860008#PI#0#ZI#557359#TA#0#DA#270525#1S#8010060#1T#2019#LS#8010113#LT#2231#PU#80#RT#1#CA#DPN#ZE#73786#ZB#RE 73786#PC#3#FR#8010060#FT#2019#TO#8010113#TT#2231#",
-			attribute: undefined,
 			blockKey: "Ostdeutsche_Eisenbahn_GmbH73786RE_1Frankfurt_Oder_",
-			currentLocation: undefined,
 			departureData: {
-				attribute: undefined,
 				location: {
 					name: "Berlin Hbf",
 					id: "8011160",
@@ -37,7 +36,6 @@ const berlinToBerlinFernsehturmExpected = {
 				}
 			},
 			arrivalData: {
-				attribute: undefined,
 				location: {
 					name: "Berlin Alexanderplatz",
 					id: "8011155",
@@ -61,10 +59,11 @@ const berlinToBerlinFernsehturmExpected = {
 			},
 			duration: 5,
 			direction: "Frankfurt(Oder)",
-			lineShape: undefined,
 			name: "RE 1",
 			productName: "RE",
 			product: "regional",
+			operator: "Ostdeutsche Eisenbahn GmbH",
+			tripNumber: "73786",
 			info: {
 				statuses: [],
 				hints: [
@@ -82,7 +81,6 @@ const berlinToBerlinFernsehturmExpected = {
 			},
 			stopovers: [
 				{
-					attribute: undefined,
 					location: {
 						name: "Berlin Friedrichstraße",
 						id: "8011306",
@@ -165,8 +163,6 @@ const berlinToBerlinFernsehturmExpected = {
 			},
 			time: {
 				arrival: {
-					delay: undefined,
-					status: undefined,
 					time: new Date("2025-05-27T19:24:00.000Z")
 				}
 			},
@@ -174,8 +170,6 @@ const berlinToBerlinFernsehturmExpected = {
 		}
 	],
 	arrivalTime: {
-		delay: undefined,
-		status: undefined,
 		time: new Date("2025-05-27T19:24:00.000Z")
 	},
 	departureTime: {
@@ -185,8 +179,6 @@ const berlinToBerlinFernsehturmExpected = {
 	},
 	ticketData: {
 		currency: "EUR",
-		hint: undefined,
-		minPrice: undefined,
 		url: "https://www.bahn.de/buchung/start?so=Berlin+Hbf&zo=Berlin%2C+Fernsehturm+%28Tourismus%29&soid=O%3DBerlin+Hbf&zoid=O%3DBerlin%2C+Fernsehturm+%28Tourismus%29&cbs=true&hd=Tue+May+27+2025+19%3A16%3A00+GMT%2B0000+%28Coordinated+Universal+Time%29&gh=%C2%B6HKI%C2%B6T%24A%3D1%40O%3DBerlin+Hbf%40X%3D13369549%40Y%3D52525589%40L%3D8011160%40a%3D128%40%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410962%40Y%3D52521481%40L%3D8011155%40a%3D128%40%24202505272114%24202505272120%24RE+73786%24%241%24%24%24%24%24%24%C2%A7W%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410962%40Y%3D52521481%40L%3D8011155%40a%3D128%40%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410728%40Y%3D52521409%40L%3D618011155%40a%3D128%40%24202505272120%24202505272120%24%24%241%24%24%24%24%24%24%C2%A7G%40F%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410728%40Y%3D52521409%40L%3D618011155%40a%3D128%40%24A%3D4%40O%3DBerlin%2C+Fernsehturm+%28Tourismus%29%40X%3D13409694%40Y%3D52521301%40L%3D991671997%40a%3D128%40%24202505272121%24202505272123%24%24%241%24%24%24%24%24%24%C2%B6GP%C2%B6ft%400%402000%40120%401%40100%401%400%400%40%40%40%40%40false%400%40-1%400%40-1%40-1%40%24f%40%24f%40%24f%40%24f%40%24f%40%24%C2%A7bt%400%402000%40120%401%40100%401%400%400%40%40%40%40%40false%400%40-1%400%40-1%40-1%40%24f%40%24f%40%24f%40%24f%40%24f%40%24%C2%A7tf%40%24f%40%24f%40%24f%40%24f%40%24f%40%24#sts=true"
 	}
 };
@@ -208,9 +200,7 @@ const lindauInselToAugsburgExpected = {
 			},
 			time: {
 				departure: {
-					time: new Date("2025-05-30T14:50:00.000Z"),
-					delay: undefined,
-					status: undefined
+					time: new Date("2025-05-30T14:50:00.000Z")
 				}
 			},
 			hidden: false
@@ -237,14 +227,10 @@ const lindauInselToAugsburgExpected = {
 			},
 			time: {
 				arrival: {
-					time: new Date("2025-05-30T14:50:00.000Z"),
-					delay: undefined,
-					status: undefined
+					time: new Date("2025-05-30T14:50:00.000Z")
 				},
 				departure: {
-					time: new Date("2025-05-30T15:10:00.000Z"),
-					delay: undefined,
-					status: undefined
+					time: new Date("2025-05-30T15:10:00.000Z")
 				}
 			},
 			transferTime: 20,
@@ -304,6 +290,9 @@ const lindauInselToAugsburgExpected = {
 			name: "ECE 195",
 			productName: "ECE",
 			product: "longDistanceExpress",
+			operator: "DB Fernverkehr AG",
+			loadFactor: "high",
+			tripNumber: "195",
 			info: {
 				statuses: [],
 				hints: [
@@ -442,6 +431,8 @@ const lindauInselToAugsburgExpected = {
 			name: "BRB RB77",
 			productName: "BRB",
 			product: "regional",
+			operator: "Bayerische Regiobahn",
+			tripNumber: "62785",
 			info: {
 				statuses: [],
 				hints: [
@@ -609,9 +600,7 @@ const lindauInselToAugsburgExpected = {
 		status: "on-time"
 	},
 	departureTime: {
-		time: new Date("2025-05-30T14:50:00.000Z"),
-		delay: undefined,
-		status: undefined
+		time: new Date("2025-05-30T14:50:00.000Z")
 	},
 	ticketData: {
 		currency: "EUR",
@@ -625,12 +614,29 @@ beforeAll(() => {
 	}));
 });
 
+const parser = new FptfResponseParser({
+	lineShapeParser: new DbnavLineShapeParser(),
+	ticketUrlParser: new DbnavTicketUrlParser(),
+	productMapping: {
+		longDistanceExpress: "nationalExpress",
+		longDistance: "national",
+		regionalExpress: "regionalExpress",
+		regional: "regional",
+		suburban: "suburban",
+		subway: "subway",
+		tram: "tram",
+		bus: "bus",
+		ferry: "ferry",
+		taxi: "taxi"
+	}
+});
+
 test("Parse journey with ending walk", () => {
-	const res = parseSubJourney(berlinToBerlinFernsehturmJourney);
+	const res = parser.parseResponse.refresh({ journey: berlinToBerlinFernsehturmJourney });
 	expect(res).toEqual(berlinToBerlinFernsehturmExpected);
 });
 
 test("Parse journey with starting onward journey", () => {
-	const res = parseSubJourney(lindauInselToAugsburgJourney);
+	const res = parser.parseResponse.refresh({ journey: lindauInselToAugsburgJourney });
 	expect(res).toEqual(lindauInselToAugsburgExpected);
 });

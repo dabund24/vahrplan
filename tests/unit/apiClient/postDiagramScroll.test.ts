@@ -4,11 +4,11 @@ import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
 
 const route = "diagram/scroll/[scrollDirection]";
 const client = apiClient("POST", route);
-const input: Awaited<ReturnType<(typeof client)["parse"]>> = {
+const input: Parameters<(typeof client)["request"]>[0] = {
 	scrollDirection: "earlier",
 	stops: ["", "12345"],
 	tokens: ["earlierTokenOne", "earlierTokenTwo"],
-	options: {
+	filters: {
 		products: {
 			longDistanceExpress: false,
 			longDistance: false,
@@ -21,10 +21,12 @@ const input: Awaited<ReturnType<(typeof client)["parse"]>> = {
 			taxi: true,
 			ferry: true
 		},
-		bike: false,
-		accessible: true,
-		minTransferTime: 0,
-		maxTransfers: -1
+		options: {
+			bike: false,
+			accessible: true,
+			minTransferTime: 0,
+			maxTransfers: -1
+		}
 	},
 	tree: [
 		{
