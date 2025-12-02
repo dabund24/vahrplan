@@ -4,7 +4,6 @@ import {
 	type JourneyNodesWithRefs
 } from "$lib/server/journey-data/JourneyDataService";
 import type { HafasClient, Line } from "hafas-client";
-import { RateLimiter } from "$lib/server/RateLimiter";
 import type { ParsedLocation, Product, SubJourney } from "$lib/types";
 import { type VahrplanResult } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
@@ -30,11 +29,9 @@ export type HafasError = Error & {
 
 export type FptfDataServiceConfig<ProductT extends Product> = Pick<
 	JourneyDataServiceConfig<ProductT, FptfOptionT>,
-	"productMapping"
+	"productMapping" | "hasTickets" | "quota"
 > & {
 	client: HafasClient;
-	hasTickets: boolean;
-	quota?: ConstructorParameters<typeof RateLimiter>[0];
 	lineShapeParser: LineShapeParser<Line>;
 	ticketUrlParser?: TicketUrlParser;
 };
@@ -65,13 +62,11 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		super({
 			productMapping: config.productMapping,
 			optionMapping,
-			hasTickets: config.hasTickets
+			hasTickets: config.hasTickets,
+			quota: config.quota
 		});
 
-		this.client = this.wrapClientWithRateLimiter(
-			{ ...config.client },
-			config.quota ?? { interval: 60, threshold: 60 }
-		);
+		this.client = config.client;
 		this.requestFormatter = new FptfRequestFormatter({
 			optionMapping,
 			productMapping: config.productMapping,
@@ -162,20 +157,5 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			"isHafasError" in error &&
 			error.isHafasError === true
 		);
-	};
-
-	/**
-	 * always throws an error indicating error 429
-	 * @throws HafasError
-	 * @private
-	 */
-	protected override throwQuotaError = (): never => {
-		throw {
-			isHafasError: true,
-			code: "QUOTA_EXCEEDED",
-			isCausedByServer: true,
-			hafasCode: "",
-			hafasDescription: ""
-		} as HafasError;
 	};
 }

@@ -27,6 +27,7 @@ export type JourneyDataServiceConfig<ProductT extends Product, OptionT extends O
 	productMapping: Record<ProductT, string>;
 	optionMapping: Record<OptionT, string>;
 	hasTickets: boolean;
+	quota?: ConstructorParameters<typeof RateLimiter>[0];
 };
 
 export abstract class JourneyDataService<ProductT extends Product, OptionT extends OptionId> {
@@ -35,10 +36,12 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 
 	protected products: Record<ProductT, string>;
 	protected optionIds: Record<OptionT, string>;
+	private rateLimiter: RateLimiter;
 
 	protected constructor(config: JourneyDataServiceConfig<ProductT, OptionT>) {
 		this.products = config.productMapping;
 		this.optionIds = config.optionMapping;
+		this.rateLimiter = new RateLimiter(config.quota ?? { interval: 60, threshold: 60 });
 	}
 
 	/**
@@ -86,29 +89,6 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	 */
 	protected abstract parseError: (err: unknown) => VahrplanError;
 
-	protected abstract throwQuotaError: () => never;
-
-	protected wrapClientWithRateLimiter = <
-		T extends Record<string | symbol, (...args: never[]) => Promise<unknown>>
-	>(
-		client: T,
-		quota: ConstructorParameters<typeof RateLimiter>[0]
-	): T => {
-		const rateLimiter = new RateLimiter(quota);
-
-		const proxyHandler = {
-			get: (target: T, prop: keyof T): T[keyof T] => {
-				const result = rateLimiter.accessResource("global", () => target[prop]);
-				if (result.isError) {
-					// Pretend as if client threw an error
-					return this.throwQuotaError();
-				}
-				return result.content;
-			}
-		};
-		return new Proxy(client, proxyHandler);
-	};
-
 	/**
 	 * perform a request and return a `VahrplanResult` wrapping the result or a corresponding error
 	 * @sealed
@@ -133,10 +113,21 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 		...reqData: Parameters<JourneyDataService<ProductT, OptionT>[EndpointT]>
 	): ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]> => {
 		const formattedReqParams = callbacks.formatReqParams(...reqData);
-		return callbacks
-			.request(...formattedReqParams)
-			.then((r) => new VahrplanSuccess(callbacks.parseRes(r)), this.parseError) as ReturnType<
-			JourneyDataService<ProductT, OptionT>[EndpointT] // this assertion is stupid. Why is this necessary ts????
-		>;
+		const res = this.rateLimiter.accessResource(
+			"global",
+			() =>
+				callbacks
+					.request(...formattedReqParams)
+					.then(
+						(r) => new VahrplanSuccess(callbacks.parseRes(r)),
+						this.parseError
+					) as ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]> // this assertion is stupid. Why is this necessary ts????
+		);
+		if (res.isError) {
+			return Promise.resolve(new VahrplanError("QUOTA_EXCEEDED")) as ReturnType<
+				JourneyDataService<ProductT, OptionT>[EndpointT]
+			>;
+		}
+		return res.content;
 	};
 }
