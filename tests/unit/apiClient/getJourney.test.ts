@@ -1,6 +1,6 @@
 import { test, vi } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./testApiClientUtils";
 
 const route = "journey";
 const client = apiClient("GET", route);

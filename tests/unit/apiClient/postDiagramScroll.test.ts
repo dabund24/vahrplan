@@ -1,6 +1,6 @@
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { test, vi } from "vitest";
-import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./testApiClientUtils";
 
 const route = "diagram/scroll/[scrollDirection]";
 const client = apiClient("POST", route);

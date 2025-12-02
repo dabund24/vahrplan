@@ -1,6 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { apiClientParseFormatTest, apiClientPlausibleTest, getProfileConfig } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./testApiClientUtils";
+import { exampleProfileConfig } from "../../testUtils";
 
 const route = "journey/shorturl/[shortJourneyId]";
 const client = apiClient("GET", route);
@@ -16,13 +17,13 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 
 test(`GET ${route} api client non-api url formatting`, () => {
 	input = "knjgnaekgnaw";
-	const url = client.formatNonApiUrl(input, { profileConfig: getProfileConfig() });
+	const url = client.formatNonApiUrl(input, { profileConfig: exampleProfileConfig });
 	expect(url.pathname).toEqual("/de/dbnav/journey/shorturl/knjgnaekgnaw");
 });
 
 test(`GET ${route} api client non-api url parsing`, () => {
 	const url = new URL("http://localhost/journey/shorturl/knjgnaekgnaw");
-	const id = client.parseNonApiUrl(url, { profileConfig: getProfileConfig() });
+	const id = client.parseNonApiUrl(url, { profileConfig: exampleProfileConfig });
 	expect(id.reqContent).toEqual("knjgnaekgnaw");
 });
 

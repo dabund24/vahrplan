@@ -2,15 +2,11 @@
  * @vitest-environment jsdom
  */
 
-import { beforeAll, expect, test, vi } from "vitest";
+import { expect, test, vi } from "vitest";
 import { type BookmarkData, type Bookmarks, toggleBookmark } from "$lib/bookmarks.svelte";
 import type { SubJourney } from "$lib/types";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
-import { getProfileConfig } from "../apiClient/utils";
-
-beforeAll(() => {
-	vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
-});
+import { exampleProfileConfig } from "../../testUtils";
 
 const bookmarkData: BookmarkData<"diagram"> = {
 	formData: {
@@ -95,6 +91,6 @@ const bookmark: Bookmarks["diagram"][number] = {
 
 test("format diagram bookmark", () => {
 	const spy = vi.spyOn(Storage.prototype, "setItem");
-	toggleBookmark("diagram", bookmarkData, { profileConfig: getProfileConfig() });
+	toggleBookmark("diagram", bookmarkData, { profileConfig: exampleProfileConfig });
 	expect(spy).toHaveBeenCalledExactlyOnceWith("diagramBookmarks", JSON.stringify([bookmark]));
 });

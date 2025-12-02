@@ -6,24 +6,7 @@ import {
 } from "$lib/api-client/ApiClient";
 import { type PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
 import { expect, vi } from "vitest";
-import { type ProfileConfig } from "../../../src/routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
-import { profileRegistry } from "../../../src/routes/[lang=lang]/[profile=profileId]/api/profile/profileRegistry.server";
-
-export function getProfileConfig(): ProfileConfig {
-	const rawDbnavProfile = profileRegistry("dbnav").configOfLanguage("de");
-
-	return {
-		...rawDbnavProfile,
-		products: {
-			longDistanceExpress: rawDbnavProfile.products.longDistanceExpress,
-			bus: rawDbnavProfile.products.bus
-		},
-		options: {
-			minTransferTime: rawDbnavProfile.options.minTransferTime,
-			bike: rawDbnavProfile.options.bike
-		}
-	};
-}
+import { exampleProfileConfig } from "../../testUtils";
 
 export async function apiClientParseFormatTest<
 	ReqT,
@@ -42,7 +25,9 @@ export async function apiClientParseFormatTest<
 	let url: URL | undefined = undefined;
 	let parsed = {} as ReturnType<typeof client.parseRequest>;
 
-	vi.mock("$app/state", () => ({ page: { data: { profile: getProfileConfig(), lang: "de" } } }));
+	vi.mock("$app/state", () => ({
+		page: { data: { profile: exampleProfileConfig, lang: "de" } }
+	}));
 	vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
 	vi.mock("$app/environment", () => ({ version: (): string => "test" }));
 	// @ts-expect-error plausible
@@ -81,7 +66,7 @@ export async function apiClientPlausibleTest<
 	expected: { goal: string; props: Partial<Record<PlausibleProp, string | number>> }
 ): Promise<void> {
 	vi.mock("$app/state", () => ({
-		page: { route: { id: "/foo/bar/baz" }, data: { profile: getProfileConfig(), lang: "de" } }
+		page: { route: { id: "/foo/bar/baz" }, data: { profile: exampleProfileConfig, lang: "de" } }
 	}));
 
 	global.location = { ...global.location, origin: "https://vahrplan.de" };

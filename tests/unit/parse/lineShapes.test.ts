@@ -1,5 +1,5 @@
 import type { Line } from "hafas-client";
-import { beforeAll, expect, test, vi } from "vitest";
+import { expect, test, vi } from "vitest";
 import { DbnavLineShapeParser } from "$lib/server/journey-data/hafas-client/DbnavLineShapeParser";
 import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
 
@@ -9,11 +9,9 @@ async function readLinesCsv(): Promise<string> {
 	return (await import("fs")).readFileSync("tests/unit/fixtures/line-shapes.csv").toString();
 }
 
-beforeAll(() => {
-	vi.mock("$app/server", () => ({
-		read: (): object => ({ text: readLinesCsv })
-	}));
-});
+vi.mock("$app/server", () => ({
+	read: (): object => ({ text: readLinesCsv })
+}));
 
 test("line shapes first entry", () => {
 	const hafasLine = {
