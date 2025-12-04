@@ -17,7 +17,7 @@ import type {
 import type {
 	FptfDataService,
 	FptfDataServiceConfig
-} from "$lib/server/journey-data/hafas-client/FptfDataService";
+} from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 import type { UnpackedVahrplanResult } from "$lib/VahrplanResult";

@@ -1,12 +1,12 @@
 import { Profile } from "./profile.server";
-import { FptfDataService } from "$lib/server/journey-data/hafas-client/FptfDataService";
+import { FptfDataService } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 // @ts-expect-error no types for db-vendo-client yet
 import { createClient } from "db-vendo-client";
 // @ts-expect-error no types for db-vendo-client yet
 import { profile } from "db-vendo-client/p/dbnav";
 import type { HafasClient } from "hafas-client";
-import { DbnavLineShapeParser } from "$lib/server/journey-data/hafas-client/DbnavLineShapeParser";
-import { DbnavTicketUrlParser } from "$lib/server/journey-data/hafas-client/DbnavTicketUrlParser";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/fptf-clients/DbnavLineShapeParser";
+import { DbnavTicketUrlParser } from "$lib/server/journey-data/fptf-clients/DbnavTicketUrlParser";
 
 /**
  * uses https://github.com/public-transport/hafas-client/tree/main/p/db

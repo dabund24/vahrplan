@@ -4,7 +4,7 @@ import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataSer
 import type {
 	FptfDataService,
 	FptfOptionT
-} from "$lib/server/journey-data/hafas-client/FptfDataService";
+} from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import type {
 	JourneysOptions as FptfJourneysOptions,
 	Location,
