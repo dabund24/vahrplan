@@ -1,5 +1,5 @@
 import type { DatabaseEntry, DatabaseEntryType, KeylessDatabaseEntry } from "$lib/types";
-import { valkeyClient } from "$lib/server/setup";
+import { valkeyClient } from "$lib/server/database";
 import { hash } from "node:crypto";
 
 /**
