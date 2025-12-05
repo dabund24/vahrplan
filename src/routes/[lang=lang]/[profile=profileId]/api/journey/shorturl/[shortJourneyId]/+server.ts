@@ -1,4 +1,4 @@
-import { getDatabaseEntry } from "$lib/server/serverUtils.server";
+import { getDatabaseEntry } from "$lib/server/database";
 import type { RequestHandler } from "./$types";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";

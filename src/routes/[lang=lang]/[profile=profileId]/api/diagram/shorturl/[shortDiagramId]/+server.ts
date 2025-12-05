@@ -1,5 +1,5 @@
 import type { RequestHandler } from "./$types";
-import { getDatabaseEntry } from "$lib/server/serverUtils.server";
+import { getDatabaseEntry } from "$lib/server/database";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 import { apiClient } from "$lib/api-client/apiClientFactory";
