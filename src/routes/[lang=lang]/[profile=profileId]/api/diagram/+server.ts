@@ -12,13 +12,17 @@ import { journeyDataService } from "../profile/profileRegistry.server";
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
 	const {
-		language,
+		lang,
 		profile,
 		reqContent: { stops, timeData: timeStart, filters }
 	} = client.parseRequest(reqEvent);
-	const dataService = journeyDataService(profile, language);
+	const dataService = journeyDataService(profile, lang);
 
-	const journeyColumns = await fetchJourneys(stops, { timeStart, filters }, { dataService });
+	const journeyColumns = await fetchJourneys(
+		stops,
+		{ timeStart, filters },
+		{ dataService, lang }
+	);
 	if (journeyColumns.isError) {
 		return client.formatResponse(journeyColumns);
 	}

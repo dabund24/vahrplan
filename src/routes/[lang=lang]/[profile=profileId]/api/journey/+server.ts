@@ -8,10 +8,10 @@ import { journeyDataService } from "../profile/profileRegistry.server";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
-	const { language, profile, reqContent } = client.parseRequest(reqEvent);
-	const dataService = journeyDataService(profile, language);
+	const { lang, profile, reqContent } = client.parseRequest(reqEvent);
+	const dataService = journeyDataService(profile, lang);
 	const journeyResults = await Promise.all(
-		reqContent.map((token) => dataService.refresh(token, { lang: language }))
+		reqContent.map((token) => dataService.refresh(token, { lang: lang }))
 	);
 	const subJourneys = setMergingProperties(
 		journeyResults.map((subJourney) => subJourney.throwIfError().content)

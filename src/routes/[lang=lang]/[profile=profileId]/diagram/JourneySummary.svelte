@@ -25,6 +25,7 @@
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 	import SvgTransferStations from "./SvgTransferStations.svelte";
 	import DiagramOptions from "./DiagramOptions.svelte";
+	import { page } from "$app/state";
 
 	type Props = {
 		miniTabsSnippet: Snippet;
@@ -99,7 +100,8 @@
 		{#if selectedData.isFullJourneySelected}
 			<a
 				href={apiClient("GET", "journey").formatNonApiUrl(
-					displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "")
+					displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? ""),
+					{ profileConfig: page.data.profile }
 				).href}
 				class="hoverable hoverable--accent"
 				title="Reisedetails anzeigen"

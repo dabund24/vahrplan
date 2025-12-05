@@ -1,4 +1,4 @@
-import type { KeylessDatabaseEntry } from "$lib/types";
+import type { Ctx, KeylessDatabaseEntry } from "$lib/types";
 import { toast } from "$lib/state/toastStore";
 import { get } from "svelte/store";
 import { settings } from "$lib/state/settingStore";
@@ -11,10 +11,12 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
  * Generates a short url if enabled in the settings.
  * @param displayedJourney
  * @param selectedData
+ * @param ctx
  */
 export async function shareJourney(
 	displayedJourney: DisplayedJourney,
-	selectedData: SelectedData
+	selectedData: SelectedData,
+	ctx: Pick<Ctx, "profileConfig">
 ): Promise<void> {
 	const selectedSubJourneys = displayedJourney.selectedSubJourneys;
 	if (selectedSubJourneys.length === 0 || !selectedData.isFullJourneySelected) {
@@ -26,10 +28,10 @@ export async function shareJourney(
 
 	let urlHref: string | undefined;
 	if (get(settings).general.shortLinksJourneys) {
-		urlHref = (await generateJourneyShortUrl(tokens, journeyDeparture))?.href;
+		urlHref = (await generateJourneyShortUrl(tokens, journeyDeparture, ctx))?.href;
 	}
 
-	urlHref ??= apiClient("GET", "journey").formatNonApiUrl(tokens).href;
+	urlHref ??= apiClient("GET", "journey").formatNonApiUrl(tokens, ctx).href;
 
 	if (navigator.share) {
 		void navigator.share({
@@ -47,10 +49,12 @@ export async function shareJourney(
  * generates a short url for a given journey
  * @param tokens
  * @param departure
+ * @param ctx
  */
 async function generateJourneyShortUrl(
 	tokens: string[],
-	departure: string
+	departure: string,
+	ctx: Pick<Ctx, "profileConfig">
 ): Promise<URL | undefined> {
 	const keylessDatabaseEntry: KeylessDatabaseEntry<string[]> = {
 		type: "journey",
@@ -63,5 +67,8 @@ async function generateJourneyShortUrl(
 		toast("Kurzlink konnte nicht generiert werden.", "red");
 		return;
 	}
-	return apiClient("GET", "journey/shorturl/[shortJourneyId]").formatNonApiUrl(response.content);
+	return apiClient("GET", "journey/shorturl/[shortJourneyId]").formatNonApiUrl(
+		response.content,
+		ctx
+	);
 }

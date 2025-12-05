@@ -4,8 +4,8 @@ import { journeyDataService } from "../../profile/profileRegistry.server";
 
 export const GET: RequestHandler = async ({ url, route, params }) => {
 	const client = apiClient("GET", route.id);
-	const { language, profile, reqContent } = client.parseRequest({ url, params });
-	const dataService = journeyDataService(profile, language);
-	const result = await dataService.locations(reqContent);
+	const { lang, profile, reqContent } = client.parseRequest({ url, params });
+	const dataService = journeyDataService(profile, lang);
+	const result = await dataService.locations(reqContent, { lang });
 	return client.formatResponse(result);
 };

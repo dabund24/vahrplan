@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
-import type { GetDiagramApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/getClient";
 import type { JourneysFilters, Product } from "$lib/types";
 
 export const products: Record<Product, string> = {
@@ -17,7 +16,7 @@ export const products: Record<Product, string> = {
 } as const;
 
 export type Settings = {
-	journeysOptions: ReturnType<GetDiagramApiClient["parse"]>["options"];
+	journeysOptions: Omit<JourneysFilters, "options"> & JourneysFilters["options"];
 	general: {
 		colorScheme: "system" | "light" | "dark" | "midnight";
 		color: "red" | "yellow" | "green" | "blue" | "purple";
@@ -31,7 +30,7 @@ export type Settings = {
 	storage: Record<Exclude<keyof Settings, "storage">, boolean>;
 };
 
-export const defaultJourneysOptions: JourneysFilters = {
+export const defaultJourneysOptions: Settings["journeysOptions"] = {
 	products: {
 		longDistanceExpress: true,
 		longDistance: true,

@@ -14,6 +14,7 @@ export const DIAGRAM_MAX_COLUMNS = 5;
 export const EMPTY_PROFILE: ProfileConfig = {
 	name: "",
 	id: "empty",
+	supportedLanguages: ["de"],
 	lang: "de",
 	products: {},
 	options: {}

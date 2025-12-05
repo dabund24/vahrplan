@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { LineShape } from "$lib/server/journey-data/lineShapes";
 	import { settings } from "$lib/state/settingStore";
+	import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
 
 	type Props = {
 		lineName?: string;

@@ -13,7 +13,7 @@ type RequestData = {
 export async function fetchJourneys(
 	stops: string[],
 	{ timeStart, filters }: { timeStart: TimeData[] | TimeData; filters: JourneysFilters },
-	ctx: Pick<Ctx, "dataService">
+	ctx: Pick<Ctx, "dataService" | "lang">
 ): Promise<VahrplanResult<JourneyNodesWithRefs[]>> {
 	const scrollDirection = (Array.isArray(timeStart) ? timeStart[0] : timeStart).scrollDirection;
 
@@ -83,7 +83,7 @@ function determineNextCoulumnStart(
 async function fetchUntil(
 	{ fromTo, timeData, filters }: RequestData,
 	timeLimit: string,
-	{ dataService }: Pick<Ctx, "dataService">
+	{ dataService, lang }: Pick<Ctx, "dataService" | "lang">
 ): Promise<VahrplanResult<JourneyNodesWithRefs>> {
 	const reverseScrollDirection: RelativeTimeType =
 		timeData.scrollDirection === "earlier" ? "later" : "earlier";
@@ -91,7 +91,7 @@ async function fetchUntil(
 	const result: JourneyNodesWithRefs = { journeys: [], earlierRef: "", laterRef: "" };
 
 	do {
-		const j = await dataService.journeys(fromTo, { timeData, filters });
+		const j = await dataService.journeys(fromTo, { timeData, filters }, { lang });
 		if (j.isError) {
 			return j;
 		}

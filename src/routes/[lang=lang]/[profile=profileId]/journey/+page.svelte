@@ -60,7 +60,8 @@
 		}
 
 		return diagramApiClient.formatNonApiUrl(
-			diagramApiClient.formDataToRequestData(displayedFormData)
+			diagramApiClient.formDataToRequestData(displayedFormData),
+			{ profileConfig: page.data.profile }
 		).href;
 	});
 </script>

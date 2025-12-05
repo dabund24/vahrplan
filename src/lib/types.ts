@@ -1,4 +1,3 @@
-import type { LineShape } from "$lib/server/journey-data/lineShapes";
 import type {
 	OptionId,
 	PossibleOptionValues,
@@ -7,6 +6,7 @@ import type {
 import type { Language } from "../params/lang";
 import type { ProfileId } from "../params/profileId";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
+import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -287,6 +287,7 @@ export type Ctx = {
 	profileConfig: ProfileConfig;
 	pathBase: `/${Language}/${ProfileId}/`;
 	apiPathBase: `${Ctx["pathBase"]}api/`;
-	dataService: JourneyDataService<Product, OptionId>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	dataService: JourneyDataService<any, any>; // we do not care about the generic types here!
 	lang: Language;
 };

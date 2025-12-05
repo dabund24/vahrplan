@@ -11,17 +11,17 @@ import { journeyDataService } from "../../../profile/profileRegistry.server";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);
-	const { language, profile, reqContent } = client.parseRequest(reqEvent);
+	const { lang, profile, reqContent } = client.parseRequest(reqEvent);
 	const { scrollDirection, tokens, stops, tree, filters, recommendedVias } = await reqContent;
 	let { transferLocations } = await reqContent;
-	const dataService = journeyDataService(profile, language);
+	const dataService = journeyDataService(profile, lang);
 
 	const timeStart: TimeData[] = tokens.map((token) => ({
 		type: "relative",
 		time: token,
 		scrollDirection
 	}));
-	const resColumns = await fetchJourneys(stops, { timeStart, filters }, { dataService });
+	const resColumns = await fetchJourneys(stops, { timeStart, filters }, { dataService, lang });
 	if (resColumns.isError) {
 		return client.formatResponse(resColumns);
 	}

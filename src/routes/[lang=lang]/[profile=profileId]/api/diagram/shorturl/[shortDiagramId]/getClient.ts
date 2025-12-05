@@ -8,7 +8,7 @@ import { browser } from "$app/environment";
 import type { Ctx } from "$lib/types";
 
 type ResType =
-	GetDiagramApiClient extends ApiClient<infer _A, infer ResT, infer _B, infer _C> ? ResT : never;
+	GetDiagramApiClient extends ApiClient<infer ReqT, infer _A, infer _B, infer _C> ? ReqT : never;
 
 export class GetDiagramShortUrlApiClient extends PathParamSettable<string, ResType, RequestEvent>()(
 	NonApiUsable<string, ResType, RequestEvent>()(ApiClient<string, ResType, "GET", RequestEvent>)

@@ -8,7 +8,7 @@ import type { Ctx } from "$lib/types";
 import type { ProfileConfig } from "./profile.server";
 
 type ReqType = {
-	language: Language;
+	lang: Language;
 	profile: ProfileId;
 };
 type ResType = ProfileConfig;
@@ -24,12 +24,12 @@ export class GetProfileApiClient extends PathParamSettable<ReqType, ResType, Req
 	public override parseRequestContent = (
 		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
 	): ReqType => ({
-		language: reqEvent.params.lang,
+		lang: reqEvent.params.lang,
 		profile: reqEvent.params.profile
 	});
 
 	protected override formatUrlPath = ({
-		language,
+		lang,
 		profile
-	}: ReqType): `${Ctx["apiPathBase"]}${string}` => `/${language}/${profile}/api/profile`;
+	}: ReqType): `${Ctx["apiPathBase"]}${string}` => `/${lang}/${profile}/api/profile`;
 }

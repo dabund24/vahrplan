@@ -4,7 +4,7 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 export const load: LayoutLoad = async ({ params: { lang, profile }, fetch }) => {
 	const profileApiClient = apiClient("GET", "profile");
 	const { content: profileConfig } = (
-		await profileApiClient.request({ language: lang, profile }, fetch)
+		await profileApiClient.request({ lang, profile }, fetch)
 	).throwIfError();
 	return {
 		profile: profileConfig

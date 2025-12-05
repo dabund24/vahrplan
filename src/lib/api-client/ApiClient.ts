@@ -27,7 +27,7 @@ export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T
 
 type ParsedRequest<MethodT extends HttpMethod, ReqT> = {
 	reqContent: MethodT extends BodyfulHttpMethod ? Promise<ReqT> : ReqT;
-	language: Language;
+	lang: Language;
 	profile: ProfileId;
 };
 
@@ -197,7 +197,7 @@ export abstract class ApiClient<
 		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
 	): ParsedRequest<MethodT, ReqT> => ({
 		reqContent: this.parseRequestContent(reqEvent),
-		language: reqEvent.params.lang,
+		lang: reqEvent.params.lang,
 		profile: reqEvent.params.profile
 	});
 }

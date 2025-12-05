@@ -9,6 +9,7 @@
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 	import { refreshDiagramData } from "$lib/state/diagramData.svelte.js";
+	import { page } from "$app/state";
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -24,7 +25,8 @@
 			type: "function",
 			name: "Teilen",
 			icon: iconShare,
-			onClick: async () => shareJourney(displayedJourney, selectedData)
+			onClick: async () =>
+				shareJourney(displayedJourney, selectedData, { profileConfig: page.data.profile })
 		},
 		{
 			type: "bookmark",

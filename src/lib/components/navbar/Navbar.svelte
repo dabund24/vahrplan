@@ -5,6 +5,7 @@
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
+	import type { Route } from "$lib/components/navbar/util";
 	import MobileNavbar from "$lib/components/navbar/MobileNavbar.svelte";
 
 	const displayedFormData = $derived(getDisplayedFormData());
