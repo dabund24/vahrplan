@@ -80,7 +80,7 @@ export function updateDisplayedLocations(
 		return;
 	}
 
-	const profileConfig = page.data.profile;
+	const profileConfig = page.data.profileConfig;
 
 	void searchDiagram(newFormData, { profileConfig });
 }

@@ -26,7 +26,7 @@ export async function apiClientParseFormatTest<
 	let parsed = {} as ReturnType<typeof client.parseRequest>;
 
 	vi.mock("$app/state", () => ({
-		page: { data: { profile: exampleProfileConfig, lang: "de" } }
+		page: { data: { profileConfig: exampleProfileConfig, lang: "de" } }
 	}));
 	vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
 	vi.mock("$app/environment", () => ({ version: (): string => "test" }));
@@ -66,7 +66,10 @@ export async function apiClientPlausibleTest<
 	expected: { goal: string; props: Partial<Record<PlausibleProp, string | number>> }
 ): Promise<void> {
 	vi.mock("$app/state", () => ({
-		page: { route: { id: "/foo/bar/baz" }, data: { profile: exampleProfileConfig, lang: "de" } }
+		page: {
+			route: { id: "/foo/bar/baz" },
+			data: { profileConfig: exampleProfileConfig, lang: "de" }
+		}
 	}));
 
 	global.location = { ...global.location, origin: "https://vahrplan.de" };

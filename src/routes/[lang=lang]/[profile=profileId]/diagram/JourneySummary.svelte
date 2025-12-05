@@ -101,7 +101,7 @@
 			<a
 				href={apiClient("GET", "journey").formatNonApiUrl(
 					displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? ""),
-					{ profileConfig: page.data.profile }
+					{ profileConfig: page.data.profileConfig }
 				).href}
 				class="hoverable hoverable--accent"
 				title="Reisedetails anzeigen"

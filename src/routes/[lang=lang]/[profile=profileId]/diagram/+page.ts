@@ -9,6 +9,7 @@ import {
 } from "$lib/state/displayedFormData.svelte.js";
 import type { GetDiagramApiClient } from "../api/diagram/getClient";
 import { VahrplanError } from "$lib/VahrplanError";
+import type { ServerRequestData } from "$lib/api-client/ApiClient";
 
 const diagramApiClient = apiClient("GET", "diagram");
 
@@ -16,17 +17,19 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 	if (url.searchParams.size === 0) {
 		redirect(303, "/");
 	}
-	const profileConfig = (await parent()).profile;
+	const { profileConfig, lang } = await parent();
 
 	if (browser && formDataMatchesUrl(url, getDisplayedFormData(), { profileConfig })) {
 		// no need to re-fetch the diagram, displayed diagram is already correct
-		return {
-			formData: undefined
-		};
+		return { formData: undefined };
 	}
 
 	const { reqContent } = diagramApiClient.parseNonApiUrl(url, { profileConfig });
-	const formData = await diagramRequestDataToFormData(reqContent, fetch);
+	const formData = await diagramRequestDataToFormData(reqContent, {
+		fetchFn: fetch,
+		lang,
+		profileConfig
+	});
 	return {
 		formData
 	};
@@ -58,12 +61,14 @@ function formDataMatchesUrl(
 
 async function diagramRequestDataToFormData(
 	diagramRequestData: Parameters<GetDiagramApiClient["formatNonApiUrl"]>[0],
-	fetchFn: typeof fetch
+	serverRequestData: ServerRequestData
 ): Promise<DisplayedFormData> {
 	const locationApiClient = apiClient("GET", "location/[locationId]");
 	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
 		diagramRequestData.stops.map(async (stopQuery) => {
-			const location = (await locationApiClient.request(stopQuery, fetchFn)).throwIfError();
+			const location = (
+				await locationApiClient.request(stopQuery, serverRequestData)
+			).throwIfError();
 			return {
 				key: Math.random(),
 				value: location.content

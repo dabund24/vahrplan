@@ -26,7 +26,9 @@
 			name: "Teilen",
 			icon: iconShare,
 			onClick: async () =>
-				shareJourney(displayedJourney, selectedData, { profileConfig: page.data.profile })
+				shareJourney(displayedJourney, selectedData, {
+					profileConfig: page.data.profileConfig
+				})
 		},
 		{
 			type: "bookmark",

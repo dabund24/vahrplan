@@ -135,8 +135,13 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Verbindungsfilter"
-		bind:setting={$settings.storage.journeysOptions}
+		settingName="Verkehrsmittel"
+		bind:setting={$settings.storage.products}
+		settingInfo={{ type: "boolean" }}
+	/>
+	<Setting
+		settingName="Sonstige Suchfilter"
+		bind:setting={$settings.storage.options}
 		settingInfo={{ type: "boolean" }}
 	/>
 </div>

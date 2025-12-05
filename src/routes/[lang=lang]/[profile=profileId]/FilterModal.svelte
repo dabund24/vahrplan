@@ -10,7 +10,7 @@
 
 	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
 		settings.update((settings) => {
-			settings.journeysOptions.products = {
+			settings.products = {
 				longDistanceExpress: preset === "all" || preset === "longDistance",
 				longDistance: preset === "all" || preset === "longDistance",
 				regionalExpress: preset === "all" || preset === "longDistance",
@@ -48,19 +48,19 @@
 {#snippet generalFilter()}
 	<Setting
 		settingName="Fahrradmitnahme"
-		bind:setting={$settings.journeysOptions.bike}
+		bind:setting={$settings.options.bike}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
 		settingName="Barrierefreies Reisen"
-		bind:setting={$settings.journeysOptions.accessible}
+		bind:setting={$settings.options.accessible}
 		settingInfo={{
 			type: "boolean"
 		}}
 	/>
 	<Setting
 		settingName="Maximale Umstiegsanzahl"
-		bind:setting={$settings.journeysOptions.maxTransfers}
+		bind:setting={$settings.options.maxTransfers}
 		settingInfo={{
 			type: "options",
 			options: [
@@ -76,7 +76,7 @@
 	/>
 	<Setting
 		settingName="Mindestumsteigezeit"
-		bind:setting={$settings.journeysOptions.minTransferTime}
+		bind:setting={$settings.options.minTransferTime}
 		settingInfo={{
 			type: "options",
 			options: [
@@ -121,7 +121,7 @@
 	{#each productKeys as product (product)}
 		<Setting
 			settingName={products[product]}
-			bind:setting={$settings.journeysOptions.products[product]}
+			bind:setting={$settings.products[product]}
 			settingInfo={{ type: "boolean" }}
 		/>
 	{/each}

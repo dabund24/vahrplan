@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
 import type { JourneysFilters, Product } from "$lib/types";
+import type { Profile } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 export const products: Record<Product, string> = {
 	longDistanceExpress: "Intercity-Express",
@@ -16,7 +17,8 @@ export const products: Record<Product, string> = {
 } as const;
 
 export type Settings = {
-	journeysOptions: Omit<JourneysFilters, "options"> & JourneysFilters["options"];
+	options: JourneysFilters["options"];
+	products: JourneysFilters["products"];
 	general: {
 		colorScheme: "system" | "light" | "dark" | "midnight";
 		color: "red" | "yellow" | "green" | "blue" | "purple";
@@ -30,27 +32,34 @@ export type Settings = {
 	storage: Record<Exclude<keyof Settings, "storage">, boolean>;
 };
 
-export const defaultJourneysOptions: Settings["journeysOptions"] = {
-	products: {
-		longDistanceExpress: true,
-		longDistance: true,
-		regionalExpress: true,
-		regional: true,
-		suburban: true,
-		subway: true,
-		tram: true,
-		bus: true,
-		taxi: true,
-		ferry: true
-	},
+const defaultProducts: Record<Product, true> = {
+	longDistanceExpress: true,
+	longDistance: true,
+	regionalExpress: true,
+	regional: true,
+	suburban: true,
+	subway: true,
+	tram: true,
+	bus: true,
+	taxi: true,
+	ferry: true
+};
+
+const defaultOptions: {
+	[K in keyof typeof Profile.availableOptions]: (typeof Profile.availableOptions)[K]["defaultValue"];
+} = {
 	bike: false,
 	accessible: false,
 	maxTransfers: -1,
 	minTransferTime: 0
 };
 
+export const defaultJourneysFilters: JourneysFilters = {
+	products: defaultProducts,
+	options: defaultOptions
+};
+
 export const settings = writable<Settings>({
-	journeysOptions: defaultJourneysOptions,
 	general: {
 		colorScheme: "system",
 		color: "green",
@@ -61,9 +70,11 @@ export const settings = writable<Settings>({
 		mapGeolocation: false,
 		isMapAlwaysLight: false
 	},
+	...defaultJourneysFilters,
 	storage: {
-		journeysOptions: false,
-		general: false
+		general: false,
+		options: false,
+		products: false
 	}
 });
 

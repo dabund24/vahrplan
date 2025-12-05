@@ -4,6 +4,6 @@ import { profileRegistry } from "./[lang=lang]/[profile=profileId]/api/profile/p
 
 export const load: LayoutServerLoad = () => ({
 	news,
-	profile: profileRegistry("empty").configOfLanguage("de"),
+	profileConfig: profileRegistry("empty").configOfLanguage("de"),
 	lang: "de"
 });

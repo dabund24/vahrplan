@@ -34,12 +34,12 @@
 	}: Props = $props();
 
 	const isBookmarked = $derived(
-		getIsBookmarked(type, value, { profileConfig: page.data.profile })
+		getIsBookmarked(type, value, { profileConfig: page.data.profileConfig })
 	);
 
 	function handleClick(): void {
 		preCallback();
-		toggleBookmark(type, value, { profileConfig: page.data.profile });
+		toggleBookmark(type, value, { profileConfig: page.data.profileConfig });
 		postCallback();
 	}
 </script>

@@ -23,7 +23,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 
 	const diagramApiClient = apiClient("GET", "diagram");
 	urlHref ??= diagramApiClient.formatNonApiUrl(diagramApiClient.formDataToRequestData(formData), {
-		profileConfig: page.data.profile
+		profileConfig: page.data.profileConfig
 	}).href;
 
 	if (navigator.share) {
@@ -43,7 +43,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
  * @param formData
  */
 async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL | undefined> {
-	const profileConfig = page.data.profile;
+	const profileConfig = page.data.profileConfig;
 	const diagramRequestData = apiClient("GET", "diagram").formDataToRequestData(formData);
 
 	const keylessDatabaseEntry: KeylessDatabaseEntry<typeof diagramRequestData> = {

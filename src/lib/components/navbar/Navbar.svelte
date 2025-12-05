@@ -20,7 +20,7 @@
 			return undefined;
 		}
 		const reqData = diagramApiClient.formDataToRequestData(displayedFormData);
-		const profileConfig = page.data.profile;
+		const profileConfig = page.data.profileConfig;
 		return diagramApiClient.formatNonApiUrl(reqData, { profileConfig }).href;
 	});
 
@@ -29,7 +29,7 @@
 			return undefined;
 		}
 		const tokens = displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
-		const profileConfig = page.data.profile;
+		const profileConfig = page.data.profileConfig;
 		return journeyApiClient.formatNonApiUrl(tokens, { profileConfig }).href;
 	});
 </script>

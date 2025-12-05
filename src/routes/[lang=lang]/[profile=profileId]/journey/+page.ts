@@ -6,13 +6,14 @@ import { browser } from "$app/environment";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { type DisplayedJourney, getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
-import { defaultJourneysOptions } from "$lib/state/settingStore";
+import { defaultJourneysFilters } from "$lib/state/settingStore";
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+import type { ServerRequestData } from "$lib/api-client/ApiClient";
 
 const journeyApiClient = apiClient("GET", "journey");
 
 export const load: PageLoad = async function ({ url, fetch, parent }) {
-	const profileConfig = (await parent()).profile;
+	const { profileConfig, lang } = await parent();
 
 	if (browser && displayedJourneyMatchesUrl(url, getDisplayedJourney(), { profileConfig })) {
 		// no need to refetch the journey, displayed journey is already correct
@@ -29,7 +30,8 @@ export const load: PageLoad = async function ({ url, fetch, parent }) {
 	}
 
 	// get journey from refresh tokens
-	const diagramData = await diagramDataFromTokens(reqContent, fetch);
+	const serverRequestData: ServerRequestData = { fetchFn: fetch, lang, profileConfig };
+	const diagramData = await diagramDataFromTokens(reqContent, serverRequestData);
 	const formData = formDataFromDiagramData(diagramData);
 
 	return { diagramData, formData };
@@ -54,12 +56,12 @@ function displayedJourneyMatchesUrl(
 
 async function diagramDataFromTokens(
 	tokens: string[],
-	fetchFn: typeof fetch
+	serverRequestData: ServerRequestData
 ): Promise<DiagramData> {
 	const journeysApiClient = apiClient("GET", "journey");
 	const {
 		content: { subJourneys, svgData, transferLocations }
-	} = (await journeysApiClient.request(tokens, fetchFn)).throwIfError();
+	} = (await journeysApiClient.request(tokens, serverRequestData)).throwIfError();
 
 	return Promise.resolve({
 		columns: subJourneys.map((j) => ({
@@ -127,7 +129,7 @@ function getKeyedLocationsFromDiagramData(
 
 function formDataFromDiagramData(diagramData: DiagramData): DisplayedFormData {
 	return {
-		filters: defaultJourneysOptions,
+		filters: defaultJourneysFilters,
 		locations: getKeyedLocationsFromDiagramData(diagramData),
 		timeData: {
 			type: "absolute",

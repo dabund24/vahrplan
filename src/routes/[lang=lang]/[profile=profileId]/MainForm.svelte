@@ -64,14 +64,14 @@
 		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
 		const scrollDirection: RelativeTimeType =
 			departureArrivalSelection === 0 ? "later" : "earlier";
-		const filters = get(settings).journeysOptions;
+		const filters = { ...get(settings) };
 		const formData: DisplayedFormData = {
 			locations: stopsToBeDisplayed.map((stop) => ({ ...stop })), // important, unwanted dom updates would happen otherwise later on!
 			timeData: { type: "absolute", scrollDirection, time: journeyTime.toISOString() },
 			filters,
 			geolocationDate: new Date()
 		};
-		const profileConfig = page.data.profile;
+		const profileConfig = page.data.profileConfig;
 		// handle current position
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
 			const currentLocation = await getCurrentGeolocation();

@@ -44,6 +44,12 @@ export type MinimalRequestEvent<
 	RequestEventT extends ApiClientRequestEvent
 > = Pick<RequestEventT, "url" | "params" | (MethodT extends BodyfulHttpMethod ? "request" : never)>;
 
+export type ServerRequestData = {
+	fetchFn?: typeof fetch;
+	lang: Language;
+	profileConfig: ProfileConfig;
+};
+
 /**
  * An abstract utility class simplifying the process of making fetch requests in Vahrplan.
  *
@@ -68,21 +74,23 @@ export abstract class ApiClient<
 	 * must not be overridden! must not be called by a mixin
 	 * @sealed
 	 * @param content
-	 * @param fetchFn
+	 * @param serverRequestData needs to be set if the method is called from the server
 	 */
-	public async request(content: ReqT, fetchFn?: typeof fetch): Promise<VahrplanResult<ResT>> {
+	public async request(
+		content: ReqT,
+		serverRequestData?: ServerRequestData
+	): Promise<VahrplanResult<ResT>> {
+		serverRequestData ??= (await import("$app/state").then(({ page }) => ({
+			lang: page.data.lang,
+			profileConfig: page.data.profileConfig ?? EMPTY_PROFILE
+		}))) as ServerRequestData;
+		const { fetchFn, lang, profileConfig } = serverRequestData;
+		const apiPathBase: `/${Language}/${ProfileId}/api/` = `/${lang}/${profileConfig.id}/api/`;
 		let urlBase: string;
-		let profileConfig: ProfileConfig;
-		let apiPathBase: `/${Language}/${ProfileId}/api/`;
 		if (browser) {
 			urlBase = location.origin;
-			const pageData = await import("$app/state").then(({ page }) => page.data);
-			profileConfig = pageData.profile;
-			apiPathBase = `/${pageData.lang}/${pageData.profile.id}/api/` as const;
 		}
-		profileConfig ??= EMPTY_PROFILE;
-		urlBase ??= "http://localhost";
-		apiPathBase ??= "/de/empty/api/" as const;
+		urlBase ??= "http://localhost"; // TODO this will never be used for server requests. Design something better
 		const requestData: RequestData = {
 			url: new URL(`${apiPathBase}${this.route}`, urlBase),
 			profileConfig,
