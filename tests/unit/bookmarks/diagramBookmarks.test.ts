@@ -51,7 +51,8 @@ const bookmarkData: BookmarkData<"diagram"> = {
 			}
 		},
 		timeData: { time: new Date(69).toISOString(), type: "absolute", scrollDirection: "later" },
-		geolocationDate: new Date(68)
+		geolocationDate: new Date(68),
+		profileConfig: exampleProfileConfig
 	},
 	diagramData: {
 		columns: [

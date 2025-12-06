@@ -5,6 +5,7 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import Modal from "$lib/components/Modal.svelte";
+	import { page } from "$app/state";
 </script>
 
 <svelte:head>
@@ -120,7 +121,7 @@
 				<p> Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.</p>
 				<p
 					>Mehr Informationen zu Local Storage befinden sich <a
-						href="/de/dbnav/about/privacy#web-storage">in der Datenschutzerklärung</a
+						href="/{page.data.lang}/about/privacy#web-storage">in der Datenschutzerklärung</a
 					>.
 				</p>
 			</div>

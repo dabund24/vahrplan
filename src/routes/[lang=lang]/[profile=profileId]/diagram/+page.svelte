@@ -71,10 +71,9 @@
 	function resetDiagram(initialFormData: DisplayedFormData | undefined): void {
 		if (browser && initialFormData !== undefined) {
 			const pageData = page.data;
-			const profileConfig = page.data.profileConfig;
 			pageData.formData = undefined;
 			// initialize the diagram
-			void searchDiagram(initialFormData, { profileConfig });
+			void searchDiagram(initialFormData);
 		}
 	}
 

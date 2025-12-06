@@ -65,13 +65,14 @@
 		const scrollDirection: RelativeTimeType =
 			departureArrivalSelection === 0 ? "later" : "earlier";
 		const filters = { ...get(settings) };
+		const profileConfig = page.data.profileConfig;
 		const formData: DisplayedFormData = {
 			locations: stopsToBeDisplayed.map((stop) => ({ ...stop })), // important, unwanted dom updates would happen otherwise later on!
 			timeData: { type: "absolute", scrollDirection, time: journeyTime.toISOString() },
 			filters,
-			geolocationDate: new Date()
+			geolocationDate: new Date(),
+			profileConfig
 		};
-		const profileConfig = page.data.profileConfig;
 		// handle current position
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
 			const currentLocation = await getCurrentGeolocation();
@@ -87,7 +88,7 @@
 			});
 		}
 
-		void searchDiagram(formData, { profileConfig });
+		void searchDiagram(formData);
 	}
 
 	function verifyUserInput(stops: ParsedLocation[]): boolean {

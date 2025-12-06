@@ -32,7 +32,7 @@ export const load: PageLoad = async function ({ url, fetch, parent }) {
 	// get journey from refresh tokens
 	const serverRequestData: ServerRequestData = { fetchFn: fetch, lang, profileConfig };
 	const diagramData = await diagramDataFromTokens(reqContent, serverRequestData);
-	const formData = formDataFromDiagramData(diagramData);
+	const formData = formDataFromDiagramData(diagramData, serverRequestData);
 
 	return { diagramData, formData };
 };
@@ -127,7 +127,10 @@ function getKeyedLocationsFromDiagramData(
 	});
 }
 
-function formDataFromDiagramData(diagramData: DiagramData): DisplayedFormData {
+function formDataFromDiagramData(
+	diagramData: DiagramData,
+	{ profileConfig }: ServerRequestData
+): DisplayedFormData {
 	return {
 		filters: defaultJourneysFilters,
 		locations: getKeyedLocationsFromDiagramData(diagramData),
@@ -136,6 +139,7 @@ function formDataFromDiagramData(diagramData: DiagramData): DisplayedFormData {
 			scrollDirection: "later",
 			time: diagramData.columns[0]?.journeys[0]?.departureTime?.time ?? ""
 		},
-		geolocationDate: new Date()
+		geolocationDate: new Date(),
+		profileConfig
 	};
 }

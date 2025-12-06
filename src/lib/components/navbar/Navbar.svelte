@@ -20,17 +20,19 @@
 			return undefined;
 		}
 		const reqData = diagramApiClient.formDataToRequestData(displayedFormData);
-		const profileConfig = page.data.profileConfig;
-		return diagramApiClient.formatNonApiUrl(reqData, { profileConfig }).href;
+		return diagramApiClient.formatNonApiUrl(reqData, {
+			profileConfig: displayedFormData.profileConfig
+		}).href;
 	});
 
 	let journeyUrl = $derived.by(() => {
-		if (!browser || !selectedData.isFullJourneySelected) {
+		if (!browser || !selectedData.isFullJourneySelected || displayedFormData === undefined) {
 			return undefined;
 		}
 		const tokens = displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
-		const profileConfig = page.data.profileConfig;
-		return journeyApiClient.formatNonApiUrl(tokens, { profileConfig }).href;
+		return journeyApiClient.formatNonApiUrl(tokens, {
+			profileConfig: displayedFormData.profileConfig
+		}).href;
 	});
 </script>
 

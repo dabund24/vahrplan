@@ -98,7 +98,7 @@
 		{
 			"name": "Lesezeichen",
 			"description": "Gemerkte Suchanfragen, Reisen und Stationen",
-			"url": "/de/dbnav/bookmarks",
+			"url": "/de/bookmarks",
 			"icons": [
 				{
 					"src": "shortcut-icons/bookmarks.svg",
@@ -111,7 +111,7 @@
 		{
 			"name": "Einstellungen",
 			"description": "Einstellungen für Vahrplan",
-			"url": "/de/dbnav/settings",
+			"url": "/de/settings",
 			"icons": [
 				{
 					"src": "shortcut-icons/settings.svg",
@@ -124,7 +124,7 @@
 		{
 			"name": "Über Vahrplan",
 			"description": "Weiterführende Informationen über Vahrplan",
-			"url": "/de/dbnav/about",
+			"url": "/de/about",
 			"icons": [
 				{
 					"src": "shortcut-icons/about.svg",

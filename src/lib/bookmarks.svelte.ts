@@ -18,7 +18,7 @@ export type Bookmarks = {
 type DiagramBookmark = {
 	/** the link of the bookmark */
 	id: string;
-	profile: "dbnav";
+	profile: ProfileId;
 	stops: Pick<ParsedLocation, "name" | "type">[];
 	scrollDirection: RelativeTimeType;
 	/** time entered by user */
@@ -34,7 +34,7 @@ type DiagramBookmark = {
 
 type JourneyBookmark = {
 	id: string;
-	profile: "dbnav";
+	profile: ProfileId;
 	start: Pick<ParsedLocation, "name" | "type">;
 	destination: Pick<ParsedLocation, "name" | "type">;
 	arrival: string;
@@ -103,9 +103,13 @@ const formatBookmarkId: {
 };
 
 const addBookmark: {
-	[K in BookmarkType]: (id: string, bookmarkData: BookmarkData<K>) => void;
+	[K in BookmarkType]: (
+		id: string,
+		bookmarkData: BookmarkData<K>,
+		ctx: Pick<Ctx, "profileConfig">
+	) => void;
 } = {
-	diagram: (id, { formData, diagramData }) => {
+	diagram: (id, { formData, diagramData }, { profileConfig }) => {
 		const time = formData.timeData.time;
 		const scrollDirection = formData.timeData.scrollDirection;
 		const departure =
@@ -123,7 +127,7 @@ const addBookmark: {
 
 		bookmarks.diagram.push({
 			id,
-			profile: "dbnav",
+			profile: profileConfig.id,
 			stops: formData.locations.map((location) => {
 				return {
 					type: location.value.type,
@@ -137,10 +141,10 @@ const addBookmark: {
 			type: "absolute"
 		});
 	},
-	journey: (id, bookmarkData) =>
+	journey: (id, bookmarkData, { profileConfig }) =>
 		void bookmarks.journey.push({
 			id,
-			profile: "dbnav",
+			profile: profileConfig.id,
 			start: {
 				type: bookmarkData.locations.at(0)?.value.type ?? "station",
 				name: bookmarkData.locations.at(0)?.value.name ?? ""
@@ -152,8 +156,8 @@ const addBookmark: {
 			departure: bookmarkData.departure ?? new Date(0).toISOString(),
 			arrival: bookmarkData.arrival ?? new Date(0).toISOString()
 		}),
-	location: (_id, bookmarkData) =>
-		void bookmarks.location.push({ ...bookmarkData, profile: "dbnav" })
+	location: (_id, bookmarkData, { profileConfig }) =>
+		void bookmarks.location.push({ ...bookmarkData, profile: profileConfig.id })
 };
 
 function syncLocalStorage(type: BookmarkType): void {
@@ -183,7 +187,7 @@ export function toggleBookmark<T extends BookmarkType>(
 		bookmarks[type].splice(indexInOldData, 1);
 		toast(`${toastMessage} entfernt.`, "green");
 	} else {
-		addBookmark[type](id, bookmarkData);
+		addBookmark[type](id, bookmarkData, ctx);
 		bookmarks[type] = sortBookmarks[type](bookmarks[type]);
 		toast(`${toastMessage} hinzugefügt.`, "green");
 	}

@@ -87,6 +87,7 @@ async function diagramRequestDataToFormData(
 		locations: stopObjects,
 		timeData: diagramRequestData.timeData,
 		filters: diagramRequestData.filters,
-		geolocationDate: new Date()
+		geolocationDate: new Date(),
+		profileConfig: serverRequestData.profileConfig
 	};
 }

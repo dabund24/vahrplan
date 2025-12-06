@@ -10,6 +10,7 @@
 	import { beforeNavigate } from "$app/navigation";
 	import IconJourneySelection from "$lib/components/icons/IconJourneySelection.svelte";
 	import { page } from "$app/state";
+	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -18,8 +19,6 @@
 	};
 
 	const { currentRoute, diagramUrl, journeyUrl }: Props = $props();
-
-	const routePrefix = $derived(`/${page.data.lang}/${page.data.profileConfig.id}`);
 </script>
 
 <button popovertarget="navigation-drawer" class="hoverable">
@@ -33,39 +32,12 @@
 >
 	<MobileNavbarItem
 		{currentRoute}
-		link={routePrefix}
+		link={basePath(page)}
 		route="/[lang=lang]/[profile=profileId]"
 		pageName="Startseite"
 	>
 		{#snippet icon()}<IconLogo />{/snippet}
 	</MobileNavbarItem>
-	<MobileNavbarItem
-		{currentRoute}
-		link="{routePrefix}/bookmarks"
-		route="/[lang=lang]/[profile=profileId]/bookmarks"
-		pageName="Lesezeichen"
-	>
-		{#snippet icon()}<IconBookmarkLarge />{/snippet}
-	</MobileNavbarItem>
-	<MobileNavbarItem
-		{currentRoute}
-		link="{routePrefix}/settings"
-		route="/[lang=lang]/[profile=profileId]/settings"
-		pageName="Einstellungen"
-	>
-		{#snippet icon()}<IconSettings />{/snippet}
-	</MobileNavbarItem>
-	<MobileNavbarItem
-		{currentRoute}
-		link="{routePrefix}/about"
-		route="/[lang=lang]/[profile=profileId]/about"
-		pageName="Über Vahrplan"
-	>
-		{#snippet icon()}<IconAbout />{/snippet}
-	</MobileNavbarItem>
-
-	<hr />
-
 	{#if diagramUrl !== undefined}
 		<MobileNavbarItem
 			{currentRoute}
@@ -86,9 +58,32 @@
 			{#snippet icon()}<IconDetails />{/snippet}
 		</MobileNavbarItem>
 	{/if}
-	{#if diagramUrl !== undefined || journeyUrl !== undefined}
-		<hr />
-	{/if}
+	<hr />
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/bookmarks"
+		route="/[lang=lang]/[profile=profileId]/bookmarks"
+		pageName="Lesezeichen"
+	>
+		{#snippet icon()}<IconBookmarkLarge />{/snippet}
+	</MobileNavbarItem>
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/settings"
+		route="/[lang=lang]/[profile=profileId]/settings"
+		pageName="Einstellungen"
+	>
+		{#snippet icon()}<IconSettings />{/snippet}
+	</MobileNavbarItem>
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/about"
+		route="/[lang=lang]/[profile=profileId]/about"
+		pageName="Über Vahrplan"
+	>
+		{#snippet icon()}<IconAbout />{/snippet}
+	</MobileNavbarItem>
+	<hr />
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/imprint"

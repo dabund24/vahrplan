@@ -2,6 +2,7 @@
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
 	import { PUBLIC_PAYPAL_LINK, PUBLIC_IMPRINT_EMAIL_ADDRESS } from "$env/static/public";
 	import { version } from "$app/environment";
+	import { page } from "$app/state";
 </script>
 
 <svelte:head>
@@ -44,11 +45,11 @@
 		oder <q>Installieren</q> im Browser-Menü.
 	</AccordionElement>
 	<AccordionElement title="Beim Teilen sind mir die Links zu lang. Geht das auch kürzer?">
-		Ja. Aktiviere dafür in den <a href="/de/dbnav/settings">Einstellungen</a> unter
+		Ja. Aktiviere dafür in den <a href="/{page.data.lang}/settings">Einstellungen</a> unter
 		<q>Generierung von Kurzlinks beim Teilen</q> die entsprechenden Optionen.
 	</AccordionElement>
 	<AccordionElement title="Wie kann ich meine Einstellungen sessionübergreifend behalten?">
-		Wenn du in den <a href="/de/dbnav/settings">Einstellungen</a> unter
+		Wenn du in den <a href="/{page.data.lang}/settings">Einstellungen</a> unter
 		<q>Dauerhaftes Speichern von Einstellungen</q> die Schalter aktivierst, sind die von dir gesetzten
 		App-Einstellungen bzw. Verbindungsfilter auch in der nächsten Browser-Session noch verfügbar.
 	</AccordionElement>

@@ -1,18 +1,19 @@
 import { setDiagramDataFromFormData } from "$lib/state/diagramData.svelte";
 import { setSelectedData } from "$lib/state/selectedData.svelte";
 import { toast } from "$lib/state/toastStore";
-import type { Ctx, JourneysFilters, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
+import type { JourneysFilters, KeyedItem, ParsedLocation, TimeData } from "$lib/types";
 import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { DIAGRAM_MAX_COLUMNS, DIAGRAM_MIN_COLUMNS } from "$lib/constants";
-import { page } from "$app/state";
+import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
 
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
 	timeData: TimeData;
 	filters: JourneysFilters;
 	geolocationDate: Date;
+	profileConfig: ProfileConfig;
 };
 
 /**
@@ -37,17 +38,13 @@ export function setDisplayedFormData(newFormData: DisplayedFormData): void {
  * - fetches the diagram for the passed form data and updates the `diagramData` store to the result
  * - unselects all columns
  * @param newFormData
- * @param ctx
  * @returns a promise that resolves once the page has navigated to the correct url
  */
-export async function searchDiagram(
-	newFormData: DisplayedFormData,
-	ctx: Pick<Ctx, "profileConfig">
-): Promise<void> {
+export async function searchDiagram(newFormData: DisplayedFormData): Promise<void> {
 	const diagramApiClient = apiClient("GET", "diagram");
 	const diagramUrl = diagramApiClient.formatNonApiUrl(
 		diagramApiClient.formDataToRequestData(newFormData),
-		ctx
+		{ profileConfig: newFormData.profileConfig }
 	);
 	displayedFormData = { ...newFormData };
 	if (location.href !== diagramUrl.href) {
@@ -80,9 +77,7 @@ export function updateDisplayedLocations(
 		return;
 	}
 
-	const profileConfig = page.data.profileConfig;
-
-	void searchDiagram(newFormData, { profileConfig });
+	void searchDiagram(newFormData);
 }
 
 /**
