@@ -13,7 +13,7 @@ import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 
-export type FptfOptionT = Extract<
+export type FptfOptionId = Extract<
 	OptionId,
 	"bike" | "accessible" | "maxTransfers" | "minTransferTime"
 >;
@@ -28,7 +28,7 @@ export type HafasError = Error & {
 };
 
 export type FptfDataServiceConfig<ProductT extends Product> = Pick<
-	JourneyDataServiceConfig<ProductT, FptfOptionT>,
+	JourneyDataServiceConfig<ProductT, FptfOptionId>,
 	"productMapping" | "hasTickets" | "quota"
 > & {
 	client: HafasClient;
@@ -41,7 +41,7 @@ export type FptfDataServiceConfig<ProductT extends Product> = Pick<
  */
 export class FptfDataService<ProductT extends Product> extends JourneyDataService<
 	ProductT,
-	FptfOptionT
+	FptfOptionId
 > {
 	private readonly client: HafasClient;
 	protected override readonly requestFormatter: FptfRequestFormatter<ProductT>;
@@ -80,7 +80,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 	}
 
 	public override journeys = (
-		...params: Parameters<JourneyDataService<ProductT, FptfOptionT>["journeys"]>
+		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["journeys"]>
 	): Promise<VahrplanResult<JourneyNodesWithRefs>> =>
 		this.performRequest(
 			"journeys",
@@ -93,7 +93,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		);
 
 	public override refresh = (
-		...params: Parameters<JourneyDataService<ProductT, FptfOptionT>["refresh"]>
+		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["refresh"]>
 	): Promise<VahrplanResult<SubJourney>> =>
 		this.performRequest(
 			"refresh",
@@ -106,7 +106,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		);
 
 	public override location = (
-		...params: Parameters<JourneyDataService<ProductT, FptfOptionT>["location"]>
+		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>
 	): Promise<VahrplanResult<ParsedLocation>> =>
 		this.performRequest(
 			"location",
@@ -119,7 +119,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		);
 
 	public override locations = (
-		...params: Parameters<JourneyDataService<ProductT, FptfOptionT>["locations"]>
+		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["locations"]>
 	): Promise<VahrplanResult<ParsedLocation[]>> =>
 		this.performRequest(
 			"locations",

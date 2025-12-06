@@ -3,7 +3,7 @@ import { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDat
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 import type {
 	FptfDataService,
-	FptfOptionT
+	FptfOptionId
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import type {
 	JourneysOptions as FptfJourneysOptions,
@@ -19,7 +19,7 @@ import type { Language } from "../../../../params/lang";
 
 export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataRequestFormatter<
 	ProductT,
-	FptfOptionT
+	FptfOptionId
 > {
 	protected override readonly formatOptionValues = {
 		bike: (value: PossibleOptionValues<"bike">): FptfJourneysOptions["bike"] => value,
@@ -36,7 +36,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 
 	private readonly formatFptfOptions = (
 		lang: Language,
-		{ timeData, filters }: Parameters<JourneyDataService<ProductT, FptfOptionT>["journeys"]>[1]
+		{ timeData, filters }: Parameters<JourneyDataService<ProductT, FptfOptionId>["journeys"]>[1]
 	): FptfJourneysOptions => {
 		const products: Record<string, boolean> = {};
 		for (const vahrplanProduct in this.productMapping) {
@@ -67,7 +67,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 	};
 
 	private readonly formatFptfStop = (
-		stop: Parameters<JourneyDataService<ProductT, FptfOptionT>["location"]>[0]
+		stop: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>[0]
 	): string | Station | Stop | Location => {
 		if (stop.startsWith("{")) {
 			return JSON.parse(stop) as Station | Stop | Location;
@@ -78,7 +78,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 	public override readonly formatRequest = {
 		journeys: (
 			...[{ from, to }, options, { lang }]: Parameters<
-				JourneyDataService<ProductT, FptfOptionT>["journeys"]
+				JourneyDataService<ProductT, FptfOptionId>["journeys"]
 			>
 		): Parameters<FptfDataService<ProductT>["client"]["journeys"]> => {
 			const fptfFrom = this.formatFptfStop(from);
@@ -88,7 +88,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 		},
 
 		refresh: (
-			...[token, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionT>["refresh"]>
+			...[token, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionId>["refresh"]>
 		): Parameters<NonNullable<FptfDataService<ProductT>["client"]["refreshJourney"]>> => {
 			const fptfOptions: RefreshJourneyOptions = {
 				stopovers: true,
@@ -99,7 +99,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 		},
 
 		locations: (
-			...[name, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionT>["locations"]>
+			...[name, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionId>["locations"]>
 		): Parameters<FptfDataService<ProductT>["client"]["locations"]> => {
 			const fptfOptions: LocationsOptions = {
 				language: lang,
@@ -109,7 +109,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 		},
 
 		location: (
-			...[token, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionT>["location"]>
+			...[token, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>
 		): Parameters<FptfDataService<ProductT>["client"]["stop"]> => {
 			const fptfOptions: StopOptions = {
 				language: lang
