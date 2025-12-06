@@ -1,7 +1,7 @@
 import type { ParamMatcher } from "@sveltejs/kit";
 
-const profileIds = ["empty", "dbnav"] as const;
-export type ProfileId = (typeof profileIds)[number];
+export const profileIds = ["dbnav", "bvg"] as const;
+export type ProfileId = (typeof profileIds)[number] | "empty";
 
 export const match = ((param: string): param is ProfileId =>
-	profileIds.includes(param as ProfileId) && param !== "empty") satisfies ParamMatcher;
+	profileIds.includes(param as Exclude<ProfileId, "empty">)) satisfies ParamMatcher;

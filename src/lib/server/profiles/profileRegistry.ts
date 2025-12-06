@@ -3,10 +3,12 @@ import { DbnavProfile } from "./dbnavProfile";
 import type { ProfileId } from "../../../params/profileId";
 import type { Language } from "../../../params/lang";
 import { EmptyProfile } from "./emptyProfile";
+import { BvgProfile } from "$lib/server/profiles/bvgProfile";
 
 const profiles = {
 	empty: new EmptyProfile(),
-	dbnav: new DbnavProfile()
+	dbnav: new DbnavProfile(),
+	bvg: new BvgProfile()
 } as const satisfies {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[K in ProfileId]: Profile<K, any, any>;

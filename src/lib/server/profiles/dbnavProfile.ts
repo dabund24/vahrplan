@@ -1,5 +1,8 @@
 import { Profile } from "./profile";
-import { FptfDataService } from "$lib/server/journey-data/fptf-clients/FptfDataService";
+import {
+	FptfDataService,
+	type FptfOptionId
+} from "$lib/server/journey-data/fptf-clients/FptfDataService";
 // @ts-expect-error no types for db-vendo-client yet
 import { createClient } from "db-vendo-client";
 // @ts-expect-error no types for db-vendo-client yet
@@ -24,7 +27,7 @@ export class DbnavProfile extends Profile<
 	| "bus"
 	| "taxi"
 	| "ferry",
-	"bike" | "accessible" | "maxTransfers" | "minTransferTime"
+	FptfOptionId
 > {
 	protected override readonly id = "dbnav";
 	protected override readonly name = { de: "Deutschland" };
