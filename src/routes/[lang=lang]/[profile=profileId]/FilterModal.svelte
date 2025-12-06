@@ -1,12 +1,20 @@
 <script lang="ts">
 	import Tabs from "$lib/components/Tabs.svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
-	import { products, settings } from "$lib/state/settingStore";
+	import { settings } from "$lib/state/settingStore";
 	import type { ComponentProps } from "svelte";
 	import Setting from "$lib/components/Setting.svelte";
 	import Modal from "$lib/components/Modal.svelte";
+	import { page } from "$app/state";
+	import type { Product } from "$lib/types";
+	import type { ProfileConfig } from "$lib/server/profiles/profile";
 
-	const productKeys = Object.keys(products) as (keyof typeof products)[];
+	const products = $derived(
+		Object.entries(page.data.profileConfig.products) as [
+			Product,
+			NonNullable<ProfileConfig["products"][Product]>
+		][]
+	);
 
 	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
 		settings.update((settings) => {
@@ -118,10 +126,10 @@
 			Nur Fernverkehr
 		</button>
 	</div>
-	{#each productKeys as product (product)}
+	{#each products as [productId, productName] (productId)}
 		<Setting
-			settingName={products[product]}
-			bind:setting={$settings.products[product]}
+			settingName={productName.name}
+			bind:setting={$settings.products[productId]}
 			settingInfo={{ type: "boolean" }}
 		/>
 	{/each}

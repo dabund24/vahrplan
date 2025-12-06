@@ -3,19 +3,6 @@ import { browser } from "$app/environment";
 import type { JourneysFilters, Product } from "$lib/types";
 import type { Profile } from "../server/profiles/profile";
 
-export const products: Record<Product, string> = {
-	longDistanceExpress: "Intercity-Express",
-	longDistance: "Intercity/Eurocity",
-	regionalExpress: "sonst. Fernzug",
-	regional: "Regionalexpress/-bahn",
-	suburban: "S-Bahn",
-	subway: "U-Bahn",
-	tram: "Straßenbahn",
-	bus: "Bus",
-	taxi: "Ruftaxi",
-	ferry: "Fähre"
-} as const;
-
 export type Settings = {
 	options: JourneysFilters["options"];
 	products: JourneysFilters["products"];
