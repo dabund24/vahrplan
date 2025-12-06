@@ -32,7 +32,9 @@ export abstract class LineShapeParser<T> {
 				textColor,
 				borderColor,
 				shape,
-				_wikidataQid
+				_wikidataQid,
+				delfiAgencyId,
+				delfiAgencyName
 			] = line.split(",");
 
 			const lineCodeEntry = {
@@ -42,6 +44,8 @@ export abstract class LineShapeParser<T> {
 				backgroundColor,
 				textColor,
 				borderColor: borderColor === "" ? undefined : borderColor,
+				["delfiAgencyID"]: delfiAgencyId,
+				delfiAgencyName,
 				shape: shape as LineShape["shape"]
 			};
 			result.push(lineCodeEntry);
@@ -65,6 +69,8 @@ export abstract class LineShapeParser<T> {
 	protected static traewellingLineShapes: (LineShape & {
 		operatorCode?: string;
 		lineId: string;
+		["delfiAgencyID"]: string;
+		delfiAgencyName: string;
 	})[] = [];
 
 	static {
