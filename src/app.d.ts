@@ -28,6 +28,7 @@ declare global {
 		}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageState extends TripInfoModalKeys, ServerNewsModalKeys {
+			showProfileModal?: boolean;
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showRecommendationModal?: boolean;

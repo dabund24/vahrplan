@@ -1,6 +1,7 @@
 <script lang="ts">
 	import MainForm from "./MainForm.svelte";
 	import Bookmarks from "$lib/components/bookmarks/Bookmarks.svelte";
+	import ProfileSelector from "./ProfileSelector.svelte";
 </script>
 
 <svelte:head>
@@ -13,6 +14,7 @@
 
 <section class="form">
 	<h2 class="visually-hidden">Verbindungssuche</h2>
+	<ProfileSelector />
 	<MainForm />
 </section>
 <section class="bookmarks content-wrapper" data-sveltekit-preload-data="off">
