@@ -12,6 +12,7 @@ import { PutJourneyShortUrlApiClient } from "../../routes/[lang=lang]/[profile=p
 import { GetProfileApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/getClient";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
+import { GetProfilesApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profiles/getClient";
 
 /**
  * this contains all api paths without the preceding `/[lang]/[profile]/api/`
@@ -26,7 +27,8 @@ type ApiRouteShort =
 	| "journey/shorturl/[shortJourneyId]"
 	| "location/[locationId]"
 	| "locations/[name]"
-	| "profile";
+	| "profile"
+	| "profiles";
 
 /**
  * turns a short api route type into a long one by prepending `/[lang]/[profile]/api/`
@@ -50,7 +52,8 @@ const clients = {
 		...clientEntries("journey/shorturl/[shortJourneyId]", GetJourneyShortUrlApiClient),
 		...clientEntries("location/[locationId]", GetLocationApiClient),
 		...clientEntries("locations/[name]", GetLocationsApiClient),
-		...clientEntries("profile", GetProfileApiClient)
+		...clientEntries("profile", GetProfileApiClient),
+		...clientEntries("profiles", GetProfilesApiClient)
 	},
 	["POST"]: {
 		...clientEntries("diagram/scroll/[scrollDirection]", PostDiagramScrollApiClient)

@@ -18,7 +18,7 @@ import {
 	type PlausibleProp,
 	PlausiblePropSettable
 } from "$lib/api-client/PlausiblePropSettableApiClient";
-import type { OptionId, PossibleOptionValues, Profile } from "../profile/profile.server";
+import type { OptionId, PossibleOptionValues, Profile } from "$lib/server/profiles/profile";
 
 type ReqType = {
 	stops: string[];

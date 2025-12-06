@@ -14,7 +14,7 @@ import type {
 	Stop,
 	StopOptions
 } from "hafas-client";
-import type { PossibleOptionValues } from "../../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { PossibleOptionValues } from "../../profiles/profile";
 import type { Language } from "../../../../params/lang";
 
 export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataRequestFormatter<

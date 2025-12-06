@@ -5,7 +5,7 @@ import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import { type VahrplanError } from "$lib/VahrplanError";
 import type { Language } from "./params/lang";
-import type { ProfileConfig } from "./routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { ProfileConfig } from "$lib/server/profiles/profile";
 
 /**
  * can be used for modals showing trip info. suffix is id of block

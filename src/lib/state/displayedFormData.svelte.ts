@@ -6,7 +6,7 @@ import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { DIAGRAM_MAX_COLUMNS, DIAGRAM_MIN_COLUMNS } from "$lib/constants";
-import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { ProfileConfig } from "../server/profiles/profile";
 
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];

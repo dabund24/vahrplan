@@ -7,7 +7,7 @@ import { VahrplanSuccess } from "$lib/VahrplanResult";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "../../locationRepresentatives.server";
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
-import { journeyDataService } from "../../../profile/profileRegistry.server";
+import { journeyDataService } from "$lib/server/profiles/profileRegistry";
 
 export const POST: RequestHandler = async function (reqEvent) {
 	const client = apiClient("POST", reqEvent.route.id);

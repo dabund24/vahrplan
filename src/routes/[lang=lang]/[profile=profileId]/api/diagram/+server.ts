@@ -7,7 +7,7 @@ import recommendVias from "./viaRecommendations.server";
 import type { DiagramData } from "$lib/state/diagramData.svelte.js";
 import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "./locationRepresentatives.server";
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
-import { journeyDataService } from "../profile/profileRegistry.server";
+import { journeyDataService } from "$lib/server/profiles/profileRegistry";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);

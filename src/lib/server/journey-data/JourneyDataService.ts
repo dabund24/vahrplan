@@ -12,7 +12,7 @@ import {
 	type VahrplanResult,
 	VahrplanSuccess
 } from "$lib/VahrplanResult";
-import type { OptionId } from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { OptionId } from "../profiles/profile";
 import { RateLimiter } from "$lib/server/RateLimiter";
 import type { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDataRequestFormatter";
 import type { JourneyDataResponseParser } from "$lib/server/journey-data/JourneyDataResponseParser";

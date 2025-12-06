@@ -1,7 +1,7 @@
 import type { Product } from "$lib/types";
 import type { AssertUniqueTuple, EmptyRecord } from "$lib/utilityTypes";
-import type { ProfileId } from "../../../../../params/profileId";
-import type { Language } from "../../../../../params/lang";
+import type { ProfileId } from "../../../params/profileId";
+import type { Language } from "../../../params/lang";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 import { version } from "$app/environment";
 

@@ -1,4 +1,4 @@
-import type { ProfileConfig } from "../src/routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { ProfileConfig } from "$lib/server/profiles/profile";
 
 export const exampleProfileConfig: ProfileConfig = {
 	name: "Beispiel",

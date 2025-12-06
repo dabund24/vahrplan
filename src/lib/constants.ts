@@ -1,4 +1,4 @@
-import type { ProfileConfig } from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { ProfileConfig } from "./server/profiles/profile";
 
 export const YEAR_IN_SECONDS = 31_536_000;
 export const DAY_IN_SECONDS = 86400;

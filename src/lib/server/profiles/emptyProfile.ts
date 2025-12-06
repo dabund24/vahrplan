@@ -1,4 +1,4 @@
-import { Profile } from "./profile.server";
+import { Profile } from "./profile";
 import { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 import { VahrplanError } from "$lib/VahrplanError";
 import { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDataRequestFormatter";

@@ -1,8 +1,8 @@
-import type { Profile } from "./profile.server";
-import { DbnavProfile } from "./dbnavProfile.server";
-import type { ProfileId } from "../../../../../params/profileId";
-import type { Language } from "../../../../../params/lang";
-import { EmptyProfile } from "./emptyProfile.server";
+import type { Profile, ProfileConfig } from "./profile";
+import { DbnavProfile } from "./dbnavProfile";
+import type { ProfileId } from "../../../params/profileId";
+import type { Language } from "../../../params/lang";
+import { EmptyProfile } from "./emptyProfile";
 
 const profiles = {
 	empty: new EmptyProfile(),
@@ -14,6 +14,12 @@ const profiles = {
 
 export function profileRegistry<T extends ProfileId>(id: T): (typeof profiles)[T] {
 	return profiles[id];
+}
+
+export function allProfileConfigs(lang: Language): ProfileConfig[] {
+	return Object.values(profiles)
+		.map((p) => p.configOfLanguage(lang))
+		.filter(({ id }) => id !== "empty");
 }
 
 export function journeyDataService<ProfileT extends ProfileId>(

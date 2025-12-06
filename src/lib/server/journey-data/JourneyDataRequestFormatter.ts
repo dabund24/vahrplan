@@ -2,7 +2,7 @@ import type { Product } from "$lib/types";
 import {
 	type OptionId,
 	type PossibleOptionValues
-} from "../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+} from "../profiles/profile";
 import type {
 	JourneyDataService,
 	JourneyDataServiceConfig

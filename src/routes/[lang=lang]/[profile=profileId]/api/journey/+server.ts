@@ -4,7 +4,7 @@ import { VahrplanSuccess } from "$lib/VahrplanResult";
 import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "../diagram/locationRepresentatives.server";
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
 import type { LegBlock, SubJourney, TransitType } from "$lib/types";
-import { journeyDataService } from "../profile/profileRegistry.server";
+import { journeyDataService } from "$lib/server/profiles/profileRegistry";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);

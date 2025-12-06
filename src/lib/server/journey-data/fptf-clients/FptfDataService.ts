@@ -7,7 +7,7 @@ import type { HafasClient, Line } from "hafas-client";
 import type { ParsedLocation, Product, SubJourney } from "$lib/types";
 import { type VahrplanResult } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
-import type { OptionId } from "../../../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { OptionId } from "../../profiles/profile";
 import { FptfRequestFormatter } from "$lib/server/journey-data/fptf-clients/FptfRequestFormatter";
 import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";

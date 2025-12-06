@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
 import type { JourneysFilters, Product } from "$lib/types";
-import type { Profile } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { Profile } from "../server/profiles/profile";
 
 export const products: Record<Product, string> = {
 	longDistanceExpress: "Intercity-Express",

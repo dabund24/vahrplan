@@ -8,7 +8,7 @@ import { untrack } from "svelte";
 import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
-import type { ProfileConfig } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+import type { ProfileConfig } from "../server/profiles/profile";
 import { EMPTY_PROFILE } from "$lib/constants";
 import type { Ctx } from "$lib/types";
 

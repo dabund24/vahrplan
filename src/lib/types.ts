@@ -2,7 +2,7 @@ import type {
 	OptionId,
 	PossibleOptionValues,
 	ProfileConfig
-} from "../routes/[lang=lang]/[profile=profileId]/api/profile/profile.server";
+} from "./server/profiles/profile";
 import type { Language } from "../params/lang";
 import type { ProfileId } from "../params/profileId";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";

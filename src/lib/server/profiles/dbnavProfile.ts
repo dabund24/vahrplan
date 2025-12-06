@@ -1,4 +1,4 @@
-import { Profile } from "./profile.server";
+import { Profile } from "./profile";
 import { FptfDataService } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 // @ts-expect-error no types for db-vendo-client yet
 import { createClient } from "db-vendo-client";
