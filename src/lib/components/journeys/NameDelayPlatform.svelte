@@ -12,6 +12,13 @@
 
 	const displayedFormData = $derived(getDisplayedFormData());
 
+	function formatDelay(delay: number | undefined): string {
+		if (delay === undefined) {
+			return "";
+		}
+		return `(${delay >= 0 ? "+" : ""}${delay})`;
+	}
+
 	let stationOuterTag = $derived(hasStrongName ? "strong" : "span");
 
 	let stationInnerTag = $derived(transitData.attribute === "cancelled" ? "s" : "span");
@@ -28,15 +35,9 @@
 			: transitData.location.name
 	);
 
-	let delayTextA = $derived(
-		transitData.time.arrival?.delay !== undefined ? `(+${transitData.time.arrival.delay})` : ""
-	);
+	let delayTextA = $derived(formatDelay(transitData.time.arrival?.delay));
 
-	let delayTextB = $derived(
-		transitData.time.departure?.delay !== undefined
-			? `(+${transitData.time.departure.delay})`
-			: ""
-	);
+	let delayTextB = $derived(formatDelay(transitData.time.departure?.delay));
 
 	let platformData = $derived(transitData.platformData);
 	let platformData2 = $derived(transitData.platformData2);
