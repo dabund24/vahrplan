@@ -1,9 +1,9 @@
 import type { Profile, ProfileConfig } from "./profile";
-import { DbnavProfile } from "./dbnavProfile";
+import { DbnavProfile } from "./profile-implementations/dbnavProfile";
 import type { ProfileId } from "../../../params/profileId";
 import type { Language } from "../../../params/lang";
-import { EmptyProfile } from "./emptyProfile";
-import { BvgProfile } from "$lib/server/profiles/bvgProfile";
+import { EmptyProfile } from "./profile-implementations/emptyProfile";
+import { BvgProfile } from "$lib/server/profiles/profile-implementations/bvgProfile";
 
 const profiles = {
 	empty: new EmptyProfile(),
