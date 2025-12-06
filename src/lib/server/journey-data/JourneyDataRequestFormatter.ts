@@ -1,8 +1,5 @@
 import type { Product } from "$lib/types";
-import {
-	type OptionId,
-	type PossibleOptionValues
-} from "../profiles/profile";
+import { type OptionId, type PossibleOptionValues } from "../profiles/profile";
 import type {
 	JourneyDataService,
 	JourneyDataServiceConfig

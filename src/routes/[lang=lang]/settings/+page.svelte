@@ -121,7 +121,8 @@
 				<p> Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.</p>
 				<p
 					>Mehr Informationen zu Local Storage befinden sich <a
-						href="/{page.data.lang}/about/privacy#web-storage">in der Datenschutzerklärung</a
+						href="/{page.data.lang}/about/privacy#web-storage"
+						>in der Datenschutzerklärung</a
 					>.
 				</p>
 			</div>

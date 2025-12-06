@@ -1,8 +1,4 @@
-import type {
-	OptionId,
-	PossibleOptionValues,
-	ProfileConfig
-} from "./server/profiles/profile";
+import type { OptionId, PossibleOptionValues, ProfileConfig } from "./server/profiles/profile";
 import type { Language } from "../params/lang";
 import type { ProfileId } from "../params/profileId";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
