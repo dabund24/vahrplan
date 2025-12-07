@@ -27,10 +27,6 @@
 	}
 </script>
 
-<li
-	class="flex-column padded-top-bottom"
-	aria-current={profileConfig.id === page.data.profileConfig.id}
->
 	<div class="regular-row flex-row">
 		<header class="flex-column">
 			<strong>{profileConfig.name}</strong>
@@ -57,12 +53,8 @@
 			Datenquelle {profileConfig.name} nicht auswählbar. {profileConfig.disabledNotice.name}
 		</Warning>
 	{/if}
-</li>
 
 <style>
-	li {
-		gap: 0.5rem;
-	}
 	.regular-row {
 		gap: 0.5rem;
 		align-items: center;
