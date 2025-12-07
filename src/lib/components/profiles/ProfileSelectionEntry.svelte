@@ -27,32 +27,32 @@
 	}
 </script>
 
-	<div class="regular-row flex-row">
-		<header class="flex-column">
-			<strong>{profileConfig.name}</strong>
-			<i>{profileConfig.id}</i>
-		</header>
-		<BookmarkToggle type="profile" iconType="star" value={profileConfig} />
-		{#if profileConfig.disabledNotice === undefined}
-			<button
-				class="hoverable hoverable--visible"
-				class:hoverable--accent={profileConfig.id !== page.data.profileConfig.id}
-				title="Profil {profileConfig.name} auswählen"
-				onclick={selectProfile}
-			>
-				{#if profileConfig.id === page.data.profileConfig.id}
-					<IconCheckmark />
-				{:else}
-					<IconRightArrow />
-				{/if}
-			</button>
-		{/if}
-	</div>
-	{#if profileConfig.disabledNotice !== undefined}
-		<Warning color="red">
-			Datenquelle {profileConfig.name} nicht auswählbar. {profileConfig.disabledNotice.name}
-		</Warning>
+<div class="regular-row flex-row">
+	<header class="flex-column">
+		<strong>{profileConfig.name}</strong>
+		<i>{profileConfig.id}</i>
+	</header>
+	<BookmarkToggle type="profile" iconType="star" value={profileConfig} />
+	{#if profileConfig.disabledNotice === undefined}
+		<button
+			class="hoverable hoverable--visible"
+			class:hoverable--accent={profileConfig.id !== page.data.profileConfig.id}
+			title="Profil {profileConfig.name} auswählen"
+			onclick={selectProfile}
+		>
+			{#if profileConfig.id === page.data.profileConfig.id}
+				<IconCheckmark />
+			{:else}
+				<IconRightArrow />
+			{/if}
+		</button>
 	{/if}
+</div>
+{#if profileConfig.disabledNotice !== undefined}
+	<Warning color="red">
+		Datenquelle {profileConfig.name} nicht auswählbar. {profileConfig.disabledNotice.name}
+	</Warning>
+{/if}
 
 <style>
 	.regular-row {
