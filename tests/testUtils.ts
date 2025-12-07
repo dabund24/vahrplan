@@ -20,34 +20,34 @@ export const exampleProfileConfig: ProfileConfig = {
 			defaultValue: 0,
 			optionNames: {
 				"0": {
-					de: "0min"
+					name: "0min"
 				},
 				"2": {
-					de: "2min"
+					name: "2min"
 				},
 				"5": {
-					de: "5min"
+					name: "5min"
 				},
 				"10": {
-					de: "10min"
+					name: "10min"
 				},
 				"15": {
-					de: "15min"
+					name: "15min"
 				},
 				"20": {
-					de: "20min"
+					name: "20min"
 				},
 				"30": {
-					de: "30min"
+					name: "30min"
 				},
 				"40": {
-					de: "40min"
+					name: "40min"
 				},
 				"50": {
-					de: "50min"
+					name: "50min"
 				},
 				"60": {
-					de: "1h"
+					name: "1h"
 				}
 			}
 		},
