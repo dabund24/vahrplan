@@ -15,7 +15,7 @@
 </script>
 
 <div class="scrollable flex-row">
-	<div class="flex-row padded-top-bottom scrollable-content">
+	<div class="flex-row scrollable-content">
 		<ModalToggle showModalKey="showProfileModal">
 			<span class="flex-row button-content">
 				<strong>{page.data.profileConfig.name}</strong>
@@ -67,7 +67,7 @@
 		width: 30rem;
 		min-width: fit-content;
 		margin: auto;
-		padding: 0.5rem 0.75rem;
+		padding: 0 0.75rem;
 		gap: 0.5rem;
 		> :global(:first-child) {
 			border-color: var(--accent-color);
