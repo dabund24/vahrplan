@@ -1,0 +1,4784 @@
+import type { Journeys } from "hafas-client";
+
+export const bvgJourneysRawRes = {
+	earlierRef:
+		"3|OB|MT#14#14593#14593#14646#14646#0#0#5#14138#1#0#10#0#0#-2147483648#1#2|PDH#b3f919b4bde6cc72b8616dd2a3c3215e|RD#7122025|RT#193857|US#1|RS#INIT",
+	laterRef:
+		"3|OF|MT#14#14686#14686#14736#14736#0#0#325#14667#6#0#10#0#0#-2147483648#1#2|PDH#b3f919b4bde6cc72b8616dd2a3c3215e|RD#7122025|RT#193857|US#1|RS#INIT",
+	journeys: [
+		{
+			type: "journey",
+			legs: [
+				{
+					origin: {
+						type: "stop",
+						id: "900003201",
+						name: "S+U Berlin Hauptbahnhof",
+						location: {
+							type: "location",
+							id: "900003201",
+							latitude: 52.525607,
+							longitude: 13.369072
+						},
+						products: {
+							suburban: true,
+							subway: true,
+							tram: true,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:11000:900003201"
+						}
+					},
+					destination: {
+						type: "stop",
+						id: "900260009",
+						name: "Flughafen BER",
+						location: {
+							type: "location",
+							id: "900260009",
+							latitude: 52.36461,
+							longitude: 13.50987
+						},
+						products: {
+							suburban: true,
+							subway: false,
+							tram: false,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:12061:900260009"
+						}
+					},
+					departure: "2025-12-08T03:13:00+01:00",
+					plannedDeparture: "2025-12-08T03:13:00+01:00",
+					departureDelay: 0,
+					arrival: "2025-12-08T04:06:00+01:00",
+					plannedArrival: "2025-12-08T04:06:00+01:00",
+					arrivalDelay: 0,
+					reachable: true,
+					tripId: "1|4536|0|86|8122025",
+					line: {
+						type: "line",
+						id: "de-vbb-11000000-s-bahn-s9",
+						fahrtNr: "19318",
+						name: "S9",
+						public: true,
+						adminCode: "DBS---",
+						productName: "S",
+						mode: "train",
+						product: "suburban",
+						operator: {
+							type: "operator",
+							id: "s-bahn-berlin-gmbh",
+							name: "S-Bahn Berlin GmbH"
+						}
+					},
+					direction: "Flughafen BER",
+					arrivalPlatform: "6",
+					plannedArrivalPlatform: "6",
+					arrivalPrognosisType: "prognosed",
+					departurePlatform: "15",
+					plannedDeparturePlatform: "15",
+					departurePrognosisType: "prognosed",
+					stopovers: [
+						{
+							stop: {
+								type: "stop",
+								id: "900003201",
+								name: "S+U Berlin Hauptbahnhof",
+								location: {
+									type: "location",
+									id: "900003201",
+									latitude: 52.525607,
+									longitude: 13.369072
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900003201"
+								}
+							},
+							arrival: null,
+							plannedArrival: null,
+							arrivalDelay: null,
+							arrivalPlatform: null,
+							arrivalPrognosisType: null,
+							plannedArrivalPlatform: null,
+							departure: "2025-12-08T03:13:00+01:00",
+							plannedDeparture: "2025-12-08T03:13:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "15",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "15",
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
+								}
+							]
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100001",
+								name: "S+U Friedrichstr. Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100001",
+									latitude: 52.520304,
+									longitude: 13.387257
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100001"
+								}
+							},
+							arrival: "2025-12-08T03:15:00+01:00",
+							plannedArrival: "2025-12-08T03:15:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: "2025-12-08T03:16:00+01:00",
+							plannedDeparture: "2025-12-08T03:16:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "5",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "5"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100002",
+								name: "S Hackescher Markt (Berlin)",
+								location: {
+									type: "location",
+									id: "900100002",
+									latitude: 52.522605,
+									longitude: 13.402359
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100002"
+								}
+							},
+							arrival: "2025-12-08T03:17:00+01:00",
+							plannedArrival: "2025-12-08T03:17:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:18:00+01:00",
+							plannedDeparture: "2025-12-08T03:18:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100003",
+								name: "S+U Alexanderplatz Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100003",
+									latitude: 52.521508,
+									longitude: 13.411267
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100003"
+								}
+							},
+							arrival: "2025-12-08T03:19:00+01:00",
+							plannedArrival: "2025-12-08T03:19:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:20:00+01:00",
+							plannedDeparture: "2025-12-08T03:20:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100004",
+								name: "S+U Jannowitzbrücke (Berlin)",
+								location: {
+									type: "location",
+									id: "900100004",
+									latitude: 52.515503,
+									longitude: 13.418027
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100004"
+								}
+							},
+							arrival: "2025-12-08T03:21:00+01:00",
+							plannedArrival: "2025-12-08T03:21:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:22:00+01:00",
+							plannedDeparture: "2025-12-08T03:22:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120005",
+								name: "S Ostbahnhof (Berlin)",
+								location: {
+									type: "location",
+									id: "900120005",
+									latitude: 52.510335,
+									longitude: 13.435089
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900120005"
+								}
+							},
+							arrival: "2025-12-08T03:24:00+01:00",
+							plannedArrival: "2025-12-08T03:24:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "8",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "8",
+							departure: "2025-12-08T03:24:00+01:00",
+							plannedDeparture: "2025-12-08T03:24:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "8",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "8"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120004",
+								name: "S+U Warschauer Str. (Berlin)",
+								location: {
+									type: "location",
+									id: "900120004",
+									latitude: 52.505768,
+									longitude: 13.449157
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900120004"
+								}
+							},
+							arrival: "2025-12-08T03:26:00+01:00",
+							plannedArrival: "2025-12-08T03:26:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T03:26:00+01:00",
+							plannedDeparture: "2025-12-08T03:26:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900190001",
+								name: "S Treptower Park (Berlin)",
+								location: {
+									type: "location",
+									id: "900190001",
+									latitude: 52.493426,
+									longitude: 13.461283
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900190001"
+								}
+							},
+							arrival: "2025-12-08T03:29:00+01:00",
+							plannedArrival: "2025-12-08T03:29:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:35:00+01:00",
+							plannedDeparture: "2025-12-08T03:35:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191002",
+								name: "S Plänterwald (Berlin)",
+								location: {
+									type: "location",
+									id: "900191002",
+									latitude: 52.47872,
+									longitude: 13.47403
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191002"
+								}
+							},
+							arrival: "2025-12-08T03:38:00+01:00",
+							plannedArrival: "2025-12-08T03:38:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:38:00+01:00",
+							plannedDeparture: "2025-12-08T03:38:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191001",
+								name: "S Baumschulenweg (Berlin)",
+								location: {
+									type: "location",
+									id: "900191001",
+									latitude: 52.467582,
+									longitude: 13.489501
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191001"
+								}
+							},
+							arrival: "2025-12-08T03:40:00+01:00",
+							plannedArrival: "2025-12-08T03:40:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:40:00+01:00",
+							plannedDeparture: "2025-12-08T03:40:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900192001",
+								name: "S Schöneweide Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900192001",
+									latitude: 52.45461,
+									longitude: 13.510149
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900192001"
+								}
+							},
+							arrival: "2025-12-08T03:43:00+01:00",
+							plannedArrival: "2025-12-08T03:43:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:44:00+01:00",
+							plannedDeparture: "2025-12-08T03:44:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193001",
+								name: "S Johannisthal (Berlin)",
+								location: {
+									type: "location",
+									id: "900193001",
+									latitude: 52.446691,
+									longitude: 13.524028
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193001"
+								}
+							},
+							arrival: "2025-12-08T03:46:00+01:00",
+							plannedArrival: "2025-12-08T03:46:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:46:00+01:00",
+							plannedDeparture: "2025-12-08T03:46:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193002",
+								name: "S Adlershof (Berlin)",
+								location: {
+									type: "location",
+									id: "900193002",
+									latitude: 52.435104,
+									longitude: 13.54055
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193002"
+								}
+							},
+							arrival: "2025-12-08T03:48:00+01:00",
+							plannedArrival: "2025-12-08T03:48:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:49:00+01:00",
+							plannedDeparture: "2025-12-08T03:49:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900195510",
+								name: "S Altglienicke (Berlin)",
+								location: {
+									type: "location",
+									id: "900195510",
+									latitude: 52.407795,
+									longitude: 13.559598
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900195510"
+								}
+							},
+							arrival: "2025-12-08T03:53:00+01:00",
+							plannedArrival: "2025-12-08T03:53:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T03:53:00+01:00",
+							plannedDeparture: "2025-12-08T03:53:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900196001",
+								name: "S Grünbergallee (Berlin)",
+								location: {
+									type: "location",
+									id: "900196001",
+									latitude: 52.399543,
+									longitude: 13.54322
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900196001"
+								}
+							},
+							arrival: "2025-12-08T03:55:00+01:00",
+							plannedArrival: "2025-12-08T03:55:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T03:55:00+01:00",
+							plannedDeparture: "2025-12-08T03:55:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260005",
+								name: "S Schönefeld (bei Berlin) Bhf",
+								location: {
+									type: "location",
+									id: "900260005",
+									latitude: 52.390904,
+									longitude: 13.513043
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260005"
+								}
+							},
+							arrival: "2025-12-08T03:58:00+01:00",
+							plannedArrival: "2025-12-08T03:58:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T03:58:00+01:00",
+							plannedDeparture: "2025-12-08T03:58:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260080",
+								name: "S Waßmannsdorf",
+								location: {
+									type: "location",
+									id: "900260080",
+									latitude: 52.368287,
+									longitude: 13.463432
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:12061:900260080"
+								}
+							},
+							arrival: "2025-12-08T04:02:00+01:00",
+							plannedArrival: "2025-12-08T04:02:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:03:00+01:00",
+							plannedDeparture: "2025-12-08T04:03:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260009",
+								name: "Flughafen BER",
+								location: {
+									type: "location",
+									id: "900260009",
+									latitude: 52.36461,
+									longitude: 13.50987
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260009"
+								}
+							},
+							arrival: "2025-12-08T04:06:00+01:00",
+							plannedArrival: "2025-12-08T04:06:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "6",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "6",
+							departure: null,
+							plannedDeparture: null,
+							departureDelay: null,
+							departurePlatform: null,
+							departurePrognosisType: null,
+							plannedDeparturePlatform: null,
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (Flughafen BER)"
+								}
+							]
+						}
+					],
+					cycle: {
+						min: 780,
+						max: 1200,
+						nr: 7
+					},
+					alternatives: [
+						{
+							tripId: "1|4485|0|86|8122025",
+							line: {
+								type: "line",
+								id: "de-vbb-11000000-s-bahn-s9",
+								fahrtNr: "19291",
+								name: "S9",
+								public: true,
+								adminCode: "DBS---",
+								productName: "S",
+								mode: "train",
+								product: "suburban",
+								operator: {
+									type: "operator",
+									id: "s-bahn-berlin-gmbh",
+									name: "S-Bahn Berlin GmbH"
+								}
+							},
+							direction: "Flughafen BER",
+							when: "2025-12-08T03:26:00+01:00",
+							plannedWhen: "2025-12-08T03:26:00+01:00",
+							delay: 0
+						},
+						{
+							tripId: "1|4485|1|86|8122025",
+							line: {
+								type: "line",
+								id: "de-vbb-11000000-s-bahn-s9",
+								fahrtNr: "19290",
+								name: "S9",
+								public: true,
+								adminCode: "DBS---",
+								productName: "S",
+								mode: "train",
+								product: "suburban",
+								operator: {
+									type: "operator",
+									id: "s-bahn-berlin-gmbh",
+									name: "S-Bahn Berlin GmbH"
+								}
+							},
+							direction: "Flughafen BER",
+							when: "2025-12-08T03:46:00+01:00",
+							plannedWhen: "2025-12-08T03:46:00+01:00",
+							delay: 0
+						},
+						{
+							tripId: "1|4484|0|86|8122025",
+							line: {
+								type: "line",
+								id: "de-vbb-11000000-s-bahn-s9",
+								fahrtNr: "19289",
+								name: "S9",
+								public: true,
+								adminCode: "DBS---",
+								productName: "S",
+								mode: "train",
+								product: "suburban",
+								operator: {
+									type: "operator",
+									id: "s-bahn-berlin-gmbh",
+									name: "S-Bahn Berlin GmbH"
+								}
+							},
+							direction: "Flughafen BER",
+							when: "2025-12-08T04:06:00+01:00",
+							plannedWhen: "2025-12-08T04:06:00+01:00",
+							delay: 0
+						},
+						{
+							tripId: "1|4486|0|86|8122025",
+							line: {
+								type: "line",
+								id: "de-vbb-11000000-s-bahn-s9",
+								fahrtNr: "19288",
+								name: "S9",
+								public: true,
+								adminCode: "DBS---",
+								productName: "S",
+								mode: "train",
+								product: "suburban",
+								operator: {
+									type: "operator",
+									id: "s-bahn-berlin-gmbh",
+									name: "S-Bahn Berlin GmbH"
+								}
+							},
+							direction: "Flughafen BER",
+							when: "2025-12-08T04:26:00+01:00",
+							plannedWhen: "2025-12-08T04:26:00+01:00",
+							delay: 0
+						},
+						{
+							tripId: "1|4486|1|86|8122025",
+							line: {
+								type: "line",
+								id: "de-vbb-11000000-s-bahn-s9",
+								fahrtNr: "19287",
+								name: "S9",
+								public: true,
+								adminCode: "DBS---",
+								productName: "S",
+								mode: "train",
+								product: "suburban",
+								operator: {
+									type: "operator",
+									id: "s-bahn-berlin-gmbh",
+									name: "S-Bahn Berlin GmbH"
+								}
+							},
+							direction: "Flughafen BER",
+							when: "2025-12-08T04:46:00+01:00",
+							plannedWhen: "2025-12-08T04:46:00+01:00",
+							delay: 0
+						}
+					]
+				}
+			],
+			refreshToken:
+				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080313$202512080406$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
+			cycle: {
+				min: 780
+			}
+		},
+		{
+			type: "journey",
+			legs: [
+				{
+					origin: {
+						type: "stop",
+						id: "900003201",
+						name: "S+U Berlin Hauptbahnhof",
+						location: {
+							type: "location",
+							id: "900003201",
+							latitude: 52.525607,
+							longitude: 13.369072
+						},
+						products: {
+							suburban: true,
+							subway: true,
+							tram: true,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:11000:900003201"
+						}
+					},
+					destination: {
+						type: "stop",
+						id: "900260009",
+						name: "Flughafen BER",
+						location: {
+							type: "location",
+							id: "900260009",
+							latitude: 52.36461,
+							longitude: 13.50987
+						},
+						products: {
+							suburban: true,
+							subway: false,
+							tram: false,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:12061:900260009"
+						}
+					},
+					departure: "2025-12-08T03:26:00+01:00",
+					plannedDeparture: "2025-12-08T03:26:00+01:00",
+					departureDelay: 0,
+					arrival: "2025-12-08T04:16:00+01:00",
+					plannedArrival: "2025-12-08T04:16:00+01:00",
+					arrivalDelay: 0,
+					reachable: true,
+					tripId: "1|4485|0|86|8122025",
+					line: {
+						type: "line",
+						id: "de-vbb-11000000-s-bahn-s9",
+						fahrtNr: "19291",
+						name: "S9",
+						public: true,
+						adminCode: "DBS---",
+						productName: "S",
+						mode: "train",
+						product: "suburban",
+						operator: {
+							type: "operator",
+							id: "s-bahn-berlin-gmbh",
+							name: "S-Bahn Berlin GmbH"
+						}
+					},
+					direction: "Flughafen BER",
+					arrivalPlatform: "5",
+					plannedArrivalPlatform: "5",
+					arrivalPrognosisType: "prognosed",
+					departurePlatform: "15",
+					plannedDeparturePlatform: "15",
+					departurePrognosisType: "prognosed",
+					stopovers: [
+						{
+							stop: {
+								type: "stop",
+								id: "900003201",
+								name: "S+U Berlin Hauptbahnhof",
+								location: {
+									type: "location",
+									id: "900003201",
+									latitude: 52.525607,
+									longitude: 13.369072
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900003201"
+								}
+							},
+							arrival: null,
+							plannedArrival: null,
+							arrivalDelay: null,
+							arrivalPlatform: null,
+							arrivalPrognosisType: null,
+							plannedArrivalPlatform: null,
+							departure: "2025-12-08T03:26:00+01:00",
+							plannedDeparture: "2025-12-08T03:26:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "15",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "15",
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
+								}
+							]
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100001",
+								name: "S+U Friedrichstr. Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100001",
+									latitude: 52.520304,
+									longitude: 13.387257
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100001"
+								}
+							},
+							arrival: "2025-12-08T03:28:00+01:00",
+							plannedArrival: "2025-12-08T03:28:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: "2025-12-08T03:28:00+01:00",
+							plannedDeparture: "2025-12-08T03:28:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "5",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "5"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100002",
+								name: "S Hackescher Markt (Berlin)",
+								location: {
+									type: "location",
+									id: "900100002",
+									latitude: 52.522605,
+									longitude: 13.402359
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100002"
+								}
+							},
+							arrival: "2025-12-08T03:30:00+01:00",
+							plannedArrival: "2025-12-08T03:30:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:30:00+01:00",
+							plannedDeparture: "2025-12-08T03:30:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100003",
+								name: "S+U Alexanderplatz Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100003",
+									latitude: 52.521508,
+									longitude: 13.411267
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100003"
+								}
+							},
+							arrival: "2025-12-08T03:32:00+01:00",
+							plannedArrival: "2025-12-08T03:32:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:32:00+01:00",
+							plannedDeparture: "2025-12-08T03:32:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100004",
+								name: "S+U Jannowitzbrücke (Berlin)",
+								location: {
+									type: "location",
+									id: "900100004",
+									latitude: 52.515503,
+									longitude: 13.418027
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100004"
+								}
+							},
+							arrival: "2025-12-08T03:34:00+01:00",
+							plannedArrival: "2025-12-08T03:34:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:34:00+01:00",
+							plannedDeparture: "2025-12-08T03:34:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120005",
+								name: "S Ostbahnhof (Berlin)",
+								location: {
+									type: "location",
+									id: "900120005",
+									latitude: 52.510335,
+									longitude: 13.435089
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900120005"
+								}
+							},
+							arrival: "2025-12-08T03:36:00+01:00",
+							plannedArrival: "2025-12-08T03:36:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "8",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "8",
+							departure: "2025-12-08T03:37:00+01:00",
+							plannedDeparture: "2025-12-08T03:37:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "8",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "8"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120004",
+								name: "S+U Warschauer Str. (Berlin)",
+								location: {
+									type: "location",
+									id: "900120004",
+									latitude: 52.505768,
+									longitude: 13.449157
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900120004"
+								}
+							},
+							arrival: "2025-12-08T03:39:00+01:00",
+							plannedArrival: "2025-12-08T03:39:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T03:39:00+01:00",
+							plannedDeparture: "2025-12-08T03:39:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900190001",
+								name: "S Treptower Park (Berlin)",
+								location: {
+									type: "location",
+									id: "900190001",
+									latitude: 52.493426,
+									longitude: 13.461283
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900190001"
+								}
+							},
+							arrival: "2025-12-08T03:42:00+01:00",
+							plannedArrival: "2025-12-08T03:42:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:43:00+01:00",
+							plannedDeparture: "2025-12-08T03:43:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191002",
+								name: "S Plänterwald (Berlin)",
+								location: {
+									type: "location",
+									id: "900191002",
+									latitude: 52.47872,
+									longitude: 13.47403
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191002"
+								}
+							},
+							arrival: "2025-12-08T03:45:00+01:00",
+							plannedArrival: "2025-12-08T03:45:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:45:00+01:00",
+							plannedDeparture: "2025-12-08T03:45:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191001",
+								name: "S Baumschulenweg (Berlin)",
+								location: {
+									type: "location",
+									id: "900191001",
+									latitude: 52.467582,
+									longitude: 13.489501
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191001"
+								}
+							},
+							arrival: "2025-12-08T03:47:00+01:00",
+							plannedArrival: "2025-12-08T03:47:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:50:00+01:00",
+							plannedDeparture: "2025-12-08T03:50:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900192001",
+								name: "S Schöneweide Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900192001",
+									latitude: 52.45461,
+									longitude: 13.510149
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900192001"
+								}
+							},
+							arrival: "2025-12-08T03:53:00+01:00",
+							plannedArrival: "2025-12-08T03:53:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:53:00+01:00",
+							plannedDeparture: "2025-12-08T03:53:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193001",
+								name: "S Johannisthal (Berlin)",
+								location: {
+									type: "location",
+									id: "900193001",
+									latitude: 52.446691,
+									longitude: 13.524028
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193001"
+								}
+							},
+							arrival: "2025-12-08T03:55:00+01:00",
+							plannedArrival: "2025-12-08T03:55:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:56:00+01:00",
+							plannedDeparture: "2025-12-08T03:56:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193002",
+								name: "S Adlershof (Berlin)",
+								location: {
+									type: "location",
+									id: "900193002",
+									latitude: 52.435104,
+									longitude: 13.54055
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193002"
+								}
+							},
+							arrival: "2025-12-08T03:58:00+01:00",
+							plannedArrival: "2025-12-08T03:58:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:58:00+01:00",
+							plannedDeparture: "2025-12-08T03:58:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900195510",
+								name: "S Altglienicke (Berlin)",
+								location: {
+									type: "location",
+									id: "900195510",
+									latitude: 52.407795,
+									longitude: 13.559598
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900195510"
+								}
+							},
+							arrival: "2025-12-08T04:02:00+01:00",
+							plannedArrival: "2025-12-08T04:02:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:03:00+01:00",
+							plannedDeparture: "2025-12-08T04:03:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900196001",
+								name: "S Grünbergallee (Berlin)",
+								location: {
+									type: "location",
+									id: "900196001",
+									latitude: 52.399543,
+									longitude: 13.54322
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900196001"
+								}
+							},
+							arrival: "2025-12-08T04:05:00+01:00",
+							plannedArrival: "2025-12-08T04:05:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:05:00+01:00",
+							plannedDeparture: "2025-12-08T04:05:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260005",
+								name: "S Schönefeld (bei Berlin) Bhf",
+								location: {
+									type: "location",
+									id: "900260005",
+									latitude: 52.390904,
+									longitude: 13.513043
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260005"
+								}
+							},
+							arrival: "2025-12-08T04:08:00+01:00",
+							plannedArrival: "2025-12-08T04:08:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:08:00+01:00",
+							plannedDeparture: "2025-12-08T04:08:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260080",
+								name: "S Waßmannsdorf",
+								location: {
+									type: "location",
+									id: "900260080",
+									latitude: 52.368287,
+									longitude: 13.463432
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:12061:900260080"
+								}
+							},
+							arrival: "2025-12-08T04:12:00+01:00",
+							plannedArrival: "2025-12-08T04:12:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:12:00+01:00",
+							plannedDeparture: "2025-12-08T04:12:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260009",
+								name: "Flughafen BER",
+								location: {
+									type: "location",
+									id: "900260009",
+									latitude: 52.36461,
+									longitude: 13.50987
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260009"
+								}
+							},
+							arrival: "2025-12-08T04:16:00+01:00",
+							plannedArrival: "2025-12-08T04:16:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: null,
+							plannedDeparture: null,
+							departureDelay: null,
+							departurePlatform: null,
+							departurePrognosisType: null,
+							plannedDeparturePlatform: null,
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (Flughafen BER)"
+								}
+							]
+						}
+					],
+					cycle: {
+						min: 1200,
+						max: 1200,
+						nr: 7
+					}
+				}
+			],
+			refreshToken:
+				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080326$202512080416$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
+			cycle: {
+				min: 1200
+			}
+		},
+		{
+			type: "journey",
+			legs: [
+				{
+					origin: {
+						type: "stop",
+						id: "900003201",
+						name: "S+U Berlin Hauptbahnhof",
+						location: {
+							type: "location",
+							id: "900003201",
+							latitude: 52.525607,
+							longitude: 13.369072
+						},
+						products: {
+							suburban: true,
+							subway: true,
+							tram: true,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:11000:900003201"
+						}
+					},
+					destination: {
+						type: "stop",
+						id: "900260009",
+						name: "Flughafen BER",
+						location: {
+							type: "location",
+							id: "900260009",
+							latitude: 52.36461,
+							longitude: 13.50987
+						},
+						products: {
+							suburban: true,
+							subway: false,
+							tram: false,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:12061:900260009"
+						}
+					},
+					departure: "2025-12-08T03:46:00+01:00",
+					plannedDeparture: "2025-12-08T03:46:00+01:00",
+					departureDelay: 0,
+					arrival: "2025-12-08T04:36:00+01:00",
+					plannedArrival: "2025-12-08T04:36:00+01:00",
+					arrivalDelay: 0,
+					reachable: true,
+					tripId: "1|4485|1|86|8122025",
+					line: {
+						type: "line",
+						id: "de-vbb-11000000-s-bahn-s9",
+						fahrtNr: "19290",
+						name: "S9",
+						public: true,
+						adminCode: "DBS---",
+						productName: "S",
+						mode: "train",
+						product: "suburban",
+						operator: {
+							type: "operator",
+							id: "s-bahn-berlin-gmbh",
+							name: "S-Bahn Berlin GmbH"
+						}
+					},
+					direction: "Flughafen BER",
+					arrivalPlatform: "5",
+					plannedArrivalPlatform: "5",
+					arrivalPrognosisType: "prognosed",
+					departurePlatform: "15",
+					plannedDeparturePlatform: "15",
+					departurePrognosisType: "prognosed",
+					stopovers: [
+						{
+							stop: {
+								type: "stop",
+								id: "900003201",
+								name: "S+U Berlin Hauptbahnhof",
+								location: {
+									type: "location",
+									id: "900003201",
+									latitude: 52.525607,
+									longitude: 13.369072
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900003201"
+								}
+							},
+							arrival: null,
+							plannedArrival: null,
+							arrivalDelay: null,
+							arrivalPlatform: null,
+							arrivalPrognosisType: null,
+							plannedArrivalPlatform: null,
+							departure: "2025-12-08T03:46:00+01:00",
+							plannedDeparture: "2025-12-08T03:46:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "15",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "15",
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
+								}
+							]
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100001",
+								name: "S+U Friedrichstr. Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100001",
+									latitude: 52.520304,
+									longitude: 13.387257
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100001"
+								}
+							},
+							arrival: "2025-12-08T03:48:00+01:00",
+							plannedArrival: "2025-12-08T03:48:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: "2025-12-08T03:48:00+01:00",
+							plannedDeparture: "2025-12-08T03:48:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "5",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "5"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100002",
+								name: "S Hackescher Markt (Berlin)",
+								location: {
+									type: "location",
+									id: "900100002",
+									latitude: 52.522605,
+									longitude: 13.402359
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100002"
+								}
+							},
+							arrival: "2025-12-08T03:50:00+01:00",
+							plannedArrival: "2025-12-08T03:50:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:50:00+01:00",
+							plannedDeparture: "2025-12-08T03:50:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100003",
+								name: "S+U Alexanderplatz Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100003",
+									latitude: 52.521508,
+									longitude: 13.411267
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100003"
+								}
+							},
+							arrival: "2025-12-08T03:52:00+01:00",
+							plannedArrival: "2025-12-08T03:52:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:52:00+01:00",
+							plannedDeparture: "2025-12-08T03:52:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100004",
+								name: "S+U Jannowitzbrücke (Berlin)",
+								location: {
+									type: "location",
+									id: "900100004",
+									latitude: 52.515503,
+									longitude: 13.418027
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100004"
+								}
+							},
+							arrival: "2025-12-08T03:54:00+01:00",
+							plannedArrival: "2025-12-08T03:54:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T03:54:00+01:00",
+							plannedDeparture: "2025-12-08T03:54:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120005",
+								name: "S Ostbahnhof (Berlin)",
+								location: {
+									type: "location",
+									id: "900120005",
+									latitude: 52.510335,
+									longitude: 13.435089
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900120005"
+								}
+							},
+							arrival: "2025-12-08T03:56:00+01:00",
+							plannedArrival: "2025-12-08T03:56:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "8",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "8",
+							departure: "2025-12-08T03:57:00+01:00",
+							plannedDeparture: "2025-12-08T03:57:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "8",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "8"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120004",
+								name: "S+U Warschauer Str. (Berlin)",
+								location: {
+									type: "location",
+									id: "900120004",
+									latitude: 52.505768,
+									longitude: 13.449157
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900120004"
+								}
+							},
+							arrival: "2025-12-08T03:59:00+01:00",
+							plannedArrival: "2025-12-08T03:59:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T03:59:00+01:00",
+							plannedDeparture: "2025-12-08T03:59:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900190001",
+								name: "S Treptower Park (Berlin)",
+								location: {
+									type: "location",
+									id: "900190001",
+									latitude: 52.493426,
+									longitude: 13.461283
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900190001"
+								}
+							},
+							arrival: "2025-12-08T04:02:00+01:00",
+							plannedArrival: "2025-12-08T04:02:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:03:00+01:00",
+							plannedDeparture: "2025-12-08T04:03:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191002",
+								name: "S Plänterwald (Berlin)",
+								location: {
+									type: "location",
+									id: "900191002",
+									latitude: 52.47872,
+									longitude: 13.47403
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191002"
+								}
+							},
+							arrival: "2025-12-08T04:05:00+01:00",
+							plannedArrival: "2025-12-08T04:05:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:05:00+01:00",
+							plannedDeparture: "2025-12-08T04:05:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191001",
+								name: "S Baumschulenweg (Berlin)",
+								location: {
+									type: "location",
+									id: "900191001",
+									latitude: 52.467582,
+									longitude: 13.489501
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191001"
+								}
+							},
+							arrival: "2025-12-08T04:07:00+01:00",
+							plannedArrival: "2025-12-08T04:07:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:10:00+01:00",
+							plannedDeparture: "2025-12-08T04:10:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900192001",
+								name: "S Schöneweide Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900192001",
+									latitude: 52.45461,
+									longitude: 13.510149
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900192001"
+								}
+							},
+							arrival: "2025-12-08T04:13:00+01:00",
+							plannedArrival: "2025-12-08T04:13:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:13:00+01:00",
+							plannedDeparture: "2025-12-08T04:13:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193001",
+								name: "S Johannisthal (Berlin)",
+								location: {
+									type: "location",
+									id: "900193001",
+									latitude: 52.446691,
+									longitude: 13.524028
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193001"
+								}
+							},
+							arrival: "2025-12-08T04:15:00+01:00",
+							plannedArrival: "2025-12-08T04:15:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:16:00+01:00",
+							plannedDeparture: "2025-12-08T04:16:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193002",
+								name: "S Adlershof (Berlin)",
+								location: {
+									type: "location",
+									id: "900193002",
+									latitude: 52.435104,
+									longitude: 13.54055
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193002"
+								}
+							},
+							arrival: "2025-12-08T04:18:00+01:00",
+							plannedArrival: "2025-12-08T04:18:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:18:00+01:00",
+							plannedDeparture: "2025-12-08T04:18:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900195510",
+								name: "S Altglienicke (Berlin)",
+								location: {
+									type: "location",
+									id: "900195510",
+									latitude: 52.407795,
+									longitude: 13.559598
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900195510"
+								}
+							},
+							arrival: "2025-12-08T04:22:00+01:00",
+							plannedArrival: "2025-12-08T04:22:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:23:00+01:00",
+							plannedDeparture: "2025-12-08T04:23:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900196001",
+								name: "S Grünbergallee (Berlin)",
+								location: {
+									type: "location",
+									id: "900196001",
+									latitude: 52.399543,
+									longitude: 13.54322
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900196001"
+								}
+							},
+							arrival: "2025-12-08T04:25:00+01:00",
+							plannedArrival: "2025-12-08T04:25:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:25:00+01:00",
+							plannedDeparture: "2025-12-08T04:25:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260005",
+								name: "S Schönefeld (bei Berlin) Bhf",
+								location: {
+									type: "location",
+									id: "900260005",
+									latitude: 52.390904,
+									longitude: 13.513043
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260005"
+								}
+							},
+							arrival: "2025-12-08T04:28:00+01:00",
+							plannedArrival: "2025-12-08T04:28:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:28:00+01:00",
+							plannedDeparture: "2025-12-08T04:28:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260080",
+								name: "S Waßmannsdorf",
+								location: {
+									type: "location",
+									id: "900260080",
+									latitude: 52.368287,
+									longitude: 13.463432
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:12061:900260080"
+								}
+							},
+							arrival: "2025-12-08T04:32:00+01:00",
+							plannedArrival: "2025-12-08T04:32:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:32:00+01:00",
+							plannedDeparture: "2025-12-08T04:32:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260009",
+								name: "Flughafen BER",
+								location: {
+									type: "location",
+									id: "900260009",
+									latitude: 52.36461,
+									longitude: 13.50987
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260009"
+								}
+							},
+							arrival: "2025-12-08T04:36:00+01:00",
+							plannedArrival: "2025-12-08T04:36:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: null,
+							plannedDeparture: null,
+							departureDelay: null,
+							departurePlatform: null,
+							departurePrognosisType: null,
+							plannedDeparturePlatform: null,
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (Flughafen BER)"
+								}
+							]
+						}
+					],
+					cycle: {
+						min: 1200,
+						max: 1200,
+						nr: 7
+					}
+				}
+			],
+			refreshToken:
+				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080346$202512080436$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
+			cycle: {
+				min: 1200
+			}
+		},
+		{
+			type: "journey",
+			legs: [
+				{
+					origin: {
+						type: "stop",
+						id: "900003201",
+						name: "S+U Berlin Hauptbahnhof",
+						location: {
+							type: "location",
+							id: "900003201",
+							latitude: 52.525607,
+							longitude: 13.369072
+						},
+						products: {
+							suburban: true,
+							subway: true,
+							tram: true,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:11000:900003201"
+						}
+					},
+					destination: {
+						type: "stop",
+						id: "900260009",
+						name: "Flughafen BER",
+						location: {
+							type: "location",
+							id: "900260009",
+							latitude: 52.36461,
+							longitude: 13.50987
+						},
+						products: {
+							suburban: true,
+							subway: false,
+							tram: false,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:12061:900260009"
+						}
+					},
+					departure: "2025-12-08T04:06:00+01:00",
+					plannedDeparture: "2025-12-08T04:06:00+01:00",
+					departureDelay: 0,
+					arrival: "2025-12-08T04:56:00+01:00",
+					plannedArrival: "2025-12-08T04:56:00+01:00",
+					arrivalDelay: 0,
+					reachable: true,
+					tripId: "1|4484|0|86|8122025",
+					line: {
+						type: "line",
+						id: "de-vbb-11000000-s-bahn-s9",
+						fahrtNr: "19289",
+						name: "S9",
+						public: true,
+						adminCode: "DBS---",
+						productName: "S",
+						mode: "train",
+						product: "suburban",
+						operator: {
+							type: "operator",
+							id: "s-bahn-berlin-gmbh",
+							name: "S-Bahn Berlin GmbH"
+						}
+					},
+					direction: "Flughafen BER",
+					arrivalPlatform: "5",
+					plannedArrivalPlatform: "5",
+					arrivalPrognosisType: "prognosed",
+					departurePlatform: "15",
+					plannedDeparturePlatform: "15",
+					departurePrognosisType: "prognosed",
+					stopovers: [
+						{
+							stop: {
+								type: "stop",
+								id: "900003201",
+								name: "S+U Berlin Hauptbahnhof",
+								location: {
+									type: "location",
+									id: "900003201",
+									latitude: 52.525607,
+									longitude: 13.369072
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900003201"
+								}
+							},
+							arrival: null,
+							plannedArrival: null,
+							arrivalDelay: null,
+							arrivalPlatform: null,
+							arrivalPrognosisType: null,
+							plannedArrivalPlatform: null,
+							departure: "2025-12-08T04:06:00+01:00",
+							plannedDeparture: "2025-12-08T04:06:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "15",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "15",
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
+								}
+							]
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100001",
+								name: "S+U Friedrichstr. Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100001",
+									latitude: 52.520304,
+									longitude: 13.387257
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100001"
+								}
+							},
+							arrival: "2025-12-08T04:08:00+01:00",
+							plannedArrival: "2025-12-08T04:08:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: "2025-12-08T04:08:00+01:00",
+							plannedDeparture: "2025-12-08T04:08:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "5",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "5"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100002",
+								name: "S Hackescher Markt (Berlin)",
+								location: {
+									type: "location",
+									id: "900100002",
+									latitude: 52.522605,
+									longitude: 13.402359
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100002"
+								}
+							},
+							arrival: "2025-12-08T04:10:00+01:00",
+							plannedArrival: "2025-12-08T04:10:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:10:00+01:00",
+							plannedDeparture: "2025-12-08T04:10:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100003",
+								name: "S+U Alexanderplatz Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100003",
+									latitude: 52.521508,
+									longitude: 13.411267
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100003"
+								}
+							},
+							arrival: "2025-12-08T04:12:00+01:00",
+							plannedArrival: "2025-12-08T04:12:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:12:00+01:00",
+							plannedDeparture: "2025-12-08T04:12:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100004",
+								name: "S+U Jannowitzbrücke (Berlin)",
+								location: {
+									type: "location",
+									id: "900100004",
+									latitude: 52.515503,
+									longitude: 13.418027
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100004"
+								}
+							},
+							arrival: "2025-12-08T04:14:00+01:00",
+							plannedArrival: "2025-12-08T04:14:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:14:00+01:00",
+							plannedDeparture: "2025-12-08T04:14:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120005",
+								name: "S Ostbahnhof (Berlin)",
+								location: {
+									type: "location",
+									id: "900120005",
+									latitude: 52.510335,
+									longitude: 13.435089
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900120005"
+								}
+							},
+							arrival: "2025-12-08T04:16:00+01:00",
+							plannedArrival: "2025-12-08T04:16:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "8",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "8",
+							departure: "2025-12-08T04:17:00+01:00",
+							plannedDeparture: "2025-12-08T04:17:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "8",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "8"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120004",
+								name: "S+U Warschauer Str. (Berlin)",
+								location: {
+									type: "location",
+									id: "900120004",
+									latitude: 52.505768,
+									longitude: 13.449157
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900120004"
+								}
+							},
+							arrival: "2025-12-08T04:19:00+01:00",
+							plannedArrival: "2025-12-08T04:19:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:19:00+01:00",
+							plannedDeparture: "2025-12-08T04:19:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900190001",
+								name: "S Treptower Park (Berlin)",
+								location: {
+									type: "location",
+									id: "900190001",
+									latitude: 52.493426,
+									longitude: 13.461283
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900190001"
+								}
+							},
+							arrival: "2025-12-08T04:22:00+01:00",
+							plannedArrival: "2025-12-08T04:22:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:23:00+01:00",
+							plannedDeparture: "2025-12-08T04:23:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191002",
+								name: "S Plänterwald (Berlin)",
+								location: {
+									type: "location",
+									id: "900191002",
+									latitude: 52.47872,
+									longitude: 13.47403
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191002"
+								}
+							},
+							arrival: "2025-12-08T04:25:00+01:00",
+							plannedArrival: "2025-12-08T04:25:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:25:00+01:00",
+							plannedDeparture: "2025-12-08T04:25:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191001",
+								name: "S Baumschulenweg (Berlin)",
+								location: {
+									type: "location",
+									id: "900191001",
+									latitude: 52.467582,
+									longitude: 13.489501
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191001"
+								}
+							},
+							arrival: "2025-12-08T04:27:00+01:00",
+							plannedArrival: "2025-12-08T04:27:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:30:00+01:00",
+							plannedDeparture: "2025-12-08T04:30:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900192001",
+								name: "S Schöneweide Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900192001",
+									latitude: 52.45461,
+									longitude: 13.510149
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900192001"
+								}
+							},
+							arrival: "2025-12-08T04:33:00+01:00",
+							plannedArrival: "2025-12-08T04:33:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:33:00+01:00",
+							plannedDeparture: "2025-12-08T04:33:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193001",
+								name: "S Johannisthal (Berlin)",
+								location: {
+									type: "location",
+									id: "900193001",
+									latitude: 52.446691,
+									longitude: 13.524028
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193001"
+								}
+							},
+							arrival: "2025-12-08T04:35:00+01:00",
+							plannedArrival: "2025-12-08T04:35:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:36:00+01:00",
+							plannedDeparture: "2025-12-08T04:36:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193002",
+								name: "S Adlershof (Berlin)",
+								location: {
+									type: "location",
+									id: "900193002",
+									latitude: 52.435104,
+									longitude: 13.54055
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193002"
+								}
+							},
+							arrival: "2025-12-08T04:38:00+01:00",
+							plannedArrival: "2025-12-08T04:38:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:38:00+01:00",
+							plannedDeparture: "2025-12-08T04:38:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900195510",
+								name: "S Altglienicke (Berlin)",
+								location: {
+									type: "location",
+									id: "900195510",
+									latitude: 52.407795,
+									longitude: 13.559598
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900195510"
+								}
+							},
+							arrival: "2025-12-08T04:42:00+01:00",
+							plannedArrival: "2025-12-08T04:42:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:43:00+01:00",
+							plannedDeparture: "2025-12-08T04:43:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900196001",
+								name: "S Grünbergallee (Berlin)",
+								location: {
+									type: "location",
+									id: "900196001",
+									latitude: 52.399543,
+									longitude: 13.54322
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900196001"
+								}
+							},
+							arrival: "2025-12-08T04:45:00+01:00",
+							plannedArrival: "2025-12-08T04:45:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:45:00+01:00",
+							plannedDeparture: "2025-12-08T04:45:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260005",
+								name: "S Schönefeld (bei Berlin) Bhf",
+								location: {
+									type: "location",
+									id: "900260005",
+									latitude: 52.390904,
+									longitude: 13.513043
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260005"
+								}
+							},
+							arrival: "2025-12-08T04:48:00+01:00",
+							plannedArrival: "2025-12-08T04:48:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:48:00+01:00",
+							plannedDeparture: "2025-12-08T04:48:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260080",
+								name: "S Waßmannsdorf",
+								location: {
+									type: "location",
+									id: "900260080",
+									latitude: 52.368287,
+									longitude: 13.463432
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:12061:900260080"
+								}
+							},
+							arrival: "2025-12-08T04:52:00+01:00",
+							plannedArrival: "2025-12-08T04:52:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:52:00+01:00",
+							plannedDeparture: "2025-12-08T04:52:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260009",
+								name: "Flughafen BER",
+								location: {
+									type: "location",
+									id: "900260009",
+									latitude: 52.36461,
+									longitude: 13.50987
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260009"
+								}
+							},
+							arrival: "2025-12-08T04:56:00+01:00",
+							plannedArrival: "2025-12-08T04:56:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: null,
+							plannedDeparture: null,
+							departureDelay: null,
+							departurePlatform: null,
+							departurePrognosisType: null,
+							plannedDeparturePlatform: null,
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (Flughafen BER)"
+								}
+							]
+						}
+					],
+					cycle: {
+						min: 1200,
+						max: 1200,
+						nr: 7
+					}
+				}
+			],
+			refreshToken:
+				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080406$202512080456$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
+			cycle: {
+				min: 1200
+			}
+		},
+		{
+			type: "journey",
+			legs: [
+				{
+					origin: {
+						type: "stop",
+						id: "900003201",
+						name: "S+U Berlin Hauptbahnhof",
+						location: {
+							type: "location",
+							id: "900003201",
+							latitude: 52.525607,
+							longitude: 13.369072
+						},
+						products: {
+							suburban: true,
+							subway: true,
+							tram: true,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:11000:900003201"
+						}
+					},
+					destination: {
+						type: "stop",
+						id: "900260009",
+						name: "Flughafen BER",
+						location: {
+							type: "location",
+							id: "900260009",
+							latitude: 52.36461,
+							longitude: 13.50987
+						},
+						products: {
+							suburban: true,
+							subway: false,
+							tram: false,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:12061:900260009"
+						}
+					},
+					departure: "2025-12-08T04:26:00+01:00",
+					plannedDeparture: "2025-12-08T04:26:00+01:00",
+					departureDelay: 0,
+					arrival: "2025-12-08T05:16:00+01:00",
+					plannedArrival: "2025-12-08T05:16:00+01:00",
+					arrivalDelay: 0,
+					reachable: true,
+					tripId: "1|4486|0|86|8122025",
+					line: {
+						type: "line",
+						id: "de-vbb-11000000-s-bahn-s9",
+						fahrtNr: "19288",
+						name: "S9",
+						public: true,
+						adminCode: "DBS---",
+						productName: "S",
+						mode: "train",
+						product: "suburban",
+						operator: {
+							type: "operator",
+							id: "s-bahn-berlin-gmbh",
+							name: "S-Bahn Berlin GmbH"
+						}
+					},
+					direction: "Flughafen BER",
+					arrivalPlatform: "5",
+					plannedArrivalPlatform: "5",
+					arrivalPrognosisType: "prognosed",
+					departurePlatform: "15",
+					plannedDeparturePlatform: "15",
+					departurePrognosisType: "prognosed",
+					stopovers: [
+						{
+							stop: {
+								type: "stop",
+								id: "900003201",
+								name: "S+U Berlin Hauptbahnhof",
+								location: {
+									type: "location",
+									id: "900003201",
+									latitude: 52.525607,
+									longitude: 13.369072
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900003201"
+								}
+							},
+							arrival: null,
+							plannedArrival: null,
+							arrivalDelay: null,
+							arrivalPlatform: null,
+							arrivalPrognosisType: null,
+							plannedArrivalPlatform: null,
+							departure: "2025-12-08T04:26:00+01:00",
+							plannedDeparture: "2025-12-08T04:26:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "15",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "15",
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
+								}
+							]
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100001",
+								name: "S+U Friedrichstr. Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100001",
+									latitude: 52.520304,
+									longitude: 13.387257
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100001"
+								}
+							},
+							arrival: "2025-12-08T04:28:00+01:00",
+							plannedArrival: "2025-12-08T04:28:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: "2025-12-08T04:28:00+01:00",
+							plannedDeparture: "2025-12-08T04:28:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "5",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "5"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100002",
+								name: "S Hackescher Markt (Berlin)",
+								location: {
+									type: "location",
+									id: "900100002",
+									latitude: 52.522605,
+									longitude: 13.402359
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100002"
+								}
+							},
+							arrival: "2025-12-08T04:30:00+01:00",
+							plannedArrival: "2025-12-08T04:30:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:30:00+01:00",
+							plannedDeparture: "2025-12-08T04:30:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100003",
+								name: "S+U Alexanderplatz Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100003",
+									latitude: 52.521508,
+									longitude: 13.411267
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100003"
+								}
+							},
+							arrival: "2025-12-08T04:32:00+01:00",
+							plannedArrival: "2025-12-08T04:32:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:32:00+01:00",
+							plannedDeparture: "2025-12-08T04:32:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100004",
+								name: "S+U Jannowitzbrücke (Berlin)",
+								location: {
+									type: "location",
+									id: "900100004",
+									latitude: 52.515503,
+									longitude: 13.418027
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100004"
+								}
+							},
+							arrival: "2025-12-08T04:34:00+01:00",
+							plannedArrival: "2025-12-08T04:34:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:34:00+01:00",
+							plannedDeparture: "2025-12-08T04:34:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120005",
+								name: "S Ostbahnhof (Berlin)",
+								location: {
+									type: "location",
+									id: "900120005",
+									latitude: 52.510335,
+									longitude: 13.435089
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900120005"
+								}
+							},
+							arrival: "2025-12-08T04:36:00+01:00",
+							plannedArrival: "2025-12-08T04:36:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "8",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "8",
+							departure: "2025-12-08T04:37:00+01:00",
+							plannedDeparture: "2025-12-08T04:37:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "8",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "8"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120004",
+								name: "S+U Warschauer Str. (Berlin)",
+								location: {
+									type: "location",
+									id: "900120004",
+									latitude: 52.505768,
+									longitude: 13.449157
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900120004"
+								}
+							},
+							arrival: "2025-12-08T04:39:00+01:00",
+							plannedArrival: "2025-12-08T04:39:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T04:39:00+01:00",
+							plannedDeparture: "2025-12-08T04:39:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900190001",
+								name: "S Treptower Park (Berlin)",
+								location: {
+									type: "location",
+									id: "900190001",
+									latitude: 52.493426,
+									longitude: 13.461283
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900190001"
+								}
+							},
+							arrival: "2025-12-08T04:42:00+01:00",
+							plannedArrival: "2025-12-08T04:42:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:43:00+01:00",
+							plannedDeparture: "2025-12-08T04:43:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191002",
+								name: "S Plänterwald (Berlin)",
+								location: {
+									type: "location",
+									id: "900191002",
+									latitude: 52.47872,
+									longitude: 13.47403
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191002"
+								}
+							},
+							arrival: "2025-12-08T04:45:00+01:00",
+							plannedArrival: "2025-12-08T04:45:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:45:00+01:00",
+							plannedDeparture: "2025-12-08T04:45:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191001",
+								name: "S Baumschulenweg (Berlin)",
+								location: {
+									type: "location",
+									id: "900191001",
+									latitude: 52.467582,
+									longitude: 13.489501
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191001"
+								}
+							},
+							arrival: "2025-12-08T04:47:00+01:00",
+							plannedArrival: "2025-12-08T04:47:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:50:00+01:00",
+							plannedDeparture: "2025-12-08T04:50:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900192001",
+								name: "S Schöneweide Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900192001",
+									latitude: 52.45461,
+									longitude: 13.510149
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900192001"
+								}
+							},
+							arrival: "2025-12-08T04:53:00+01:00",
+							plannedArrival: "2025-12-08T04:53:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:53:00+01:00",
+							plannedDeparture: "2025-12-08T04:53:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193001",
+								name: "S Johannisthal (Berlin)",
+								location: {
+									type: "location",
+									id: "900193001",
+									latitude: 52.446691,
+									longitude: 13.524028
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193001"
+								}
+							},
+							arrival: "2025-12-08T04:55:00+01:00",
+							plannedArrival: "2025-12-08T04:55:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:56:00+01:00",
+							plannedDeparture: "2025-12-08T04:56:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193002",
+								name: "S Adlershof (Berlin)",
+								location: {
+									type: "location",
+									id: "900193002",
+									latitude: 52.435104,
+									longitude: 13.54055
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193002"
+								}
+							},
+							arrival: "2025-12-08T04:58:00+01:00",
+							plannedArrival: "2025-12-08T04:58:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:58:00+01:00",
+							plannedDeparture: "2025-12-08T04:58:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900195510",
+								name: "S Altglienicke (Berlin)",
+								location: {
+									type: "location",
+									id: "900195510",
+									latitude: 52.407795,
+									longitude: 13.559598
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900195510"
+								}
+							},
+							arrival: "2025-12-08T05:02:00+01:00",
+							plannedArrival: "2025-12-08T05:02:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:03:00+01:00",
+							plannedDeparture: "2025-12-08T05:03:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900196001",
+								name: "S Grünbergallee (Berlin)",
+								location: {
+									type: "location",
+									id: "900196001",
+									latitude: 52.399543,
+									longitude: 13.54322
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900196001"
+								}
+							},
+							arrival: "2025-12-08T05:05:00+01:00",
+							plannedArrival: "2025-12-08T05:05:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:05:00+01:00",
+							plannedDeparture: "2025-12-08T05:05:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260005",
+								name: "S Schönefeld (bei Berlin) Bhf",
+								location: {
+									type: "location",
+									id: "900260005",
+									latitude: 52.390904,
+									longitude: 13.513043
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260005"
+								}
+							},
+							arrival: "2025-12-08T05:08:00+01:00",
+							plannedArrival: "2025-12-08T05:08:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:08:00+01:00",
+							plannedDeparture: "2025-12-08T05:08:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260080",
+								name: "S Waßmannsdorf",
+								location: {
+									type: "location",
+									id: "900260080",
+									latitude: 52.368287,
+									longitude: 13.463432
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:12061:900260080"
+								}
+							},
+							arrival: "2025-12-08T05:12:00+01:00",
+							plannedArrival: "2025-12-08T05:12:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:12:00+01:00",
+							plannedDeparture: "2025-12-08T05:12:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260009",
+								name: "Flughafen BER",
+								location: {
+									type: "location",
+									id: "900260009",
+									latitude: 52.36461,
+									longitude: 13.50987
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260009"
+								}
+							},
+							arrival: "2025-12-08T05:16:00+01:00",
+							plannedArrival: "2025-12-08T05:16:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: null,
+							plannedDeparture: null,
+							departureDelay: null,
+							departurePlatform: null,
+							departurePrognosisType: null,
+							plannedDeparturePlatform: null,
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (Flughafen BER)"
+								}
+							]
+						}
+					],
+					cycle: {
+						min: 1200,
+						max: 1200,
+						nr: 7
+					}
+				}
+			],
+			refreshToken:
+				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080426$202512080516$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
+			cycle: {
+				min: 1200
+			}
+		},
+		{
+			type: "journey",
+			legs: [
+				{
+					origin: {
+						type: "stop",
+						id: "900003201",
+						name: "S+U Berlin Hauptbahnhof",
+						location: {
+							type: "location",
+							id: "900003201",
+							latitude: 52.525607,
+							longitude: 13.369072
+						},
+						products: {
+							suburban: true,
+							subway: true,
+							tram: true,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:11000:900003201"
+						}
+					},
+					destination: {
+						type: "stop",
+						id: "900260009",
+						name: "Flughafen BER",
+						location: {
+							type: "location",
+							id: "900260009",
+							latitude: 52.36461,
+							longitude: 13.50987
+						},
+						products: {
+							suburban: true,
+							subway: false,
+							tram: false,
+							bus: true,
+							ferry: false,
+							express: true,
+							regional: true
+						},
+						ids: {
+							ifopt: "de:12061:900260009"
+						}
+					},
+					departure: "2025-12-08T04:46:00+01:00",
+					plannedDeparture: "2025-12-08T04:46:00+01:00",
+					departureDelay: 0,
+					arrival: "2025-12-08T05:36:00+01:00",
+					plannedArrival: "2025-12-08T05:36:00+01:00",
+					arrivalDelay: 0,
+					reachable: true,
+					tripId: "1|4486|1|86|8122025",
+					line: {
+						type: "line",
+						id: "de-vbb-11000000-s-bahn-s9",
+						fahrtNr: "19287",
+						name: "S9",
+						public: true,
+						adminCode: "DBS---",
+						productName: "S",
+						mode: "train",
+						product: "suburban",
+						operator: {
+							type: "operator",
+							id: "s-bahn-berlin-gmbh",
+							name: "S-Bahn Berlin GmbH"
+						}
+					},
+					direction: "Flughafen BER",
+					arrivalPlatform: "5",
+					plannedArrivalPlatform: "5",
+					arrivalPrognosisType: "prognosed",
+					departurePlatform: "15",
+					plannedDeparturePlatform: "15",
+					departurePrognosisType: "prognosed",
+					stopovers: [
+						{
+							stop: {
+								type: "stop",
+								id: "900003201",
+								name: "S+U Berlin Hauptbahnhof",
+								location: {
+									type: "location",
+									id: "900003201",
+									latitude: 52.525607,
+									longitude: 13.369072
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900003201"
+								}
+							},
+							arrival: null,
+							plannedArrival: null,
+							arrivalDelay: null,
+							arrivalPlatform: null,
+							arrivalPrognosisType: null,
+							plannedArrivalPlatform: null,
+							departure: "2025-12-08T04:46:00+01:00",
+							plannedDeparture: "2025-12-08T04:46:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "15",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "15",
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
+								}
+							]
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100001",
+								name: "S+U Friedrichstr. Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100001",
+									latitude: 52.520304,
+									longitude: 13.387257
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100001"
+								}
+							},
+							arrival: "2025-12-08T04:48:00+01:00",
+							plannedArrival: "2025-12-08T04:48:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: "2025-12-08T04:48:00+01:00",
+							plannedDeparture: "2025-12-08T04:48:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "5",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "5"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100002",
+								name: "S Hackescher Markt (Berlin)",
+								location: {
+									type: "location",
+									id: "900100002",
+									latitude: 52.522605,
+									longitude: 13.402359
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100002"
+								}
+							},
+							arrival: "2025-12-08T04:50:00+01:00",
+							plannedArrival: "2025-12-08T04:50:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:50:00+01:00",
+							plannedDeparture: "2025-12-08T04:50:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100003",
+								name: "S+U Alexanderplatz Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900100003",
+									latitude: 52.521508,
+									longitude: 13.411267
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900100003"
+								}
+							},
+							arrival: "2025-12-08T04:52:00+01:00",
+							plannedArrival: "2025-12-08T04:52:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:52:00+01:00",
+							plannedDeparture: "2025-12-08T04:52:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900100004",
+								name: "S+U Jannowitzbrücke (Berlin)",
+								location: {
+									type: "location",
+									id: "900100004",
+									latitude: 52.515503,
+									longitude: 13.418027
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900100004"
+								}
+							},
+							arrival: "2025-12-08T04:54:00+01:00",
+							plannedArrival: "2025-12-08T04:54:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T04:54:00+01:00",
+							plannedDeparture: "2025-12-08T04:54:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120005",
+								name: "S Ostbahnhof (Berlin)",
+								location: {
+									type: "location",
+									id: "900120005",
+									latitude: 52.510335,
+									longitude: 13.435089
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900120005"
+								}
+							},
+							arrival: "2025-12-08T04:56:00+01:00",
+							plannedArrival: "2025-12-08T04:56:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "9",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "9",
+							departure: "2025-12-08T04:57:00+01:00",
+							plannedDeparture: "2025-12-08T04:57:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "9",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "9"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900120004",
+								name: "S+U Warschauer Str. (Berlin)",
+								location: {
+									type: "location",
+									id: "900120004",
+									latitude: 52.505768,
+									longitude: 13.449157
+								},
+								products: {
+									suburban: true,
+									subway: true,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900120004"
+								}
+							},
+							arrival: "2025-12-08T04:59:00+01:00",
+							plannedArrival: "2025-12-08T04:59:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "2",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "2",
+							departure: "2025-12-08T04:59:00+01:00",
+							plannedDeparture: "2025-12-08T04:59:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "2",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "2"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900190001",
+								name: "S Treptower Park (Berlin)",
+								location: {
+									type: "location",
+									id: "900190001",
+									latitude: 52.493426,
+									longitude: 13.461283
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900190001"
+								}
+							},
+							arrival: "2025-12-08T05:02:00+01:00",
+							plannedArrival: "2025-12-08T05:02:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T05:03:00+01:00",
+							plannedDeparture: "2025-12-08T05:03:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191002",
+								name: "S Plänterwald (Berlin)",
+								location: {
+									type: "location",
+									id: "900191002",
+									latitude: 52.47872,
+									longitude: 13.47403
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191002"
+								}
+							},
+							arrival: "2025-12-08T05:05:00+01:00",
+							plannedArrival: "2025-12-08T05:05:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T05:05:00+01:00",
+							plannedDeparture: "2025-12-08T05:05:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900191001",
+								name: "S Baumschulenweg (Berlin)",
+								location: {
+									type: "location",
+									id: "900191001",
+									latitude: 52.467582,
+									longitude: 13.489501
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900191001"
+								}
+							},
+							arrival: "2025-12-08T05:07:00+01:00",
+							plannedArrival: "2025-12-08T05:07:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T05:10:00+01:00",
+							plannedDeparture: "2025-12-08T05:10:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900192001",
+								name: "S Schöneweide Bhf (Berlin)",
+								location: {
+									type: "location",
+									id: "900192001",
+									latitude: 52.45461,
+									longitude: 13.510149
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:11000:900192001"
+								}
+							},
+							arrival: "2025-12-08T05:13:00+01:00",
+							plannedArrival: "2025-12-08T05:13:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T05:13:00+01:00",
+							plannedDeparture: "2025-12-08T05:13:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193001",
+								name: "S Johannisthal (Berlin)",
+								location: {
+									type: "location",
+									id: "900193001",
+									latitude: 52.446691,
+									longitude: 13.524028
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193001"
+								}
+							},
+							arrival: "2025-12-08T05:15:00+01:00",
+							plannedArrival: "2025-12-08T05:15:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T05:16:00+01:00",
+							plannedDeparture: "2025-12-08T05:16:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900193002",
+								name: "S Adlershof (Berlin)",
+								location: {
+									type: "location",
+									id: "900193002",
+									latitude: 52.435104,
+									longitude: 13.54055
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: true,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900193002"
+								}
+							},
+							arrival: "2025-12-08T05:18:00+01:00",
+							plannedArrival: "2025-12-08T05:18:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "3",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "3",
+							departure: "2025-12-08T05:18:00+01:00",
+							plannedDeparture: "2025-12-08T05:18:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "3",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "3"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900195510",
+								name: "S Altglienicke (Berlin)",
+								location: {
+									type: "location",
+									id: "900195510",
+									latitude: 52.407795,
+									longitude: 13.559598
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900195510"
+								}
+							},
+							arrival: "2025-12-08T05:22:00+01:00",
+							plannedArrival: "2025-12-08T05:22:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:23:00+01:00",
+							plannedDeparture: "2025-12-08T05:23:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900196001",
+								name: "S Grünbergallee (Berlin)",
+								location: {
+									type: "location",
+									id: "900196001",
+									latitude: 52.399543,
+									longitude: 13.54322
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: false,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:11000:900196001"
+								}
+							},
+							arrival: "2025-12-08T05:25:00+01:00",
+							plannedArrival: "2025-12-08T05:25:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:25:00+01:00",
+							plannedDeparture: "2025-12-08T05:25:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260005",
+								name: "S Schönefeld (bei Berlin) Bhf",
+								location: {
+									type: "location",
+									id: "900260005",
+									latitude: 52.390904,
+									longitude: 13.513043
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260005"
+								}
+							},
+							arrival: "2025-12-08T05:28:00+01:00",
+							plannedArrival: "2025-12-08T05:28:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:28:00+01:00",
+							plannedDeparture: "2025-12-08T05:28:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260080",
+								name: "S Waßmannsdorf",
+								location: {
+									type: "location",
+									id: "900260080",
+									latitude: 52.368287,
+									longitude: 13.463432
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: false,
+									regional: false
+								},
+								ids: {
+									ifopt: "de:12061:900260080"
+								}
+							},
+							arrival: "2025-12-08T05:32:00+01:00",
+							plannedArrival: "2025-12-08T05:32:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "1",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "1",
+							departure: "2025-12-08T05:32:00+01:00",
+							plannedDeparture: "2025-12-08T05:32:00+01:00",
+							departureDelay: 0,
+							departurePlatform: "1",
+							departurePrognosisType: "prognosed",
+							plannedDeparturePlatform: "1"
+						},
+						{
+							stop: {
+								type: "stop",
+								id: "900260009",
+								name: "Flughafen BER",
+								location: {
+									type: "location",
+									id: "900260009",
+									latitude: 52.36461,
+									longitude: 13.50987
+								},
+								products: {
+									suburban: true,
+									subway: false,
+									tram: false,
+									bus: true,
+									ferry: false,
+									express: true,
+									regional: true
+								},
+								ids: {
+									ifopt: "de:12061:900260009"
+								}
+							},
+							arrival: "2025-12-08T05:36:00+01:00",
+							plannedArrival: "2025-12-08T05:36:00+01:00",
+							arrivalDelay: 0,
+							arrivalPlatform: "5",
+							arrivalPrognosisType: "prognosed",
+							plannedArrivalPlatform: "5",
+							departure: null,
+							plannedDeparture: null,
+							departureDelay: null,
+							departurePlatform: null,
+							departurePrognosisType: null,
+							plannedDeparturePlatform: null,
+							remarks: [
+								{
+									type: "hint",
+									code: "FK",
+									text: "Fahrradmitnahme möglich (Flughafen BER)"
+								}
+							]
+						}
+					],
+					cycle: {
+						min: 1200,
+						max: 1200,
+						nr: 7
+					}
+				}
+			],
+			refreshToken:
+				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080446$202512080536$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
+			cycle: {
+				min: 1200
+			}
+		}
+	],
+	realtimeDataUpdatedAt: 1765132721
+} as Journeys;
