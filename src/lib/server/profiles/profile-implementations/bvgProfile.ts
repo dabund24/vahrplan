@@ -50,9 +50,5 @@ export class BvgProfile extends Profile<
 		},
 		lineShapeParser: new HafasClientLineShapeParser(),
 		hasTickets: false,
-		quota: {
-			threshold: 60,
-			interval: 60
-		}
 	});
 }
