@@ -21,6 +21,7 @@ declare global {
 		// interface Locals {}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageData {
+			allProfileConfigs: ProfileConfig[];
 			profileConfig: ProfileConfig;
 			lang: Language;
 			formData?: DisplayedFormData | undefined;

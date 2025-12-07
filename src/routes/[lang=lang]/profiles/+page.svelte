@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { PageProps } from "./$types";
-	import ProfileLink from "./ProfileLink.svelte";
-
-	const { data }: PageProps = $props();
+	import ProfileSelection from "$lib/components/profiles/ProfileSelection.svelte";
 </script>
 
 <svelte:head>
@@ -13,12 +10,5 @@
 
 <div class="content-wrapper" data-sveltekit-preload-data="off">
 	<h1>Datenquellen</h1>
-	<p>
-		Wähle hier aus, woher die Verbindungsdaten kommen sollen. Eine regionalere Quelle bedeutet
-		in der Regel eine bessere Datenqualität.
-	</p>
-
-	{#each data.profiles as profileConfig (profileConfig.id)}
-		<ProfileLink {profileConfig} />
-	{/each}
+	<ProfileSelection />
 </div>

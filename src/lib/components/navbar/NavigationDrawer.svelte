@@ -11,6 +11,7 @@
 	import IconJourneySelection from "$lib/components/icons/IconJourneySelection.svelte";
 	import { page } from "$app/state";
 	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
+	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -61,8 +62,16 @@
 	<hr />
 	<MobileNavbarItem
 		{currentRoute}
+		link="/{page.data.lang}/profiles"
+		route="/[lang=lang]/profiles"
+		pageName="Datenquellen"
+	>
+		{#snippet icon()}<IconDataOrigin />{/snippet}
+	</MobileNavbarItem>
+	<MobileNavbarItem
+		{currentRoute}
 		link="/{page.data.lang}/bookmarks"
-		route="/[lang=lang]/[profile=profileId]/bookmarks"
+		route="/[lang=lang]/bookmarks"
 		pageName="Lesezeichen"
 	>
 		{#snippet icon()}<IconBookmarkLarge />{/snippet}
@@ -70,7 +79,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/settings"
-		route="/[lang=lang]/[profile=profileId]/settings"
+		route="/[lang=lang]/settings"
 		pageName="Einstellungen"
 	>
 		{#snippet icon()}<IconSettings />{/snippet}
@@ -78,7 +87,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/about"
-		route="/[lang=lang]/[profile=profileId]/about"
+		route="/[lang=lang]/about"
 		pageName="Über Vahrplan"
 	>
 		{#snippet icon()}<IconAbout />{/snippet}

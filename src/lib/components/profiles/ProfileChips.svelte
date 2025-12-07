@@ -3,6 +3,12 @@
 	import IconPencil from "$lib/components/icons/IconPencil.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
+	import ProfileSelection from "$lib/components/profiles/ProfileSelection.svelte";
+	import { getBookmarks } from "$lib/bookmarks.svelte";
+
+	const bookmarkedProfiles = $derived(
+		getBookmarks("profile").filter(({ id }) => page.data.profileConfig.id !== id)
+	);
 </script>
 
 <div class="scrollable flex-row">
@@ -13,9 +19,12 @@
 				<IconPencil />
 			</span>
 		</ModalToggle>
-		<Modal showModalKey="showProfileModal" title="Auswahl Datenquelle">z</Modal>
-		<span class="hoverable hoverable--visible">Berlin</span>
-		<span class="hoverable hoverable--visible">Österreich</span>
+		<Modal showModalKey="showProfileModal" title="Auswahl Datenquelle">
+			<ProfileSelection />
+		</Modal>
+		{#each bookmarkedProfiles as { name, id } (id)}
+			<a href="/{page.data.lang}/{id}" class="hoverable hoverable--visible">{name}</a>
+		{/each}
 	</div>
 </div>
 
@@ -55,6 +64,10 @@
 		> * {
 			white-space: nowrap;
 		}
+	}
+
+	a {
+		text-decoration: none;
 	}
 
 	@media screen and (min-width: 1000px) {

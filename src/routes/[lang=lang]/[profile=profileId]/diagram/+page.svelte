@@ -28,7 +28,7 @@
 	import IconTimeAxes from "$lib/components/icons/IconTimeAxes.svelte";
 	import IconHome from "$lib/components/icons/IconHome.svelte";
 	import SvgDiagramSkeleton from "./SvgDiagramSkeleton.svelte";
-	import ProfileSelector from "../ProfileSelector.svelte";
+	import ProfileChips from "$lib/components/profiles/ProfileChips.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -150,7 +150,7 @@
 				style:--connection-count={(displayedFormData?.locations.length ?? 1) - 1}
 			>
 				<section class="form">
-					<ProfileSelector />
+					<ProfileChips />
 					<MainForm initialFormData={displayedFormData} />
 				</section>
 				<section class="diagram">
