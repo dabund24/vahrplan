@@ -6,6 +6,8 @@
 	import ProfileSelection from "$lib/components/profiles/ProfileSelection.svelte";
 	import { getBookmarks } from "$lib/bookmarks.svelte";
 	import Warning from "$lib/components/Warning.svelte";
+	import { scale } from "svelte/transition";
+	import { flip } from "svelte/animate";
 
 	const bookmarkedProfiles = $derived(
 		getBookmarks("profile").filter(({ id }) => page.data.profileConfig.id !== id)
@@ -24,7 +26,14 @@
 			<ProfileSelection />
 		</Modal>
 		{#each bookmarkedProfiles as { name, id } (id)}
-			<a href="/{page.data.lang}/{id}" class="hoverable hoverable--visible">{name}</a>
+			<a
+				href="/{page.data.lang}/{id}"
+				class="hoverable hoverable--visible"
+				transition:scale
+				animate:flip={{ duration: 400 }}
+			>
+				{name}
+			</a>
 		{/each}
 	</div>
 </div>
