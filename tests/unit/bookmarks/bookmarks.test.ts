@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, test, vi } from "vitest";
 import {
 	type BookmarkData,
 	type Bookmarks,
@@ -12,6 +12,7 @@ import {
 	initBookmarks,
 	removeBookmark
 } from "$lib/bookmarks.svelte";
+import { exampleProfileConfig } from "../../testUtils";
 
 const sunBookmarkData: BookmarkData<"location"> = {
 	id: "sun",
@@ -46,9 +47,14 @@ describe("load initial bookmarks", () => {
 });
 
 describe.sequential("add and remove bookmarks", () => {
+	beforeAll(() => {
+		vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
+	});
 	let storedBookmarks: Bookmarks["location"];
 	describe.sequential("add first bookmark", () => {
-		beforeAll(() => toggleBookmark("location", sunBookmarkData));
+		beforeAll(() =>
+			toggleBookmark("location", sunBookmarkData, { profileConfig: exampleProfileConfig })
+		);
 		test("localStorage is set correctly", () => {
 			const storedBookmarksStr = localStorage.getItem("locationBookmarks");
 			expect(storedBookmarksStr).not.toBeNull();
@@ -63,13 +69,19 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("isBookmarked gives correct values", () => {
-			expect(getIsBookmarked("location", sunBookmark)).toBe(true);
-			expect(getIsBookmarked("location", moonBookmark)).toBe(false);
+			expect(
+				getIsBookmarked("location", sunBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(true);
+			expect(
+				getIsBookmarked("location", moonBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(false);
 		});
 	});
 
 	describe("add second bookmark", () => {
-		beforeAll(() => toggleBookmark("location", moonBookmarkData));
+		beforeAll(() =>
+			toggleBookmark("location", moonBookmarkData, { profileConfig: exampleProfileConfig })
+		);
 		test("localStorage is set correctly", () => {
 			const storedBookmarksStr = localStorage.getItem("locationBookmarks");
 			expect(storedBookmarksStr).not.toBeNull();
@@ -85,8 +97,12 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("isBookmarked gives correct values", () => {
-			expect(getIsBookmarked("location", sunBookmark)).toBe(true);
-			expect(getIsBookmarked("location", moonBookmark)).toBe(true);
+			expect(
+				getIsBookmarked("location", sunBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(true);
+			expect(
+				getIsBookmarked("location", moonBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(true);
 		});
 	});
 
@@ -107,13 +123,19 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("isBookmarked gives correct values", () => {
-			expect(getIsBookmarked("location", sunBookmark)).toBe(false);
-			expect(getIsBookmarked("location", moonBookmark)).toBe(true);
+			expect(
+				getIsBookmarked("location", sunBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(false);
+			expect(
+				getIsBookmarked("location", moonBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(true);
 		});
 	});
 
 	describe("remove last remaining bookmark", () => {
-		beforeAll(() => toggleBookmark("location", moonBookmarkData));
+		beforeAll(() =>
+			toggleBookmark("location", moonBookmarkData, { profileConfig: exampleProfileConfig })
+		);
 
 		test("localStorage is set correctly", () => {
 			const storedBookmarksStr = localStorage.getItem("locationBookmarks");
@@ -125,8 +147,12 @@ describe.sequential("add and remove bookmarks", () => {
 		});
 
 		test("isBookmarked gives correct values", () => {
-			expect(getIsBookmarked("location", sunBookmark)).toBe(false);
-			expect(getIsBookmarked("location", moonBookmark)).toBe(false);
+			expect(
+				getIsBookmarked("location", sunBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(false);
+			expect(
+				getIsBookmarked("location", moonBookmark, { profileConfig: exampleProfileConfig })
+			).toBe(false);
 		});
 	});
 });

@@ -1,6 +1,6 @@
 {
 	"name": "vahrplan",
-	"version": "4.1.4",
+	"version": "5.0.0 beta 1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -46,6 +46,7 @@
 	"type": "module",
 	"dependencies": {
 		"db-vendo-client": "^6.10.4",
+		"hafas-client": "^6.3.6",
 		"leaflet": "^1.9.4",
 		"redis": "^4.7.0"
 	}

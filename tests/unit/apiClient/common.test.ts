@@ -3,6 +3,7 @@ import { json } from "@sveltejs/kit";
 import { expect, test, vi } from "vitest";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
+import { exampleProfileConfig } from "../../testUtils";
 
 test("api client success", async () => {
 	const client = apiClient("GET", "journey/shorturl/[shortJourneyId]");
@@ -14,7 +15,11 @@ test("api client success", async () => {
 		return Promise.resolve(json(new VahrplanSuccess(response)));
 	});
 
-	const result = await client.request(input);
+	const result = await client.request(input, {
+		profileConfig: exampleProfileConfig,
+		lang: "de",
+		fetchFn: fetch
+	});
 
 	expect(fetch).toHaveBeenCalledOnce();
 	expect(result.isError).toBe(false);
@@ -32,7 +37,11 @@ test("api client error", async () => {
 		Promise.resolve(json(error))
 	);
 
-	const result = await client.request(input);
+	const result = await client.request(input, {
+		profileConfig: exampleProfileConfig,
+		lang: "de",
+		fetchFn: fetch
+	});
 
 	expect(fetch).toHaveBeenCalledOnce();
 	expect({ ...result }).toEqual({ ...error });

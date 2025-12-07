@@ -1,4 +1,8 @@
-import type { LineShape } from "$lib/server/journey-data/lineShapes";
+import type { OptionId, PossibleOptionValues, ProfileConfig } from "./server/profiles/profile";
+import type { Language } from "../params/lang";
+import type { ProfileId } from "../params/profileId";
+import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
+import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;
@@ -89,12 +93,12 @@ export type Product =
 	| "taxi"
 	| "ferry";
 
-export type JourneysOptions = {
-	products: Record<Product, boolean>;
-	bike: boolean;
-	accessible: boolean;
-	maxTransfers: number;
-	minTransferTime: number;
+export type JourneysFilters<
+	ProductT extends Product = Product,
+	OptionT extends OptionId = OptionId
+> = {
+	products: Record<ProductT, boolean>;
+	options: { [K in OptionT]: PossibleOptionValues<K> };
 };
 
 export type SubJourney = {
@@ -104,7 +108,7 @@ export type SubJourney = {
 		minPrice?: number;
 		currency: string;
 		hint?: string;
-		url: string;
+		url?: string;
 	};
 } & { [K in TransitType as `${K}Time`]: ParsedTime[K] };
 
@@ -167,6 +171,13 @@ export type LegBlock = {
 	productName?: string;
 	product: Product;
 	lineShape?: LineShape;
+	operator?: string;
+	loadFactor?: "low" | "medium" | "high" | "very-high";
+	cycle?: {
+		min: number;
+		max: number;
+	};
+	tripNumber?: string;
 	info: {
 		statuses: string[];
 		hints: string[];
@@ -267,3 +278,12 @@ export type DatabaseEntry<T> = {
 export type KeylessDatabaseEntry<T> = Omit<DatabaseEntry<T>, "key">;
 
 export type DatabaseEntryType = "journey" | "journeys";
+
+export type Ctx = {
+	profileConfig: ProfileConfig;
+	pathBase: `/${Language}/${ProfileId}/`;
+	apiPathBase: `${Ctx["pathBase"]}api/`;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	dataService: JourneyDataService<any, any>; // we do not care about the generic types here!
+	lang: Language;
+};

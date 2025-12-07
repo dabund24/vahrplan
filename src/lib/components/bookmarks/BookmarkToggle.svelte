@@ -7,6 +7,7 @@
 		getIsBookmarked,
 		toggleBookmark
 	} from "$lib/bookmarks.svelte";
+	import { page } from "$app/state";
 
 	type Props = {
 		type: T;
@@ -32,11 +33,13 @@
 		iconType = "bookmark"
 	}: Props = $props();
 
-	const isBookmarked = $derived(getIsBookmarked(type, value));
+	const isBookmarked = $derived(
+		getIsBookmarked(type, value, { profileConfig: page.data.profileConfig })
+	);
 
 	function handleClick(): void {
 		preCallback();
-		toggleBookmark(type, value);
+		toggleBookmark(type, value, { profileConfig: page.data.profileConfig });
 		postCallback();
 	}
 </script>

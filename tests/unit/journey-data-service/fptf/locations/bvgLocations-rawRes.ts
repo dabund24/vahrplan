@@ -1,0 +1,203 @@
+import type { Location, Station, Stop } from "hafas-client";
+
+export const bvgLocationsRawRes = [
+	{
+		type: "stop",
+		id: "900100003",
+		name: "S+U Alexanderplatz Bhf (Berlin)",
+		location: {
+			type: "location",
+			id: "900100003",
+			latitude: 52.521508,
+			longitude: 13.411267
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100003"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100026",
+		name: "S+U Alexanderplatz Bhf/Gontardstr. (Berlin)",
+		location: {
+			type: "location",
+			id: "900100026",
+			latitude: 52.52105,
+			longitude: 13.411285
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100026"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100005",
+		name: "U Alexanderplatz (Berlin) [Tram]",
+		location: {
+			type: "location",
+			id: "900100005",
+			latitude: 52.522083,
+			longitude: 13.414593
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100005"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100024",
+		name: "S+U Alexanderplatz Bhf/Dircksenstr. (Berlin)",
+		location: {
+			type: "location",
+			id: "900100024",
+			latitude: 52.521481,
+			longitude: 13.411924
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100024"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100731",
+		name: "S+U Alexanderplatz/Memhardstr. (Berlin) [Tram]",
+		location: {
+			type: "location",
+			id: "900100731",
+			latitude: 52.523513,
+			longitude: 13.411366
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100731"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100031",
+		name: "S+U Alexanderplatz Bhf/Memhardstr. (Berlin)",
+		location: {
+			type: "location",
+			id: "900100031",
+			latitude: 52.522937,
+			longitude: 13.410755
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100031"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100708",
+		name: "S+U Alexanderplatz (Bln) [Bus K.-Liebknecht-Str]",
+		location: {
+			type: "location",
+			id: "900100708",
+			latitude: 52.521796,
+			longitude: 13.408418
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100708"
+		}
+	},
+	{
+		type: "stop",
+		id: "900100006",
+		name: "S+U Alexanderplatz Bhf/Grunerstr. (Berlin)",
+		location: {
+			type: "location",
+			id: "900100006",
+			latitude: 52.520412,
+			longitude: 13.414432
+		},
+		products: {
+			suburban: true,
+			subway: true,
+			tram: true,
+			bus: true,
+			ferry: false,
+			express: false,
+			regional: true
+		},
+		ids: {
+			ifopt: "de:11000:900100006"
+		}
+	},
+	{
+		type: "location",
+		id: null,
+		latitude: 52.521778,
+		longitude: 13.414036,
+		address: "Alexanderplatz, 10178 Berlin-Mitte"
+	},
+	{
+		type: "location",
+		id: "900980709",
+		latitude: 52.523549,
+		longitude: 13.418441,
+		name: "Berlin, Holiday Inn Centre Alexanderplatz****",
+		poi: true
+	}
+] as (Station | Stop | Location)[];

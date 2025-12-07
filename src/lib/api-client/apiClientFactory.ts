@@ -1,14 +1,18 @@
 import type { RequestEvent } from "@sveltejs/kit";
 import { ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
-import { GetDiagramApiClient } from "../../routes/[lang]/[profile]/api/diagram/getClient";
-import { PostDiagramScrollApiClient } from "../../routes/[lang]/[profile]/api/diagram/scroll/[scrollDirection]/postClient";
-import { GetDiagramShortUrlApiClient } from "../../routes/[lang]/[profile]/api/diagram/shorturl/[shortDiagramId]/getClient";
-import { GetJourneyApiClient } from "../../routes/[lang]/[profile]/api/journey/getClient";
-import { GetJourneyShortUrlApiClient } from "../../routes/[lang]/[profile]/api/journey/shorturl/[shortJourneyId]/getClient";
-import { GetLocationApiClient } from "../../routes/[lang]/[profile]/api/location/[locationId]/getClient";
-import { GetLocationsApiClient } from "../../routes/[lang]/[profile]/api/locations/[name]/getClient";
-import { PutDiagramShortApiClient } from "../../routes/[lang]/[profile]/api/diagram/shorturl/putClient";
-import { PutJourneyShortUrlApiClient } from "../../routes/[lang]/[profile]/api/journey/shorturl/putClient";
+import { GetDiagramApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/getClient";
+import { PostDiagramScrollApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/scroll/[scrollDirection]/postClient";
+import { GetDiagramShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/shorturl/[shortDiagramId]/getClient";
+import { GetJourneyApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/getClient";
+import { GetJourneyShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/shorturl/[shortJourneyId]/getClient";
+import { GetLocationApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/location/[locationId]/getClient";
+import { GetLocationsApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/locations/[name]/getClient";
+import { PutDiagramShortApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/shorturl/putClient";
+import { PutJourneyShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/shorturl/putClient";
+import { GetProfileApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/getClient";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
+import { GetProfilesApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profiles/getClient";
 
 /**
  * this contains all api paths without the preceding `/[lang]/[profile]/api/`
@@ -22,12 +26,15 @@ type ApiRouteShort =
 	| "journey/shorturl"
 	| "journey/shorturl/[shortJourneyId]"
 	| "location/[locationId]"
-	| "locations/[name]";
+	| "locations/[name]"
+	| "profile"
+	| "profiles";
 
 /**
  * turns a short api route type into a long one by prepending `/[lang]/[profile]/api/`
  */
-type LongRoute<ShortRoute extends ApiRouteShort> = `/[lang]/[profile]/api/${ShortRoute}`;
+type LongRoute<ShortRoute extends ApiRouteShort> =
+	`/[lang=lang]/[profile=profileId]/api/${ShortRoute}`;
 
 /**
  * all api routes
@@ -44,7 +51,9 @@ const clients = {
 		...clientEntries("journey", GetJourneyApiClient),
 		...clientEntries("journey/shorturl/[shortJourneyId]", GetJourneyShortUrlApiClient),
 		...clientEntries("location/[locationId]", GetLocationApiClient),
-		...clientEntries("locations/[name]", GetLocationsApiClient)
+		...clientEntries("locations/[name]", GetLocationsApiClient),
+		...clientEntries("profile", GetProfileApiClient),
+		...clientEntries("profiles", GetProfilesApiClient)
 	},
 	["POST"]: {
 		...clientEntries("diagram/scroll/[scrollDirection]", PostDiagramScrollApiClient)
@@ -56,10 +65,13 @@ const clients = {
 } as const satisfies {
 	[MethodT in HttpMethod]?: {
 		[RouteT in ApiRouteShort | ApiRoute]?: ApiClient<
-			unknown,
-			unknown,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			any, // see https://github.com/microsoft/TypeScript/issues/32794. Inferring this would be better :(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			any,
 			MethodT, // ensure the mapped client handles the correct http method
-			RequestEvent<object, RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT> // ensure the mapped client handles the correct route
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			RequestEvent<any, RouteT extends ApiRouteShort ? LongRoute<RouteT> : RouteT> // ensure the mapped client handles the correct route
 		>;
 	};
 };
@@ -69,14 +81,21 @@ const clients = {
  * @param route
  * @param clientClass
  */
-function clientEntries<
-	RouteT extends ApiRouteShort,
-	ClientT extends ApiClient<unknown, unknown, HttpMethod, RequestEvent<object, LongRoute<RouteT>>>
->(route: RouteT, clientClass: new () => ClientT): Record<RouteT | LongRoute<RouteT>, ClientT> {
+function clientEntries<RouteT extends ApiRouteShort, ClientT>(
+	route: RouteT,
+	clientClass: ClientT extends ApiClient<
+		infer _A,
+		infer _B,
+		infer _C,
+		RequestEvent<infer _D extends { lang: Language; profile: ProfileId }, LongRoute<RouteT>>
+	>
+		? new () => ClientT
+		: never
+): Record<RouteT | LongRoute<RouteT>, ClientT> {
 	const client = new clientClass();
 	return {
 		[route]: client,
-		[`/[lang]/[profile]/api/${route}` satisfies LongRoute<RouteT>]: client
+		[`/[lang=lang]/[profile=profileId]/api/${route}` satisfies LongRoute<RouteT>]: client
 	} as Record<RouteT | LongRoute<RouteT>, ClientT>; // in a perfect world, this assertion would not be necessary. Unfortunately, it is: https://stackoverflow.com/a/64433457
 }
 

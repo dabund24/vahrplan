@@ -2,6 +2,8 @@
 	import type { Route } from "$lib/components/navbar/util";
 	import IconLogo from "$lib/components/icons/IconLogo.svelte";
 	import NavigationDrawer from "$lib/components/navbar/NavigationDrawer.svelte";
+	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
+	import { page } from "$app/state";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -13,7 +15,7 @@
 </script>
 
 <div class="flex-row">
-	<a class="hoverable flex-row" href="/de/dbnav">
+	<a class="hoverable flex-row" href={basePath(page)}>
 		<IconLogo />
 		Vahrplan
 	</a>

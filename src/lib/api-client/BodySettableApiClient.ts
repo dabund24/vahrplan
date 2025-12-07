@@ -1,19 +1,18 @@
 import {
 	type AbstractConstructor,
 	ApiClient,
-	type HttpMethod,
+	type ApiClientRequestEvent,
+	type BodyfulHttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
-import type { RequestEvent } from "@sveltejs/kit";
-
-type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information through the request body
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function BodySettable<ReqT, ResT, RequestEventT extends RequestEvent<object, string>>() {
+export function BodySettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends BodyfulHttpMethod,
@@ -23,16 +22,21 @@ export function BodySettable<ReqT, ResT, RequestEventT extends RequestEvent<obje
 			/**
 			 * override to generate body of http request
 			 * @param content
+			 * @param ctx
 			 * @protected
 			 */
-			protected abstract formatBody(content: ReqT): string;
+			protected abstract formatBody: (
+				content: ReqT,
+				ctx: Pick<Ctx, "profileConfig">
+			) => string;
 
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
 				fetchFn?: typeof fetch
 			): Promise<VahrplanResult<ResT>> {
-				requestData.requestInit.body = this.formatBody(content);
+				const ctx = { profileConfig: requestData.profileConfig };
+				requestData.requestInit.body = this.formatBody(content, ctx);
 				return super.requestInternal(content, requestData, fetchFn);
 			}
 		}

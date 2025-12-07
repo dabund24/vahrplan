@@ -5,6 +5,7 @@
 import { expect, test, vi } from "vitest";
 import { type BookmarkData, type Bookmarks, toggleBookmark } from "$lib/bookmarks.svelte";
 import type { SubJourney } from "$lib/types";
+import { exampleProfileConfig } from "../../testUtils";
 
 const bookmarkData: BookmarkData<"journey"> = {
 	blocks: [],
@@ -45,6 +46,6 @@ const bookmark: Bookmarks["journey"][number] = {
 
 test("format journey bookmark", () => {
 	const spy = vi.spyOn(Storage.prototype, "setItem");
-	toggleBookmark("journey", bookmarkData);
+	toggleBookmark("journey", bookmarkData, { profileConfig: exampleProfileConfig });
 	expect(spy).toHaveBeenCalledExactlyOnceWith("journeyBookmarks", JSON.stringify([bookmark]));
 });

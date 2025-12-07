@@ -1,15 +1,17 @@
 import type { Line } from "hafas-client";
-import { getLineShape, type LineShape } from "$lib/server/journey-data/lineShapes";
-import { beforeAll, expect, test, vi } from "vitest";
+import { expect, test, vi } from "vitest";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/fptf-clients/DbnavLineShapeParser";
+import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
 
-async function readLinesCsv(): Promise<string> {
-	return (await import("fs")).readFileSync("tests/unit/fixtures/line-shapes.csv").toString();
-}
+const lineShapeParser = new DbnavLineShapeParser();
 
-beforeAll(() => {
-	vi.mock("$app/server", () => ({
-		read: (): object => ({ text: readLinesCsv })
-	}));
+vi.mock("$app/server", async () => {
+	const fs = await import("fs");
+	return {
+		read: (): object => ({
+			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes.csv").toString()
+		})
+	};
 });
 
 test("line shapes first entry", () => {
@@ -33,7 +35,7 @@ test("line shapes first entry", () => {
 		borderColor: undefined,
 		shape: "rectangle"
 	};
-	const actual = getLineShape(hafasLine);
+	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
 });
 
@@ -58,7 +60,7 @@ test("line shapes last entry", () => {
 		borderColor: undefined,
 		shape: "rectangle"
 	};
-	const actual = getLineShape(hafasLine);
+	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
 });
 
@@ -245,7 +247,7 @@ test("line shapes all RE 1", () => {
 		}
 	];
 	for (const { hafasLine, expected } of values) {
-		const actual = getLineShape(hafasLine);
+		const actual = lineShapeParser.getLineShape(hafasLine);
 		expect(actual).toEqual(expected);
 	}
 });
@@ -271,7 +273,7 @@ test("line shapes Bus X660", () => {
 		borderColor: undefined,
 		shape: "rectangle"
 	};
-	const actual = getLineShape(hafasLine);
+	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
 });
 
@@ -295,6 +297,6 @@ test.skip("line shapes Rufbus N4", () => {
 		borderColor: undefined,
 		shape: "pill"
 	};
-	const actual = getLineShape(hafasLine);
+	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
 });

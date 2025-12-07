@@ -1,44 +1,71 @@
-import { type AbstractConstructor, ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
-import type { RequestEvent } from "@sveltejs/kit";
-
-type NonBodyfulHttpMethod = Exclude<HttpMethod, "POST" | "PUT">;
+import {
+	type AbstractConstructor,
+	ApiClient,
+	type ApiClientRequestEvent,
+	type MinimalRequestEvent,
+	type NonBodyfulHttpMethod
+} from "$lib/api-client/ApiClient";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin NonApiUsable Provides methods in {@linkcode ApiClient}s for parsing and formatting urls in non-api context
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function NonApiUsable<ReqT, ResT, RequestEventT extends RequestEvent<object, string>>() {
+export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends NonBodyfulHttpMethod,
 		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
-		// BaseT extends ReturnType<typeof QueryParamSettable<ReqT, ResT>>
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
-			protected abstract readonly nonApiRoute: `/de/dbnav/${string}`;
+			/**
+			 * format the suffix of a url for non-api purposes. The prefix is passed in `basePath`
+			 * @param content
+			 * @param ctx
+			 */
+			protected abstract formatNonApiUrlSuffix: (
+				content: ReqT,
+				ctx: Pick<Ctx, "profileConfig" | "pathBase">
+			) => URL;
 
 			/**
 			 * format a url for non-api purposes
+			 *
+			 * must not be overridden by api client implementations. override `formatNonApiUrlSuffix` instead
 			 * @param content
+			 * @param ctx
+			 * @sealed
 			 */
-			public abstract formatNonApiUrl(content: ReqT): URL;
+			public formatNonApiUrl = (content: ReqT, ctx: Pick<Ctx, "profileConfig">): URL => {
+				const { lang, id } = ctx.profileConfig;
+				const pathBase: Ctx["pathBase"] = `/${lang}/${id}/`;
+				return this.formatNonApiUrlSuffix(content, { ...ctx, pathBase });
+			};
 
 			/**
-			 * mock a request event from an url. The request event should be passable to the `parse()` method
+			 * mock a request event from a url. The request event should be passable to the `parseRequest()` method
 			 * @param url the url the request event is formatted from
+			 * @param ctx
 			 * @protected
 			 */
-			protected abstract requestEventFromUrl(url: URL): RequestEventT;
+			protected abstract requestEventFromUrl: (
+				url: URL,
+				ctx: Pick<Ctx, "profileConfig">
+			) => MinimalRequestEvent<MethodT, RequestEventT>;
 
 			/**
-			 * parse an url for non-api purposes
+			 * parse a url for non-api purposes
 			 * @sealed
 			 * @param url the url to parse
+			 * @param ctx
 			 */
-			public parseNonApiUrl(url: URL): ReqT | Promise<ReqT> {
-				const reqEvent = this.requestEventFromUrl(url);
-				return this.parse(reqEvent);
-			}
+			public parseNonApiUrl = (
+				url: URL,
+				ctx: Pick<Ctx, "profileConfig">
+			): ReturnType<typeof this.parseRequest> => {
+				const reqEvent = this.requestEventFromUrl(url, ctx);
+				return this.parseRequest(reqEvent);
+			};
 		}
 		return NonApiUsable;
 	};

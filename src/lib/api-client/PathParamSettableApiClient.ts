@@ -1,21 +1,18 @@
 import {
 	type AbstractConstructor,
 	ApiClient,
+	type ApiClientRequestEvent,
 	type HttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
-import type { RequestEvent } from "@sveltejs/kit";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin BodySettable Lets {@linkcode ApiClient}s pass information in the url pathname
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function PathParamSettable<
-	ReqT,
-	ResT,
-	RequestEventT extends RequestEvent<object, string>
->() {
+export function PathParamSettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
@@ -25,16 +22,24 @@ export function PathParamSettable<
 			/**
 			 * format the url path
 			 * @param content
+			 * @param ctx
 			 * @protected
 			 */
-			protected abstract formatUrlPath(content: ReqT): `/de/dbnav/api/${string}`;
+			protected abstract formatUrlPath: (
+				content: ReqT,
+				ctx: Pick<Ctx, "apiPathBase" | "profileConfig">
+			) => `${Ctx["apiPathBase"]}${string}`;
 
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
 				fetchFn?: typeof fetch
 			): Promise<VahrplanResult<ResT>> {
-				requestData.url.pathname = this.formatUrlPath(content);
+				const ctx = {
+					apiPathBase: requestData.apiPathBase,
+					profileConfig: requestData.profileConfig
+				};
+				requestData.url.pathname = this.formatUrlPath(content, ctx);
 				return super.requestInternal(content, requestData, fetchFn);
 			}
 		}

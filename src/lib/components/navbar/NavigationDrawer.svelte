@@ -9,6 +9,9 @@
 	import IconBookmarkLarge from "$lib/components/icons/IconBookmarkLarge.svelte";
 	import { beforeNavigate } from "$app/navigation";
 	import IconJourneySelection from "$lib/components/icons/IconJourneySelection.svelte";
+	import { page } from "$app/state";
+	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
+	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -30,44 +33,17 @@
 >
 	<MobileNavbarItem
 		{currentRoute}
-		link="/de/dbnav"
-		route="/[lang]/[profile]"
+		link={basePath(page)}
+		route="/[lang=lang]/[profile=profileId]"
 		pageName="Startseite"
 	>
 		{#snippet icon()}<IconLogo />{/snippet}
 	</MobileNavbarItem>
-	<MobileNavbarItem
-		{currentRoute}
-		link="/de/dbnav/bookmarks"
-		route="/[lang]/[profile]/bookmarks"
-		pageName="Lesezeichen"
-	>
-		{#snippet icon()}<IconBookmarkLarge />{/snippet}
-	</MobileNavbarItem>
-	<MobileNavbarItem
-		{currentRoute}
-		link="/de/dbnav/settings"
-		route="/[lang]/[profile]/settings"
-		pageName="Einstellungen"
-	>
-		{#snippet icon()}<IconSettings />{/snippet}
-	</MobileNavbarItem>
-	<MobileNavbarItem
-		{currentRoute}
-		link="/de/dbnav/about"
-		route="/[lang]/[profile]/about"
-		pageName="Über Vahrplan"
-	>
-		{#snippet icon()}<IconAbout />{/snippet}
-	</MobileNavbarItem>
-
-	<hr />
-
 	{#if diagramUrl !== undefined}
 		<MobileNavbarItem
 			{currentRoute}
 			link={diagramUrl}
-			route="/[lang]/[profile]/diagram"
+			route="/[lang=lang]/[profile=profileId]/diagram"
 			pageName="Reiseauswahl"
 		>
 			{#snippet icon()}<IconJourneySelection />{/snippet}
@@ -77,25 +53,56 @@
 		<MobileNavbarItem
 			{currentRoute}
 			link={journeyUrl}
-			route="/[lang]/[profile]/journey"
+			route="/[lang=lang]/[profile=profileId]/journey"
 			pageName="Reisedetails"
 		>
 			{#snippet icon()}<IconDetails />{/snippet}
 		</MobileNavbarItem>
 	{/if}
-	{#if diagramUrl !== undefined || journeyUrl !== undefined}
-		<hr />
-	{/if}
+	<hr />
 	<MobileNavbarItem
 		{currentRoute}
-		link="/de/imprint"
-		route="/[lang]/imprint"
+		link="/{page.data.lang}/profiles"
+		route="/[lang=lang]/profiles"
+		pageName="Datenquellen"
+	>
+		{#snippet icon()}<IconDataOrigin />{/snippet}
+	</MobileNavbarItem>
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/bookmarks"
+		route="/[lang=lang]/bookmarks"
+		pageName="Lesezeichen"
+	>
+		{#snippet icon()}<IconBookmarkLarge />{/snippet}
+	</MobileNavbarItem>
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/settings"
+		route="/[lang=lang]/settings"
+		pageName="Einstellungen"
+	>
+		{#snippet icon()}<IconSettings />{/snippet}
+	</MobileNavbarItem>
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/about"
+		route="/[lang=lang]/about"
+		pageName="Über Vahrplan"
+	>
+		{#snippet icon()}<IconAbout />{/snippet}
+	</MobileNavbarItem>
+	<hr />
+	<MobileNavbarItem
+		{currentRoute}
+		link="/{page.data.lang}/imprint"
+		route="/[lang=lang]/imprint"
 		pageName="Impressum"
 	/>
 	<MobileNavbarItem
 		{currentRoute}
-		link="/de/privacy"
-		route="/[lang]/privacy"
+		link="/{page.data.lang}/privacy"
+		route="/[lang=lang]/privacy"
 		pageName="Datenschutz"
 	/>
 </ul>

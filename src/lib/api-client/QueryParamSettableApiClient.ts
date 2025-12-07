@@ -1,21 +1,18 @@
 import {
 	type AbstractConstructor,
 	ApiClient,
+	type ApiClientRequestEvent,
 	type HttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
-import type { RequestEvent } from "@sveltejs/kit";
+import type { Ctx } from "$lib/types";
 
 /**
  * @mixin QueryParamSettable Lets {@linkcode ApiClient}s pass information through query parameters
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function QueryParamSettable<
-	ReqT,
-	ResT,
-	RequestEventT extends RequestEvent<object, string>
->() {
+export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
@@ -31,9 +28,13 @@ export function QueryParamSettable<
 			/**
 			 * override to generate query params
 			 * @param content
-=			 * @protected
+			 * @param ctx
+			 * @protected
 			 */
-			protected abstract formatQueryParams(content: ReqT): URLSearchParams;
+			protected abstract formatQueryParams: (
+				content: ReqT,
+				ctx: Pick<Ctx, "profileConfig">
+			) => URLSearchParams;
 
 			protected writeArrayQueryParameter(
 				queryParams: URLSearchParams,
@@ -67,7 +68,8 @@ export function QueryParamSettable<
 				requestData: RequestData,
 				fetchFn?: typeof fetch
 			): Promise<VahrplanResult<ResT>> {
-				const queryParams = this.formatQueryParams(content);
+				const ctx = { profileConfig: requestData.profileConfig };
+				const queryParams = this.formatQueryParams(content, ctx);
 				for (const [queryParamKey, queryParamValue] of queryParams) {
 					requestData.url.searchParams.append(queryParamKey, queryParamValue);
 				}

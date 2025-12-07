@@ -6,17 +6,49 @@ import { json, type RequestEvent, type RouteDefinition } from "@sveltejs/kit";
 import { browser } from "$app/environment";
 import { untrack } from "svelte";
 import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
+import type { Language } from "../../params/lang";
+import type { ProfileId } from "../../params/profileId";
+import type { ProfileConfig } from "../server/profiles/profile";
+import { EMPTY_PROFILE } from "$lib/constants";
+import type { Ctx } from "$lib/types";
 
 export type RequestData = {
 	url: URL;
 	requestInit: RequestInit;
 	plausibleProps: Partial<Record<PlausibleProp, string | number>>;
-};
+} & Pick<Ctx, "apiPathBase" | "profileConfig">;
 
 export type HttpMethod = Exclude<RouteDefinition["api"]["methods"][number], "*">;
+export type BodyfulHttpMethod = Extract<HttpMethod, "POST" | "PUT">;
+export type NonBodyfulHttpMethod = Exclude<HttpMethod, BodyfulHttpMethod>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
+
+type ParsedRequest<MethodT extends HttpMethod, ReqT> = {
+	reqContent: MethodT extends BodyfulHttpMethod ? Promise<ReqT> : ReqT;
+	lang: Language;
+	profile: ProfileId;
+};
+
+/**
+ * this is the minimal constraint a generated RequestEvent type needs to satisfy in api client implementations
+ */
+export type ApiClientRequestEvent = RequestEvent<
+	{ lang: Language; profile: ProfileId },
+	`/[lang=lang]/[profile=profileId]/api/${string}`
+>;
+
+export type MinimalRequestEvent<
+	MethodT extends HttpMethod,
+	RequestEventT extends ApiClientRequestEvent
+> = Pick<RequestEventT, "url" | "params" | (MethodT extends BodyfulHttpMethod ? "request" : never)>;
+
+export type ServerRequestData = {
+	fetchFn?: typeof fetch;
+	lang: Language;
+	profileConfig: ProfileConfig;
+};
 
 /**
  * An abstract utility class simplifying the process of making fetch requests in Vahrplan.
@@ -27,10 +59,10 @@ export abstract class ApiClient<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends RequestEvent<object, string>
+	RequestEventT extends ApiClientRequestEvent
 > {
 	protected abstract readonly methodType: MethodT;
-	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang]/[profile]/api/${infer RouteT}`
+	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang=lang]/[profile=profileId]/api/${infer RouteT}`
 		? RouteT
 		: never;
 	protected abstract readonly cacheMaxAge: number;
@@ -42,16 +74,27 @@ export abstract class ApiClient<
 	 * must not be overridden! must not be called by a mixin
 	 * @sealed
 	 * @param content
-	 * @param fetchFn
+	 * @param serverRequestData needs to be set if the method is called from the server
 	 */
-	public request(content: ReqT, fetchFn?: RequestEventT["fetch"]): Promise<VahrplanResult<ResT>> {
+	public async request(
+		content: ReqT,
+		serverRequestData?: ServerRequestData
+	): Promise<VahrplanResult<ResT>> {
+		serverRequestData ??= (await import("$app/state").then(({ page }) => ({
+			lang: page.data.lang,
+			profileConfig: page.data.profileConfig ?? EMPTY_PROFILE
+		}))) as ServerRequestData;
+		const { fetchFn, lang, profileConfig } = serverRequestData;
+		const apiPathBase: `/${Language}/${ProfileId}/api/` = `/${lang}/${profileConfig.id}/api/`;
 		let urlBase: string;
 		if (browser) {
 			urlBase = location.origin;
 		}
-		urlBase ??= "http://localhost";
+		urlBase ??= "http://localhost"; // TODO this will never be used for server requests. Design something better
 		const requestData: RequestData = {
-			url: new URL(`/de/dbnav/api/${this.route}`, urlBase),
+			url: new URL(`${apiPathBase}${this.route}`, urlBase),
+			profileConfig,
+			apiPathBase,
 			requestInit: {},
 			plausibleProps: {}
 		};
@@ -63,12 +106,12 @@ export abstract class ApiClient<
 	 * @sealed
 	 * @param content response payload
 	 */
-	public formatResponse(content: VahrplanResult<ResT>): Response {
+	public formatResponse = (content: VahrplanResult<ResT>): Response => {
 		content.throwIfError();
 		const response = json(content, { status: 200 });
 		response.headers.set("Cache-Control", `max-age=${this.cacheMaxAge}`);
 		return response;
-	}
+	};
 
 	/**
 	 * ***must not be used or overridden by a client implementation!!!***
@@ -139,14 +182,30 @@ export abstract class ApiClient<
 	 * @param _reqContent
 	 * @protected
 	 */
-	protected estimateUpstreamCalls(_reqContent: ReqT): number {
-		return 1;
-	}
+	protected estimateUpstreamCalls = (_reqContent: ReqT): number => 1;
+
+	/**
+	 * parse request content from reqEvent
+	 *
+	 * override in client implementation
+	 * @param reqEvent
+	 * @protected
+	 */
+	protected abstract parseRequestContent: (
+		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
+	) => MethodT extends BodyfulHttpMethod ? Promise<ReqT> : ReqT;
 
 	/**
 	 * parse a request on the server
-	 * must be overridden by a client implementation
+	 * must not be overridden by a client implementation; override `parseRequestContent` instead!
+	 * @sealed
 	 * @param reqEvent
 	 */
-	abstract parse(reqEvent: RequestEventT): ReqT | Promise<ReqT>;
+	public parseRequest = (
+		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>
+	): ParsedRequest<MethodT, ReqT> => ({
+		reqContent: this.parseRequestContent(reqEvent),
+		lang: reqEvent.params.lang,
+		profile: reqEvent.params.profile
+	});
 }

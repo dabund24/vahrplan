@@ -1,0 +1,25 @@
+export const bvgJourneysFormattedReq = [
+	"900003201",
+	"900260009",
+	{
+		products: {
+			express: true,
+			regional: false,
+			suburban: true,
+			subway: true,
+			tram: false,
+			bus: true,
+			ferry: true
+		},
+		transferTime: 5,
+		transfers: 0,
+		accessibility: "complete",
+		bike: true,
+		results: 10,
+		stopovers: true,
+		tickets: false,
+		language: "de",
+		departure: new Date("2025-12-08T03:13:00+01:00"),
+		entrances: false
+	}
+];

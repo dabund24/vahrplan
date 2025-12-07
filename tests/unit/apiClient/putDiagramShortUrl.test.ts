@@ -1,10 +1,10 @@
 import { test, vi } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./testApiClientUtils";
 
 const route = "diagram/shorturl";
 const client = apiClient("PUT", route);
-const input: Awaited<ReturnType<(typeof client)["parse"]>> = {
+const input: Parameters<(typeof client)["request"]>[0] = {
 	type: "journeys",
 	value: {
 		stops: ["12345", "Lorem Ip+um D*lor $it am€t"],
@@ -13,7 +13,7 @@ const input: Awaited<ReturnType<(typeof client)["parse"]>> = {
 			time: new Date().toISOString(),
 			scrollDirection: "later"
 		},
-		options: {
+		filters: {
 			products: {
 				longDistanceExpress: true,
 				longDistance: false,
@@ -26,10 +26,12 @@ const input: Awaited<ReturnType<(typeof client)["parse"]>> = {
 				taxi: true,
 				ferry: false
 			},
-			bike: false,
-			accessible: true,
-			minTransferTime: 12,
-			maxTransfers: 4
+			options: {
+				bike: false,
+				accessible: true,
+				minTransferTime: 10,
+				maxTransfers: 4
+			}
 		}
 	},
 	expirationDate: 69420

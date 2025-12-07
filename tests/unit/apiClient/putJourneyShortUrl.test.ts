@@ -1,10 +1,10 @@
 import { test, vi } from "vitest";
 import { apiClient } from "$lib/api-client/apiClientFactory";
-import { apiClientParseFormatTest, apiClientPlausibleTest } from "./utils";
+import { apiClientParseFormatTest, apiClientPlausibleTest } from "./testApiClientUtils";
 
 const route = "journey/shorturl";
 const client = apiClient("PUT", route);
-let input: Awaited<ReturnType<(typeof client)["parse"]>>;
+let input: Parameters<(typeof client)["request"]>[0];
 
 test(`PUT ${route} api client parsing and formatting`, async () => {
 	input = {

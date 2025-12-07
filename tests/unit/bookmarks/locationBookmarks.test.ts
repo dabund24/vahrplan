@@ -4,6 +4,7 @@
 
 import { expect, test, vi } from "vitest";
 import { type BookmarkData, type Bookmarks, toggleBookmark } from "$lib/bookmarks.svelte";
+import { exampleProfileConfig } from "../../testUtils";
 
 const bookmarkData: BookmarkData<"location"> = {
 	id: "sun",
@@ -16,6 +17,6 @@ const bookmark: Bookmarks["location"][number] = { ...bookmarkData, profile: "dbn
 
 test("format location bookmark", () => {
 	const spy = vi.spyOn(Storage.prototype, "setItem");
-	toggleBookmark("location", bookmarkData);
+	toggleBookmark("location", bookmarkData, { profileConfig: exampleProfileConfig });
 	expect(spy).toHaveBeenCalledExactlyOnceWith("locationBookmarks", JSON.stringify([bookmark]));
 });

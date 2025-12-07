@@ -1,2 +1,3 @@
-type RouteSuffix = "" | "/diagram" | "/journey" | "/bookmarks" | "/settings" | "/about";
-export type Route = `/[lang]/[profile]${RouteSuffix}` | "/[lang]/privacy" | "/[lang]/imprint";
+type RouteSuffix = "" | "/diagram" | "/journey";
+export type Route =
+	`/[lang=lang]/${`[profile=profileId]${RouteSuffix}` | "profiles" | "bookmarks" | "settings" | "about" | "privacy" | "imprint"}`;

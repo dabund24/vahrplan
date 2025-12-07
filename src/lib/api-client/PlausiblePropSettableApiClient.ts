@@ -1,7 +1,7 @@
-import type { RequestEvent } from "@sveltejs/kit";
 import {
 	type AbstractConstructor,
 	ApiClient,
+	type ApiClientRequestEvent,
 	type HttpMethod,
 	type RequestData
 } from "$lib/api-client/ApiClient";
@@ -13,11 +13,7 @@ export type PlausibleProp = "viaCount";
  * @mixin PlausiblePropSettable Lets {@linkcode ApiClient}s report custom properties to plausible
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention,
-export function PlausiblePropSettable<
-	ReqT,
-	ResT,
-	RequestEventT extends RequestEvent<object, string>
->() {
+export function PlausiblePropSettable<ReqT, ResT, RequestEventT extends ApiClientRequestEvent>() {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
@@ -29,7 +25,9 @@ export function PlausiblePropSettable<
 			 * @param content
 			 * @protected
 			 */
-			protected abstract formatProps(content: ReqT): Record<PlausibleProp, string | number>;
+			protected abstract formatProps: (
+				content: ReqT
+			) => Record<PlausibleProp, string | number>;
 
 			protected override requestInternal(
 				content: ReqT,

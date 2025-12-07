@@ -4,6 +4,8 @@
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import { type VahrplanError } from "$lib/VahrplanError";
+import type { Language } from "./params/lang";
+import type { ProfileConfig } from "$lib/server/profiles/profile";
 
 /**
  * can be used for modals showing trip info. suffix is id of block
@@ -19,11 +21,15 @@ declare global {
 		// interface Locals {}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageData {
+			allProfileConfigs: ProfileConfig[];
+			profileConfig: ProfileConfig;
+			lang: Language;
 			formData?: DisplayedFormData | undefined;
 			diagramData?: DiagramData;
 		}
 		// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 		interface PageState extends TripInfoModalKeys, ServerNewsModalKeys {
+			showProfileModal?: boolean;
 			showFilterModal?: boolean;
 			showLegModal?: boolean;
 			showRecommendationModal?: boolean;
