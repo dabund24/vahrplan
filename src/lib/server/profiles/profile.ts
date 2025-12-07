@@ -27,7 +27,7 @@ type OptionConfig<T extends string[] | number[] | boolean> = {
 				possibleValues: T;
 				optionNames: Record<
 					T extends number[] | string[] ? T[number] : never,
-					LocaleString
+					{ name: string }
 				>;
 			});
 
@@ -37,6 +37,10 @@ export type PossibleOptionValues<T extends OptionId> =
 		: boolean;
 
 type ProductConfig = {
+	name: LocaleString;
+};
+
+type DisabledNotice = {
 	name: LocaleString;
 };
 
@@ -53,7 +57,7 @@ export type ProfileConfig = {
 	supportedLanguages: Language[];
 	products: Partial<Record<Product, NameWithKnownLocale<ProductConfig>>>;
 	options: {
-		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>;
+		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>; // TODO option names are still hard coded!
 	};
 };
 
@@ -83,13 +87,13 @@ export abstract class Profile<
 			possibleValues: [0, 1, 2, 3, 4, 5, -1],
 			defaultValue: -1,
 			optionNames: {
-				0: { de: "nur Direkt-Verbindungen" },
-				1: Profile.translingual("1"),
-				2: Profile.translingual("2"),
-				3: Profile.translingual("3"),
-				4: Profile.translingual("4"),
-				5: Profile.translingual("5"),
-				[-1]: { de: "beliebig" }
+				0: { name: "nur Direkt-Verbindungen" },
+				1: { name: "1" },
+				2: { name: "2" },
+				3: { name: "3" },
+				4: { name: "4" },
+				5: { name: "5" },
+				[-1]: { name: "beliebig" }
 			}
 		},
 		minTransferTime: {
@@ -97,16 +101,16 @@ export abstract class Profile<
 			possibleValues: [0, 2, 5, 10, 15, 20, 30, 40, 50, 60],
 			defaultValue: 0,
 			optionNames: {
-				0: Profile.translingual("0min"),
-				2: Profile.translingual("2min"),
-				5: Profile.translingual("5min"),
-				10: Profile.translingual("10min"),
-				15: Profile.translingual("15min"),
-				20: Profile.translingual("20min"),
-				30: Profile.translingual("30min"),
-				40: Profile.translingual("40min"),
-				50: Profile.translingual("50min"),
-				60: Profile.translingual("1h")
+				0: { name: "0min" },
+				2: { name: "2min" },
+				5: { name: "5min" },
+				10: { name: "10min" },
+				15: { name: "15min" },
+				20: { name: "20min" },
+				30: { name: "30min" },
+				40: { name: "40min" },
+				50: { name: "50min" },
+				60: { name: "1h" }
 			}
 		}
 	} as const satisfies { [K in keyof OptionValues]: OptionConfig<OptionValues[K]> };
