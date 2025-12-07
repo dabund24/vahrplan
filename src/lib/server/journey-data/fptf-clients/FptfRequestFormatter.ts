@@ -52,6 +52,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 			results: 10,
 			stopovers: true,
 			tickets: this.hasTickets,
+			entrances: false,
 			language: lang
 		};
 
@@ -103,7 +104,11 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 		): Parameters<FptfDataService<ProductT>["client"]["locations"]> => {
 			const fptfOptions: LocationsOptions = {
 				language: lang,
-				results: 10
+				results: 10,
+				addresses: true,
+				poi: true,
+				entrances: false,
+				linesOfStops: false
 			};
 			return [name, fptfOptions];
 		},
@@ -112,7 +117,11 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 			...[token, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>
 		): Parameters<FptfDataService<ProductT>["client"]["stop"]> => {
 			const fptfOptions: StopOptions = {
-				language: lang
+				language: lang,
+				entrances: false,
+				linesOfStops: false,
+				subStops: false,
+				remarks: false
 			};
 			return [token, fptfOptions];
 		}
