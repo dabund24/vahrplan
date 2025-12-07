@@ -54,7 +54,7 @@
 	</div>
 	{#if profileConfig.disabledNotice !== undefined}
 		<Warning color="red">
-			Datenquelle nicht auswählbar. {profileConfig.disabledNotice.name}
+			Datenquelle {profileConfig.name} nicht auswählbar. {profileConfig.disabledNotice.name}
 		</Warning>
 	{/if}
 </li>

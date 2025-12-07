@@ -5,6 +5,7 @@
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import ProfileSelection from "$lib/components/profiles/ProfileSelection.svelte";
 	import { getBookmarks } from "$lib/bookmarks.svelte";
+	import Warning from "$lib/components/Warning.svelte";
 
 	const bookmarkedProfiles = $derived(
 		getBookmarks("profile").filter(({ id }) => page.data.profileConfig.id !== id)
@@ -27,6 +28,13 @@
 		{/each}
 	</div>
 </div>
+{#if page.data.profileConfig.disabledNotice !== undefined}
+	<div class="content-wrapper">
+		<Warning color="red">
+			{page.data.profileConfig.disabledNotice.name} Wähle eine andere Datenquelle aus.
+		</Warning>
+	</div>
+{/if}
 
 <style>
 	.scrollable {
