@@ -28,8 +28,12 @@
 		{#each ticketData as data, i (i)}
 			{@render locationRow(locations[i])}
 			<div class="padded-top-bottom link-container flex-row">
-				{#if data !== undefined}
-					<a href={data.url} target="_blank" class="hoverable hoverable--accent">
+				{#if data?.url !== undefined}
+					<a
+						href={data.url}
+						target="_blank"
+						class="hoverable hoverable--accent ticket-data"
+					>
 						Tickets {data.minPrice !== undefined
 							? `ab ${new Intl.NumberFormat("de-DE", {
 									style: "currency",
@@ -37,6 +41,8 @@
 								}).format(data.minPrice)}`
 							: ""}
 					</a>
+				{:else}
+					<span class="ticket-data padded-top-bottom"> Keine Ticketdaten vefügbar </span>
 				{/if}
 			</div>
 		{/each}
@@ -77,8 +83,10 @@
 		background-color: transparent;
 	}
 
-	a {
+	a.ticket-data {
 		padding: 0.5rem 1rem;
+	}
+	.ticket-data {
 		width: fit-content;
 		margin-left: calc(1.5rem - var(--line-width));
 	}
