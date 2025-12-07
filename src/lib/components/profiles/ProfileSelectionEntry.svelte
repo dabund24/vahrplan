@@ -4,8 +4,9 @@
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import { page } from "$app/state";
 	import IconCheckmark from "$lib/components/icons/IconCheckmark.svelte";
-	import type { ProfileId } from "../../../params/profileId";
 	import { goto } from "$app/navigation";
+	import { toast } from "$lib/state/toastStore";
+	import Warning from "$lib/components/Warning.svelte";
 
 	type Props = {
 		profileConfig: ProfileConfig;
@@ -13,9 +14,13 @@
 
 	const { profileConfig }: Props = $props();
 
-	function selectProfile(profileId: ProfileId): void {
-		if (profileId !== page.data.profileConfig.id) {
-			void goto(`/${page.data.lang}/${profileId}`);
+	function selectProfile(): void {
+		if (profileConfig.disabledNotice !== undefined) {
+			toast(`Datenquelle nicht auswählbar. ${profileConfig.disabledNotice.name}`, "red");
+			return;
+		}
+		if (profileConfig.id !== page.data.profileConfig.id) {
+			void goto(`/${page.data.lang}/${profileConfig.id}`);
 		} else {
 			history.back();
 		}
@@ -23,34 +28,47 @@
 </script>
 
 <li
-	class="flex-row padded-top-bottom"
+	class="flex-column padded-top-bottom"
 	aria-current={profileConfig.id === page.data.profileConfig.id}
 >
-	<header class="flex-column">
-		<strong>{profileConfig.name}</strong>
-		<i>{profileConfig.id}</i>
-	</header>
-	<BookmarkToggle type="profile" iconType="star" value={profileConfig} />
-	<button
-		class="hoverable hoverable--visible"
-		class:hoverable--accent={profileConfig.id !== page.data.profileConfig.id}
-		title="Profil {profileConfig.name} auswählen"
-		onclick={() => void selectProfile(profileConfig.id)}
-	>
-		{#if profileConfig.id === page.data.profileConfig.id}
-			<IconCheckmark />
-		{:else}
-			<IconRightArrow />
+	<div class="regular-row flex-row">
+		<header class="flex-column">
+			<strong>{profileConfig.name}</strong>
+			<i>{profileConfig.id}</i>
+		</header>
+		<BookmarkToggle type="profile" iconType="star" value={profileConfig} />
+		{#if profileConfig.disabledNotice === undefined}
+			<button
+				class="hoverable hoverable--visible"
+				class:hoverable--accent={profileConfig.id !== page.data.profileConfig.id}
+				title="Profil {profileConfig.name} auswählen"
+				onclick={selectProfile}
+			>
+				{#if profileConfig.id === page.data.profileConfig.id}
+					<IconCheckmark />
+				{:else}
+					<IconRightArrow />
+				{/if}
+			</button>
 		{/if}
-	</button>
+	</div>
+	{#if profileConfig.disabledNotice !== undefined}
+		<Warning color="red">
+			Datenquelle nicht auswählbar. {profileConfig.disabledNotice.name}
+		</Warning>
+	{/if}
 </li>
 
 <style>
 	li {
 		gap: 0.5rem;
-		align-items: center;
 	}
-	button:not(.hoverable--accent) {
+	.regular-row {
+		gap: 0.5rem;
+		align-items: center;
+		width: 100%;
+	}
+	button.hoverable--visible:not(.hoverable--accent) {
 		border-color: var(--accent-color);
 	}
 	header {
