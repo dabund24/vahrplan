@@ -11,6 +11,7 @@ import { DbnavLineShapeParser } from "$lib/server/journey-data/fptf-clients/Dbna
 export class EmptyProfile extends Profile<"empty"> {
 	protected override readonly id = "empty";
 	protected override readonly name = Profile.translingual("");
+	protected override readonly disabledNotice = undefined;
 	protected override readonly supportedLanguages = [];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {};
