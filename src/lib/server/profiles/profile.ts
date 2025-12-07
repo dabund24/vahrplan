@@ -59,6 +59,7 @@ export type ProfileConfig = {
 	options: {
 		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>; // TODO option names are still hard coded!
 	};
+	disabledNotice?: NameWithKnownLocale<DisabledNotice>;
 };
 
 /**
@@ -130,6 +131,9 @@ export abstract class Profile<
 	/** the thing that talks with the upstream api */
 	protected abstract readonly journeyDataService: JourneyDataService<ProductT, OptionT>;
 
+	/** in case a profile ever stops working, use this property to indicate the reason */
+	protected abstract readonly disabledNotice?: DisabledNotice;
+
 	/**
 	 * fix the languages for all features of a feature set
 	 * @param lang the language
@@ -170,7 +174,7 @@ export abstract class Profile<
 			opt[optionKey] = Profile.availableOptions[optionKey];
 		}
 
-		return {
+		const res: ProfileConfig = {
 			name: this.name[lang],
 			id: this.id,
 			lang,
@@ -178,6 +182,12 @@ export abstract class Profile<
 			products: this.assignLangNames(lang, this.products),
 			options: this.assignLangNames(lang, opt)
 		};
+
+		if (this.disabledNotice !== undefined) {
+			res.disabledNotice = this.assignLangNames(lang, { _: this.disabledNotice })._;
+		}
+
+		return res;
 	}
 
 	/**
