@@ -144,6 +144,13 @@
 		inputElement.focus();
 		selectedLocation = undefined;
 	}
+
+	$effect(() => {
+		if (page.data.profileConfig) {
+			inputText = "";
+			selectedLocation = undefined;
+		}
+	});
 </script>
 
 <div class="outer-wrapper">
