@@ -5,13 +5,14 @@ import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
 
 const lineShapeParser = new DbnavLineShapeParser();
 
-async function readLinesCsv(): Promise<string> {
-	return (await import("fs")).readFileSync("tests/unit/fixtures/line-shapes.csv").toString();
-}
-
-vi.mock("$app/server", () => ({
-	read: (): object => ({ text: readLinesCsv })
-}));
+vi.mock("$app/server", async () => {
+	const fs = await import("fs");
+	return {
+		read: (): object => ({
+			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes.csv").toString()
+		})
+	};
+});
 
 test("line shapes first entry", () => {
 	const hafasLine = {
