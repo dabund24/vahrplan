@@ -122,6 +122,8 @@ export abstract class Profile<
 	protected abstract readonly id: IdT;
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	protected abstract readonly name: LocaleString;
+	/** in case a profile ever stops working: use this property to indicate the reason */
+	protected abstract readonly disabledNotice?: DisabledNotice;
 	/** all languages the upstream api can return responses of */
 	protected abstract readonly supportedLanguages: Language[];
 	protected abstract readonly fallbackLanguage: Language;
@@ -130,9 +132,6 @@ export abstract class Profile<
 
 	/** the thing that talks with the upstream api */
 	protected abstract readonly journeyDataService: JourneyDataService<ProductT, OptionT>;
-
-	/** in case a profile ever stops working, use this property to indicate the reason */
-	protected abstract readonly disabledNotice?: DisabledNotice;
 
 	/**
 	 * fix the languages for all features of a feature set

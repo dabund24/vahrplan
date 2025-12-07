@@ -31,6 +31,7 @@ export class DbnavProfile extends Profile<
 > {
 	protected override readonly id = "dbnav";
 	protected override readonly name = { de: "Deutschland" };
+	protected override readonly disabledNotice = undefined;
 	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {
