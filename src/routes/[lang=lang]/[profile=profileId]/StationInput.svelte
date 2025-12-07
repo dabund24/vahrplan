@@ -8,6 +8,7 @@
 	import { getBookmarks } from "$lib/bookmarks.svelte";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { getParsedGeolocation } from "$lib/geolocation.svelte";
+	import { page } from "$app/state";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -30,7 +31,7 @@
 
 	let bookmarkedLocations: ParsedLocation[] = $derived([
 		getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
-		...getBookmarks("location")
+		...getBookmarks("location").filter(({ profile }) => profile === page.data.profileConfig.id)
 	]);
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
 		getApiSuggestionsFromInput(inputText.trim())
