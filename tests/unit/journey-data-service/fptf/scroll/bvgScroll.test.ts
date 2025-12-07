@@ -2,7 +2,6 @@ import { expect, test, vi } from "vitest";
 import { journeyDataService } from "$lib/server/profiles/profileRegistry";
 import type { HafasClient, Journeys } from "hafas-client";
 import { bvgScrollParsedRes } from "./bvgScroll-parsedRes";
-import { bvgJourneysRawRes } from "../journeys/bvgJourneys-rawRes";
 import { bvgScrollFormattedReq } from "./bvgScroll-formattedReq";
 import { bvgScrollRawRes } from "./bvgScroll-rawRes";
 
