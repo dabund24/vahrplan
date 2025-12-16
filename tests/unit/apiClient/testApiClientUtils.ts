@@ -89,7 +89,7 @@ export async function apiClientPlausibleTest<
 	): Promise<Response> => Promise.resolve(new Response());
 
 	void client.request(input);
-	await vi.waitFor(async () => await plausiblePromise, 3000)
+	await vi.waitFor(async () => await plausiblePromise, 3000);
 
 	// @ts-expect-error plausible
 	expect(plausible, "registered incorrect plausible event").toHaveBeenCalledExactlyOnceWith(
