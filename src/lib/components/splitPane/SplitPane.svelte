@@ -31,7 +31,7 @@
 	let isDragging = $state(false);
 	let size = $state(0);
 
-	let desiredPosition = $state(pos);
+	let desiredPosition = $derived(pos);
 	$effect(() => void (desiredPosition = pos));
 	let position = $derived(constrain(container, size, min, max, desiredPosition, priority));
 

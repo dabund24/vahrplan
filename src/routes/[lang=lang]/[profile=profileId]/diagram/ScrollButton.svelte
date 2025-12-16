@@ -13,7 +13,7 @@
 
 	const { isClickable, scrollDirection, isTextHidden }: Props = $props();
 
-	const buttonText = scrollDirection === "earlier" ? "Früher" : "Später";
+	const buttonText = $derived(scrollDirection === "earlier" ? "Früher" : "Später");
 
 	function scroll(): void {
 		if (!isClickable) {

@@ -15,13 +15,15 @@
 	};
 
 	const { isContentPadded = false, tabs, tabEnvironment, startingTab = 0 }: Props = $props();
-	const tabsWithType: ComponentProps<SingleSelect<"icon">>["titles"] = tabs.map((tab) => ({
-		title: tab.title,
-		icon: tab.icon,
-		type: "icon"
-	}));
+	const tabsWithType: ComponentProps<SingleSelect<"icon">>["titles"] = $derived(
+		tabs.map((tab) => ({
+			title: tab.title,
+			icon: tab.icon,
+			type: "icon"
+		}))
+	);
 
-	let activeTab = $state(startingTab);
+	let activeTab = $derived(startingTab);
 </script>
 
 {#snippet miniTabs()}

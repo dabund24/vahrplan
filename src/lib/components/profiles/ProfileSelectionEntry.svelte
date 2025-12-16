@@ -7,6 +7,7 @@
 	import { goto } from "$app/navigation";
 	import { toast } from "$lib/state/toastStore";
 	import Warning from "$lib/components/Warning.svelte";
+	import { resolve } from "$app/paths";
 
 	type Props = {
 		profileConfig: ProfileConfig;
@@ -20,7 +21,7 @@
 			return;
 		}
 		if (profileConfig.id !== page.data.profileConfig.id) {
-			void goto(`/${page.data.lang}/${profileConfig.id}`);
+			void goto(resolve(`/${page.data.lang}/${profileConfig.id}`));
 		} else {
 			history.back();
 		}
