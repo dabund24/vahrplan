@@ -6,7 +6,7 @@
 
 	let { duration, isAlignedRight = false }: Props = $props();
 
-	let durationText = $derived(duration === undefined ? "" : durationToString(duration));
+	const durationText = $derived(duration === undefined ? "" : durationToString(duration));
 
 	function durationToString(duration: number): string {
 		const durationAbs = Math.abs(duration);
@@ -48,6 +48,7 @@
 		width: auto;
 		display: none;
 		font-weight: bold;
+		font-variant-numeric: tabular-nums;
 	}
 	.align-right + .width-setter {
 		display: block;
