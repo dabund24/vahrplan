@@ -11,6 +11,7 @@ import type { ProfileId } from "../../params/profileId";
 import type { ProfileConfig } from "../server/profiles/profile";
 import { EMPTY_PROFILE } from "$lib/constants";
 import type { Ctx } from "$lib/types";
+import type { RouteId } from "$app/types";
 
 export type RequestData = {
 	url: URL;
@@ -36,7 +37,7 @@ type ParsedRequest<MethodT extends HttpMethod, ReqT> = {
  */
 export type ApiClientRequestEvent = RequestEvent<
 	{ lang: Language; profile: ProfileId },
-	`/[lang=lang]/[profile=profileId]/api/${string}`
+	Extract<RouteId, `/[lang=lang]/[profile=profileId]/api/${string}`>
 >;
 
 export type MinimalRequestEvent<

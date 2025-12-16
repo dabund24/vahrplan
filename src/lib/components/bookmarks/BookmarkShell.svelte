@@ -14,7 +14,7 @@
 
 	const { bookmarkType, bookmark, children, bookmarkIndex }: Props = $props();
 
-	const url = bookmark.link ?? bookmark.id;
+	const url = $derived(bookmark.id);
 
 	const isCurrentBookmark = $derived.by(() => {
 		const now = Date.now();

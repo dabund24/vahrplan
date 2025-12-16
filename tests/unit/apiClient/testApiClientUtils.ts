@@ -74,10 +74,13 @@ export async function apiClientPlausibleTest<
 
 	global.location = { ...global.location, origin: "https://vahrplan.de" };
 
+	// a hack to ensure that plausible was actually called
+	let resolveFn: (p: unknown) => void;
+	const plausiblePromise = new Promise((resolve) => (resolveFn = resolve));
 	// @ts-expect-error plausible
 	global.plausible = vi.fn(
 		(_goal: string, _props: { props: Partial<Record<PlausibleProp, string | number>> }) =>
-			void {}
+			resolveFn("")
 	);
 
 	global.fetch = async (
@@ -85,7 +88,8 @@ export async function apiClientPlausibleTest<
 		_requestInit?: RequestInit
 	): Promise<Response> => Promise.resolve(new Response());
 
-	await client.request(input);
+	void client.request(input);
+	await vi.waitFor(async () => await plausiblePromise, 3000);
 
 	// @ts-expect-error plausible
 	expect(plausible, "registered incorrect plausible event").toHaveBeenCalledExactlyOnceWith(

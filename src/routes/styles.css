@@ -228,16 +228,17 @@ button {
 
 a {
 	color: var(--foreground-color);
-	&[href^="http"]:not([href*="vahrplan.de"], [href*="http://localhost:"])::after
-	{
+	&[href^="http"]:not([href*="vahrplan.de"], [href*="http://localhost:"])::after {
 		content: " " var(--external-ref-icon);
 		display: inline-flex;
 		vertical-align: middle;
 		padding: 0 0.2em;
 		flex-shrink: 0;
 	}
-	.hoverable--accent&[href^="http"]:not([href*="vahrplan.de"], [href*="http://localhost:"])::after
-	{
+	.hoverable--accent&[href^="http"]:not(
+			[href*="vahrplan.de"],
+			[href*="http://localhost:"]
+		)::after {
 		content: " " var(--external-ref-icon--inverse);
 	}
 }

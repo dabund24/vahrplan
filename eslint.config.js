@@ -121,7 +121,8 @@ export default [
 			"@typescript-eslint/no-unsafe-call": "off",
 			"@typescript-eslint/no-unsafe-argument": "off",
 			"no-undef": "off",
-			"@typescript-eslint/no-unsafe-assignment": "off"
+			"@typescript-eslint/no-unsafe-assignment": "off",
+			"svelte/no-navigation-without-resolve": ["error", { ignoreLinks: true }]
 		}
 	},
 	{

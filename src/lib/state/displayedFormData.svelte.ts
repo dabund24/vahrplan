@@ -48,6 +48,7 @@ export async function searchDiagram(newFormData: DisplayedFormData): Promise<voi
 	);
 	displayedFormData = { ...newFormData };
 	if (location.href !== diagramUrl.href) {
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
 		await goto(diagramUrl);
 	}
 

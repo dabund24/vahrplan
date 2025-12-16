@@ -20,25 +20,25 @@
 		});
 	}
 
-	let tabs: ComponentProps<typeof MiniTabs>["tabs"] = (
-		Object.keys(info) as (keyof LegBlock["info"])[]
-	)
-		.filter((key) => info[key].length > 0)
-		.map(
-			(key) =>
-				({
-					statuses: {
-						title: "Aktuelle Informationen",
-						icon: infoIconRed,
-						content: statuses
-					},
-					hints: {
-						title: "Fahrthinweise",
-						icon: infoIconRegular,
-						content: hints
-					}
-				})[key]
-		);
+	let tabs: ComponentProps<typeof MiniTabs>["tabs"] = $derived(
+		(Object.keys(info) as (keyof LegBlock["info"])[])
+			.filter((key) => info[key].length > 0)
+			.map(
+				(key) =>
+					({
+						statuses: {
+							title: "Aktuelle Informationen",
+							icon: infoIconRed,
+							content: statuses
+						},
+						hints: {
+							title: "Fahrthinweise",
+							icon: infoIconRegular,
+							content: hints
+						}
+					})[key]
+			)
+	);
 </script>
 
 {#snippet infoIconRed()}
