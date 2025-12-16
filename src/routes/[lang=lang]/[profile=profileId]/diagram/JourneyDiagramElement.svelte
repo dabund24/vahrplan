@@ -96,8 +96,8 @@
 
 	:global(
 			.diagram-box:has(
-					> .diagram-column > :first-child > .diagram-element[aria-current="true"]
-				)
+				> .diagram-column > :first-child > .diagram-element[aria-current="true"]
+			)
 		)
 		> .diagram-element[aria-current="true"] {
 		border-top-right-radius: 0;
