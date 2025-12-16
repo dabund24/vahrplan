@@ -1,6 +1,6 @@
 # Adding a Profile
 
-As of now, Vahrplan supports only apis, which can be used with [`hafas-client`](https://github.com/public-transport/hafas-client)-like api clients using the [`friendly-public-transport-format`](https://github.com/public-transport/friendly-public-transport-format). To implement a profile using `hafas-client`, follow the steps below.
+As of now, Vahrplan supports only apis, which can be used with [`hafas-client`](https://github.com/public-transport/hafas-client)-like api clients using the [`friendly-public-transport-format`](https://github.com/public-transport/friendly-public-transport-format) (FPTF). To implement a profile using `hafas-client`, follow the steps below.
 
 ## Choose a Profile
 
@@ -21,14 +21,14 @@ In the constructor parameters of `FptfDataService`, which you will use as the `j
 | product id            | explanation                                                                                                             |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `longDistanceExpress` | primary long distance trains like German ICE or French TGV.                                                             |
-| `longDistance`        | other long distance train. Choose `longDistanceExpress` instead if the upstream api has only one long distance profile. |
-| `regionalExpress`     | faster regional trains. Choose `regional` instead if the upstream api has only one regional profile.                    |
-| `regional`            | regular regional trains.                                                                                                |
+| `longDistance`        | other long distance train. Choose `longDistanceExpress` instead if the upstream api has only one long distance product. |
+| `regionalExpress`     | faster regional trains. Choose `regional` instead if the upstream api has only one regional product.                    |
+| `regional`            | regular regional trains                                                                                                 |
 | `suburban`            | trains connecting suburbs to centres of large cities similar to [German S-Bahns](https://en.wikipedia.org/wiki/S-Bahn). |
 | `subway`              | subways                                                                                                                 |
 | `tram`                | trams                                                                                                                   |
 | `bus`                 | busses                                                                                                                  |
-| `taxi`                | (bus) services you need to request in advance in order to get a ride                                                    |
+| `taxi`                | (bus) services you need to request in advance in order to get a ride.                                                   |
 | `ferry`               | everything on water                                                                                                     |
 
 ### Options
@@ -37,4 +37,4 @@ You can use `FptfOptionId` for the `OptionT` generic, since all profiles from `h
 
 ## Add to Registry
 
-Add your profile to the object in [/src/lib/server/profiles/profileRegistry.ts](/src/lib/server/profiles/profileRegistry.ts)
+Add your profile to the object in [/src/lib/server/profiles/profileRegistry.ts](/src/lib/server/profiles/profileRegistry.ts).
