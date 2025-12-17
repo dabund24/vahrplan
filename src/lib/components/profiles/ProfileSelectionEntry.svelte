@@ -33,7 +33,7 @@
 		<strong>{profileConfig.name}</strong>
 		<i>{profileConfig.id}</i>
 	</header>
-	<BookmarkToggle type="profile" iconType="star" value={profileConfig} />
+	<BookmarkToggle type="profile" iconType="star" hasBorder={true} value={profileConfig} />
 	{#if profileConfig.disabledNotice === undefined}
 		<button
 			class="hoverable hoverable--visible"
