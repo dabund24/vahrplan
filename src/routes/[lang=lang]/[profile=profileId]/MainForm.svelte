@@ -11,6 +11,7 @@
 	import MainStationInputs from "./MainStationInputs.svelte";
 	import { SvelteDate } from "svelte/reactivity";
 	import { page } from "$app/state";
+	import { untrack } from "svelte";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -19,14 +20,18 @@
 	let { initialFormData }: Props = $props();
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] = $state([
-		{ value: undefined, key: Math.random() },
-		{ value: undefined, key: Math.random() }
+		{ value: undefined, key: 0 },
+		{ value: undefined, key: 1 }
 	]);
 	$effect.pre(() => {
+		if (page.data.profileConfig && initialFormData === undefined) {
+			stops = untrack(() => stops).map(({ key }) => ({ value: undefined, key }));
+			return;
+		}
 		if (initialFormData === undefined) {
 			stops = [
-				{ value: undefined, key: Math.random() },
-				{ value: undefined, key: Math.random() }
+				{ value: undefined, key: 0 },
+				{ value: undefined, key: 1 }
 			];
 			return;
 		}

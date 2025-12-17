@@ -22,7 +22,7 @@
 		stationInputId
 	}: Props = $props();
 
-	let inputText = $state(selectedLocation?.name ?? "");
+	let inputText = $derived(selectedLocation?.name ?? "");
 	let inputElement: HTMLInputElement;
 	let isFocused = $state(false);
 	let focusedId = $state(-1);
@@ -144,13 +144,6 @@
 		inputElement.focus();
 		selectedLocation = undefined;
 	}
-
-	$effect(() => {
-		if (page.data.profileConfig) {
-			inputText = "";
-			selectedLocation = undefined;
-		}
-	});
 </script>
 
 <div class="outer-wrapper">
