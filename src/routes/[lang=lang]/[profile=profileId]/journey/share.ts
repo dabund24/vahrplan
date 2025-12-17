@@ -16,7 +16,7 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 export async function shareJourney(
 	displayedJourney: DisplayedJourney,
 	selectedData: SelectedData,
-	ctx: Pick<Ctx, "profileConfig">
+	ctx: Pick<Ctx, "profileConfig">,
 ): Promise<void> {
 	const selectedSubJourneys = displayedJourney.selectedSubJourneys;
 	if (selectedSubJourneys.length === 0 || !selectedData.isFullJourneySelected) {
@@ -36,7 +36,7 @@ export async function shareJourney(
 	if (navigator.share) {
 		void navigator.share({
 			title: document.title,
-			url: urlHref
+			url: urlHref,
 		});
 	} else {
 		void navigator.clipboard
@@ -54,12 +54,12 @@ export async function shareJourney(
 async function generateJourneyShortUrl(
 	tokens: string[],
 	departure: string,
-	ctx: Pick<Ctx, "profileConfig">
+	ctx: Pick<Ctx, "profileConfig">,
 ): Promise<URL | undefined> {
 	const keylessDatabaseEntry: KeylessDatabaseEntry<string[]> = {
 		type: "journey",
 		value: tokens,
-		expirationDate: new Date(departure).getTime() + 604_800_000 // 7 days
+		expirationDate: new Date(departure).getTime() + 604_800_000, // 7 days
 	};
 
 	const response = await apiClient("PUT", "journey/shorturl").request(keylessDatabaseEntry);
@@ -69,6 +69,6 @@ async function generateJourneyShortUrl(
 	}
 	return apiClient("GET", "journey/shorturl/[shortJourneyId]").formatNonApiUrl(
 		response.content,
-		ctx
+		ctx,
 	);
 }

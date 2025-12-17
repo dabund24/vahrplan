@@ -2,7 +2,7 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type HttpMethod,
-	type MinimalRequestEvent
+	type MinimalRequestEvent,
 } from "$lib/api-client/ApiClient";
 import { type PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
 import { expect, vi } from "vitest";
@@ -12,7 +12,7 @@ export async function apiClientParseFormatTest<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends ApiClientRequestEvent
+	RequestEventT extends ApiClientRequestEvent,
 >(
 	client: ApiClient<ReqT, ResT, MethodT, RequestEventT>,
 	input: ReqT,
@@ -20,13 +20,13 @@ export async function apiClientParseFormatTest<
 		expectedPath: string;
 		params: Omit<RequestEventT["params"], "lang" | "profile">;
 	},
-	expected?: ReqT
+	expected?: ReqT,
 ): Promise<void> {
 	let url: URL | undefined = undefined;
 	let parsed = {} as ReturnType<typeof client.parseRequest>;
 
 	vi.mock("$app/state", () => ({
-		page: { data: { profileConfig: exampleProfileConfig, lang: "de" } }
+		page: { data: { profileConfig: exampleProfileConfig, lang: "de" } },
 	}));
 	vi.mock("$app/server", () => ({ read: (): object => ({ text: () => "" }) }));
 	vi.mock("$app/environment", () => ({ version: (): string => "test" }));
@@ -38,7 +38,7 @@ export async function apiClientParseFormatTest<
 		parsed = client.parseRequest({
 			url,
 			params: { ...paramInfo.params, lang: "de", profile: "dbnav" },
-			...({ request } as Record<never, never>)
+			...({ request } as Record<never, never>),
 		} as MinimalRequestEvent<MethodT, RequestEventT>);
 		return Promise.resolve(new Response());
 	});
@@ -47,11 +47,11 @@ export async function apiClientParseFormatTest<
 
 	expect(fetch).toHaveBeenCalledOnce();
 	expect(decodeURIComponent(url!.pathname), "path is resolved correctly").toBe(
-		paramInfo.expectedPath
+		paramInfo.expectedPath,
 	);
 	expect(
 		await (parsed.reqContent as Promise<unknown>),
-		"parsing formatted request is input"
+		"parsing formatted request is input",
 	).toEqual(expected ?? input);
 }
 
@@ -59,17 +59,17 @@ export async function apiClientPlausibleTest<
 	ReqT,
 	ResT,
 	MethodT extends HttpMethod,
-	RequestEventT extends ApiClientRequestEvent
+	RequestEventT extends ApiClientRequestEvent,
 >(
 	client: ApiClient<ReqT, ResT, MethodT, RequestEventT>,
 	input: ReqT,
-	expected: { goal: string; props: Partial<Record<PlausibleProp, string | number>> }
+	expected: { goal: string; props: Partial<Record<PlausibleProp, string | number>> },
 ): Promise<void> {
 	vi.mock("$app/state", () => ({
 		page: {
 			route: { id: "/foo/bar/baz" },
-			data: { profileConfig: exampleProfileConfig, lang: "de" }
-		}
+			data: { profileConfig: exampleProfileConfig, lang: "de" },
+		},
 	}));
 
 	global.location = { ...global.location, origin: "https://vahrplan.de" };
@@ -80,12 +80,12 @@ export async function apiClientPlausibleTest<
 	// @ts-expect-error plausible
 	global.plausible = vi.fn(
 		(_goal: string, _props: { props: Partial<Record<PlausibleProp, string | number>> }) =>
-			resolveFn("")
+			resolveFn(""),
 	);
 
 	global.fetch = async (
 		_request: RequestInfo | URL,
-		_requestInit?: RequestInit
+		_requestInit?: RequestInit,
 	): Promise<Response> => Promise.resolve(new Response());
 
 	void client.request(input);
@@ -94,6 +94,6 @@ export async function apiClientPlausibleTest<
 	// @ts-expect-error plausible
 	expect(plausible, "registered incorrect plausible event").toHaveBeenCalledExactlyOnceWith(
 		expected.goal,
-		{ props: expected.props, u: "https://vahrplan.de/foo/bar/baz" }
+		{ props: expected.props, u: "https://vahrplan.de/foo/bar/baz" },
 	);
 }

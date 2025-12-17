@@ -10,7 +10,7 @@
 	import { flip } from "svelte/animate";
 
 	const bookmarkedProfiles = $derived(
-		getBookmarks("profile").filter(({ id }) => page.data.profileConfig.id !== id)
+		getBookmarks("profile").filter(({ id }) => page.data.profileConfig.id !== id),
 	);
 </script>
 

@@ -16,7 +16,7 @@
 
 	function showInfoModal(): void {
 		pushState("", {
-			[`showTripInfoModal${blockKey}`]: true
+			[`showTripInfoModal${blockKey}`]: true,
 		});
 	}
 
@@ -29,15 +29,15 @@
 						statuses: {
 							title: "Aktuelle Informationen",
 							icon: infoIconRed,
-							content: statuses
+							content: statuses,
 						},
 						hints: {
 							title: "Fahrthinweise",
 							icon: infoIconRegular,
-							content: hints
-						}
-					})[key]
-			)
+							content: hints,
+						},
+					})[key],
+			),
 	);
 </script>
 

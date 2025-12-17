@@ -11,7 +11,7 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "knjgnaekgnaw";
 	await apiClientParseFormatTest(client, input, {
 		expectedPath: `/de/dbnav/api/journey/shorturl/${input}`,
-		params: { shortJourneyId: input }
+		params: { shortJourneyId: input },
 	});
 });
 
@@ -33,6 +33,6 @@ test(`GET ${route} api client plausible`, async () => {
 
 	await apiClientPlausibleTest(client, input, {
 		goal: "GET /api/journey/shorturl/[shortJourneyId]",
-		props: {}
+		props: {},
 	});
 });

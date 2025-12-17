@@ -19,7 +19,7 @@ export const POST: RequestHandler = async function (reqEvent) {
 	const timeStart: TimeData[] = tokens.map((token) => ({
 		type: "relative",
 		time: token,
-		scrollDirection
+		scrollDirection,
 	}));
 	const resColumns = await fetchJourneys(stops, { timeStart, filters }, { dataService, lang });
 	if (resColumns.isError) {
@@ -42,12 +42,12 @@ export const POST: RequestHandler = async function (reqEvent) {
 
 	transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(
 		subJourneyMatrix.flat(),
-		transferLocations
+		transferLocations,
 	);
 
 	const svgData = generateSvgData(subJourneyMatrix, {
 		timeData: oldNodeData,
-		transferLocations: transferLocations
+		transferLocations: transferLocations,
 	});
 
 	return client.formatResponse(
@@ -57,15 +57,15 @@ export const POST: RequestHandler = async function (reqEvent) {
 			svgData,
 			transferLocations: transferLocations,
 			recommendedVias,
-			isNew
-		})
+			isNew,
+		}),
 	);
 };
 
 function computeIsNew(
 	scrollDirection: RelativeTimeType,
 	oldNodeData: Record<TransitType, string>[][],
-	newNodeData: Record<TransitType, string>[][]
+	newNodeData: Record<TransitType, string>[][],
 ): DiagramData["isNew"] {
 	return Array.from(oldNodeData, (oldColumn, columnIndex) => {
 		const newColumn = newNodeData[columnIndex];

@@ -12,7 +12,7 @@ type ReqType = {
 type ResType = ProfileConfig[];
 
 export class GetProfilesApiClient extends PathParamSettable<ReqType, ResType, RequestEvent>()(
-	ApiClient<ReqType, ResType, "GET", RequestEvent>
+	ApiClient<ReqType, ResType, "GET", RequestEvent>,
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "profiles";
@@ -20,7 +20,7 @@ export class GetProfilesApiClient extends PathParamSettable<ReqType, ResType, Re
 	protected override readonly cacheMaxAge = DAY_IN_SECONDS;
 
 	public override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): ReqType => ({ lang: reqEvent.params.lang });
 
 	protected override formatUrlPath = ({ lang }: ReqType): `${Ctx["apiPathBase"]}${string}` =>

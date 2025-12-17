@@ -11,8 +11,8 @@ export default [
 			".svelte-kit/",
 			"src/service-worker.js",
 			"svelte.config.js",
-			"eslint.config.js"
-		]
+			"eslint.config.js",
+		],
 	},
 	// js
 	js.configs.recommended,
@@ -26,12 +26,12 @@ export default [
 			"no-console": "error",
 			"no-fallthrough": [
 				"error",
-				{ commentPattern: "fallthrough", reportUnusedFallthroughComment: true }
+				{ commentPattern: "fallthrough", reportUnusedFallthroughComment: true },
 			],
 			"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 			"@typescript-eslint/explicit-function-return-type": [
 				"error",
-				{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }
+				{ allowConciseArrowFunctionExpressionsStartingWithVoid: true },
 			],
 			"@typescript-eslint/prefer-as-const": "error",
 			"@typescript-eslint/await-thenable": "error",
@@ -41,8 +41,8 @@ export default [
 				{
 					argsIgnorePattern: "^_",
 					varsIgnorePattern: "^_",
-					caughtErrorsIgnorePattern: "^_"
-				}
+					caughtErrorsIgnorePattern: "^_",
+				},
 			],
 			"@typescript-eslint/restrict-template-expressions": "error",
 			"@typescript-eslint/naming-convention": [
@@ -51,56 +51,56 @@ export default [
 					selector: "default",
 					format: ["strictCamelCase"],
 					leadingUnderscore: "allow",
-					trailingUnderscore: "allow"
+					trailingUnderscore: "allow",
 				},
 				{
 					selector: "import",
-					format: ["camelCase", "PascalCase"]
+					format: ["camelCase", "PascalCase"],
 				},
 				{
 					selector: "variable",
 					modifiers: ["const", "global"],
-					format: ["strictCamelCase", "UPPER_CASE"]
+					format: ["strictCamelCase", "UPPER_CASE"],
 				},
 				{
 					selector: "property",
 					modifiers: ["readonly"],
-					format: ["strictCamelCase", "UPPER_CASE"]
+					format: ["strictCamelCase", "UPPER_CASE"],
 				},
 				{
 					selector: "objectLiteralProperty",
 					modifiers: ["requiresQuotes"],
-					format: null
+					format: null,
 				},
 				{
 					selector: "variable",
 					types: ["boolean"],
 					format: ["PascalCase"],
-					prefix: ["is", "has"]
+					prefix: ["is", "has"],
 				},
 				{
 					selector: "typeLike",
-					format: ["PascalCase"]
-				}
+					format: ["PascalCase"],
+				},
 			],
 			"@typescript-eslint/method-signature-style": ["error", "property"],
 			"no-restricted-syntax": [
 				"error",
 				{
 					selector: "TSAbstractMethodDefinition",
-					message: "method syntax is not allowed. use an arrow function instead"
-				}
-			]
-		}
+					message: "method syntax is not allowed. use an arrow function instead",
+				},
+			],
+		},
 	},
 	{
 		languageOptions: {
 			parserOptions: {
 				extraFileExtensions: [".svelte"],
 				projectService: true,
-				tsconfigRootDir: import.meta.dirname
-			}
-		}
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
 	},
 	// other plugins
 	// ...
@@ -113,8 +113,8 @@ export default [
 			parserOptions: {
 				extraFileExtensions: [".svelte"],
 				parser: ts.parser,
-				svelteConfig
-			}
+				svelteConfig,
+			},
 		},
 		rules: {
 			"@typescript-eslint/no-unsafe-member-access": "off",
@@ -122,17 +122,17 @@ export default [
 			"@typescript-eslint/no-unsafe-argument": "off",
 			"no-undef": "off",
 			"@typescript-eslint/no-unsafe-assignment": "off",
-			"svelte/no-navigation-without-resolve": ["error", { ignoreLinks: true }]
-		}
+			"svelte/no-navigation-without-resolve": ["error", { ignoreLinks: true }],
+		},
 	},
 	{
 		files: ["**/*.svelte.ts"],
 		languageOptions: {
 			parserOptions: {
 				parser: ts.parser,
-				svelteConfig
-			}
-		}
+				svelteConfig,
+			},
+		},
 	},
 	// prettier
 	...svelte.configs["flat/prettier"],
@@ -141,8 +141,8 @@ export default [
 		languageOptions: {
 			globals: {
 				...globals.browser,
-				...globals.node
-			}
-		}
-	}
+				...globals.node,
+			},
+		},
+	},
 ];

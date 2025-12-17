@@ -19,7 +19,7 @@ export const load: PageLoad = async function ({ url, fetch, parent }) {
 		// no need to refetch the journey, displayed journey is already correct
 		return {
 			formData: undefined,
-			diagramData: undefined
+			diagramData: undefined,
 		};
 	}
 
@@ -46,34 +46,34 @@ export const load: PageLoad = async function ({ url, fetch, parent }) {
 function displayedJourneyMatchesUrl(
 	url: URL,
 	displayedJourney: DisplayedJourney,
-	ctx: Pick<Ctx, "profileConfig">
+	ctx: Pick<Ctx, "profileConfig">,
 ): boolean {
 	const currentTokens: string[] = displayedJourney.selectedSubJourneys.map(
-		(j) => j?.refreshToken ?? ""
+		(j) => j?.refreshToken ?? "",
 	);
 	return journeyApiClient.formatNonApiUrl(currentTokens, ctx).href === url.href;
 }
 
 async function diagramDataFromTokens(
 	tokens: string[],
-	serverRequestData: ServerRequestData
+	serverRequestData: ServerRequestData,
 ): Promise<DiagramData> {
 	const journeysApiClient = apiClient("GET", "journey");
 	const {
-		content: { subJourneys, svgData, transferLocations }
+		content: { subJourneys, svgData, transferLocations },
 	} = (await journeysApiClient.request(tokens, serverRequestData)).throwIfError();
 
 	return Promise.resolve({
 		columns: subJourneys.map((j) => ({
 			journeys: [j],
 			earlierRef: "",
-			laterRef: ""
+			laterRef: "",
 		})),
 		tree: journeyNodesToPathGraph(subJourneys, 0),
 		svgData,
 		transferLocations,
 		recommendedVias: [],
-		isNew: Array.from({ length: subJourneys.length }, () => [false])
+		isNew: Array.from({ length: subJourneys.length }, () => [false]),
 	});
 }
 
@@ -93,9 +93,9 @@ function journeyNodesToPathGraph(subJourneys: SubJourney[], depth: number): Tree
 		rowIndex: 0,
 		timeData: {
 			departure: subJourneys[0].departureTime?.time ?? new Date(0).toISOString(),
-			arrival: subJourneys.at(-1)?.arrivalTime?.time ?? new Date(0).toISOString()
+			arrival: subJourneys.at(-1)?.arrivalTime?.time ?? new Date(0).toISOString(),
 		},
-		children: journeyNodesToPathGraph(subJourneys.slice(1), depth + 1)
+		children: journeyNodesToPathGraph(subJourneys.slice(1), depth + 1),
 	};
 	return [node];
 }
@@ -106,7 +106,7 @@ function journeyNodesToPathGraph(subJourneys: SubJourney[], depth: number): Tree
  * @returns the sub-stops with a key
  */
 function getKeyedLocationsFromDiagramData(
-	diagramData: DiagramData
+	diagramData: DiagramData,
 ): KeyedItem<ParsedLocation, number>[] {
 	const columns = diagramData.columns;
 	const locations = columns.map((column) => {
@@ -129,7 +129,7 @@ function getKeyedLocationsFromDiagramData(
 
 function formDataFromDiagramData(
 	diagramData: DiagramData,
-	{ profileConfig }: ServerRequestData
+	{ profileConfig }: ServerRequestData,
 ): DisplayedFormData {
 	return {
 		filters: defaultJourneysFilters,
@@ -137,9 +137,9 @@ function formDataFromDiagramData(
 		timeData: {
 			type: "absolute",
 			scrollDirection: "later",
-			time: diagramData.columns[0]?.journeys[0]?.departureTime?.time ?? ""
+			time: diagramData.columns[0]?.journeys[0]?.departureTime?.time ?? "",
 		},
 		geolocationDate: new Date(),
-		profileConfig
+		profileConfig,
 	};
 }

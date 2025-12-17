@@ -53,15 +53,15 @@ const clients = {
 		...clientEntries("location/[locationId]", GetLocationApiClient),
 		...clientEntries("locations/[name]", GetLocationsApiClient),
 		...clientEntries("profile", GetProfileApiClient),
-		...clientEntries("profiles", GetProfilesApiClient)
+		...clientEntries("profiles", GetProfilesApiClient),
 	},
 	["POST"]: {
-		...clientEntries("diagram/scroll/[scrollDirection]", PostDiagramScrollApiClient)
+		...clientEntries("diagram/scroll/[scrollDirection]", PostDiagramScrollApiClient),
 	},
 	["PUT"]: {
 		...clientEntries("diagram/shorturl", PutDiagramShortApiClient),
-		...clientEntries("journey/shorturl", PutJourneyShortUrlApiClient)
-	}
+		...clientEntries("journey/shorturl", PutJourneyShortUrlApiClient),
+	},
 } as const satisfies {
 	[MethodT in HttpMethod]?: {
 		[RouteT in ApiRouteShort | ApiRoute]?: ApiClient<
@@ -90,12 +90,12 @@ function clientEntries<RouteT extends ApiRouteShort, ClientT>(
 		RequestEvent<infer _D extends { lang: Language; profile: ProfileId }, LongRoute<RouteT>>
 	>
 		? new () => ClientT
-		: never
+		: never,
 ): Record<RouteT | LongRoute<RouteT>, ClientT> {
 	const client = new clientClass();
 	return {
 		[route]: client,
-		[`/[lang=lang]/[profile=profileId]/api/${route}` satisfies LongRoute<RouteT>]: client
+		[`/[lang=lang]/[profile=profileId]/api/${route}` satisfies LongRoute<RouteT>]: client,
 	} as Record<RouteT | LongRoute<RouteT>, ClientT>; // in a perfect world, this assertion would not be necessary. Unfortunately, it is: https://stackoverflow.com/a/64433457
 }
 
@@ -106,7 +106,7 @@ function clientEntries<RouteT extends ApiRouteShort, ClientT>(
  */
 export function apiClient<
 	MethodT extends keyof typeof clients,
-	RouteT extends keyof (typeof clients)[MethodT]
+	RouteT extends keyof (typeof clients)[MethodT],
 >(method: MethodT, route: RouteT): (typeof clients)[MethodT][RouteT] {
 	return clients[method][route];
 }

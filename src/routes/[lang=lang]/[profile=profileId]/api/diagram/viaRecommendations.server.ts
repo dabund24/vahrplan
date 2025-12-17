@@ -13,7 +13,7 @@ export type RecommendedVia = {
 export default function recommendVias(subJourneys: SubJourney[]): RecommendedVia[] {
 	const viaCandidates = new ViaCandidates();
 	const subJourneysLegs = subJourneys.map((subJourney) =>
-		subJourney.blocks.filter((block) => block.type === "leg")
+		subJourney.blocks.filter((block) => block.type === "leg"),
 	); // filter only the leg blocks of each sub-journey. The rest is irrelevant
 
 	for (const subJourneyLegs of subJourneysLegs) {
@@ -21,7 +21,7 @@ export default function recommendVias(subJourneys: SubJourney[]): RecommendedVia
 		for (let i = 1; i < subJourneyLegs.length; i++) {
 			viaCandidates.addCandidate(
 				subJourneyLegs[i - 1].arrivalData.location,
-				subJourneyLegs[i].departureData.location
+				subJourneyLegs[i].departureData.location,
 			);
 		}
 	}
@@ -30,8 +30,8 @@ export default function recommendVias(subJourneys: SubJourney[]): RecommendedVia
 		subJourneyLegs.flatMap((leg) => [
 			leg.departureData.location.name,
 			...leg.stopovers.map((stopover) => stopover.location.name),
-			leg.arrivalData.location.name
-		])
+			leg.arrivalData.location.name,
+		]),
 	); // get the names of all passed locations for each sub-journey
 
 	for (const subJourneyLocationsNames of subJourneysLocationsNames) {
@@ -63,17 +63,17 @@ class ViaCandidates {
 	 */
 	addCandidate(via1: ParsedLocation, via2: ParsedLocation): void {
 		const indexOfMatchingCandidate1 = this.candidates.findIndex((candidate) =>
-			candidate.names.has(via1.name)
+			candidate.names.has(via1.name),
 		);
 		const indexOfMatchingCandidate2 = this.candidates.findIndex((candidate) =>
-			candidate.names.has(via2.name)
+			candidate.names.has(via2.name),
 		);
 
 		if (indexOfMatchingCandidate1 === -1 && indexOfMatchingCandidate2 === -1) {
 			// candidate does not yet exist
 			this.candidates.push({
 				names: new Set<string>([via1.name, via2.name]),
-				location: via1
+				location: via1,
 			});
 		} else if (indexOfMatchingCandidate2 === -1) {
 			// candidate already exists and is associated with via1
@@ -84,7 +84,7 @@ class ViaCandidates {
 		} else if (indexOfMatchingCandidate1 !== indexOfMatchingCandidate2) {
 			// candidate already exists twice => merge them
 			this.candidates[indexOfMatchingCandidate1].names.union(
-				this.candidates[indexOfMatchingCandidate2].names
+				this.candidates[indexOfMatchingCandidate2].names,
 			); // unite names
 			this.candidates.splice(indexOfMatchingCandidate2, 1); // remove other candidate
 		}
@@ -99,7 +99,7 @@ class ViaCandidates {
 		// all names of locations, visited by a sub-journey
 		const subJourneyNameSet = new Set(subJourneyLocationsNames);
 		this.candidates = this.candidates.filter(
-			(candidate) => !candidate.names.isDisjointFrom(subJourneyNameSet)
+			(candidate) => !candidate.names.isDisjointFrom(subJourneyNameSet),
 		);
 	}
 
@@ -114,16 +114,16 @@ class ViaCandidates {
 		return this.candidates
 			.sort((candidateA, candidateB) => {
 				const indexA = subJourneyLocationsNames.findIndex((name) =>
-					candidateA.names.has(name)
+					candidateA.names.has(name),
 				);
 				const indexB = subJourneyLocationsNames.findIndex((name) =>
-					candidateB.names.has(name)
+					candidateB.names.has(name),
 				);
 				return indexA - indexB;
 			})
 			.map((candidate) => ({
 				location: candidate.location,
-				locationId: candidate.location.id
+				locationId: candidate.location.id,
 			}));
 	}
 }

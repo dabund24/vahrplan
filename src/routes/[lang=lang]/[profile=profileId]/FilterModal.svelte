@@ -12,8 +12,8 @@
 	const products = $derived(
 		Object.entries(page.data.profileConfig.products) as [
 			Product,
-			NonNullable<ProfileConfig["products"][Product]>
-		][]
+			NonNullable<ProfileConfig["products"][Product]>,
+		][],
 	);
 
 	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
@@ -28,7 +28,7 @@
 				tram: preset === "all" || preset === "regional",
 				bus: preset === "all" || preset === "regional",
 				taxi: preset === "all" || preset === "regional",
-				ferry: preset === "all" || preset === "regional"
+				ferry: preset === "all" || preset === "regional",
 			};
 			return settings;
 		});
@@ -37,12 +37,12 @@
 	const modalTabContent: ComponentProps<typeof Tabs>["tabs"] = [
 		{
 			title: "Verkehrsmittel",
-			content: meansFilter
+			content: meansFilter,
 		},
 		{
 			title: "Sonstiges",
-			content: generalFilter
-		}
+			content: generalFilter,
+		},
 	];
 </script>
 
@@ -63,7 +63,7 @@
 		settingName="Barrierefreies Reisen"
 		bind:setting={$settings.options.accessible}
 		settingInfo={{
-			type: "boolean"
+			type: "boolean",
 		}}
 	/>
 	<Setting
@@ -78,8 +78,8 @@
 				{ value: 3, name: "3" },
 				{ value: 4, name: "4" },
 				{ value: 5, name: "5" },
-				{ value: -1, name: "beliebig" }
-			]
+				{ value: -1, name: "beliebig" },
+			],
 		}}
 	/>
 	<Setting
@@ -97,8 +97,8 @@
 				{ value: 30, name: "30min" },
 				{ value: 40, name: "40min" },
 				{ value: 50, name: "50min" },
-				{ value: 60, name: "1h" }
-			]
+				{ value: 60, name: "1h" },
+			],
 		}}
 	/>
 {/snippet}

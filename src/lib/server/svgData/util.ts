@@ -9,7 +9,7 @@ import { MINUTE_IN_MS } from "$lib/constants";
  */
 export function computeCoordinateX(
 	position: ParsedLocation["position"],
-	{ departure, arrival }: Record<TransitType, ParsedLocation["position"]>
+	{ departure, arrival }: Record<TransitType, ParsedLocation["position"]>,
 ): number {
 	const distanceFromOrigin = computeLocationDistances(departure, position);
 	const distanceFromDestination = computeLocationDistances(position, arrival);
@@ -20,7 +20,7 @@ export function computeCoordinateX(
 
 function computeLocationDistances(
 	x: ParsedLocation["position"],
-	y: ParsedLocation["position"]
+	y: ParsedLocation["position"],
 ): number {
 	const a = y.lat - x.lat;
 	const b = y.lng - x.lng;

@@ -3,7 +3,7 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type MinimalRequestEvent,
-	type NonBodyfulHttpMethod
+	type NonBodyfulHttpMethod,
 } from "$lib/api-client/ApiClient";
 import type { Ctx } from "$lib/types";
 
@@ -15,7 +15,7 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends NonBodyfulHttpMethod,
-		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
+		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>,
 	>(base: BaseT) {
 		abstract class NonApiUsable extends base {
 			/**
@@ -25,7 +25,7 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			protected abstract formatNonApiUrlSuffix: (
 				content: ReqT,
-				ctx: Pick<Ctx, "profileConfig" | "pathBase">
+				ctx: Pick<Ctx, "profileConfig" | "pathBase">,
 			) => URL;
 
 			/**
@@ -50,7 +50,7 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			protected abstract requestEventFromUrl: (
 				url: URL,
-				ctx: Pick<Ctx, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">,
 			) => MinimalRequestEvent<MethodT, RequestEventT>;
 
 			/**
@@ -61,7 +61,7 @@ export function NonApiUsable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			public parseNonApiUrl = (
 				url: URL,
-				ctx: Pick<Ctx, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">,
 			): ReturnType<typeof this.parseRequest> => {
 				const reqEvent = this.requestEventFromUrl(url, ctx);
 				return this.parseRequest(reqEvent);

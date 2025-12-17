@@ -59,7 +59,7 @@ const bookmarks: Bookmarks = $state({
 	location: [],
 	diagram: [],
 	journey: [],
-	profile: []
+	profile: [],
 });
 
 if (browser) {
@@ -83,7 +83,7 @@ const sortBookmarks: { [K in BookmarkType]: (b: Bookmarks[K]) => Bookmarks[K] } 
 	journey: (b) =>
 		b.sort((a, b) => new Date(a.departure).getTime() - new Date(b.departure).getTime()),
 	location: (b) => b.sort((a, b) => a.name.localeCompare(b.name)),
-	profile: (b) => b
+	profile: (b) => b,
 };
 
 const formatBookmarkId: {
@@ -93,7 +93,7 @@ const formatBookmarkId: {
 		const diagramApiClient = apiClient("GET", "diagram");
 		return diagramApiClient.formatNonApiUrl(
 			diagramApiClient.formDataToRequestData(formData),
-			ctx
+			ctx,
 		).href;
 	},
 	journey: (bookmarkData, ctx) => {
@@ -101,14 +101,14 @@ const formatBookmarkId: {
 		return apiClient("GET", "journey").formatNonApiUrl(tokens, ctx).href;
 	},
 	location: (bookmarkData) => bookmarkData.id,
-	profile: (bookmarkData) => bookmarkData.id
+	profile: (bookmarkData) => bookmarkData.id,
 };
 
 const addBookmark: {
 	[K in BookmarkType]: (
 		id: string,
 		bookmarkData: BookmarkData<K>,
-		ctx: Pick<Ctx, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">,
 	) => void;
 } = {
 	diagram: (id, { formData, diagramData }, { profileConfig }) => {
@@ -118,13 +118,13 @@ const addBookmark: {
 			scrollDirection === "later"
 				? time
 				: new Date(
-						diagramData.columns[0].journeys[0].departureTime?.time ?? 0
+						diagramData.columns[0].journeys[0].departureTime?.time ?? 0,
 					).toISOString();
 		const arrival =
 			scrollDirection === "earlier"
 				? time
 				: new Date(
-						diagramData.columns.at(-1)?.journeys.at(-1)?.arrivalTime?.time ?? 0
+						diagramData.columns.at(-1)?.journeys.at(-1)?.arrivalTime?.time ?? 0,
 					).toISOString();
 
 		bookmarks.diagram.push({
@@ -133,14 +133,14 @@ const addBookmark: {
 			stops: formData.locations.map((location) => {
 				return {
 					type: location.value.type,
-					name: location.value.name
+					name: location.value.name,
 				};
 			}),
 			time,
 			departure,
 			arrival,
 			scrollDirection,
-			type: "absolute"
+			type: "absolute",
 		});
 	},
 	journey: (id, bookmarkData, { profileConfig }) =>
@@ -149,19 +149,19 @@ const addBookmark: {
 			profile: profileConfig.id,
 			start: {
 				type: bookmarkData.locations.at(0)?.value.type ?? "station",
-				name: bookmarkData.locations.at(0)?.value.name ?? ""
+				name: bookmarkData.locations.at(0)?.value.name ?? "",
 			},
 			destination: {
 				type: bookmarkData.locations.at(-1)?.value.type ?? "station",
-				name: bookmarkData.locations.at(-1)?.value.name ?? ""
+				name: bookmarkData.locations.at(-1)?.value.name ?? "",
 			},
 			departure: bookmarkData.departure ?? new Date(0).toISOString(),
-			arrival: bookmarkData.arrival ?? new Date(0).toISOString()
+			arrival: bookmarkData.arrival ?? new Date(0).toISOString(),
 		}),
 	location: (_id, bookmarkData, { profileConfig }) =>
 		void bookmarks.location.push({ ...bookmarkData, profile: profileConfig.id }),
 	profile: (_id, bookmarkData, _ctx) =>
-		void bookmarks.profile.push({ id: bookmarkData.id, name: bookmarkData.name })
+		void bookmarks.profile.push({ id: bookmarkData.id, name: bookmarkData.name }),
 };
 
 function syncLocalStorage(type: BookmarkType): void {
@@ -181,7 +181,7 @@ function syncLocalStorage(type: BookmarkType): void {
 export function toggleBookmark<T extends BookmarkType>(
 	type: T,
 	bookmarkData: BookmarkData<T>,
-	ctx: Pick<Ctx, "profileConfig">
+	ctx: Pick<Ctx, "profileConfig">,
 ): void {
 	const id = formatBookmarkId[type](bookmarkData, ctx);
 	const indexInOldData = bookmarks[type].findIndex((bookmark) => bookmark.id === id);
@@ -208,7 +208,7 @@ export function toggleBookmark<T extends BookmarkType>(
 export function getIsBookmarked<T extends BookmarkType>(
 	type: T,
 	bookmarkData: BookmarkData<T>,
-	ctx: Pick<Ctx, "profileConfig">
+	ctx: Pick<Ctx, "profileConfig">,
 ): boolean {
 	const bookmarkId = formatBookmarkId[type](bookmarkData, ctx);
 	return bookmarks[type].some(({ id }) => id === bookmarkId);
@@ -219,7 +219,7 @@ export const bookmarkToString: { [T in BookmarkType]: (bookmarkData: BookmarkDat
 		diagram: (_) => "Suchanfrage",
 		journey: (_) => "Reise",
 		location: (bookmarkData) => bookmarkData.name,
-		profile: (bookmarkData) => bookmarkData.name
+		profile: (bookmarkData) => bookmarkData.name,
 	};
 
 /**
@@ -245,5 +245,5 @@ const remove: { [T in BookmarkType]: (id: string) => Bookmarks[T] } = {
 	diagram: (id) => bookmarks.diagram.filter((b) => (b.link ?? b.id) !== id),
 	journey: (id) => bookmarks.journey.filter((b) => (b.link ?? b.id) !== id),
 	location: (id) => bookmarks.location.filter((b) => b.id !== id),
-	profile: (id) => bookmarks.profile.filter((b) => b.id !== id)
+	profile: (id) => bookmarks.profile.filter((b) => b.id !== id),
 };

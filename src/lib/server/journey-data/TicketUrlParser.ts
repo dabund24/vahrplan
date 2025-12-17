@@ -8,6 +8,6 @@ export abstract class TicketUrlParser {
 		subJourneyData: Pick<
 			SubJourney,
 			"refreshToken" | "departureTime" | "arrivalTime" | "blocks"
-		>
+		>,
 	) => string;
 }

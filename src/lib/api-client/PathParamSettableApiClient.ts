@@ -3,7 +3,7 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type HttpMethod,
-	type RequestData
+	type RequestData,
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { Ctx } from "$lib/types";
@@ -16,7 +16,7 @@ export function PathParamSettable<ReqT, ResT, RequestEventT extends ApiClientReq
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
-		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
+		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>,
 	>(base: BaseT) {
 		abstract class PathParamSettable extends base {
 			/**
@@ -27,17 +27,17 @@ export function PathParamSettable<ReqT, ResT, RequestEventT extends ApiClientReq
 			 */
 			protected abstract formatUrlPath: (
 				content: ReqT,
-				ctx: Pick<Ctx, "apiPathBase" | "profileConfig">
+				ctx: Pick<Ctx, "apiPathBase" | "profileConfig">,
 			) => `${Ctx["apiPathBase"]}${string}`;
 
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
-				fetchFn?: typeof fetch
+				fetchFn?: typeof fetch,
 			): Promise<VahrplanResult<ResT>> {
 				const ctx = {
 					apiPathBase: requestData.apiPathBase,
-					profileConfig: requestData.profileConfig
+					profileConfig: requestData.profileConfig,
 				};
 				requestData.url.pathname = this.formatUrlPath(content, ctx);
 				return super.requestInternal(content, requestData, fetchFn);

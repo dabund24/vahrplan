@@ -18,7 +18,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900003201",
 							latitude: 52.525607,
-							longitude: 13.369072
+							longitude: 13.369072,
 						},
 						products: {
 							suburban: true,
@@ -27,11 +27,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:11000:900003201"
-						}
+							ifopt: "de:11000:900003201",
+						},
 					},
 					destination: {
 						type: "stop",
@@ -41,7 +41,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900260009",
 							latitude: 52.36461,
-							longitude: 13.50987
+							longitude: 13.50987,
 						},
 						products: {
 							suburban: true,
@@ -50,11 +50,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:12061:900260009"
-						}
+							ifopt: "de:12061:900260009",
+						},
 					},
 					departure: "2025-12-08T03:13:00+01:00",
 					plannedDeparture: "2025-12-08T03:13:00+01:00",
@@ -77,8 +77,8 @@ export const bvgJourneysRawRes = {
 						operator: {
 							type: "operator",
 							id: "s-bahn-berlin-gmbh",
-							name: "S-Bahn Berlin GmbH"
-						}
+							name: "S-Bahn Berlin GmbH",
+						},
 					},
 					direction: "Flughafen BER",
 					arrivalPlatform: "6",
@@ -97,7 +97,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900003201",
 									latitude: 52.525607,
-									longitude: 13.369072
+									longitude: 13.369072,
 								},
 								products: {
 									suburban: true,
@@ -106,11 +106,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900003201"
-								}
+									ifopt: "de:11000:900003201",
+								},
 							},
 							arrival: null,
 							plannedArrival: null,
@@ -128,9 +128,9 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
-								}
-							]
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
+								},
+							],
 						},
 						{
 							stop: {
@@ -141,7 +141,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100001",
 									latitude: 52.520304,
-									longitude: 13.387257
+									longitude: 13.387257,
 								},
 								products: {
 									suburban: true,
@@ -150,11 +150,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100001"
-								}
+									ifopt: "de:11000:900100001",
+								},
 							},
 							arrival: "2025-12-08T03:15:00+01:00",
 							plannedArrival: "2025-12-08T03:15:00+01:00",
@@ -167,7 +167,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "5",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "5"
+							plannedDeparturePlatform: "5",
 						},
 						{
 							stop: {
@@ -178,7 +178,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100002",
 									latitude: 52.522605,
-									longitude: 13.402359
+									longitude: 13.402359,
 								},
 								products: {
 									suburban: true,
@@ -187,11 +187,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100002"
-								}
+									ifopt: "de:11000:900100002",
+								},
 							},
 							arrival: "2025-12-08T03:17:00+01:00",
 							plannedArrival: "2025-12-08T03:17:00+01:00",
@@ -204,7 +204,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -215,7 +215,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100003",
 									latitude: 52.521508,
-									longitude: 13.411267
+									longitude: 13.411267,
 								},
 								products: {
 									suburban: true,
@@ -224,11 +224,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100003"
-								}
+									ifopt: "de:11000:900100003",
+								},
 							},
 							arrival: "2025-12-08T03:19:00+01:00",
 							plannedArrival: "2025-12-08T03:19:00+01:00",
@@ -241,7 +241,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -252,7 +252,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100004",
 									latitude: 52.515503,
-									longitude: 13.418027
+									longitude: 13.418027,
 								},
 								products: {
 									suburban: true,
@@ -261,11 +261,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100004"
-								}
+									ifopt: "de:11000:900100004",
+								},
 							},
 							arrival: "2025-12-08T03:21:00+01:00",
 							plannedArrival: "2025-12-08T03:21:00+01:00",
@@ -278,7 +278,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -289,7 +289,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120005",
 									latitude: 52.510335,
-									longitude: 13.435089
+									longitude: 13.435089,
 								},
 								products: {
 									suburban: true,
@@ -298,11 +298,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900120005"
-								}
+									ifopt: "de:11000:900120005",
+								},
 							},
 							arrival: "2025-12-08T03:24:00+01:00",
 							plannedArrival: "2025-12-08T03:24:00+01:00",
@@ -315,7 +315,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "8",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "8"
+							plannedDeparturePlatform: "8",
 						},
 						{
 							stop: {
@@ -326,7 +326,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120004",
 									latitude: 52.505768,
-									longitude: 13.449157
+									longitude: 13.449157,
 								},
 								products: {
 									suburban: true,
@@ -335,11 +335,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900120004"
-								}
+									ifopt: "de:11000:900120004",
+								},
 							},
 							arrival: "2025-12-08T03:26:00+01:00",
 							plannedArrival: "2025-12-08T03:26:00+01:00",
@@ -352,7 +352,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -363,7 +363,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900190001",
 									latitude: 52.493426,
-									longitude: 13.461283
+									longitude: 13.461283,
 								},
 								products: {
 									suburban: true,
@@ -372,11 +372,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900190001"
-								}
+									ifopt: "de:11000:900190001",
+								},
 							},
 							arrival: "2025-12-08T03:29:00+01:00",
 							plannedArrival: "2025-12-08T03:29:00+01:00",
@@ -389,7 +389,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -400,7 +400,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191002",
 									latitude: 52.47872,
-									longitude: 13.47403
+									longitude: 13.47403,
 								},
 								products: {
 									suburban: true,
@@ -409,11 +409,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191002"
-								}
+									ifopt: "de:11000:900191002",
+								},
 							},
 							arrival: "2025-12-08T03:38:00+01:00",
 							plannedArrival: "2025-12-08T03:38:00+01:00",
@@ -426,7 +426,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -437,7 +437,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191001",
 									latitude: 52.467582,
-									longitude: 13.489501
+									longitude: 13.489501,
 								},
 								products: {
 									suburban: true,
@@ -446,11 +446,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191001"
-								}
+									ifopt: "de:11000:900191001",
+								},
 							},
 							arrival: "2025-12-08T03:40:00+01:00",
 							plannedArrival: "2025-12-08T03:40:00+01:00",
@@ -463,7 +463,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -474,7 +474,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900192001",
 									latitude: 52.45461,
-									longitude: 13.510149
+									longitude: 13.510149,
 								},
 								products: {
 									suburban: true,
@@ -483,11 +483,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900192001"
-								}
+									ifopt: "de:11000:900192001",
+								},
 							},
 							arrival: "2025-12-08T03:43:00+01:00",
 							plannedArrival: "2025-12-08T03:43:00+01:00",
@@ -500,7 +500,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -511,7 +511,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193001",
 									latitude: 52.446691,
-									longitude: 13.524028
+									longitude: 13.524028,
 								},
 								products: {
 									suburban: true,
@@ -520,11 +520,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193001"
-								}
+									ifopt: "de:11000:900193001",
+								},
 							},
 							arrival: "2025-12-08T03:46:00+01:00",
 							plannedArrival: "2025-12-08T03:46:00+01:00",
@@ -537,7 +537,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -548,7 +548,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193002",
 									latitude: 52.435104,
-									longitude: 13.54055
+									longitude: 13.54055,
 								},
 								products: {
 									suburban: true,
@@ -557,11 +557,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193002"
-								}
+									ifopt: "de:11000:900193002",
+								},
 							},
 							arrival: "2025-12-08T03:48:00+01:00",
 							plannedArrival: "2025-12-08T03:48:00+01:00",
@@ -574,7 +574,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -585,7 +585,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900195510",
 									latitude: 52.407795,
-									longitude: 13.559598
+									longitude: 13.559598,
 								},
 								products: {
 									suburban: true,
@@ -594,11 +594,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900195510"
-								}
+									ifopt: "de:11000:900195510",
+								},
 							},
 							arrival: "2025-12-08T03:53:00+01:00",
 							plannedArrival: "2025-12-08T03:53:00+01:00",
@@ -611,7 +611,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -622,7 +622,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900196001",
 									latitude: 52.399543,
-									longitude: 13.54322
+									longitude: 13.54322,
 								},
 								products: {
 									suburban: true,
@@ -631,11 +631,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900196001"
-								}
+									ifopt: "de:11000:900196001",
+								},
 							},
 							arrival: "2025-12-08T03:55:00+01:00",
 							plannedArrival: "2025-12-08T03:55:00+01:00",
@@ -648,7 +648,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -659,7 +659,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260005",
 									latitude: 52.390904,
-									longitude: 13.513043
+									longitude: 13.513043,
 								},
 								products: {
 									suburban: true,
@@ -668,11 +668,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260005"
-								}
+									ifopt: "de:12061:900260005",
+								},
 							},
 							arrival: "2025-12-08T03:58:00+01:00",
 							plannedArrival: "2025-12-08T03:58:00+01:00",
@@ -685,7 +685,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -696,7 +696,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260080",
 									latitude: 52.368287,
-									longitude: 13.463432
+									longitude: 13.463432,
 								},
 								products: {
 									suburban: true,
@@ -705,11 +705,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:12061:900260080"
-								}
+									ifopt: "de:12061:900260080",
+								},
 							},
 							arrival: "2025-12-08T04:02:00+01:00",
 							plannedArrival: "2025-12-08T04:02:00+01:00",
@@ -722,7 +722,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -733,7 +733,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260009",
 									latitude: 52.36461,
-									longitude: 13.50987
+									longitude: 13.50987,
 								},
 								products: {
 									suburban: true,
@@ -742,11 +742,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260009"
-								}
+									ifopt: "de:12061:900260009",
+								},
 							},
 							arrival: "2025-12-08T04:06:00+01:00",
 							plannedArrival: "2025-12-08T04:06:00+01:00",
@@ -764,15 +764,15 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (Flughafen BER)"
-								}
-							]
-						}
+									text: "Fahrradmitnahme möglich (Flughafen BER)",
+								},
+							],
+						},
 					],
 					cycle: {
 						min: 780,
 						max: 1200,
-						nr: 7
+						nr: 7,
 					},
 					alternatives: [
 						{
@@ -790,13 +790,13 @@ export const bvgJourneysRawRes = {
 								operator: {
 									type: "operator",
 									id: "s-bahn-berlin-gmbh",
-									name: "S-Bahn Berlin GmbH"
-								}
+									name: "S-Bahn Berlin GmbH",
+								},
 							},
 							direction: "Flughafen BER",
 							when: "2025-12-08T03:26:00+01:00",
 							plannedWhen: "2025-12-08T03:26:00+01:00",
-							delay: 0
+							delay: 0,
 						},
 						{
 							tripId: "1|4485|1|86|8122025",
@@ -813,13 +813,13 @@ export const bvgJourneysRawRes = {
 								operator: {
 									type: "operator",
 									id: "s-bahn-berlin-gmbh",
-									name: "S-Bahn Berlin GmbH"
-								}
+									name: "S-Bahn Berlin GmbH",
+								},
 							},
 							direction: "Flughafen BER",
 							when: "2025-12-08T03:46:00+01:00",
 							plannedWhen: "2025-12-08T03:46:00+01:00",
-							delay: 0
+							delay: 0,
 						},
 						{
 							tripId: "1|4484|0|86|8122025",
@@ -836,13 +836,13 @@ export const bvgJourneysRawRes = {
 								operator: {
 									type: "operator",
 									id: "s-bahn-berlin-gmbh",
-									name: "S-Bahn Berlin GmbH"
-								}
+									name: "S-Bahn Berlin GmbH",
+								},
 							},
 							direction: "Flughafen BER",
 							when: "2025-12-08T04:06:00+01:00",
 							plannedWhen: "2025-12-08T04:06:00+01:00",
-							delay: 0
+							delay: 0,
 						},
 						{
 							tripId: "1|4486|0|86|8122025",
@@ -859,13 +859,13 @@ export const bvgJourneysRawRes = {
 								operator: {
 									type: "operator",
 									id: "s-bahn-berlin-gmbh",
-									name: "S-Bahn Berlin GmbH"
-								}
+									name: "S-Bahn Berlin GmbH",
+								},
 							},
 							direction: "Flughafen BER",
 							when: "2025-12-08T04:26:00+01:00",
 							plannedWhen: "2025-12-08T04:26:00+01:00",
-							delay: 0
+							delay: 0,
 						},
 						{
 							tripId: "1|4486|1|86|8122025",
@@ -882,22 +882,22 @@ export const bvgJourneysRawRes = {
 								operator: {
 									type: "operator",
 									id: "s-bahn-berlin-gmbh",
-									name: "S-Bahn Berlin GmbH"
-								}
+									name: "S-Bahn Berlin GmbH",
+								},
 							},
 							direction: "Flughafen BER",
 							when: "2025-12-08T04:46:00+01:00",
 							plannedWhen: "2025-12-08T04:46:00+01:00",
-							delay: 0
-						}
-					]
-				}
+							delay: 0,
+						},
+					],
+				},
 			],
 			refreshToken:
 				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080313$202512080406$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
 			cycle: {
-				min: 780
-			}
+				min: 780,
+			},
 		},
 		{
 			type: "journey",
@@ -911,7 +911,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900003201",
 							latitude: 52.525607,
-							longitude: 13.369072
+							longitude: 13.369072,
 						},
 						products: {
 							suburban: true,
@@ -920,11 +920,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:11000:900003201"
-						}
+							ifopt: "de:11000:900003201",
+						},
 					},
 					destination: {
 						type: "stop",
@@ -934,7 +934,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900260009",
 							latitude: 52.36461,
-							longitude: 13.50987
+							longitude: 13.50987,
 						},
 						products: {
 							suburban: true,
@@ -943,11 +943,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:12061:900260009"
-						}
+							ifopt: "de:12061:900260009",
+						},
 					},
 					departure: "2025-12-08T03:26:00+01:00",
 					plannedDeparture: "2025-12-08T03:26:00+01:00",
@@ -970,8 +970,8 @@ export const bvgJourneysRawRes = {
 						operator: {
 							type: "operator",
 							id: "s-bahn-berlin-gmbh",
-							name: "S-Bahn Berlin GmbH"
-						}
+							name: "S-Bahn Berlin GmbH",
+						},
 					},
 					direction: "Flughafen BER",
 					arrivalPlatform: "5",
@@ -990,7 +990,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900003201",
 									latitude: 52.525607,
-									longitude: 13.369072
+									longitude: 13.369072,
 								},
 								products: {
 									suburban: true,
@@ -999,11 +999,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900003201"
-								}
+									ifopt: "de:11000:900003201",
+								},
 							},
 							arrival: null,
 							plannedArrival: null,
@@ -1021,9 +1021,9 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
-								}
-							]
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
+								},
+							],
 						},
 						{
 							stop: {
@@ -1034,7 +1034,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100001",
 									latitude: 52.520304,
-									longitude: 13.387257
+									longitude: 13.387257,
 								},
 								products: {
 									suburban: true,
@@ -1043,11 +1043,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100001"
-								}
+									ifopt: "de:11000:900100001",
+								},
 							},
 							arrival: "2025-12-08T03:28:00+01:00",
 							plannedArrival: "2025-12-08T03:28:00+01:00",
@@ -1060,7 +1060,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "5",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "5"
+							plannedDeparturePlatform: "5",
 						},
 						{
 							stop: {
@@ -1071,7 +1071,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100002",
 									latitude: 52.522605,
-									longitude: 13.402359
+									longitude: 13.402359,
 								},
 								products: {
 									suburban: true,
@@ -1080,11 +1080,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100002"
-								}
+									ifopt: "de:11000:900100002",
+								},
 							},
 							arrival: "2025-12-08T03:30:00+01:00",
 							plannedArrival: "2025-12-08T03:30:00+01:00",
@@ -1097,7 +1097,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1108,7 +1108,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100003",
 									latitude: 52.521508,
-									longitude: 13.411267
+									longitude: 13.411267,
 								},
 								products: {
 									suburban: true,
@@ -1117,11 +1117,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100003"
-								}
+									ifopt: "de:11000:900100003",
+								},
 							},
 							arrival: "2025-12-08T03:32:00+01:00",
 							plannedArrival: "2025-12-08T03:32:00+01:00",
@@ -1134,7 +1134,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1145,7 +1145,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100004",
 									latitude: 52.515503,
-									longitude: 13.418027
+									longitude: 13.418027,
 								},
 								products: {
 									suburban: true,
@@ -1154,11 +1154,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100004"
-								}
+									ifopt: "de:11000:900100004",
+								},
 							},
 							arrival: "2025-12-08T03:34:00+01:00",
 							plannedArrival: "2025-12-08T03:34:00+01:00",
@@ -1171,7 +1171,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1182,7 +1182,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120005",
 									latitude: 52.510335,
-									longitude: 13.435089
+									longitude: 13.435089,
 								},
 								products: {
 									suburban: true,
@@ -1191,11 +1191,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900120005"
-								}
+									ifopt: "de:11000:900120005",
+								},
 							},
 							arrival: "2025-12-08T03:36:00+01:00",
 							plannedArrival: "2025-12-08T03:36:00+01:00",
@@ -1208,7 +1208,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "8",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "8"
+							plannedDeparturePlatform: "8",
 						},
 						{
 							stop: {
@@ -1219,7 +1219,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120004",
 									latitude: 52.505768,
-									longitude: 13.449157
+									longitude: 13.449157,
 								},
 								products: {
 									suburban: true,
@@ -1228,11 +1228,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900120004"
-								}
+									ifopt: "de:11000:900120004",
+								},
 							},
 							arrival: "2025-12-08T03:39:00+01:00",
 							plannedArrival: "2025-12-08T03:39:00+01:00",
@@ -1245,7 +1245,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -1256,7 +1256,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900190001",
 									latitude: 52.493426,
-									longitude: 13.461283
+									longitude: 13.461283,
 								},
 								products: {
 									suburban: true,
@@ -1265,11 +1265,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900190001"
-								}
+									ifopt: "de:11000:900190001",
+								},
 							},
 							arrival: "2025-12-08T03:42:00+01:00",
 							plannedArrival: "2025-12-08T03:42:00+01:00",
@@ -1282,7 +1282,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1293,7 +1293,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191002",
 									latitude: 52.47872,
-									longitude: 13.47403
+									longitude: 13.47403,
 								},
 								products: {
 									suburban: true,
@@ -1302,11 +1302,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191002"
-								}
+									ifopt: "de:11000:900191002",
+								},
 							},
 							arrival: "2025-12-08T03:45:00+01:00",
 							plannedArrival: "2025-12-08T03:45:00+01:00",
@@ -1319,7 +1319,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1330,7 +1330,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191001",
 									latitude: 52.467582,
-									longitude: 13.489501
+									longitude: 13.489501,
 								},
 								products: {
 									suburban: true,
@@ -1339,11 +1339,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191001"
-								}
+									ifopt: "de:11000:900191001",
+								},
 							},
 							arrival: "2025-12-08T03:47:00+01:00",
 							plannedArrival: "2025-12-08T03:47:00+01:00",
@@ -1356,7 +1356,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1367,7 +1367,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900192001",
 									latitude: 52.45461,
-									longitude: 13.510149
+									longitude: 13.510149,
 								},
 								products: {
 									suburban: true,
@@ -1376,11 +1376,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900192001"
-								}
+									ifopt: "de:11000:900192001",
+								},
 							},
 							arrival: "2025-12-08T03:53:00+01:00",
 							plannedArrival: "2025-12-08T03:53:00+01:00",
@@ -1393,7 +1393,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1404,7 +1404,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193001",
 									latitude: 52.446691,
-									longitude: 13.524028
+									longitude: 13.524028,
 								},
 								products: {
 									suburban: true,
@@ -1413,11 +1413,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193001"
-								}
+									ifopt: "de:11000:900193001",
+								},
 							},
 							arrival: "2025-12-08T03:55:00+01:00",
 							plannedArrival: "2025-12-08T03:55:00+01:00",
@@ -1430,7 +1430,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1441,7 +1441,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193002",
 									latitude: 52.435104,
-									longitude: 13.54055
+									longitude: 13.54055,
 								},
 								products: {
 									suburban: true,
@@ -1450,11 +1450,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193002"
-								}
+									ifopt: "de:11000:900193002",
+								},
 							},
 							arrival: "2025-12-08T03:58:00+01:00",
 							plannedArrival: "2025-12-08T03:58:00+01:00",
@@ -1467,7 +1467,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1478,7 +1478,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900195510",
 									latitude: 52.407795,
-									longitude: 13.559598
+									longitude: 13.559598,
 								},
 								products: {
 									suburban: true,
@@ -1487,11 +1487,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900195510"
-								}
+									ifopt: "de:11000:900195510",
+								},
 							},
 							arrival: "2025-12-08T04:02:00+01:00",
 							plannedArrival: "2025-12-08T04:02:00+01:00",
@@ -1504,7 +1504,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -1515,7 +1515,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900196001",
 									latitude: 52.399543,
-									longitude: 13.54322
+									longitude: 13.54322,
 								},
 								products: {
 									suburban: true,
@@ -1524,11 +1524,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900196001"
-								}
+									ifopt: "de:11000:900196001",
+								},
 							},
 							arrival: "2025-12-08T04:05:00+01:00",
 							plannedArrival: "2025-12-08T04:05:00+01:00",
@@ -1541,7 +1541,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -1552,7 +1552,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260005",
 									latitude: 52.390904,
-									longitude: 13.513043
+									longitude: 13.513043,
 								},
 								products: {
 									suburban: true,
@@ -1561,11 +1561,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260005"
-								}
+									ifopt: "de:12061:900260005",
+								},
 							},
 							arrival: "2025-12-08T04:08:00+01:00",
 							plannedArrival: "2025-12-08T04:08:00+01:00",
@@ -1578,7 +1578,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -1589,7 +1589,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260080",
 									latitude: 52.368287,
-									longitude: 13.463432
+									longitude: 13.463432,
 								},
 								products: {
 									suburban: true,
@@ -1598,11 +1598,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:12061:900260080"
-								}
+									ifopt: "de:12061:900260080",
+								},
 							},
 							arrival: "2025-12-08T04:12:00+01:00",
 							plannedArrival: "2025-12-08T04:12:00+01:00",
@@ -1615,7 +1615,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -1626,7 +1626,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260009",
 									latitude: 52.36461,
-									longitude: 13.50987
+									longitude: 13.50987,
 								},
 								products: {
 									suburban: true,
@@ -1635,11 +1635,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260009"
-								}
+									ifopt: "de:12061:900260009",
+								},
 							},
 							arrival: "2025-12-08T04:16:00+01:00",
 							plannedArrival: "2025-12-08T04:16:00+01:00",
@@ -1657,23 +1657,23 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (Flughafen BER)"
-								}
-							]
-						}
+									text: "Fahrradmitnahme möglich (Flughafen BER)",
+								},
+							],
+						},
 					],
 					cycle: {
 						min: 1200,
 						max: 1200,
-						nr: 7
-					}
-				}
+						nr: 7,
+					},
+				},
 			],
 			refreshToken:
 				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080326$202512080416$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
 			cycle: {
-				min: 1200
-			}
+				min: 1200,
+			},
 		},
 		{
 			type: "journey",
@@ -1687,7 +1687,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900003201",
 							latitude: 52.525607,
-							longitude: 13.369072
+							longitude: 13.369072,
 						},
 						products: {
 							suburban: true,
@@ -1696,11 +1696,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:11000:900003201"
-						}
+							ifopt: "de:11000:900003201",
+						},
 					},
 					destination: {
 						type: "stop",
@@ -1710,7 +1710,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900260009",
 							latitude: 52.36461,
-							longitude: 13.50987
+							longitude: 13.50987,
 						},
 						products: {
 							suburban: true,
@@ -1719,11 +1719,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:12061:900260009"
-						}
+							ifopt: "de:12061:900260009",
+						},
 					},
 					departure: "2025-12-08T03:46:00+01:00",
 					plannedDeparture: "2025-12-08T03:46:00+01:00",
@@ -1746,8 +1746,8 @@ export const bvgJourneysRawRes = {
 						operator: {
 							type: "operator",
 							id: "s-bahn-berlin-gmbh",
-							name: "S-Bahn Berlin GmbH"
-						}
+							name: "S-Bahn Berlin GmbH",
+						},
 					},
 					direction: "Flughafen BER",
 					arrivalPlatform: "5",
@@ -1766,7 +1766,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900003201",
 									latitude: 52.525607,
-									longitude: 13.369072
+									longitude: 13.369072,
 								},
 								products: {
 									suburban: true,
@@ -1775,11 +1775,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900003201"
-								}
+									ifopt: "de:11000:900003201",
+								},
 							},
 							arrival: null,
 							plannedArrival: null,
@@ -1797,9 +1797,9 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
-								}
-							]
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
+								},
+							],
 						},
 						{
 							stop: {
@@ -1810,7 +1810,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100001",
 									latitude: 52.520304,
-									longitude: 13.387257
+									longitude: 13.387257,
 								},
 								products: {
 									suburban: true,
@@ -1819,11 +1819,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100001"
-								}
+									ifopt: "de:11000:900100001",
+								},
 							},
 							arrival: "2025-12-08T03:48:00+01:00",
 							plannedArrival: "2025-12-08T03:48:00+01:00",
@@ -1836,7 +1836,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "5",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "5"
+							plannedDeparturePlatform: "5",
 						},
 						{
 							stop: {
@@ -1847,7 +1847,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100002",
 									latitude: 52.522605,
-									longitude: 13.402359
+									longitude: 13.402359,
 								},
 								products: {
 									suburban: true,
@@ -1856,11 +1856,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100002"
-								}
+									ifopt: "de:11000:900100002",
+								},
 							},
 							arrival: "2025-12-08T03:50:00+01:00",
 							plannedArrival: "2025-12-08T03:50:00+01:00",
@@ -1873,7 +1873,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1884,7 +1884,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100003",
 									latitude: 52.521508,
-									longitude: 13.411267
+									longitude: 13.411267,
 								},
 								products: {
 									suburban: true,
@@ -1893,11 +1893,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100003"
-								}
+									ifopt: "de:11000:900100003",
+								},
 							},
 							arrival: "2025-12-08T03:52:00+01:00",
 							plannedArrival: "2025-12-08T03:52:00+01:00",
@@ -1910,7 +1910,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1921,7 +1921,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100004",
 									latitude: 52.515503,
-									longitude: 13.418027
+									longitude: 13.418027,
 								},
 								products: {
 									suburban: true,
@@ -1930,11 +1930,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100004"
-								}
+									ifopt: "de:11000:900100004",
+								},
 							},
 							arrival: "2025-12-08T03:54:00+01:00",
 							plannedArrival: "2025-12-08T03:54:00+01:00",
@@ -1947,7 +1947,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -1958,7 +1958,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120005",
 									latitude: 52.510335,
-									longitude: 13.435089
+									longitude: 13.435089,
 								},
 								products: {
 									suburban: true,
@@ -1967,11 +1967,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900120005"
-								}
+									ifopt: "de:11000:900120005",
+								},
 							},
 							arrival: "2025-12-08T03:56:00+01:00",
 							plannedArrival: "2025-12-08T03:56:00+01:00",
@@ -1984,7 +1984,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "8",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "8"
+							plannedDeparturePlatform: "8",
 						},
 						{
 							stop: {
@@ -1995,7 +1995,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120004",
 									latitude: 52.505768,
-									longitude: 13.449157
+									longitude: 13.449157,
 								},
 								products: {
 									suburban: true,
@@ -2004,11 +2004,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900120004"
-								}
+									ifopt: "de:11000:900120004",
+								},
 							},
 							arrival: "2025-12-08T03:59:00+01:00",
 							plannedArrival: "2025-12-08T03:59:00+01:00",
@@ -2021,7 +2021,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -2032,7 +2032,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900190001",
 									latitude: 52.493426,
-									longitude: 13.461283
+									longitude: 13.461283,
 								},
 								products: {
 									suburban: true,
@@ -2041,11 +2041,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900190001"
-								}
+									ifopt: "de:11000:900190001",
+								},
 							},
 							arrival: "2025-12-08T04:02:00+01:00",
 							plannedArrival: "2025-12-08T04:02:00+01:00",
@@ -2058,7 +2058,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2069,7 +2069,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191002",
 									latitude: 52.47872,
-									longitude: 13.47403
+									longitude: 13.47403,
 								},
 								products: {
 									suburban: true,
@@ -2078,11 +2078,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191002"
-								}
+									ifopt: "de:11000:900191002",
+								},
 							},
 							arrival: "2025-12-08T04:05:00+01:00",
 							plannedArrival: "2025-12-08T04:05:00+01:00",
@@ -2095,7 +2095,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2106,7 +2106,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191001",
 									latitude: 52.467582,
-									longitude: 13.489501
+									longitude: 13.489501,
 								},
 								products: {
 									suburban: true,
@@ -2115,11 +2115,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191001"
-								}
+									ifopt: "de:11000:900191001",
+								},
 							},
 							arrival: "2025-12-08T04:07:00+01:00",
 							plannedArrival: "2025-12-08T04:07:00+01:00",
@@ -2132,7 +2132,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2143,7 +2143,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900192001",
 									latitude: 52.45461,
-									longitude: 13.510149
+									longitude: 13.510149,
 								},
 								products: {
 									suburban: true,
@@ -2152,11 +2152,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900192001"
-								}
+									ifopt: "de:11000:900192001",
+								},
 							},
 							arrival: "2025-12-08T04:13:00+01:00",
 							plannedArrival: "2025-12-08T04:13:00+01:00",
@@ -2169,7 +2169,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2180,7 +2180,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193001",
 									latitude: 52.446691,
-									longitude: 13.524028
+									longitude: 13.524028,
 								},
 								products: {
 									suburban: true,
@@ -2189,11 +2189,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193001"
-								}
+									ifopt: "de:11000:900193001",
+								},
 							},
 							arrival: "2025-12-08T04:15:00+01:00",
 							plannedArrival: "2025-12-08T04:15:00+01:00",
@@ -2206,7 +2206,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2217,7 +2217,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193002",
 									latitude: 52.435104,
-									longitude: 13.54055
+									longitude: 13.54055,
 								},
 								products: {
 									suburban: true,
@@ -2226,11 +2226,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193002"
-								}
+									ifopt: "de:11000:900193002",
+								},
 							},
 							arrival: "2025-12-08T04:18:00+01:00",
 							plannedArrival: "2025-12-08T04:18:00+01:00",
@@ -2243,7 +2243,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2254,7 +2254,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900195510",
 									latitude: 52.407795,
-									longitude: 13.559598
+									longitude: 13.559598,
 								},
 								products: {
 									suburban: true,
@@ -2263,11 +2263,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900195510"
-								}
+									ifopt: "de:11000:900195510",
+								},
 							},
 							arrival: "2025-12-08T04:22:00+01:00",
 							plannedArrival: "2025-12-08T04:22:00+01:00",
@@ -2280,7 +2280,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -2291,7 +2291,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900196001",
 									latitude: 52.399543,
-									longitude: 13.54322
+									longitude: 13.54322,
 								},
 								products: {
 									suburban: true,
@@ -2300,11 +2300,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900196001"
-								}
+									ifopt: "de:11000:900196001",
+								},
 							},
 							arrival: "2025-12-08T04:25:00+01:00",
 							plannedArrival: "2025-12-08T04:25:00+01:00",
@@ -2317,7 +2317,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -2328,7 +2328,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260005",
 									latitude: 52.390904,
-									longitude: 13.513043
+									longitude: 13.513043,
 								},
 								products: {
 									suburban: true,
@@ -2337,11 +2337,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260005"
-								}
+									ifopt: "de:12061:900260005",
+								},
 							},
 							arrival: "2025-12-08T04:28:00+01:00",
 							plannedArrival: "2025-12-08T04:28:00+01:00",
@@ -2354,7 +2354,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -2365,7 +2365,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260080",
 									latitude: 52.368287,
-									longitude: 13.463432
+									longitude: 13.463432,
 								},
 								products: {
 									suburban: true,
@@ -2374,11 +2374,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:12061:900260080"
-								}
+									ifopt: "de:12061:900260080",
+								},
 							},
 							arrival: "2025-12-08T04:32:00+01:00",
 							plannedArrival: "2025-12-08T04:32:00+01:00",
@@ -2391,7 +2391,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -2402,7 +2402,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260009",
 									latitude: 52.36461,
-									longitude: 13.50987
+									longitude: 13.50987,
 								},
 								products: {
 									suburban: true,
@@ -2411,11 +2411,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260009"
-								}
+									ifopt: "de:12061:900260009",
+								},
 							},
 							arrival: "2025-12-08T04:36:00+01:00",
 							plannedArrival: "2025-12-08T04:36:00+01:00",
@@ -2433,23 +2433,23 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (Flughafen BER)"
-								}
-							]
-						}
+									text: "Fahrradmitnahme möglich (Flughafen BER)",
+								},
+							],
+						},
 					],
 					cycle: {
 						min: 1200,
 						max: 1200,
-						nr: 7
-					}
-				}
+						nr: 7,
+					},
+				},
 			],
 			refreshToken:
 				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080346$202512080436$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
 			cycle: {
-				min: 1200
-			}
+				min: 1200,
+			},
 		},
 		{
 			type: "journey",
@@ -2463,7 +2463,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900003201",
 							latitude: 52.525607,
-							longitude: 13.369072
+							longitude: 13.369072,
 						},
 						products: {
 							suburban: true,
@@ -2472,11 +2472,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:11000:900003201"
-						}
+							ifopt: "de:11000:900003201",
+						},
 					},
 					destination: {
 						type: "stop",
@@ -2486,7 +2486,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900260009",
 							latitude: 52.36461,
-							longitude: 13.50987
+							longitude: 13.50987,
 						},
 						products: {
 							suburban: true,
@@ -2495,11 +2495,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:12061:900260009"
-						}
+							ifopt: "de:12061:900260009",
+						},
 					},
 					departure: "2025-12-08T04:06:00+01:00",
 					plannedDeparture: "2025-12-08T04:06:00+01:00",
@@ -2522,8 +2522,8 @@ export const bvgJourneysRawRes = {
 						operator: {
 							type: "operator",
 							id: "s-bahn-berlin-gmbh",
-							name: "S-Bahn Berlin GmbH"
-						}
+							name: "S-Bahn Berlin GmbH",
+						},
 					},
 					direction: "Flughafen BER",
 					arrivalPlatform: "5",
@@ -2542,7 +2542,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900003201",
 									latitude: 52.525607,
-									longitude: 13.369072
+									longitude: 13.369072,
 								},
 								products: {
 									suburban: true,
@@ -2551,11 +2551,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900003201"
-								}
+									ifopt: "de:11000:900003201",
+								},
 							},
 							arrival: null,
 							plannedArrival: null,
@@ -2573,9 +2573,9 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
-								}
-							]
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
+								},
+							],
 						},
 						{
 							stop: {
@@ -2586,7 +2586,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100001",
 									latitude: 52.520304,
-									longitude: 13.387257
+									longitude: 13.387257,
 								},
 								products: {
 									suburban: true,
@@ -2595,11 +2595,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100001"
-								}
+									ifopt: "de:11000:900100001",
+								},
 							},
 							arrival: "2025-12-08T04:08:00+01:00",
 							plannedArrival: "2025-12-08T04:08:00+01:00",
@@ -2612,7 +2612,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "5",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "5"
+							plannedDeparturePlatform: "5",
 						},
 						{
 							stop: {
@@ -2623,7 +2623,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100002",
 									latitude: 52.522605,
-									longitude: 13.402359
+									longitude: 13.402359,
 								},
 								products: {
 									suburban: true,
@@ -2632,11 +2632,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100002"
-								}
+									ifopt: "de:11000:900100002",
+								},
 							},
 							arrival: "2025-12-08T04:10:00+01:00",
 							plannedArrival: "2025-12-08T04:10:00+01:00",
@@ -2649,7 +2649,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2660,7 +2660,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100003",
 									latitude: 52.521508,
-									longitude: 13.411267
+									longitude: 13.411267,
 								},
 								products: {
 									suburban: true,
@@ -2669,11 +2669,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100003"
-								}
+									ifopt: "de:11000:900100003",
+								},
 							},
 							arrival: "2025-12-08T04:12:00+01:00",
 							plannedArrival: "2025-12-08T04:12:00+01:00",
@@ -2686,7 +2686,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2697,7 +2697,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100004",
 									latitude: 52.515503,
-									longitude: 13.418027
+									longitude: 13.418027,
 								},
 								products: {
 									suburban: true,
@@ -2706,11 +2706,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100004"
-								}
+									ifopt: "de:11000:900100004",
+								},
 							},
 							arrival: "2025-12-08T04:14:00+01:00",
 							plannedArrival: "2025-12-08T04:14:00+01:00",
@@ -2723,7 +2723,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2734,7 +2734,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120005",
 									latitude: 52.510335,
-									longitude: 13.435089
+									longitude: 13.435089,
 								},
 								products: {
 									suburban: true,
@@ -2743,11 +2743,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900120005"
-								}
+									ifopt: "de:11000:900120005",
+								},
 							},
 							arrival: "2025-12-08T04:16:00+01:00",
 							plannedArrival: "2025-12-08T04:16:00+01:00",
@@ -2760,7 +2760,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "8",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "8"
+							plannedDeparturePlatform: "8",
 						},
 						{
 							stop: {
@@ -2771,7 +2771,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120004",
 									latitude: 52.505768,
-									longitude: 13.449157
+									longitude: 13.449157,
 								},
 								products: {
 									suburban: true,
@@ -2780,11 +2780,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900120004"
-								}
+									ifopt: "de:11000:900120004",
+								},
 							},
 							arrival: "2025-12-08T04:19:00+01:00",
 							plannedArrival: "2025-12-08T04:19:00+01:00",
@@ -2797,7 +2797,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -2808,7 +2808,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900190001",
 									latitude: 52.493426,
-									longitude: 13.461283
+									longitude: 13.461283,
 								},
 								products: {
 									suburban: true,
@@ -2817,11 +2817,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900190001"
-								}
+									ifopt: "de:11000:900190001",
+								},
 							},
 							arrival: "2025-12-08T04:22:00+01:00",
 							plannedArrival: "2025-12-08T04:22:00+01:00",
@@ -2834,7 +2834,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2845,7 +2845,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191002",
 									latitude: 52.47872,
-									longitude: 13.47403
+									longitude: 13.47403,
 								},
 								products: {
 									suburban: true,
@@ -2854,11 +2854,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191002"
-								}
+									ifopt: "de:11000:900191002",
+								},
 							},
 							arrival: "2025-12-08T04:25:00+01:00",
 							plannedArrival: "2025-12-08T04:25:00+01:00",
@@ -2871,7 +2871,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2882,7 +2882,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191001",
 									latitude: 52.467582,
-									longitude: 13.489501
+									longitude: 13.489501,
 								},
 								products: {
 									suburban: true,
@@ -2891,11 +2891,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191001"
-								}
+									ifopt: "de:11000:900191001",
+								},
 							},
 							arrival: "2025-12-08T04:27:00+01:00",
 							plannedArrival: "2025-12-08T04:27:00+01:00",
@@ -2908,7 +2908,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2919,7 +2919,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900192001",
 									latitude: 52.45461,
-									longitude: 13.510149
+									longitude: 13.510149,
 								},
 								products: {
 									suburban: true,
@@ -2928,11 +2928,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900192001"
-								}
+									ifopt: "de:11000:900192001",
+								},
 							},
 							arrival: "2025-12-08T04:33:00+01:00",
 							plannedArrival: "2025-12-08T04:33:00+01:00",
@@ -2945,7 +2945,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2956,7 +2956,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193001",
 									latitude: 52.446691,
-									longitude: 13.524028
+									longitude: 13.524028,
 								},
 								products: {
 									suburban: true,
@@ -2965,11 +2965,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193001"
-								}
+									ifopt: "de:11000:900193001",
+								},
 							},
 							arrival: "2025-12-08T04:35:00+01:00",
 							plannedArrival: "2025-12-08T04:35:00+01:00",
@@ -2982,7 +2982,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -2993,7 +2993,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193002",
 									latitude: 52.435104,
-									longitude: 13.54055
+									longitude: 13.54055,
 								},
 								products: {
 									suburban: true,
@@ -3002,11 +3002,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193002"
-								}
+									ifopt: "de:11000:900193002",
+								},
 							},
 							arrival: "2025-12-08T04:38:00+01:00",
 							plannedArrival: "2025-12-08T04:38:00+01:00",
@@ -3019,7 +3019,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3030,7 +3030,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900195510",
 									latitude: 52.407795,
-									longitude: 13.559598
+									longitude: 13.559598,
 								},
 								products: {
 									suburban: true,
@@ -3039,11 +3039,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900195510"
-								}
+									ifopt: "de:11000:900195510",
+								},
 							},
 							arrival: "2025-12-08T04:42:00+01:00",
 							plannedArrival: "2025-12-08T04:42:00+01:00",
@@ -3056,7 +3056,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3067,7 +3067,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900196001",
 									latitude: 52.399543,
-									longitude: 13.54322
+									longitude: 13.54322,
 								},
 								products: {
 									suburban: true,
@@ -3076,11 +3076,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900196001"
-								}
+									ifopt: "de:11000:900196001",
+								},
 							},
 							arrival: "2025-12-08T04:45:00+01:00",
 							plannedArrival: "2025-12-08T04:45:00+01:00",
@@ -3093,7 +3093,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3104,7 +3104,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260005",
 									latitude: 52.390904,
-									longitude: 13.513043
+									longitude: 13.513043,
 								},
 								products: {
 									suburban: true,
@@ -3113,11 +3113,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260005"
-								}
+									ifopt: "de:12061:900260005",
+								},
 							},
 							arrival: "2025-12-08T04:48:00+01:00",
 							plannedArrival: "2025-12-08T04:48:00+01:00",
@@ -3130,7 +3130,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3141,7 +3141,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260080",
 									latitude: 52.368287,
-									longitude: 13.463432
+									longitude: 13.463432,
 								},
 								products: {
 									suburban: true,
@@ -3150,11 +3150,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:12061:900260080"
-								}
+									ifopt: "de:12061:900260080",
+								},
 							},
 							arrival: "2025-12-08T04:52:00+01:00",
 							plannedArrival: "2025-12-08T04:52:00+01:00",
@@ -3167,7 +3167,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3178,7 +3178,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260009",
 									latitude: 52.36461,
-									longitude: 13.50987
+									longitude: 13.50987,
 								},
 								products: {
 									suburban: true,
@@ -3187,11 +3187,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260009"
-								}
+									ifopt: "de:12061:900260009",
+								},
 							},
 							arrival: "2025-12-08T04:56:00+01:00",
 							plannedArrival: "2025-12-08T04:56:00+01:00",
@@ -3209,23 +3209,23 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (Flughafen BER)"
-								}
-							]
-						}
+									text: "Fahrradmitnahme möglich (Flughafen BER)",
+								},
+							],
+						},
 					],
 					cycle: {
 						min: 1200,
 						max: 1200,
-						nr: 7
-					}
-				}
+						nr: 7,
+					},
+				},
 			],
 			refreshToken:
 				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080406$202512080456$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
 			cycle: {
-				min: 1200
-			}
+				min: 1200,
+			},
 		},
 		{
 			type: "journey",
@@ -3239,7 +3239,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900003201",
 							latitude: 52.525607,
-							longitude: 13.369072
+							longitude: 13.369072,
 						},
 						products: {
 							suburban: true,
@@ -3248,11 +3248,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:11000:900003201"
-						}
+							ifopt: "de:11000:900003201",
+						},
 					},
 					destination: {
 						type: "stop",
@@ -3262,7 +3262,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900260009",
 							latitude: 52.36461,
-							longitude: 13.50987
+							longitude: 13.50987,
 						},
 						products: {
 							suburban: true,
@@ -3271,11 +3271,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:12061:900260009"
-						}
+							ifopt: "de:12061:900260009",
+						},
 					},
 					departure: "2025-12-08T04:26:00+01:00",
 					plannedDeparture: "2025-12-08T04:26:00+01:00",
@@ -3298,8 +3298,8 @@ export const bvgJourneysRawRes = {
 						operator: {
 							type: "operator",
 							id: "s-bahn-berlin-gmbh",
-							name: "S-Bahn Berlin GmbH"
-						}
+							name: "S-Bahn Berlin GmbH",
+						},
 					},
 					direction: "Flughafen BER",
 					arrivalPlatform: "5",
@@ -3318,7 +3318,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900003201",
 									latitude: 52.525607,
-									longitude: 13.369072
+									longitude: 13.369072,
 								},
 								products: {
 									suburban: true,
@@ -3327,11 +3327,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900003201"
-								}
+									ifopt: "de:11000:900003201",
+								},
 							},
 							arrival: null,
 							plannedArrival: null,
@@ -3349,9 +3349,9 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
-								}
-							]
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
+								},
+							],
 						},
 						{
 							stop: {
@@ -3362,7 +3362,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100001",
 									latitude: 52.520304,
-									longitude: 13.387257
+									longitude: 13.387257,
 								},
 								products: {
 									suburban: true,
@@ -3371,11 +3371,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100001"
-								}
+									ifopt: "de:11000:900100001",
+								},
 							},
 							arrival: "2025-12-08T04:28:00+01:00",
 							plannedArrival: "2025-12-08T04:28:00+01:00",
@@ -3388,7 +3388,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "5",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "5"
+							plannedDeparturePlatform: "5",
 						},
 						{
 							stop: {
@@ -3399,7 +3399,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100002",
 									latitude: 52.522605,
-									longitude: 13.402359
+									longitude: 13.402359,
 								},
 								products: {
 									suburban: true,
@@ -3408,11 +3408,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100002"
-								}
+									ifopt: "de:11000:900100002",
+								},
 							},
 							arrival: "2025-12-08T04:30:00+01:00",
 							plannedArrival: "2025-12-08T04:30:00+01:00",
@@ -3425,7 +3425,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3436,7 +3436,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100003",
 									latitude: 52.521508,
-									longitude: 13.411267
+									longitude: 13.411267,
 								},
 								products: {
 									suburban: true,
@@ -3445,11 +3445,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100003"
-								}
+									ifopt: "de:11000:900100003",
+								},
 							},
 							arrival: "2025-12-08T04:32:00+01:00",
 							plannedArrival: "2025-12-08T04:32:00+01:00",
@@ -3462,7 +3462,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3473,7 +3473,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100004",
 									latitude: 52.515503,
-									longitude: 13.418027
+									longitude: 13.418027,
 								},
 								products: {
 									suburban: true,
@@ -3482,11 +3482,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100004"
-								}
+									ifopt: "de:11000:900100004",
+								},
 							},
 							arrival: "2025-12-08T04:34:00+01:00",
 							plannedArrival: "2025-12-08T04:34:00+01:00",
@@ -3499,7 +3499,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3510,7 +3510,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120005",
 									latitude: 52.510335,
-									longitude: 13.435089
+									longitude: 13.435089,
 								},
 								products: {
 									suburban: true,
@@ -3519,11 +3519,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900120005"
-								}
+									ifopt: "de:11000:900120005",
+								},
 							},
 							arrival: "2025-12-08T04:36:00+01:00",
 							plannedArrival: "2025-12-08T04:36:00+01:00",
@@ -3536,7 +3536,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "8",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "8"
+							plannedDeparturePlatform: "8",
 						},
 						{
 							stop: {
@@ -3547,7 +3547,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120004",
 									latitude: 52.505768,
-									longitude: 13.449157
+									longitude: 13.449157,
 								},
 								products: {
 									suburban: true,
@@ -3556,11 +3556,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900120004"
-								}
+									ifopt: "de:11000:900120004",
+								},
 							},
 							arrival: "2025-12-08T04:39:00+01:00",
 							plannedArrival: "2025-12-08T04:39:00+01:00",
@@ -3573,7 +3573,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3584,7 +3584,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900190001",
 									latitude: 52.493426,
-									longitude: 13.461283
+									longitude: 13.461283,
 								},
 								products: {
 									suburban: true,
@@ -3593,11 +3593,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900190001"
-								}
+									ifopt: "de:11000:900190001",
+								},
 							},
 							arrival: "2025-12-08T04:42:00+01:00",
 							plannedArrival: "2025-12-08T04:42:00+01:00",
@@ -3610,7 +3610,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3621,7 +3621,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191002",
 									latitude: 52.47872,
-									longitude: 13.47403
+									longitude: 13.47403,
 								},
 								products: {
 									suburban: true,
@@ -3630,11 +3630,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191002"
-								}
+									ifopt: "de:11000:900191002",
+								},
 							},
 							arrival: "2025-12-08T04:45:00+01:00",
 							plannedArrival: "2025-12-08T04:45:00+01:00",
@@ -3647,7 +3647,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3658,7 +3658,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191001",
 									latitude: 52.467582,
-									longitude: 13.489501
+									longitude: 13.489501,
 								},
 								products: {
 									suburban: true,
@@ -3667,11 +3667,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191001"
-								}
+									ifopt: "de:11000:900191001",
+								},
 							},
 							arrival: "2025-12-08T04:47:00+01:00",
 							plannedArrival: "2025-12-08T04:47:00+01:00",
@@ -3684,7 +3684,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3695,7 +3695,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900192001",
 									latitude: 52.45461,
-									longitude: 13.510149
+									longitude: 13.510149,
 								},
 								products: {
 									suburban: true,
@@ -3704,11 +3704,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900192001"
-								}
+									ifopt: "de:11000:900192001",
+								},
 							},
 							arrival: "2025-12-08T04:53:00+01:00",
 							plannedArrival: "2025-12-08T04:53:00+01:00",
@@ -3721,7 +3721,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3732,7 +3732,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193001",
 									latitude: 52.446691,
-									longitude: 13.524028
+									longitude: 13.524028,
 								},
 								products: {
 									suburban: true,
@@ -3741,11 +3741,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193001"
-								}
+									ifopt: "de:11000:900193001",
+								},
 							},
 							arrival: "2025-12-08T04:55:00+01:00",
 							plannedArrival: "2025-12-08T04:55:00+01:00",
@@ -3758,7 +3758,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3769,7 +3769,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193002",
 									latitude: 52.435104,
-									longitude: 13.54055
+									longitude: 13.54055,
 								},
 								products: {
 									suburban: true,
@@ -3778,11 +3778,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193002"
-								}
+									ifopt: "de:11000:900193002",
+								},
 							},
 							arrival: "2025-12-08T04:58:00+01:00",
 							plannedArrival: "2025-12-08T04:58:00+01:00",
@@ -3795,7 +3795,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -3806,7 +3806,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900195510",
 									latitude: 52.407795,
-									longitude: 13.559598
+									longitude: 13.559598,
 								},
 								products: {
 									suburban: true,
@@ -3815,11 +3815,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900195510"
-								}
+									ifopt: "de:11000:900195510",
+								},
 							},
 							arrival: "2025-12-08T05:02:00+01:00",
 							plannedArrival: "2025-12-08T05:02:00+01:00",
@@ -3832,7 +3832,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3843,7 +3843,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900196001",
 									latitude: 52.399543,
-									longitude: 13.54322
+									longitude: 13.54322,
 								},
 								products: {
 									suburban: true,
@@ -3852,11 +3852,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900196001"
-								}
+									ifopt: "de:11000:900196001",
+								},
 							},
 							arrival: "2025-12-08T05:05:00+01:00",
 							plannedArrival: "2025-12-08T05:05:00+01:00",
@@ -3869,7 +3869,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3880,7 +3880,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260005",
 									latitude: 52.390904,
-									longitude: 13.513043
+									longitude: 13.513043,
 								},
 								products: {
 									suburban: true,
@@ -3889,11 +3889,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260005"
-								}
+									ifopt: "de:12061:900260005",
+								},
 							},
 							arrival: "2025-12-08T05:08:00+01:00",
 							plannedArrival: "2025-12-08T05:08:00+01:00",
@@ -3906,7 +3906,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3917,7 +3917,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260080",
 									latitude: 52.368287,
-									longitude: 13.463432
+									longitude: 13.463432,
 								},
 								products: {
 									suburban: true,
@@ -3926,11 +3926,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:12061:900260080"
-								}
+									ifopt: "de:12061:900260080",
+								},
 							},
 							arrival: "2025-12-08T05:12:00+01:00",
 							plannedArrival: "2025-12-08T05:12:00+01:00",
@@ -3943,7 +3943,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -3954,7 +3954,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260009",
 									latitude: 52.36461,
-									longitude: 13.50987
+									longitude: 13.50987,
 								},
 								products: {
 									suburban: true,
@@ -3963,11 +3963,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260009"
-								}
+									ifopt: "de:12061:900260009",
+								},
 							},
 							arrival: "2025-12-08T05:16:00+01:00",
 							plannedArrival: "2025-12-08T05:16:00+01:00",
@@ -3985,23 +3985,23 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (Flughafen BER)"
-								}
-							]
-						}
+									text: "Fahrradmitnahme möglich (Flughafen BER)",
+								},
+							],
+						},
 					],
 					cycle: {
 						min: 1200,
 						max: 1200,
-						nr: 7
-					}
-				}
+						nr: 7,
+					},
+				},
 			],
 			refreshToken:
 				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080426$202512080516$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
 			cycle: {
-				min: 1200
-			}
+				min: 1200,
+			},
 		},
 		{
 			type: "journey",
@@ -4015,7 +4015,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900003201",
 							latitude: 52.525607,
-							longitude: 13.369072
+							longitude: 13.369072,
 						},
 						products: {
 							suburban: true,
@@ -4024,11 +4024,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:11000:900003201"
-						}
+							ifopt: "de:11000:900003201",
+						},
 					},
 					destination: {
 						type: "stop",
@@ -4038,7 +4038,7 @@ export const bvgJourneysRawRes = {
 							type: "location",
 							id: "900260009",
 							latitude: 52.36461,
-							longitude: 13.50987
+							longitude: 13.50987,
 						},
 						products: {
 							suburban: true,
@@ -4047,11 +4047,11 @@ export const bvgJourneysRawRes = {
 							bus: true,
 							ferry: false,
 							express: true,
-							regional: true
+							regional: true,
 						},
 						ids: {
-							ifopt: "de:12061:900260009"
-						}
+							ifopt: "de:12061:900260009",
+						},
 					},
 					departure: "2025-12-08T04:46:00+01:00",
 					plannedDeparture: "2025-12-08T04:46:00+01:00",
@@ -4074,8 +4074,8 @@ export const bvgJourneysRawRes = {
 						operator: {
 							type: "operator",
 							id: "s-bahn-berlin-gmbh",
-							name: "S-Bahn Berlin GmbH"
-						}
+							name: "S-Bahn Berlin GmbH",
+						},
 					},
 					direction: "Flughafen BER",
 					arrivalPlatform: "5",
@@ -4094,7 +4094,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900003201",
 									latitude: 52.525607,
-									longitude: 13.369072
+									longitude: 13.369072,
 								},
 								products: {
 									suburban: true,
@@ -4103,11 +4103,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900003201"
-								}
+									ifopt: "de:11000:900003201",
+								},
 							},
 							arrival: null,
 							plannedArrival: null,
@@ -4125,9 +4125,9 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)"
-								}
-							]
+									text: "Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
+								},
+							],
 						},
 						{
 							stop: {
@@ -4138,7 +4138,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100001",
 									latitude: 52.520304,
-									longitude: 13.387257
+									longitude: 13.387257,
 								},
 								products: {
 									suburban: true,
@@ -4147,11 +4147,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100001"
-								}
+									ifopt: "de:11000:900100001",
+								},
 							},
 							arrival: "2025-12-08T04:48:00+01:00",
 							plannedArrival: "2025-12-08T04:48:00+01:00",
@@ -4164,7 +4164,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "5",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "5"
+							plannedDeparturePlatform: "5",
 						},
 						{
 							stop: {
@@ -4175,7 +4175,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100002",
 									latitude: 52.522605,
-									longitude: 13.402359
+									longitude: 13.402359,
 								},
 								products: {
 									suburban: true,
@@ -4184,11 +4184,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100002"
-								}
+									ifopt: "de:11000:900100002",
+								},
 							},
 							arrival: "2025-12-08T04:50:00+01:00",
 							plannedArrival: "2025-12-08T04:50:00+01:00",
@@ -4201,7 +4201,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4212,7 +4212,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100003",
 									latitude: 52.521508,
-									longitude: 13.411267
+									longitude: 13.411267,
 								},
 								products: {
 									suburban: true,
@@ -4221,11 +4221,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900100003"
-								}
+									ifopt: "de:11000:900100003",
+								},
 							},
 							arrival: "2025-12-08T04:52:00+01:00",
 							plannedArrival: "2025-12-08T04:52:00+01:00",
@@ -4238,7 +4238,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4249,7 +4249,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900100004",
 									latitude: 52.515503,
-									longitude: 13.418027
+									longitude: 13.418027,
 								},
 								products: {
 									suburban: true,
@@ -4258,11 +4258,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900100004"
-								}
+									ifopt: "de:11000:900100004",
+								},
 							},
 							arrival: "2025-12-08T04:54:00+01:00",
 							plannedArrival: "2025-12-08T04:54:00+01:00",
@@ -4275,7 +4275,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4286,7 +4286,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120005",
 									latitude: 52.510335,
-									longitude: 13.435089
+									longitude: 13.435089,
 								},
 								products: {
 									suburban: true,
@@ -4295,11 +4295,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900120005"
-								}
+									ifopt: "de:11000:900120005",
+								},
 							},
 							arrival: "2025-12-08T04:56:00+01:00",
 							plannedArrival: "2025-12-08T04:56:00+01:00",
@@ -4312,7 +4312,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "9",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "9"
+							plannedDeparturePlatform: "9",
 						},
 						{
 							stop: {
@@ -4323,7 +4323,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900120004",
 									latitude: 52.505768,
-									longitude: 13.449157
+									longitude: 13.449157,
 								},
 								products: {
 									suburban: true,
@@ -4332,11 +4332,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900120004"
-								}
+									ifopt: "de:11000:900120004",
+								},
 							},
 							arrival: "2025-12-08T04:59:00+01:00",
 							plannedArrival: "2025-12-08T04:59:00+01:00",
@@ -4349,7 +4349,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "2",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "2"
+							plannedDeparturePlatform: "2",
 						},
 						{
 							stop: {
@@ -4360,7 +4360,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900190001",
 									latitude: 52.493426,
-									longitude: 13.461283
+									longitude: 13.461283,
 								},
 								products: {
 									suburban: true,
@@ -4369,11 +4369,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900190001"
-								}
+									ifopt: "de:11000:900190001",
+								},
 							},
 							arrival: "2025-12-08T05:02:00+01:00",
 							plannedArrival: "2025-12-08T05:02:00+01:00",
@@ -4386,7 +4386,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4397,7 +4397,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191002",
 									latitude: 52.47872,
-									longitude: 13.47403
+									longitude: 13.47403,
 								},
 								products: {
 									suburban: true,
@@ -4406,11 +4406,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191002"
-								}
+									ifopt: "de:11000:900191002",
+								},
 							},
 							arrival: "2025-12-08T05:05:00+01:00",
 							plannedArrival: "2025-12-08T05:05:00+01:00",
@@ -4423,7 +4423,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4434,7 +4434,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900191001",
 									latitude: 52.467582,
-									longitude: 13.489501
+									longitude: 13.489501,
 								},
 								products: {
 									suburban: true,
@@ -4443,11 +4443,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900191001"
-								}
+									ifopt: "de:11000:900191001",
+								},
 							},
 							arrival: "2025-12-08T05:07:00+01:00",
 							plannedArrival: "2025-12-08T05:07:00+01:00",
@@ -4460,7 +4460,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4471,7 +4471,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900192001",
 									latitude: 52.45461,
-									longitude: 13.510149
+									longitude: 13.510149,
 								},
 								products: {
 									suburban: true,
@@ -4480,11 +4480,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:11000:900192001"
-								}
+									ifopt: "de:11000:900192001",
+								},
 							},
 							arrival: "2025-12-08T05:13:00+01:00",
 							plannedArrival: "2025-12-08T05:13:00+01:00",
@@ -4497,7 +4497,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4508,7 +4508,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193001",
 									latitude: 52.446691,
-									longitude: 13.524028
+									longitude: 13.524028,
 								},
 								products: {
 									suburban: true,
@@ -4517,11 +4517,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193001"
-								}
+									ifopt: "de:11000:900193001",
+								},
 							},
 							arrival: "2025-12-08T05:15:00+01:00",
 							plannedArrival: "2025-12-08T05:15:00+01:00",
@@ -4534,7 +4534,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4545,7 +4545,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900193002",
 									latitude: 52.435104,
-									longitude: 13.54055
+									longitude: 13.54055,
 								},
 								products: {
 									suburban: true,
@@ -4554,11 +4554,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900193002"
-								}
+									ifopt: "de:11000:900193002",
+								},
 							},
 							arrival: "2025-12-08T05:18:00+01:00",
 							plannedArrival: "2025-12-08T05:18:00+01:00",
@@ -4571,7 +4571,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "3",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "3"
+							plannedDeparturePlatform: "3",
 						},
 						{
 							stop: {
@@ -4582,7 +4582,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900195510",
 									latitude: 52.407795,
-									longitude: 13.559598
+									longitude: 13.559598,
 								},
 								products: {
 									suburban: true,
@@ -4591,11 +4591,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900195510"
-								}
+									ifopt: "de:11000:900195510",
+								},
 							},
 							arrival: "2025-12-08T05:22:00+01:00",
 							plannedArrival: "2025-12-08T05:22:00+01:00",
@@ -4608,7 +4608,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -4619,7 +4619,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900196001",
 									latitude: 52.399543,
-									longitude: 13.54322
+									longitude: 13.54322,
 								},
 								products: {
 									suburban: true,
@@ -4628,11 +4628,11 @@ export const bvgJourneysRawRes = {
 									bus: false,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:11000:900196001"
-								}
+									ifopt: "de:11000:900196001",
+								},
 							},
 							arrival: "2025-12-08T05:25:00+01:00",
 							plannedArrival: "2025-12-08T05:25:00+01:00",
@@ -4645,7 +4645,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -4656,7 +4656,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260005",
 									latitude: 52.390904,
-									longitude: 13.513043
+									longitude: 13.513043,
 								},
 								products: {
 									suburban: true,
@@ -4665,11 +4665,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260005"
-								}
+									ifopt: "de:12061:900260005",
+								},
 							},
 							arrival: "2025-12-08T05:28:00+01:00",
 							plannedArrival: "2025-12-08T05:28:00+01:00",
@@ -4682,7 +4682,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -4693,7 +4693,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260080",
 									latitude: 52.368287,
-									longitude: 13.463432
+									longitude: 13.463432,
 								},
 								products: {
 									suburban: true,
@@ -4702,11 +4702,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: false,
-									regional: false
+									regional: false,
 								},
 								ids: {
-									ifopt: "de:12061:900260080"
-								}
+									ifopt: "de:12061:900260080",
+								},
 							},
 							arrival: "2025-12-08T05:32:00+01:00",
 							plannedArrival: "2025-12-08T05:32:00+01:00",
@@ -4719,7 +4719,7 @@ export const bvgJourneysRawRes = {
 							departureDelay: 0,
 							departurePlatform: "1",
 							departurePrognosisType: "prognosed",
-							plannedDeparturePlatform: "1"
+							plannedDeparturePlatform: "1",
 						},
 						{
 							stop: {
@@ -4730,7 +4730,7 @@ export const bvgJourneysRawRes = {
 									type: "location",
 									id: "900260009",
 									latitude: 52.36461,
-									longitude: 13.50987
+									longitude: 13.50987,
 								},
 								products: {
 									suburban: true,
@@ -4739,11 +4739,11 @@ export const bvgJourneysRawRes = {
 									bus: true,
 									ferry: false,
 									express: true,
-									regional: true
+									regional: true,
 								},
 								ids: {
-									ifopt: "de:12061:900260009"
-								}
+									ifopt: "de:12061:900260009",
+								},
 							},
 							arrival: "2025-12-08T05:36:00+01:00",
 							plannedArrival: "2025-12-08T05:36:00+01:00",
@@ -4761,24 +4761,24 @@ export const bvgJourneysRawRes = {
 								{
 									type: "hint",
 									code: "FK",
-									text: "Fahrradmitnahme möglich (Flughafen BER)"
-								}
-							]
-						}
+									text: "Fahrradmitnahme möglich (Flughafen BER)",
+								},
+							],
+						},
 					],
 					cycle: {
 						min: 1200,
 						max: 1200,
-						nr: 7
-					}
-				}
+						nr: 7,
+					},
+				},
 			],
 			refreshToken:
 				"¶HKI¶T$A=1@O=S+U Berlin Hauptbahnhof@L=900003201@a=128@$A=1@O=Flughafen BER@L=900260009@a=128@$202512080446$202512080536$      S9$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#5#SICT#0#AM#97#AM2#0#RT#7#¶KRCC¶#VE#1#",
 			cycle: {
-				min: 1200
-			}
-		}
+				min: 1200,
+			},
+		},
 	],
-	realtimeDataUpdatedAt: 1765132721
+	realtimeDataUpdatedAt: 1765132721,
 } as Journeys;

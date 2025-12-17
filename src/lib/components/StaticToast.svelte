@@ -14,7 +14,7 @@
 		isVisible = $bindable(true),
 		isCloseButtonHidden = false,
 		text,
-		buttons
+		buttons,
 	}: Props = $props();
 </script>
 

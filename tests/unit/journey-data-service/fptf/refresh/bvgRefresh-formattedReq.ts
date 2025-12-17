@@ -3,6 +3,6 @@ export const bvgRefreshFormattedReq = [
 	{
 		stopovers: true,
 		language: "de",
-		polylines: true
-	}
+		polylines: true,
+	},
 ];

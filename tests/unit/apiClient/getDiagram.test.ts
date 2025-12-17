@@ -9,7 +9,7 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 	timeData: {
 		type: "absolute",
 		time: new Date().toISOString(),
-		scrollDirection: "later"
+		scrollDirection: "later",
 	},
 	filters: {
 		products: {
@@ -22,15 +22,15 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 			tram: true,
 			bus: false, // note: bus is false
 			taxi: true,
-			ferry: false
+			ferry: false,
 		},
 		options: {
 			bike: false, // note: bike is false
 			accessible: true,
 			minTransferTime: 10, // note: minTransferTime is set
-			maxTransfers: 4
-		}
-	}
+			maxTransfers: 4,
+		},
+	},
 };
 
 test(`GET ${route} api client parsing and formatting`, async () => {
@@ -39,7 +39,7 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 		input,
 		{
 			expectedPath: "/de/dbnav/api/diagram",
-			params: {}
+			params: {},
 		},
 		{
 			...input,
@@ -54,16 +54,16 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 					tram: false, // default value, since not in config
 					bus: false, // note: bus is false
 					taxi: false, // default value, since not in config
-					ferry: false
+					ferry: false,
 				},
 				options: {
 					bike: false, // note: bike is false
 					accessible: false, // default value, since not in config
 					minTransferTime: 10, // note: minTransferTime is set
-					maxTransfers: -1 // default value, since not in config
-				}
-			}
-		}
+					maxTransfers: -1, // default value, since not in config
+				},
+			},
+		},
 	);
 });
 
@@ -72,6 +72,6 @@ test(`GET ${route} api client plausible`, async () => {
 
 	await apiClientPlausibleTest(client, input, {
 		goal: "GET /api/diagram",
-		props: { viaCount: 0 }
+		props: { viaCount: 0 },
 	});
 });

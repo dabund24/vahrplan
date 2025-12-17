@@ -34,12 +34,12 @@ export class EmptyProfile extends Profile<"empty"> {
 				journeys: () => void {},
 				refresh: () => void {},
 				location: () => void {},
-				locations: () => void {}
+				locations: () => void {},
 			};
 		})({ productMapping: {}, optionMapping: {}, hasTickets: false });
 		protected override responseParser = new FptfResponseParser({
 			productMapping: {},
-			lineShapeParser: new DbnavLineShapeParser()
+			lineShapeParser: new DbnavLineShapeParser(),
 		});
 		public journeys = (): Promise<VahrplanError> =>
 			Promise.resolve(new VahrplanError("NOT_FOUND"));

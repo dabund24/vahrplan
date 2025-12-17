@@ -26,13 +26,13 @@
 	let asAt = $derived(
 		transitData.location.type === "currentLocation"
 			? transitData.location.asAt
-			: (displayedFormData?.geolocationDate ?? new Date())
+			: (displayedFormData?.geolocationDate ?? new Date()),
 	);
 
 	let locationName = $derived(
 		transitData.location.type === "currentLocation" || transitData.location.name === "Standort"
 			? getGeolocationString(asAt, transitData.location.name)
-			: transitData.location.name
+			: transitData.location.name,
 	);
 
 	let delayTextA = $derived(formatDelay(transitData.time.arrival?.delay));

@@ -73,7 +73,7 @@
 			{@render tool(
 				"Verbindungsdaten",
 				"Hafas via db-vendo-client",
-				"https://github.com/public-transport/db-vendo-client"
+				"https://github.com/public-transport/db-vendo-client",
 			)}
 		</ul>
 		<h3>Frontend</h3>

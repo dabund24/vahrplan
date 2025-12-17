@@ -6,6 +6,6 @@ export const bvgLocationsFormattedReq = [
 		language: "de",
 		linesOfStops: false,
 		poi: true,
-		results: 10
-	}
+		results: 10,
+	},
 ];

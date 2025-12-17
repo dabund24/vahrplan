@@ -4,13 +4,13 @@ import type {
 	ParsedLocation,
 	Product,
 	SubJourney,
-	TimeData
+	TimeData,
 } from "$lib/types";
 import { VahrplanError } from "$lib/VahrplanError";
 import {
 	type UnpackedVahrplanResult,
 	type VahrplanResult,
-	VahrplanSuccess
+	VahrplanSuccess,
 } from "$lib/VahrplanResult";
 import type { OptionId } from "../profiles/profile";
 import { RateLimiter } from "$lib/server/RateLimiter";
@@ -53,7 +53,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	public abstract journeys: (
 		stops: { from: string; to: string },
 		options: { timeData: TimeData; filters: JourneysFilters<ProductT, OptionT> },
-		ctx: Pick<Ctx, "lang">
+		ctx: Pick<Ctx, "lang">,
 	) => Promise<VahrplanResult<JourneyNodesWithRefs>>;
 
 	/**
@@ -62,7 +62,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	 */
 	public abstract refresh: (
 		token: string,
-		ctx: Pick<Ctx, "lang">
+		ctx: Pick<Ctx, "lang">,
 	) => Promise<VahrplanResult<SubJourney>>;
 
 	/**
@@ -71,7 +71,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	 */
 	public abstract locations: (
 		name: string,
-		ctx: Pick<Ctx, "lang">
+		ctx: Pick<Ctx, "lang">,
 	) => Promise<VahrplanResult<ParsedLocation[]>>;
 
 	/**
@@ -80,7 +80,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	 */
 	public abstract location: (
 		token: ParsedLocation["id"],
-		ctx: Pick<Ctx, "lang">
+		ctx: Pick<Ctx, "lang">,
 	) => Promise<VahrplanResult<ParsedLocation>>;
 
 	/**
@@ -96,7 +96,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	protected performRequest = <
 		EndpointT extends keyof JourneyDataService<ProductT, OptionT>,
 		FormattedReqParamsT extends unknown[],
-		UnparsedResT
+		UnparsedResT,
 	>(
 		_endpoint: EndpointT,
 		callbacks: {
@@ -105,7 +105,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 			) => FormattedReqParamsT;
 			request: (...params: FormattedReqParamsT) => Promise<UnparsedResT>;
 			parseRes: (
-				res: UnparsedResT
+				res: UnparsedResT,
 			) => UnpackedVahrplanResult<
 				Awaited<ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]>>
 			>;
@@ -120,8 +120,8 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 					.request(...formattedReqParams)
 					.then(
 						(r) => new VahrplanSuccess(callbacks.parseRes(r)),
-						this.parseError
-					) as ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]> // this assertion is stupid. Why is this necessary ts????
+						this.parseError,
+					) as ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]>, // this assertion is stupid. Why is this necessary ts????
 		);
 		if (res.isError) {
 			return Promise.resolve(new VahrplanError("QUOTA_EXCEEDED")) as ReturnType<

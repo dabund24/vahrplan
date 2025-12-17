@@ -23,7 +23,7 @@
 				type: "function",
 				name: "Suchanfrage teilen",
 				onClick: () => shareDiagram(displayedFormData),
-				icon: iconShare
+				icon: iconShare,
 			},
 			{
 				type: "bookmark",
@@ -32,9 +32,9 @@
 				bookmarkType: "diagram",
 				bookmarkValue: async () => ({
 					formData: displayedFormData,
-					diagramData: await diagramData
-				})
-			}
+					diagramData: await diagramData,
+				}),
+			},
 		];
 
 		if (hasViaRecommendations) {
@@ -42,7 +42,7 @@
 				type: "modal",
 				name: "Auswahl Zwischenstationen",
 				showModalKey: "showRecommendationModal",
-				icon: iconStation
+				icon: iconStation,
 			});
 		}
 

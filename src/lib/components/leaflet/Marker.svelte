@@ -21,14 +21,14 @@
 		type: "station",
 		transitData: data,
 		product1,
-		product2
+		product2,
 	} as PopupDataStation);
 
 	const { getMap }: { getMap: () => L.Map | undefined } = getContext("map");
 	const map = getMap();
 
 	setContext("layer", {
-		getLayer: () => marker
+		getLayer: () => marker,
 	});
 
 	onMount(() => {
@@ -36,11 +36,11 @@
 			let icon = L.divIcon({
 				html: markerElement,
 				className: `product--${product1 ?? product2}`,
-				iconSize: L.point(16, 16)
+				iconSize: L.point(16, 16),
 			});
 			marker = L.marker(data.location.position, {
 				icon,
-				zIndexOffset: data.location.name === "Live-Standort" ? -100000 : 0
+				zIndexOffset: data.location.name === "Live-Standort" ? -100000 : 0,
 			}).addTo(map);
 		}
 	});

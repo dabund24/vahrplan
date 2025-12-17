@@ -18,7 +18,7 @@
 	let { block, isCompact = false }: Props = $props();
 
 	const departureTime = $derived(
-		new Date(block.departureData.time.departure?.time ?? 0).getTime()
+		new Date(block.departureData.time.departure?.time ?? 0).getTime(),
 	);
 	const arrivalTime = $derived(new Date(block.arrivalData.time.arrival?.time ?? 0).getTime());
 </script>

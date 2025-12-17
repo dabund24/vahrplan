@@ -16,8 +16,8 @@ const bookmarkData: BookmarkData<"journey"> = {
 				name: "start",
 				type: "address",
 				id: "startId",
-				position: { lat: 1, lng: 0 }
-			}
+				position: { lat: 1, lng: 0 },
+			},
 		},
 		{
 			key: 1,
@@ -25,14 +25,14 @@ const bookmarkData: BookmarkData<"journey"> = {
 				name: "dest",
 				type: "address",
 				id: "destId",
-				position: { lat: 0, lng: 1 }
-			}
-		}
+				position: { lat: 0, lng: 1 },
+			},
+		},
 	],
 	selectedSubJourneys: [{ refreshToken: "a" } as SubJourney],
 	departure: new Date(1).toISOString(),
 	arrival: new Date(2).toISOString(),
-	statuses: new Set()
+	statuses: new Set(),
 };
 
 const bookmark: Bookmarks["journey"][number] = {
@@ -41,7 +41,7 @@ const bookmark: Bookmarks["journey"][number] = {
 	start: { type: "address", name: "start" },
 	destination: { type: "address", name: "dest" },
 	departure: new Date(1).toISOString(),
-	arrival: new Date(2).toISOString()
+	arrival: new Date(2).toISOString(),
 };
 
 test("format journey bookmark", () => {

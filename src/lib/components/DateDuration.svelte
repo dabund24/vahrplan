@@ -15,8 +15,8 @@
 					weekday: "short",
 					day: "numeric",
 					month: "short",
-					year: "numeric"
-				})
+					year: "numeric",
+				}),
 	);
 </script>
 

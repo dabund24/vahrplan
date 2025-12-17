@@ -12,7 +12,7 @@
 
 	function handleButtonClick(): void {
 		pushState("", {
-			[showModalKey]: true
+			[showModalKey]: true,
 		});
 	}
 </script>

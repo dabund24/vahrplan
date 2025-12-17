@@ -13,8 +13,8 @@ export const GET: RequestHandler = async function (reqEvent) {
 		return client.formatResponse(
 			VahrplanError.withMessage(
 				"NOT_FOUND",
-				"Der angegebene Link ist fehlerhaft oder nicht mehr gültig."
-			)
+				"Der angegebene Link ist fehlerhaft oder nicht mehr gültig.",
+			),
 		);
 	}
 	return client.formatResponse(new VahrplanSuccess(journeyIds));

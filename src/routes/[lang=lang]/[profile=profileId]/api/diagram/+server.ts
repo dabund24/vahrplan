@@ -14,14 +14,14 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const {
 		lang,
 		profile,
-		reqContent: { stops, timeData: timeStart, filters }
+		reqContent: { stops, timeData: timeStart, filters },
 	} = client.parseRequest(reqEvent);
 	const dataService = journeyDataService(profile, lang);
 
 	const journeyColumns = await fetchJourneys(
 		stops,
 		{ timeStart, filters },
-		{ dataService, lang }
+		{ dataService, lang },
 	);
 	if (journeyColumns.isError) {
 		return client.formatResponse(journeyColumns);
@@ -32,7 +32,7 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const tree = buildTree(timeData);
 
 	const transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(
-		subJourneyMatrix.flat()
+		subJourneyMatrix.flat(),
 	);
 
 	const recommendedVias = subJourneyMatrix.map((j) => recommendVias(j));
@@ -47,7 +47,7 @@ export const GET: RequestHandler = async function (reqEvent) {
 		svgData,
 		transferLocations,
 		recommendedVias,
-		isNew
+		isNew,
 	};
 	return client.formatResponse(new VahrplanSuccess(result));
 };

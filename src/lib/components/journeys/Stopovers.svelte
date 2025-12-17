@@ -24,7 +24,7 @@
 	i1: number,
 	progressDepartureTime: number,
 	i2: number,
-	progressArrivalTime: number
+	progressArrivalTime: number,
 )}
 	<div
 		class="train-progress-container"
@@ -47,7 +47,7 @@
 	0,
 	departureTime,
 	1,
-	stopovers.length === 0 ? arrivalTime : getStopoverTime(stopovers[0], "arrival")
+	stopovers.length === 0 ? arrivalTime : getStopoverTime(stopovers[0], "arrival"),
 )}
 
 <ol>
@@ -72,13 +72,13 @@
 				i + 1,
 				thisStopoverArrival,
 				i + 1,
-				thisStopoverDeparture
+				thisStopoverDeparture,
 			)}
 			{@render trainProgressIndicatior(
 				i + 1,
 				thisStopoverDeparture,
 				i + 2,
-				nextStopoverArrival
+				nextStopoverArrival,
 			)}
 			<NameDelayPlatform transitData={stopover} />
 		</li>

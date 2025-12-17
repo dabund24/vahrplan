@@ -7,7 +7,7 @@
 	import {
 		getDisplayedFormData,
 		type DisplayedFormData,
-		updateDisplayedLocations
+		updateDisplayedLocations,
 	} from "$lib/state/displayedFormData.svelte.js";
 	import type { RecommendedVia } from "../api/diagram/viaRecommendations.server";
 
@@ -32,7 +32,7 @@
 
 	function initSuggestedLocations(
 		displayedFormData: DisplayedFormData | undefined,
-		recommendedVias: RecommendedVia[][]
+		recommendedVias: RecommendedVia[][],
 	): typeof suggestedLocations {
 		if (displayedFormData === undefined) {
 			return [];
@@ -43,30 +43,30 @@
 			(subJourneyRecommendations) =>
 				subJourneyRecommendations.map((subJourneyRecommendation) => ({
 					value: subJourneyRecommendation,
-					key: Math.random()
-				}))
+					key: Math.random(),
+				})),
 		);
 		for (let i = 0; i < viaRecommendations.length; i++) {
 			suggestions.push({
 				location: displayedFormData.locations[i],
 				isSelected: true,
-				isDisplayed: true
+				isDisplayed: true,
 			});
 			suggestions.push(
 				...viaRecommendations[i].map((viaRecommendation) => ({
 					location: {
 						key: viaRecommendation.key,
-						value: viaRecommendation.value.location
+						value: viaRecommendation.value.location,
 					},
 					isSelected: false,
-					isDisplayed: false
-				}))
+					isDisplayed: false,
+				})),
 			);
 		}
 		suggestions.push({
 			location: displayedFormData.locations[displayedFormData.locations.length - 1],
 			isSelected: true,
-			isDisplayed: true
+			isDisplayed: true,
 		});
 
 		return suggestions;
@@ -81,7 +81,7 @@
 		}
 
 		updateDisplayedLocations(() =>
-			suggestedLocations.filter((l) => l.isSelected).map((l) => l.location)
+			suggestedLocations.filter((l) => l.isSelected).map((l) => l.location),
 		);
 	}
 </script>

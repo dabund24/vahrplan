@@ -95,7 +95,7 @@ export type Product =
 
 export type JourneysFilters<
 	ProductT extends Product = Product,
-	OptionT extends OptionId = OptionId
+	OptionT extends OptionId = OptionId,
 > = {
 	products: Record<ProductT, boolean>;
 	options: { [K in OptionT]: PossibleOptionValues<K> };

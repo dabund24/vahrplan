@@ -11,7 +11,7 @@ export class DbnavTicketUrlParser extends TicketUrlParser {
 		subJourneyData: Pick<
 			SubJourney,
 			"refreshToken" | "departureTime" | "arrivalTime" | "blocks"
-		>
+		>,
 	): string => {
 		const { blocks, departureTime, refreshToken } = subJourneyData;
 		const startName = getBlockStart(blocks.at(0))?.name ?? "";

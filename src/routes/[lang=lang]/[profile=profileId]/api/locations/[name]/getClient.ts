@@ -16,10 +16,10 @@ export class GetLocationsApiClient extends PathParamSettable<
 
 	protected override formatUrlPath = (
 		content: string,
-		{ apiPathBase }: Pick<Ctx, "apiPathBase">
+		{ apiPathBase }: Pick<Ctx, "apiPathBase">,
 	): `${Ctx["apiPathBase"]}${string}` => `${apiPathBase}locations/${encodeURIComponent(content)}`;
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): string => reqEvent.params.name;
 }

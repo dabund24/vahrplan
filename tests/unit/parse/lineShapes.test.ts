@@ -9,8 +9,8 @@ vi.mock("$app/server", async () => {
 	const fs = await import("fs");
 	return {
 		read: (): object => ({
-			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes.csv").toString()
-		})
+			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes.csv").toString(),
+		}),
 	};
 });
 
@@ -25,7 +25,7 @@ test("line shapes first entry", () => {
 		productName: "ag",
 		mode: "train",
 		product: "regional",
-		operator: { type: "operator", id: "agilis", name: "agilis" }
+		operator: { type: "operator", id: "agilis", name: "agilis" },
 	} as const;
 	const expected = {
 		linePrefix: "ag",
@@ -33,7 +33,7 @@ test("line shapes first entry", () => {
 		backgroundColor: "#24b27d",
 		textColor: "#ffffff",
 		borderColor: undefined,
-		shape: "rectangle"
+		shape: "rectangle",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
@@ -50,7 +50,7 @@ test("line shapes last entry", () => {
 		productName: "STR",
 		mode: "train",
 		product: "tram",
-		operator: undefined
+		operator: undefined,
 	} as const;
 	const expected = {
 		linePrefix: "STR",
@@ -58,7 +58,7 @@ test("line shapes last entry", () => {
 		backgroundColor: "#67b337",
 		textColor: "#ffffff",
 		borderColor: undefined,
-		shape: "rectangle"
+		shape: "rectangle",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
@@ -80,8 +80,8 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "db-regio-ag-mitte-suwex",
-					name: "DB Regio AG Mitte SÜWEX"
-				}
+					name: "DB Regio AG Mitte SÜWEX",
+				},
 			},
 			expected: {
 				linePrefix: undefined,
@@ -89,8 +89,8 @@ test("line shapes all RE 1", () => {
 				backgroundColor: "#be1b40",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle-rounded-corner"
-			}
+				shape: "rectangle-rounded-corner",
+			},
 		},
 		{
 			hafasLine: {
@@ -106,8 +106,8 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "db-regio-ag-nordost",
-					name: "DB Regio AG Nordost"
-				}
+					name: "DB Regio AG Nordost",
+				},
 			},
 			expected: {
 				linePrefix: undefined,
@@ -115,8 +115,8 @@ test("line shapes all RE 1", () => {
 				backgroundColor: "#108449",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle"
-			}
+				shape: "rectangle",
+			},
 		},
 		{
 			hafasLine: {
@@ -132,8 +132,8 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "ostdeutsche-eisenbahn-gmbh",
-					name: "Ostdeutsche Eisenbahn GmbH"
-				}
+					name: "Ostdeutsche Eisenbahn GmbH",
+				},
 			},
 			expected: {
 				linePrefix: undefined,
@@ -141,8 +141,8 @@ test("line shapes all RE 1", () => {
 				backgroundColor: "#e2001a",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle"
-			}
+				shape: "rectangle",
+			},
 		},
 		{
 			hafasLine: {
@@ -158,8 +158,8 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "trilex-express-die-landerbahn-gmbh-dlb",
-					name: "trilex-express - Die Länderbahn GmbH DLB"
-				}
+					name: "trilex-express - Die Länderbahn GmbH DLB",
+				},
 			},
 			expected: {
 				linePrefix: "TLX",
@@ -167,8 +167,8 @@ test("line shapes all RE 1", () => {
 				backgroundColor: "#e97b3b",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle-rounded-corner"
-			}
+				shape: "rectangle-rounded-corner",
+			},
 		},
 		{
 			hafasLine: {
@@ -184,16 +184,16 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "arverio-baden-wurttemberg",
-					name: "Arverio Baden-Württemberg"
-				}
+					name: "Arverio Baden-Württemberg",
+				},
 			},
 			expected: {
 				lineName: "RE 1",
 				backgroundColor: "#88c946",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle"
-			}
+				shape: "rectangle",
+			},
 		},
 		{
 			hafasLine: {
@@ -209,16 +209,16 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "db-regio-ag-bayern",
-					name: "DB Regio AG Bayern"
-				}
+					name: "DB Regio AG Bayern",
+				},
 			},
 			expected: {
 				lineName: "RE 1",
 				backgroundColor: "#e50000",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle"
-			}
+				shape: "rectangle",
+			},
 		},
 		{
 			hafasLine: {
@@ -234,17 +234,17 @@ test("line shapes all RE 1", () => {
 				operator: {
 					type: "operator",
 					id: "national-express",
-					name: "National Express"
-				}
+					name: "National Express",
+				},
 			},
 			expected: {
 				lineName: "RE 1",
 				backgroundColor: "#ff2d16",
 				textColor: "#ffffff",
 				borderColor: undefined,
-				shape: "rectangle-rounded-corner"
-			}
-		}
+				shape: "rectangle-rounded-corner",
+			},
+		},
 	];
 	for (const { hafasLine, expected } of values) {
 		const actual = lineShapeParser.getLineShape(hafasLine);
@@ -263,7 +263,7 @@ test("line shapes Bus X660", () => {
 		productName: "Bus",
 		mode: "bus",
 		product: "bus",
-		operator: undefined
+		operator: undefined,
 	} as const;
 	const expected = {
 		linePrefix: "Bus",
@@ -271,7 +271,7 @@ test("line shapes Bus X660", () => {
 		backgroundColor: "#8e5c2e",
 		textColor: "#ffffff",
 		borderColor: undefined,
-		shape: "rectangle"
+		shape: "rectangle",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);
@@ -288,14 +288,14 @@ test.skip("line shapes Rufbus N4", () => {
 		productName: "RUF",
 		mode: "taxi",
 		product: "taxi",
-		operator: undefined
+		operator: undefined,
 	} as const;
 	const expected = {
 		lineName: "Rufbus N4",
 		backgroundColor: "#000000",
 		textColor: "#ffffff",
 		borderColor: undefined,
-		shape: "pill"
+		shape: "pill",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
 	expect(actual).toEqual(expected);

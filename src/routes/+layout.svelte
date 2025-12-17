@@ -19,7 +19,7 @@
 		const loadingId = startLoading(2);
 		navigation.complete.then(
 			() => stopLoading(loadingId, false),
-			() => stopLoading(loadingId, true)
+			() => stopLoading(loadingId, true),
 		);
 	});
 

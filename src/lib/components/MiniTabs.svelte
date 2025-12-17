@@ -19,8 +19,8 @@
 		tabs.map((tab) => ({
 			title: tab.title,
 			icon: tab.icon,
-			type: "icon"
-		}))
+			type: "icon",
+		})),
 	);
 
 	let activeTab = $derived(startingTab);

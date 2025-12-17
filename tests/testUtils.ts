@@ -7,11 +7,11 @@ export const exampleProfileConfig: ProfileConfig = {
 	supportedLanguages: ["de"],
 	products: {
 		longDistanceExpress: {
-			name: "InterCityExpress"
+			name: "InterCityExpress",
 		},
 		bus: {
-			name: "Bus"
-		}
+			name: "Bus",
+		},
 	},
 	options: {
 		minTransferTime: {
@@ -20,40 +20,40 @@ export const exampleProfileConfig: ProfileConfig = {
 			defaultValue: 0,
 			optionNames: {
 				"0": {
-					name: "0min"
+					name: "0min",
 				},
 				"2": {
-					name: "2min"
+					name: "2min",
 				},
 				"5": {
-					name: "5min"
+					name: "5min",
 				},
 				"10": {
-					name: "10min"
+					name: "10min",
 				},
 				"15": {
-					name: "15min"
+					name: "15min",
 				},
 				"20": {
-					name: "20min"
+					name: "20min",
 				},
 				"30": {
-					name: "30min"
+					name: "30min",
 				},
 				"40": {
-					name: "40min"
+					name: "40min",
 				},
 				"50": {
-					name: "50min"
+					name: "50min",
 				},
 				"60": {
-					name: "1h"
-				}
-			}
+					name: "1h",
+				},
+			},
 		},
 		bike: {
 			name: "Fahrradmitnahme",
-			defaultValue: false
-		}
-	}
+			defaultValue: false,
+		},
+	},
 };

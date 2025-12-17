@@ -1,7 +1,7 @@
 import { Profile } from "../profile";
 import {
 	FptfDataService,
-	type FptfOptionId
+	type FptfOptionId,
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import { createClient } from "hafas-client";
 import { profile } from "hafas-client/p/bvg";
@@ -28,13 +28,13 @@ export class BvgProfile extends Profile<
 		subway: { name: { de: "U-Bahn" } },
 		tram: { name: { de: "Straßenbahn" } },
 		bus: { name: { de: "Bus" } },
-		ferry: { name: { de: "Fähre" } }
+		ferry: { name: { de: "Fähre" } },
 	};
 	protected override readonly options = {
 		bike: {},
 		accessible: {},
 		maxTransfers: {},
-		minTransferTime: {}
+		minTransferTime: {},
 	};
 
 	protected override readonly journeyDataService = new FptfDataService({
@@ -46,9 +46,9 @@ export class BvgProfile extends Profile<
 			subway: "subway",
 			tram: "tram",
 			bus: "bus",
-			ferry: "ferry"
+			ferry: "ferry",
 		},
 		lineShapeParser: new HafasClientLineShapeParser(),
-		hasTickets: false
+		hasTickets: false,
 	});
 }

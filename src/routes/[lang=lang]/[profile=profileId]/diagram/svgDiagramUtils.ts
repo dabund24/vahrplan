@@ -2,7 +2,7 @@ import type {
 	BlockSvgData,
 	SubJourneySvgData,
 	SvgData,
-	SvgPosition
+	SvgPosition,
 } from "$lib/server/svgData/svgData.server";
 import { timeToString } from "$lib/util";
 import { MINUTE_IN_MS } from "$lib/constants";
@@ -10,7 +10,7 @@ import { MINUTE_IN_MS } from "$lib/constants";
 export function svgJourneyToPolylinePoints(
 	journey: SubJourneySvgData,
 	minTime: number,
-	columnIndex: number
+	columnIndex: number,
 ): string {
 	const journeyStartPoint = formatSvgPoint(journey.blocks[0].start, columnIndex, minTime);
 	return journey.blocks.reduce((acc, block) => {
@@ -23,7 +23,7 @@ export function svgJourneyToPolylinePoints(
 export function svgBlockToPolylinePoints(
 	block: BlockSvgData,
 	columnIndex: number,
-	minTime: number
+	minTime: number,
 ): string {
 	const blockStartPoint = formatSvgPoint(block.start, columnIndex, minTime);
 	const stopoverString = svgStopoversToPolylinePoints(block, columnIndex, minTime);
@@ -34,7 +34,7 @@ export function svgBlockToPolylinePoints(
 function svgStopoversToPolylinePoints(
 	block: BlockSvgData,
 	columnIndex: number,
-	minTime: number
+	minTime: number,
 ): string {
 	if (block.type !== "leg") {
 		return "";
@@ -60,7 +60,7 @@ export type TimeMark = {
 export function* timeMarkIt(
 	timeMarksData: SvgData["timeMarksData"],
 	minTime: number,
-	maxTime: number
+	maxTime: number,
 ): Generator<TimeMark> {
 	// time marks earlier than `firstTimeMark`
 	for (let t = timeMarksData.firstTimeMark; t >= minTime; t -= timeMarksData.timeMarkInterval) {

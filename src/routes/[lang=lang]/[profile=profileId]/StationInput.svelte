@@ -19,7 +19,7 @@
 	let {
 		selectedLocation = $bindable(undefined),
 		inputPlaceholder,
-		stationInputId
+		stationInputId,
 	}: Props = $props();
 
 	let inputText = $derived(selectedLocation?.name ?? "");
@@ -31,19 +31,19 @@
 
 	let bookmarkedLocations: ParsedLocation[] = $derived([
 		getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
-		...getBookmarks("location").filter(({ profile }) => profile === page.data.profileConfig.id)
+		...getBookmarks("location").filter(({ profile }) => profile === page.data.profileConfig.id),
 	]);
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
-		getApiSuggestionsFromInput(inputText.trim())
+		getApiSuggestionsFromInput(inputText.trim()),
 	);
 	let suggestions = $derived.by(async () => {
 		const bookmarkSuggestions = bookmarkedLocations.filter((suggestion) =>
-			suggestion.name.toLowerCase().startsWith(inputText.trim().toLowerCase())
+			suggestion.name.toLowerCase().startsWith(inputText.trim().toLowerCase()),
 		);
 		const filteredApiSuggestions = await apiSuggestions.then((unfilteredSuggestions) =>
 			unfilteredSuggestions.filter((suggestion) =>
-				bookmarkSuggestions.every((s) => s.name !== suggestion.name)
-			)
+				bookmarkSuggestions.every((s) => s.name !== suggestion.name),
+			),
 		);
 		return [...bookmarkSuggestions, ...filteredApiSuggestions];
 	});

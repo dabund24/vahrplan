@@ -14,17 +14,17 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.521508,
-						lng: 13.411267
-					}
+						lng: 13.411267,
+					},
 				},
 				attribute: "cancelled",
 				time: {
 					departure: {
 						time: new Date("2025-12-07T21:00:00.000Z"),
-						status: "cancelled"
-					}
+						status: "cancelled",
+					},
 				},
-				platformData: null
+				platformData: null,
 			},
 			arrivalData: {
 				location: {
@@ -33,17 +33,17 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.486954,
-						lng: 13.424724
-					}
+						lng: 13.424724,
+					},
 				},
 				attribute: "cancelled",
 				time: {
 					arrival: {
 						time: new Date("2025-12-07T21:10:00.000Z"),
-						status: "cancelled"
-					}
+						status: "cancelled",
+					},
 				},
-				platformData: null
+				platformData: null,
 			},
 			duration: 10,
 			direction: "Hermannstraße",
@@ -53,7 +53,7 @@ export const bvgRefreshParsedRes = {
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
 				min: 600,
-				max: 600
+				max: 600,
 			},
 			tripNumber: "21817",
 			info: {
@@ -62,15 +62,15 @@ export const bvgRefreshParsedRes = {
 					"U 8: Die Linie fährt aufgrund eines Polizei-Einsatzes nicht zwischen U Bernauer Straße und U Hermannplatz. Bitte nutzen Sie die umliegenden Bus und U-Bahnlinien.",
 					"U8: Fällt aus",
 					"Halt entfällt",
-					"Halt entfällt"
+					"Halt entfällt",
 				],
 				hints: [
 					"Fahrradmitnahme möglich (S+U Alexanderplatz Bhf (Berlin))",
 					"Fahrradmitnahme möglich (U Hermannplatz (Berlin))",
 					"Betreiber: Berliner Verkehrsbetriebe",
 					"Fährt alle 10 Minuten",
-					"Fahrtnummer: 21817"
-				]
+					"Fahrtnummer: 21817",
+				],
 			},
 			currentLocation: {
 				type: "currentLocation",
@@ -78,9 +78,9 @@ export const bvgRefreshParsedRes = {
 				id: '{"type":"location"}',
 				position: {
 					lat: 52.564602,
-					lng: 13.363813
+					lng: 13.363813,
 				},
-				asAt: new Date(69)
+				asAt: new Date(69),
 			},
 			stopovers: [
 				{
@@ -90,21 +90,21 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.515503,
-							lng: 13.418027
-						}
+							lng: 13.418027,
+						},
 					},
 					attribute: "cancelled",
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:02:00.000Z"),
-							status: "cancelled"
+							status: "cancelled",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:02:00.000Z"),
-							status: "cancelled"
-						}
+							status: "cancelled",
+						},
 					},
-					platformData: null
+					platformData: null,
 				},
 				{
 					location: {
@@ -113,21 +113,21 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.510559,
-							lng: 13.416122
-						}
+							lng: 13.416122,
+						},
 					},
 					attribute: "cancelled",
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:03:00.000Z"),
-							status: "cancelled"
+							status: "cancelled",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:03:00.000Z"),
-							status: "cancelled"
-						}
+							status: "cancelled",
+						},
 					},
-					platformData: null
+					platformData: null,
 				},
 				{
 					location: {
@@ -136,21 +136,21 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.503737,
-							lng: 13.410944
-						}
+							lng: 13.410944,
+						},
 					},
 					attribute: "cancelled",
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:05:00.000Z"),
-							status: "cancelled"
+							status: "cancelled",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:05:00.000Z"),
-							status: "cancelled"
-						}
+							status: "cancelled",
+						},
 					},
-					platformData: null
+					platformData: null,
 				},
 				{
 					location: {
@@ -159,21 +159,21 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.499044,
-							lng: 13.417749
-						}
+							lng: 13.417749,
+						},
 					},
 					attribute: "cancelled",
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:07:00.000Z"),
-							status: "cancelled"
+							status: "cancelled",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:07:00.000Z"),
-							status: "cancelled"
-						}
+							status: "cancelled",
+						},
 					},
-					platformData: null
+					platformData: null,
 				},
 				{
 					location: {
@@ -182,22 +182,22 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.493345,
-							lng: 13.421911
-						}
+							lng: 13.421911,
+						},
 					},
 					attribute: "cancelled",
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:08:00.000Z"),
-							status: "cancelled"
+							status: "cancelled",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:08:00.000Z"),
-							status: "cancelled"
-						}
+							status: "cancelled",
+						},
 					},
-					platformData: null
-				}
+					platformData: null,
+				},
 			],
 			polyline: [
 				[52.52151, 13.41127],
@@ -227,9 +227,9 @@ export const bvgRefreshParsedRes = {
 				[52.48822, 13.42499],
 				[52.48777, 13.42501],
 				[52.48648, 13.42433],
-				[52.48696, 13.42472]
+				[52.48696, 13.42472],
 			],
-			succeededBy: "transfer"
+			succeededBy: "transfer",
 		},
 		{
 			type: "transfer",
@@ -241,30 +241,30 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.486954,
-						lng: 13.424724
-					}
+						lng: 13.424724,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-12-07T21:10:00.000Z"),
-						status: "cancelled"
+						status: "cancelled",
 					},
 					departure: {
 						time: new Date("2025-12-07T21:16:00.000Z"),
 						delay: 1,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				attribute: "cancelled",
 				platformData: null,
 				platformData2: {
 					platform: "1 (U7)",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalProduct: "subway",
 			departureProduct: "subway",
-			isStopover: false
+			isStopover: false,
 		},
 		{
 			type: "leg",
@@ -277,20 +277,20 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.486954,
-						lng: 13.424724
-					}
+						lng: 13.424724,
+					},
 				},
 				time: {
 					departure: {
 						time: new Date("2025-12-07T21:16:00.000Z"),
 						delay: 1,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "1 (U7)",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalData: {
 				location: {
@@ -299,20 +299,20 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.415714,
-						lng: 13.49653
-					}
+						lng: 13.49653,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-12-07T21:34:00.000Z"),
 						delay: 1,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "2",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			duration: 18,
 			direction: "Rudow",
@@ -322,7 +322,7 @@ export const bvgRefreshParsedRes = {
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
 				min: 600,
-				max: 600
+				max: 600,
 			},
 			tripNumber: "20374",
 			info: {
@@ -332,8 +332,8 @@ export const bvgRefreshParsedRes = {
 					"Fahrradmitnahme möglich (U Rudow (Berlin))",
 					"Betreiber: Berliner Verkehrsbetriebe",
 					"Fährt alle 10 Minuten",
-					"Fahrtnummer: 20374"
-				]
+					"Fahrtnummer: 20374",
+				],
 			},
 			currentLocation: {
 				type: "currentLocation",
@@ -341,9 +341,9 @@ export const bvgRefreshParsedRes = {
 				id: '{"type":"location"}',
 				position: {
 					lat: 52.526263,
-					lng: 13.304808
+					lng: 13.304808,
 				},
-				asAt: new Date(69)
+				asAt: new Date(69),
 			},
 			stopovers: [
 				{
@@ -353,25 +353,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.481147,
-							lng: 13.43481
-						}
+							lng: 13.43481,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:18:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:18:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -380,25 +380,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.476427,
-							lng: 13.439808
-						}
+							lng: 13.439808,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:19:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:19:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -407,25 +407,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.469137,
-							lng: 13.442011
-						}
+							lng: 13.442011,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:21:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:21:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -434,25 +434,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.463519,
-							lng: 13.444824
-						}
+							lng: 13.444824,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:22:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:22:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -461,25 +461,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.452741,
-							lng: 13.448977
-						}
+							lng: 13.448977,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:24:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:24:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -488,25 +488,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.445298,
-							lng: 13.449966
-						}
+							lng: 13.449966,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:25:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:25:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -515,25 +515,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.437073,
-							lng: 13.447665
-						}
+							lng: 13.447665,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:27:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:27:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -542,25 +542,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.429252,
-							lng: 13.453849
-						}
+							lng: 13.453849,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:28:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:28:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -569,25 +569,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.424649,
-							lng: 13.463108
-						}
+							lng: 13.463108,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:30:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:30:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -596,25 +596,25 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.423148,
-							lng: 13.474821
-						}
+							lng: 13.474821,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:31:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:31:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -623,26 +623,26 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.423031,
-							lng: 13.484368
-						}
+							lng: 13.484368,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:32:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:32:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
-				}
+						platformChanged: false,
+					},
+				},
 			],
 			polyline: [
 				[52.48696, 13.42472],
@@ -688,10 +688,10 @@ export const bvgRefreshParsedRes = {
 				[52.4235, 13.48231],
 				[52.42328, 13.48371],
 				[52.41637, 13.49509],
-				[52.41572, 13.49653]
+				[52.41572, 13.49653],
 			],
 			precededBy: "transfer",
-			succeededBy: "transfer"
+			succeededBy: "transfer",
 		},
 		{
 			type: "transfer",
@@ -703,33 +703,33 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.415714,
-						lng: 13.49653
-					}
+						lng: 13.49653,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-12-07T21:34:00.000Z"),
 						delay: 1,
-						status: "on-time"
+						status: "on-time",
 					},
 					departure: {
 						time: new Date("2025-12-07T21:37:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "2",
-					platformChanged: false
+					platformChanged: false,
 				},
 				platformData2: {
 					platform: "Pos. 1",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalProduct: "subway",
 			departureProduct: "bus",
-			isStopover: false
+			isStopover: false,
 		},
 		{
 			type: "leg",
@@ -742,20 +742,20 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.415714,
-						lng: 13.49653
-					}
+						lng: 13.49653,
+					},
 				},
 				time: {
 					departure: {
 						time: new Date("2025-12-07T21:37:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "Pos. 1",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalData: {
 				location: {
@@ -764,20 +764,20 @@ export const bvgRefreshParsedRes = {
 					type: "station",
 					position: {
 						lat: 52.36461,
-						lng: 13.50987
-					}
+						lng: 13.50987,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-12-07T21:50:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "Pos. A6",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			duration: 13,
 			direction: "Flughafen BER",
@@ -787,7 +787,7 @@ export const bvgRefreshParsedRes = {
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
 				min: 600,
-				max: 1860
+				max: 1860,
 			},
 			tripNumber: "170757",
 			info: {
@@ -795,8 +795,8 @@ export const bvgRefreshParsedRes = {
 				hints: [
 					"Betreiber: Berliner Verkehrsbetriebe",
 					"Fährt alle 10 bis 31 Minuten",
-					"Fahrtnummer: 170757"
-				]
+					"Fahrtnummer: 170757",
+				],
 			},
 			stopovers: [
 				{
@@ -806,23 +806,23 @@ export const bvgRefreshParsedRes = {
 						type: "station",
 						position: {
 							lat: 52.404235,
-							lng: 13.51085
-						}
+							lng: 13.51085,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-12-07T21:40:00.000Z"),
 							delay: 0,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-12-07T21:40:00.000Z"),
 							delay: 0,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
-					platformData: null
-				}
+					platformData: null,
+				},
 			],
 			polyline: [
 				[52.41572, 13.49653],
@@ -863,21 +863,21 @@ export const bvgRefreshParsedRes = {
 				[52.36651, 13.5087],
 				[52.36635, 13.50875],
 				[52.3643, 13.51004],
-				[52.36461, 13.50987]
+				[52.36461, 13.50987],
 			],
-			precededBy: "transfer"
-		}
+			precededBy: "transfer",
+		},
 	],
 	arrivalTime: {
 		time: new Date("2025-12-07T21:50:00.000Z"),
 		delay: 0,
-		status: "on-time"
+		status: "on-time",
 	},
 	departureTime: {
 		time: new Date("2025-12-07T21:00:00.000Z"),
-		status: "cancelled"
+		status: "cancelled",
 	},
 	ticketData: {
-		currency: "EUR"
-	}
+		currency: "EUR",
+	},
 };

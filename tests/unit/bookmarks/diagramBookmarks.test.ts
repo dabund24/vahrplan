@@ -17,8 +17,8 @@ const bookmarkData: BookmarkData<"diagram"> = {
 					id: "bodacious",
 					type: "station",
 					position: { lat: 99, lng: 101 },
-					name: "Waaa"
-				}
+					name: "Waaa",
+				},
 			},
 			{
 				key: 1,
@@ -26,9 +26,9 @@ const bookmarkData: BookmarkData<"diagram"> = {
 					id: "serendipitous",
 					type: "poi",
 					position: { lat: 99, lng: 101 },
-					name: "Weee"
-				}
-			}
+					name: "Weee",
+				},
+			},
 		],
 		filters: {
 			products: {
@@ -41,39 +41,39 @@ const bookmarkData: BookmarkData<"diagram"> = {
 				tram: false,
 				bus: false,
 				taxi: false,
-				ferry: false
+				ferry: false,
 			},
 			options: {
 				bike: false,
 				maxTransfers: 0,
 				minTransferTime: 0,
-				accessible: false
-			}
+				accessible: false,
+			},
 		},
 		timeData: { time: new Date(69).toISOString(), type: "absolute", scrollDirection: "later" },
 		geolocationDate: new Date(68),
-		profileConfig: exampleProfileConfig
+		profileConfig: exampleProfileConfig,
 	},
 	diagramData: {
 		columns: [
 			{
 				journeys: [
 					{ departureTime: { time: new Date(95).toISOString() } } as SubJourney,
-					{ departureTime: { time: new Date(100).toISOString() } } as SubJourney
+					{ departureTime: { time: new Date(100).toISOString() } } as SubJourney,
 				],
 				earlierRef: "",
-				laterRef: ""
+				laterRef: "",
 			},
 			{
 				journeys: [
 					{ arrivalTime: { time: new Date(196).toISOString() } } as SubJourney,
-					{ arrivalTime: { time: new Date(420).toISOString() } } as SubJourney
+					{ arrivalTime: { time: new Date(420).toISOString() } } as SubJourney,
 				],
 				earlierRef: "",
-				laterRef: ""
-			}
-		]
-	} as DiagramData
+				laterRef: "",
+			},
+		],
+	} as DiagramData,
 };
 
 const bookmark: Bookmarks["diagram"][number] = {
@@ -81,13 +81,13 @@ const bookmark: Bookmarks["diagram"][number] = {
 	profile: "dbnav",
 	stops: [
 		{ type: "station", name: "Waaa" },
-		{ type: "poi", name: "Weee" }
+		{ type: "poi", name: "Weee" },
 	],
 	time: new Date(69).toISOString(),
 	departure: new Date(69).toISOString(),
 	arrival: new Date(420).toISOString(),
 	scrollDirection: "later",
-	type: "absolute"
+	type: "absolute",
 };
 
 test("format diagram bookmark", () => {

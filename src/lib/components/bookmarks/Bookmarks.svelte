@@ -10,14 +10,14 @@
 	import IconOptions from "$lib/components/icons/IconOptions.svelte";
 
 	function splitBookmarksByDate<T extends "diagram" | "journey">(
-		bookmarks: Bookmarks[T]
+		bookmarks: Bookmarks[T],
 	): { future: Bookmarks[T]; past: Bookmarks[T] } {
 		const now = new Date().getTime();
 		return {
 			past: bookmarks.filter((b) => new Date(b.arrival ?? 0).getTime() < now) as Bookmarks[T],
 			future: bookmarks.filter(
-				(b) => new Date(b.arrival ?? 0).getTime() >= now
-			) as Bookmarks[T]
+				(b) => new Date(b.arrival ?? 0).getTime() >= now,
+			) as Bookmarks[T],
 		};
 	}
 
@@ -27,7 +27,7 @@
 	)[];
 	function mergeBookmarksByType(
 		diagramBookmarks: Bookmarks["diagram"],
-		journeyBookmarks: Bookmarks["journey"]
+		journeyBookmarks: Bookmarks["journey"],
 	): BookmarkList {
 		let journeyBookmarkIndex = 0;
 		return [
@@ -36,12 +36,12 @@
 					journeyBookmarkIndex < journeyBookmarks.length &&
 					(dateDifference(
 						diagramBookmark?.departure ?? diagramBookmark.time,
-						journeyBookmarks[journeyBookmarkIndex].departure
+						journeyBookmarks[journeyBookmarkIndex].departure,
 					) ?? 0) < 0
 				) {
 					acc.push({
 						type: "journey",
-						bookmark: journeyBookmarks[journeyBookmarkIndex++]
+						bookmark: journeyBookmarks[journeyBookmarkIndex++],
 					});
 				}
 				acc.push({ type: "diagram", bookmark: diagramBookmark });
@@ -49,22 +49,22 @@
 			}, [] as BookmarkList),
 			...journeyBookmarks
 				.slice(journeyBookmarkIndex)
-				.map((bookmark) => ({ type: "journey", bookmark }) as const)
+				.map((bookmark) => ({ type: "journey", bookmark }) as const),
 		];
 	}
 
 	const splitDiagramBookmarks = $derived(
-		splitBookmarksByDate<"diagram">(getBookmarks("diagram"))
+		splitBookmarksByDate<"diagram">(getBookmarks("diagram")),
 	);
 	const splitJourneyBookmarks = $derived(
-		splitBookmarksByDate<"journey">(getBookmarks("journey"))
+		splitBookmarksByDate<"journey">(getBookmarks("journey")),
 	);
 
 	const pastBookmarks = $derived(
-		mergeBookmarksByType(splitDiagramBookmarks.past, splitJourneyBookmarks.past).reverse()
+		mergeBookmarksByType(splitDiagramBookmarks.past, splitJourneyBookmarks.past).reverse(),
 	);
 	const futureBookmarks = $derived(
-		mergeBookmarksByType(splitDiagramBookmarks.future, splitJourneyBookmarks.future)
+		mergeBookmarksByType(splitDiagramBookmarks.future, splitJourneyBookmarks.future),
 	);
 </script>
 

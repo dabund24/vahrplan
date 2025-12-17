@@ -7,10 +7,10 @@ export const load: LayoutLoad = async ({ params: { lang, profile }, fetch }) => 
 	const { content: profileConfig } = (
 		await profileApiClient.request(
 			{ lang, profile },
-			{ fetchFn: fetch, lang, profileConfig: EMPTY_PROFILE }
+			{ fetchFn: fetch, lang, profileConfig: EMPTY_PROFILE },
 		)
 	).throwIfError();
 	return {
-		profileConfig
+		profileConfig,
 	};
 };

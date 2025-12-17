@@ -16,7 +16,7 @@ export function buildTree(columns: Record<TransitType, string>[][]): TreeNode[] 
 
 	return getTreeFromNodeArrays(columns, new Date(MAX_DATE).toISOString(), {
 		depth: 0,
-		progressInDepths
+		progressInDepths,
 	});
 }
 
@@ -29,7 +29,7 @@ export function buildTree(columns: Record<TransitType, string>[][]): TreeNode[] 
 function getTreeFromNodeArrays(
 	columns: Record<TransitType, string>[][],
 	includeUntil: string,
-	recursionInfo: RecursionInfo
+	recursionInfo: RecursionInfo,
 ): TreeNode[] {
 	const depth = recursionInfo.depth;
 	const progressInDepths = recursionInfo.progressInDepths;
@@ -61,14 +61,14 @@ function getTreeFromNodeArrays(
 				timeData: columns[depth][progressInDepths[depth]],
 				columnIndex: depth,
 				rowIndex: progressInDepths[depth],
-				children: []
+				children: [],
 			};
 			// const nodeJourney = subJourneyss[depth][progressInDepths[depth]];
 			// nodeToBeIncluded = fetchedJourneyToNode(nodeJourney, recursionInfo);
 		}
 		nodeToBeIncluded.children = getTreeFromNodeArrays(columns, nextArrival, {
 			depth: depth + 1,
-			progressInDepths
+			progressInDepths,
 		});
 		nodesToBeIncluded.push(nodeToBeIncluded);
 		progressInDepths[depth]++;
@@ -79,7 +79,7 @@ function getTreeFromNodeArrays(
 export function subJourneyToNodeData(subJourney: SubJourney): Record<TransitType, string> {
 	return {
 		departure: subJourney.departureTime?.time ?? new Date(0).toISOString(),
-		arrival: subJourney.arrivalTime?.time ?? new Date(MAX_DATE).toISOString()
+		arrival: subJourney.arrivalTime?.time ?? new Date(MAX_DATE).toISOString(),
 	};
 }
 
@@ -87,7 +87,7 @@ export function unfoldTree(tree: TreeNode[], columnCount: number): Record<Transi
 	return unfoldTreeRec(
 		tree,
 		0,
-		Array.from({ length: columnCount }, () => [])
+		Array.from({ length: columnCount }, () => []),
 	);
 }
 
@@ -100,7 +100,7 @@ export function unfoldTree(tree: TreeNode[], columnCount: number): Record<Transi
 function unfoldTreeRec(
 	tree: TreeNode[],
 	depth: number,
-	columns: Record<TransitType, string>[][]
+	columns: Record<TransitType, string>[][],
 ): Record<TransitType, string>[][] {
 	for (const node of tree) {
 		if (node.type === "journeyNode") {

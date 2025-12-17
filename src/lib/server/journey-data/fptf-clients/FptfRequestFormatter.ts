@@ -3,7 +3,7 @@ import { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDat
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 import type {
 	FptfDataService,
-	FptfOptionId
+	FptfOptionId,
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import type {
 	JourneysOptions as FptfJourneysOptions,
@@ -12,7 +12,7 @@ import type {
 	RefreshJourneyOptions,
 	Station,
 	Stop,
-	StopOptions
+	StopOptions,
 } from "hafas-client";
 import type { PossibleOptionValues } from "../../profiles/profile";
 import type { Language } from "../../../../params/lang";
@@ -24,19 +24,22 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 	protected override readonly formatOptionValues = {
 		bike: (value: PossibleOptionValues<"bike">): FptfJourneysOptions["bike"] => value,
 		accessible: (
-			value: PossibleOptionValues<"accessible">
+			value: PossibleOptionValues<"accessible">,
 		): FptfJourneysOptions["accessibility"] => (value ? "complete" : "none"),
 		minTransferTime: (
-			value: PossibleOptionValues<"minTransferTime">
+			value: PossibleOptionValues<"minTransferTime">,
 		): FptfJourneysOptions["transferTime"] => value,
 		maxTransfers: (
-			value: PossibleOptionValues<"maxTransfers">
-		): FptfJourneysOptions["transfers"] => value
+			value: PossibleOptionValues<"maxTransfers">,
+		): FptfJourneysOptions["transfers"] => value,
 	};
 
 	private readonly formatFptfOptions = (
 		lang: Language,
-		{ timeData, filters }: Parameters<JourneyDataService<ProductT, FptfOptionId>["journeys"]>[1]
+		{
+			timeData,
+			filters,
+		}: Parameters<JourneyDataService<ProductT, FptfOptionId>["journeys"]>[1],
 	): FptfJourneysOptions => {
 		const products: Record<string, boolean> = {};
 		for (const vahrplanProduct in this.productMapping) {
@@ -53,12 +56,12 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 			stopovers: true,
 			tickets: this.hasTickets,
 			entrances: false,
-			language: lang
+			language: lang,
 		};
 
 		if (timeData.type === "absolute") {
 			fptfOptions[timeData.scrollDirection === "later" ? "departure" : "arrival"] = new Date(
-				timeData.time
+				timeData.time,
 			);
 		} else {
 			fptfOptions[`${timeData.scrollDirection}Than`] = timeData.time;
@@ -68,7 +71,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 	};
 
 	private readonly formatFptfStop = (
-		stop: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>[0]
+		stop: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>[0],
 	): string | Station | Stop | Location => {
 		if (stop.startsWith("{")) {
 			return JSON.parse(stop) as Station | Stop | Location;
@@ -94,7 +97,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 			const fptfOptions: RefreshJourneyOptions = {
 				stopovers: true,
 				language: lang,
-				polylines: true
+				polylines: true,
 			};
 			return [token, fptfOptions];
 		},
@@ -108,7 +111,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 				addresses: true,
 				poi: true,
 				entrances: false,
-				linesOfStops: false
+				linesOfStops: false,
 			};
 			return [name, fptfOptions];
 		},
@@ -121,9 +124,9 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 				entrances: false,
 				linesOfStops: false,
 				subStops: false,
-				remarks: false
+				remarks: false,
 			};
 			return [token, fptfOptions];
-		}
+		},
 	};
 }

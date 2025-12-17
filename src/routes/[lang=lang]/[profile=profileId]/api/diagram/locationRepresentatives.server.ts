@@ -3,7 +3,7 @@ import type { LocationEquivalenceSystem } from "./locationRepresentativesUtils";
 
 export function buildTransferLocationEquivalenceSystemFromSubJourneys(
 	subJourneys: SubJourney[],
-	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} }
+	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} },
 ): LocationEquivalenceSystem {
 	for (const subJourney of subJourneys) {
 		buildTransferLocationEquivalenceSystem(subJourney, equivalenceSystem);
@@ -18,13 +18,13 @@ export function buildTransferLocationEquivalenceSystemFromSubJourneys(
  */
 export function buildTransferLocationEquivalenceSystem(
 	subJourney: SubJourney,
-	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} }
+	equivalenceSystem: LocationEquivalenceSystem = { idToRepresentative: {}, representatives: {} },
 ): LocationEquivalenceSystem {
 	const legBlocks = subJourney.blocks.filter((block) => block.type === "leg");
 	for (let i = 1; i < legBlocks.length; i++) {
 		equivalenceSystem = addLocationPair(
 			[legBlocks[i - 1].arrivalData.location, legBlocks[i].departureData.location],
-			equivalenceSystem
+			equivalenceSystem,
 		);
 	}
 	return equivalenceSystem;
@@ -32,7 +32,7 @@ export function buildTransferLocationEquivalenceSystem(
 
 function addLocationPair(
 	[location0, location1]: [ParsedLocation, ParsedLocation],
-	equivSys: LocationEquivalenceSystem
+	equivSys: LocationEquivalenceSystem,
 ): LocationEquivalenceSystem {
 	const representativeId0 = equivSys.idToRepresentative[location0.id];
 	const representativeId1 = equivSys.idToRepresentative[location1.id];
@@ -44,7 +44,7 @@ function addLocationPair(
 		equivSys.idToRepresentative[location1.id] = representativeId;
 		equivSys.representatives[representativeId] = determineBetterRepresentative(
 			location0,
-			location1
+			location1,
 		);
 	} else if (representativeId0 !== undefined && representativeId1 === undefined) {
 		// representative only mapped for location0
@@ -52,7 +52,7 @@ function addLocationPair(
 		const currentRepresentative = equivSys.representatives[representativeId0];
 		equivSys.representatives[representativeId0] = determineBetterRepresentative(
 			currentRepresentative,
-			location1
+			location1,
 		);
 	} else if (representativeId0 === undefined && representativeId1 !== undefined) {
 		// representative only mapped for location1
@@ -60,7 +60,7 @@ function addLocationPair(
 		const currentRepresentative = equivSys.representatives[representativeId1];
 		equivSys.representatives[representativeId1] = determineBetterRepresentative(
 			currentRepresentative,
-			location0
+			location0,
 		);
 	} else if (representativeId0 !== undefined && representativeId1 !== undefined) {
 		// representative mapped for both location
@@ -69,7 +69,7 @@ function addLocationPair(
 		// use the better representative and always use id of representative of location0
 		equivSys.representatives[representativeId0] = determineBetterRepresentative(
 			currentRepresentative0,
-			currentRepresentative1
+			currentRepresentative1,
 		);
 		for (const locationId in equivSys.idToRepresentative) {
 			if (equivSys.idToRepresentative[locationId] === representativeId1) {
@@ -86,7 +86,7 @@ function addLocationPair(
 
 function determineBetterRepresentative(
 	candidate0: ParsedLocation,
-	candidate1: ParsedLocation
+	candidate1: ParsedLocation,
 ): ParsedLocation {
 	if (candidate0.name.length <= candidate1.name.length) {
 		return candidate0;

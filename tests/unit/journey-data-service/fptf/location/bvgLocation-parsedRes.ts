@@ -4,6 +4,6 @@ export const bvgLocationParsedRes = {
 	type: "station",
 	position: {
 		lat: 52.521508,
-		lng: 13.411267
-	}
+		lng: 13.411267,
+	},
 };

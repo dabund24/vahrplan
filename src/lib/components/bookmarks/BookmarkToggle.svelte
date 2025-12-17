@@ -5,7 +5,7 @@
 		bookmarkToString,
 		type BookmarkType,
 		getIsBookmarked,
-		toggleBookmark
+		toggleBookmark,
 	} from "$lib/bookmarks.svelte";
 	import { page } from "$app/state";
 
@@ -30,11 +30,11 @@
 		hasBorder = false,
 		hasText = false,
 		tabindex = 0,
-		iconType = "bookmark"
+		iconType = "bookmark",
 	}: Props = $props();
 
 	const isBookmarked = $derived(
-		getIsBookmarked(type, value, { profileConfig: page.data.profileConfig })
+		getIsBookmarked(type, value, { profileConfig: page.data.profileConfig }),
 	);
 
 	function handleClick(): void {

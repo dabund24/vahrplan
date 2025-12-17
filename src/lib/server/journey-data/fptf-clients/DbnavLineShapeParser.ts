@@ -40,7 +40,7 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 			backgroundColor: matchedRow.backgroundColor,
 			textColor: matchedRow.textColor,
 			borderColor: matchedRow.borderColor,
-			shape: matchedRow.shape
+			shape: matchedRow.shape,
 		};
 	};
 }

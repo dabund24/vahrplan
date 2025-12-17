@@ -6,7 +6,7 @@ import { bvgLocationFormattedReq } from "./bvgLocation-formattedReq";
 import { bvgLocationRawRes } from "./bvgLocation-rawRes";
 
 vi.mock("$app/server", () => ({
-	read: (): object => ({ text: () => "" })
+	read: (): object => ({ text: () => "" }),
 }));
 
 test("fptf data service location", async () => {
@@ -15,11 +15,11 @@ test("fptf data service location", async () => {
 			createClient: (): Pick<HafasClient, "stop"> => ({
 				stop(...params): Promise<Station | Stop | Location> {
 					expect(params, "request was formatted incorrectly").toEqual(
-						bvgLocationFormattedReq
+						bvgLocationFormattedReq,
 					);
 					return Promise.resolve(bvgLocationRawRes);
-				}
-			})
+				},
+			}),
 		};
 	});
 
@@ -27,6 +27,6 @@ test("fptf data service location", async () => {
 	const res = await dataService.location("900100003", { lang: "de" });
 
 	expect(!res.isError && res.content, "response was parsed incorrectly").toEqual(
-		bvgLocationParsedRes
+		bvgLocationParsedRes,
 	);
 });

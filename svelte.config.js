@@ -19,16 +19,16 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		version: {
-			name: pkg.version
+			name: pkg.version,
 		},
 		serviceWorker: {
-			register: false
-		}
+			register: false,
+		},
 	},
 
 	compilerOptions: {
-		runes: true
-	}
+		runes: true,
+	},
 };
 
 export default config;

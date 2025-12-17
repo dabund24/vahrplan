@@ -17,7 +17,7 @@ export type CurrentPositionData = {
  */
 export const currentPositionData: CurrentPositionData = $state({
 	position: undefined,
-	orientation: undefined
+	orientation: undefined,
 });
 
 // stops current geolocation from being updated
@@ -46,13 +46,13 @@ function watchPosition(): () => void {
 		(position) => {
 			currentPositionData.position = {
 				lat: position.coords.latitude,
-				lng: position.coords.longitude
+				lng: position.coords.longitude,
 			};
 		},
 		(e) => {
 			currentPositionData.position = undefined;
 			toast(getGeolocationErrorMessage(e.code), "red");
-		}
+		},
 	);
 
 	return () => navigator.geolocation.clearWatch(watchId);
@@ -128,7 +128,7 @@ function relativeDate(date: Date): string {
 		month: (24 * 60 * 60 * 1000 * 365) / 12,
 		day: 24 * 60 * 60 * 1000,
 		hour: 60 * 60 * 1000,
-		minute: 60 * 1000
+		minute: 60 * 1000,
 	};
 	const rtf = new Intl.RelativeTimeFormat("de", { numeric: "auto" });
 
@@ -146,7 +146,7 @@ export function getGeolocationString(creationDate: Date, prefix = "Standort"): s
 
 export function getParsedGeolocation(
 	date: Date,
-	position: ParsedLocation["position"]
+	position: ParsedLocation["position"],
 ): ParsedGeolocation {
 	return {
 		type: "currentLocation",
@@ -155,10 +155,10 @@ export function getParsedGeolocation(
 			type: "location",
 			address: "Standort",
 			latitude: position.lat,
-			longitude: position.lng
+			longitude: position.lng,
 		} as Location),
 		position: position,
-		asAt: date
+		asAt: date,
 	};
 }
 
@@ -171,8 +171,8 @@ export async function getCurrentGeolocation(): Promise<ParsedGeolocation | undef
 					new SvelteDate(position.timestamp),
 					{
 						lat: position.coords.latitude,
-						lng: position.coords.longitude
-					}
+						lng: position.coords.longitude,
+					},
 				);
 				stopLoading(loadingId, false);
 				resolve(currentLocation);
@@ -181,7 +181,7 @@ export async function getCurrentGeolocation(): Promise<ParsedGeolocation | undef
 				stopLoading(loadingId, true);
 				toast(getGeolocationErrorMessage(e.code), "red");
 				return undefined;
-			}
+			},
 		);
 	});
 }

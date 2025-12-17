@@ -15,7 +15,7 @@
 </p>
 
 <ul class="flex-column">
-	{#each page.data.allProfileConfigs.filter( ({ id }) => bookmarks.some(({ id: bookmarkId }) => bookmarkId === id) ) as profileConfig (profileConfig.id)}
+	{#each page.data.allProfileConfigs.filter( ({ id }) => bookmarks.some(({ id: bookmarkId }) => bookmarkId === id), ) as profileConfig (profileConfig.id)}
 		<li
 			class="flex-column padded-top-bottom"
 			aria-current={profileConfig.id === page.data.profileConfig.id}

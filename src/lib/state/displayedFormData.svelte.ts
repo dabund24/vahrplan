@@ -44,7 +44,7 @@ export async function searchDiagram(newFormData: DisplayedFormData): Promise<voi
 	const diagramApiClient = apiClient("GET", "diagram");
 	const diagramUrl = diagramApiClient.formatNonApiUrl(
 		diagramApiClient.formDataToRequestData(newFormData),
-		{ profileConfig: newFormData.profileConfig }
+		{ profileConfig: newFormData.profileConfig },
 	);
 	displayedFormData = { ...newFormData };
 	if (location.href !== diagramUrl.href) {
@@ -61,7 +61,7 @@ export async function searchDiagram(newFormData: DisplayedFormData): Promise<voi
  * @param updateLocationsFn
  */
 export function updateDisplayedLocations(
-	updateLocationsFn: (formData: DisplayedFormData) => DisplayedFormData["locations"]
+	updateLocationsFn: (formData: DisplayedFormData) => DisplayedFormData["locations"],
 ): void {
 	if (displayedFormData === undefined) {
 		return;
@@ -90,7 +90,7 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 	updateDisplayedLocations((formData) => [
 		...formData.locations.slice(0, index),
 		{ value: location, key: Math.random() },
-		...formData.locations.slice(index)
+		...formData.locations.slice(index),
 	]);
 }
 
@@ -101,6 +101,6 @@ export function addDisplayedLocation(location: ParsedLocation, index: number): v
 export function removeDisplayedLocation(index: number): void {
 	updateDisplayedLocations((formData) => [
 		...formData.locations.slice(0, index),
-		...formData.locations.slice(index + 1)
+		...formData.locations.slice(index + 1),
 	]);
 }

@@ -13,7 +13,7 @@
 	import {
 		type DisplayedFormData,
 		getDisplayedFormData,
-		setDisplayedFormData
+		setDisplayedFormData,
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getSelectedData, setSelectedData } from "$lib/state/selectedData.svelte.js";
 	import { setDiagramData } from "$lib/state/diagramData.svelte.js";
@@ -37,12 +37,12 @@
 		} else {
 			return {
 				pageTitle: "",
-				pageDescription: "Reisedetails in Vahrplan"
+				pageDescription: "Reisedetails in Vahrplan",
 			};
 		}
 		return {
 			pageTitle: `${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
-			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.timeData.time)} mit Abfahrt ${timeToString(formData1.timeData.time)} Uhr`
+			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.timeData.time)} mit Abfahrt ${timeToString(formData1.timeData.time)} Uhr`,
 		};
 	});
 
@@ -61,7 +61,7 @@
 
 		return diagramApiClient.formatNonApiUrl(
 			diagramApiClient.formDataToRequestData(displayedFormData),
-			{ profileConfig: page.data.profileConfig }
+			{ profileConfig: page.data.profileConfig },
 		).href;
 	});
 </script>
@@ -108,7 +108,7 @@
 	<MiniTabs
 		tabs={[
 			{ title: "Klassische Ansicht", icon: iconJourneyInfo, content: journeyOverview },
-			{ title: "Karte", icon: iconMap, content: map, isFullHeight: true }
+			{ title: "Karte", icon: iconMap, content: map, isFullHeight: true },
 		]}
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	>

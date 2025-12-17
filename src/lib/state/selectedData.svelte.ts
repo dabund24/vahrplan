@@ -12,7 +12,7 @@ export type SelectedData = {
 const selectedData: SelectedData = $state({
 	selectedJourneys: [],
 	isFullJourneySelected: false,
-	isNoneSelected: true
+	isNoneSelected: true,
 });
 
 export function getSelectedData(): SelectedData {
@@ -43,14 +43,14 @@ export function toggleJourneySelection(columnIndex: number, rowIndex: number): b
 		selectedData.selectedJourneys[columnIndex] = -1;
 		selectedData.isFullJourneySelected = false;
 		selectedData.isNoneSelected = selectedData.selectedJourneys.every(
-			(rowIndex) => rowIndex === -1
+			(rowIndex) => rowIndex === -1,
 		);
 		return false;
 	}
 
 	selectedData.selectedJourneys[columnIndex] = rowIndex;
 	selectedData.isFullJourneySelected = selectedData.selectedJourneys.every(
-		(rowIndex) => rowIndex !== -1
+		(rowIndex) => rowIndex !== -1,
 	);
 	selectedData.isNoneSelected = false;
 	return true;

@@ -19,7 +19,7 @@
 			type: "function",
 			name: "Aktualisieren",
 			icon: iconRefresh,
-			onClick: () => refreshDiagramData(selectedData)
+			onClick: () => refreshDiagramData(selectedData),
 		},
 		{
 			type: "function",
@@ -27,22 +27,22 @@
 			icon: iconShare,
 			onClick: async () =>
 				shareJourney(displayedJourney, selectedData, {
-					profileConfig: page.data.profileConfig
-				})
+					profileConfig: page.data.profileConfig,
+				}),
 		},
 		{
 			type: "bookmark",
 			name: "Merken",
 			icon: iconRefresh,
 			bookmarkType: "journey",
-			bookmarkValue: () => displayedJourney
+			bookmarkValue: () => displayedJourney,
 		},
 		{
 			type: "modal",
 			name: "Tickets",
 			icon: iconTickets,
-			showModalKey: "showTicketModal"
-		}
+			showModalKey: "showTicketModal",
+		},
 	];
 </script>
 

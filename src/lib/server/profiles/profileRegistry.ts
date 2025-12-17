@@ -8,7 +8,7 @@ import { BvgProfile } from "$lib/server/profiles/profile-implementations/bvgProf
 const profiles = {
 	empty: new EmptyProfile(),
 	dbnav: new DbnavProfile(),
-	bvg: new BvgProfile()
+	bvg: new BvgProfile(),
 } as const satisfies {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[K in ProfileId]: Profile<K, any, any>;
@@ -26,7 +26,7 @@ export function allProfileConfigs(lang: Language): ProfileConfig[] {
 
 export function journeyDataService<ProfileT extends ProfileId>(
 	profile: ProfileT,
-	_lang: Language
+	_lang: Language,
 ): (typeof profiles)[ProfileT]["dataService"] {
 	return profiles[profile].dataService;
 	// TODO proxy data service such that the future language parameter doesn't need to be specified

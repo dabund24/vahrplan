@@ -24,7 +24,7 @@
 				product: block.product,
 				productName: block.productName,
 				name: block.name,
-				lineShape: block.lineShape
+				lineShape: block.lineShape,
 			};
 		}
 		if (block.type === "walk") {
@@ -32,7 +32,7 @@
 				type: "walk",
 				duration: block.transferTime,
 				walkingTime: block.travelTime,
-				distance: block.distance
+				distance: block.distance,
 			};
 		}
 		return {
@@ -40,12 +40,12 @@
 			duration: block.transferTime,
 			travelTime: block.travelTime,
 			distance: block.distance,
-			recommendedAction: block.recommendedAction
+			recommendedAction: block.recommendedAction,
 		};
 	}
 
 	setContext("layer", {
-		getLayer: () => polylinePadding
+		getLayer: () => polylinePadding,
 	});
 
 	onMount(() => {
@@ -56,12 +56,12 @@
 			polyline = L.polyline(block.polyline, {
 				className: `product--${block.product} stroke--product`,
 				weight: 4,
-				smoothFactor: 2
+				smoothFactor: 2,
 			});
 			polylinePadding = L.polyline(block.polyline, {
 				color: "transparent",
 				weight: 16,
-				smoothFactor: 2
+				smoothFactor: 2,
 			});
 		} else {
 			polyline = L.polyline(
@@ -69,15 +69,15 @@
 				{
 					dashArray: "4 8",
 					weight: 4,
-					color: "var(--foreground-color)"
-				}
+					color: "var(--foreground-color)",
+				},
 			);
 			polylinePadding = L.polyline(
 				[block.originLocation.position, block.destinationLocation.position],
 				{
 					color: "transparent",
-					weight: 16
-				}
+					weight: 16,
+				},
 			);
 		}
 		polyline.addTo(map);

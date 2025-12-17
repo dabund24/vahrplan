@@ -18,7 +18,7 @@
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
 	import {
 		type DisplayedJourney,
-		getDisplayedJourney
+		getDisplayedJourney,
 	} from "$lib/state/displayedJourney.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { apiClient } from "$lib/api-client/apiClientFactory";
@@ -52,17 +52,17 @@
 					legs: subJourney?.blocks.filter<LegBlock>(isLeg) ?? [],
 					departure: {
 						departure: {
-							time: subJourney?.departureTime?.time ?? new Date(0).toISOString()
-						}
+							time: subJourney?.departureTime?.time ?? new Date(0).toISOString(),
+						},
 					},
 					arrival: {
 						arrival: {
-							time: subJourney?.arrivalTime?.time ?? new Date(0).toISOString()
-						}
-					}
+							time: subJourney?.arrivalTime?.time ?? new Date(0).toISOString(),
+						},
+					},
 				};
 			}),
-			{ legs: [], departure: {}, arrival: {} }
+			{ legs: [], departure: {}, arrival: {} },
 		];
 	}
 
@@ -76,7 +76,7 @@
 	function showLegModal(leg: LegBlock): void {
 		modalLeg = { ...leg };
 		pushState("", {
-			showLegModal: true
+			showLegModal: true,
 		});
 	}
 
@@ -101,7 +101,7 @@
 			<a
 				href={apiClient("GET", "journey").formatNonApiUrl(
 					displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? ""),
-					{ profileConfig: page.data.profileConfig }
+					{ profileConfig: page.data.profileConfig },
 				).href}
 				class="hoverable hoverable--accent"
 				title="Reisedetails anzeigen"
@@ -167,10 +167,10 @@
 										orientation="horizontal"
 										product={leg.product}
 										departureTime={new Date(
-											leg.departureData.time.departure?.time ?? 0
+											leg.departureData.time.departure?.time ?? 0,
 										).getTime()}
 										arrivalTime={new Date(
-											leg.arrivalData.time.arrival?.time ?? 0
+											leg.arrivalData.time.arrival?.time ?? 0,
 										).getTime()}
 									/>
 									<button
@@ -195,7 +195,7 @@
 							<Duration
 								duration={dateDifference(
 									journeyInfo.at(i - 1)?.arrival.arrival?.time,
-									journeyInfo[i]?.departure.departure?.time
+									journeyInfo[i]?.departure.departure?.time,
 								)}
 							/>
 						</span>
@@ -207,7 +207,7 @@
 						<Duration
 							duration={dateDifference(
 								journeyInfo[i]?.departure.departure?.time,
-								journeyInfo[i]?.arrival.arrival?.time
+								journeyInfo[i]?.arrival.arrival?.time,
 							) ?? 0}
 						/>
 					</div>

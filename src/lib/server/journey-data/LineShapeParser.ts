@@ -34,7 +34,7 @@ export abstract class LineShapeParser<T> {
 				shape,
 				_wikidataQid,
 				delfiAgencyId,
-				delfiAgencyName
+				delfiAgencyName,
 			] = line.split(",");
 
 			const lineCodeEntry = {
@@ -46,7 +46,7 @@ export abstract class LineShapeParser<T> {
 				borderColor: borderColor === "" ? undefined : borderColor,
 				["delfiAgencyID"]: delfiAgencyId,
 				delfiAgencyName,
-				shape: shape as LineShape["shape"]
+				shape: shape as LineShape["shape"],
 			};
 			result.push(lineCodeEntry);
 		}
@@ -75,7 +75,7 @@ export abstract class LineShapeParser<T> {
 
 	static {
 		void this.buildTraewellingLineShapes().then(
-			(lineShapes) => (this.traewellingLineShapes = lineShapes)
+			(lineShapes) => (this.traewellingLineShapes = lineShapes),
 		);
 	}
 

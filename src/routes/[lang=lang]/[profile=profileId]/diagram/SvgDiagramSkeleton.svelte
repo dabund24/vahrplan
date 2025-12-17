@@ -14,8 +14,8 @@
 		Array.from({ length: maxTime * 8 }, (_, i) => ({
 			topInsetPercent: (100 * i) / (8 * maxTime),
 			yCoordinate: i / 8,
-			content: "00:00"
-		}))
+			content: "00:00",
+		})),
 	);
 </script>
 

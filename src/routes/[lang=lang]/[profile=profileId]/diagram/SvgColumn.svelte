@@ -23,7 +23,7 @@
 			return [];
 		}
 		return columnData.subJourneys[rowIndex].blocks.filter(
-			(block) => block.type === "transfer" && block.transferPosition === "middle"
+			(block) => block.type === "transfer" && block.transferPosition === "middle",
 		);
 	});
 </script>
