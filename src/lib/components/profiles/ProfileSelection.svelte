@@ -46,6 +46,10 @@
 	{/each}
 </ul>
 
+<p>
+	<i>Mehr Datenquellen folgen in Zukunft...</i>
+</p>
+
 <style>
 	ul,
 	li {
