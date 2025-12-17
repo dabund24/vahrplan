@@ -2,6 +2,21 @@ import { type LineShape, LineShapeParser } from "$lib/server/journey-data/LineSh
 import type { Line } from "hafas-client";
 
 export class DbnavLineShapeParser extends LineShapeParser<Line> {
+	public getWestbahnLineShape = (lineName: string): LineShape => ({
+		shape: "pill",
+		lineName,
+		text: { type: "fixed", value: "#fff" },
+		background: { type: "fixed", value: "#0085ca" },
+		border: { type: "fixed", value: "#c4d600" },
+	});
+
+	public getFlixtrainLineShape = (lineName: string): LineShape => ({
+		shape: "pill",
+		lineName,
+		text: { type: "fixed", value: "#000" },
+		background: { type: "fixed", value: "#97d700" },
+	});
+
 	public override getLineShape = (line?: Line): LineShape | undefined => {
 		if (line?.name === undefined) {
 			return undefined;
@@ -9,6 +24,12 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 
 		if (line.product === "national" || line.product === "nationalExpress") {
 			return this.getLongDistanceLineShape(line.name);
+		}
+		if (line.productName === "WB") {
+			return this.getWestbahnLineShape(line.name ?? "WB");
+		}
+		if (line.productName === "FLX") {
+			return this.getFlixtrainLineShape(line.name ?? "FLX");
 		}
 
 		const lineName = line.name.toLowerCase().replaceAll(" ", "");
