@@ -225,6 +225,7 @@
 	<Modal showModalKey="showLegModal">
 		{#snippet title()}
 			<LineNameDirection
+				product={modalLeg?.product}
 				lineName={modalLeg?.name}
 				direction={modalLeg?.direction}
 				productName={modalLeg?.productName}

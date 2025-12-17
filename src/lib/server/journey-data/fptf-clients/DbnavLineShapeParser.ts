@@ -37,9 +37,9 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 		return {
 			linePrefix,
 			lineName: matchedRow.lineName,
-			backgroundColor: matchedRow.backgroundColor,
-			textColor: matchedRow.textColor,
-			borderColor: matchedRow.borderColor,
+			background: matchedRow.background,
+			text: matchedRow.text,
+			border: matchedRow.border,
 			shape: matchedRow.shape,
 		};
 	};

@@ -92,6 +92,7 @@
 						<LineNameDirection
 							lineName={block.name}
 							productName={block.productName}
+							product={block.product}
 							direction={block.direction}
 							lineShape={block.lineShape}
 						/>

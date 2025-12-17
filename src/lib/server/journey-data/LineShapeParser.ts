@@ -1,12 +1,15 @@
 import { read } from "$app/server";
 import lineShapesCsv from "../../../../assets/line-shapes.csv?url";
+import type { Settings } from "$lib/state/settingStore";
+
+type PresetColor = "product" | "background" | "foreground" | Settings["general"]["color"];
 
 export type LineShape = {
 	linePrefix?: string;
 	lineName: string;
-	backgroundColor: string;
-	textColor: string;
-	borderColor?: string;
+	background: { type: "fixed" | "svg"; value: string } | { type: "preset"; value: PresetColor };
+	text: { type: "fixed"; value: string } | { type: "preset"; value: PresetColor };
+	border?: { type: "fixed"; value: string } | { type: "preset"; value: PresetColor };
 	shape: "circle" | "hexagon" | "rectangle" | "rectangle-rounded-corner" | "pill" | "trapezoid";
 };
 
@@ -41,13 +44,16 @@ export abstract class LineShapeParser<T> {
 				lineName,
 				operatorCode: operatorCode === "" ? undefined : operatorCode,
 				lineId,
-				backgroundColor,
-				textColor,
-				borderColor: borderColor === "" ? undefined : borderColor,
+				background: { type: "fixed", value: backgroundColor },
+				text: { type: "fixed", value: textColor },
+				border:
+					borderColor === ""
+						? undefined
+						: ({ type: "fixed", value: borderColor } as const),
 				["delfiAgencyID"]: delfiAgencyId,
 				delfiAgencyName,
 				shape: shape as LineShape["shape"],
-			};
+			} as const;
 			result.push(lineCodeEntry);
 		}
 
@@ -78,6 +84,16 @@ export abstract class LineShapeParser<T> {
 			(lineShapes) => (this.traewellingLineShapes = lineShapes),
 		);
 	}
+
+	protected readonly getProductLineShape = (
+		lineName: string,
+		shape: LineShape["shape"],
+	): LineShape => ({
+		lineName,
+		text: { type: "preset", value: "background" },
+		background: { type: "preset", value: "product" },
+		shape,
+	});
 
 	/**
 	 * parse line shape details from an object
