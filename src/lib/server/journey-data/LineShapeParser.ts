@@ -85,13 +85,21 @@ export abstract class LineShapeParser<T> {
 		);
 	}
 
+	protected readonly getLongDistanceLineShape = (lineName: string): LineShape => ({
+		lineName,
+		background: { type: "preset", value: "background" },
+		text: { type: "preset", value: "product" },
+		border: { type: "preset", value: "product" },
+		shape: "pill",
+	});
+
 	protected readonly getProductLineShape = (
 		lineName: string,
 		shape: LineShape["shape"],
 	): LineShape => ({
 		lineName,
-		text: { type: "preset", value: "background" },
 		background: { type: "preset", value: "product" },
+		text: { type: "preset", value: "background" },
 		shape,
 	});
 

@@ -6,6 +6,11 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 		if (line?.name === undefined) {
 			return undefined;
 		}
+
+		if (line.product === "national" || line.product === "nationalExpress") {
+			return this.getLongDistanceLineShape(line.name);
+		}
+
 		const lineName = line.name.toLowerCase().replaceAll(" ", "");
 		const lineNumber = lineName.replace(line.productName?.toLowerCase() ?? "", "");
 
