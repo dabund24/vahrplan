@@ -20,20 +20,20 @@ const berlinToBerlinFernsehturmExpected = {
 					type: "station",
 					position: {
 						lat: 52.524925,
-						lng: 13.369629
-					}
+						lng: 13.369629,
+					},
 				},
 				time: {
 					departure: {
 						time: new Date("2025-05-27T19:16:00.000Z"),
 						delay: 2,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "12",
-					platformChanged: true
-				}
+					platformChanged: true,
+				},
 			},
 			arrivalData: {
 				location: {
@@ -42,20 +42,20 @@ const berlinToBerlinFernsehturmExpected = {
 					type: "station",
 					position: {
 						lat: 52.521526,
-						lng: 13.411088
-					}
+						lng: 13.411088,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-05-27T19:21:00.000Z"),
 						delay: 1,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "1",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			duration: 5,
 			direction: "Frankfurt(Oder)",
@@ -76,8 +76,8 @@ const berlinToBerlinFernsehturmExpected = {
 					"Klimaanlage",
 					"WLAN verfügbar",
 					"Betreiber: Ostdeutsche Eisenbahn GmbH",
-					"Fahrtnummer: 73786"
-				]
+					"Fahrtnummer: 73786",
+				],
 			},
 			stopovers: [
 				{
@@ -87,32 +87,32 @@ const berlinToBerlinFernsehturmExpected = {
 						type: "station",
 						position: {
 							lat: 52.520332,
-							lng: 13.386925
-						}
+							lng: 13.386925,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-27T19:17:00.000Z"),
 							delay: 1,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-05-27T19:18:00.000Z"),
 							delay: 1,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
-				}
+						platformChanged: false,
+					},
+				},
 			],
 			polyline: [
 				[52.524925, 13.369629],
 				[52.520332, 13.386925],
-				[52.521526, 13.411088]
-			]
+				[52.521526, 13.411088],
+			],
 		},
 		{
 			type: "walk",
@@ -122,8 +122,8 @@ const berlinToBerlinFernsehturmExpected = {
 				type: "station",
 				position: {
 					lat: 52.521526,
-					lng: 13.411088
-				}
+					lng: 13.411088,
+				},
 			},
 			destinationLocation: {
 				name: "Berlin, Fernsehturm (Tourismus)",
@@ -131,24 +131,24 @@ const berlinToBerlinFernsehturmExpected = {
 				type: "poi",
 				position: {
 					lat: 52.5213,
-					lng: 13.409694
-				}
+					lng: 13.409694,
+				},
 			},
 			time: {
 				arrival: {
 					time: new Date("2025-05-27T19:21:00.000Z"),
 					delay: 1,
-					status: "on-time"
+					status: "on-time",
 				},
 				departure: {
 					time: new Date("2025-05-27T19:24:00.000Z"),
 					delay: 1,
-					status: "on-time"
-				}
+					status: "on-time",
+				},
 			},
 			transferTime: 3,
 			travelTime: 3,
-			distance: 137
+			distance: 137,
 		},
 		{
 			type: "location",
@@ -158,29 +158,29 @@ const berlinToBerlinFernsehturmExpected = {
 				type: "poi",
 				position: {
 					lat: 52.5213,
-					lng: 13.409694
-				}
+					lng: 13.409694,
+				},
 			},
 			time: {
 				arrival: {
-					time: new Date("2025-05-27T19:24:00.000Z")
-				}
+					time: new Date("2025-05-27T19:24:00.000Z"),
+				},
 			},
-			hidden: false
-		}
+			hidden: false,
+		},
 	],
 	arrivalTime: {
-		time: new Date("2025-05-27T19:24:00.000Z")
+		time: new Date("2025-05-27T19:24:00.000Z"),
 	},
 	departureTime: {
 		time: new Date("2025-05-27T19:16:00.000Z"),
 		delay: 2,
-		status: "on-time"
+		status: "on-time",
 	},
 	ticketData: {
 		currency: "EUR",
-		url: "https://www.bahn.de/buchung/start?so=Berlin+Hbf&zo=Berlin%2C+Fernsehturm+%28Tourismus%29&soid=O%3DBerlin+Hbf&zoid=O%3DBerlin%2C+Fernsehturm+%28Tourismus%29&cbs=true&hd=Tue+May+27+2025+19%3A16%3A00+GMT%2B0000+%28Coordinated+Universal+Time%29&gh=%C2%B6HKI%C2%B6T%24A%3D1%40O%3DBerlin+Hbf%40X%3D13369549%40Y%3D52525589%40L%3D8011160%40a%3D128%40%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410962%40Y%3D52521481%40L%3D8011155%40a%3D128%40%24202505272114%24202505272120%24RE+73786%24%241%24%24%24%24%24%24%C2%A7W%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410962%40Y%3D52521481%40L%3D8011155%40a%3D128%40%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410728%40Y%3D52521409%40L%3D618011155%40a%3D128%40%24202505272120%24202505272120%24%24%241%24%24%24%24%24%24%C2%A7G%40F%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410728%40Y%3D52521409%40L%3D618011155%40a%3D128%40%24A%3D4%40O%3DBerlin%2C+Fernsehturm+%28Tourismus%29%40X%3D13409694%40Y%3D52521301%40L%3D991671997%40a%3D128%40%24202505272121%24202505272123%24%24%241%24%24%24%24%24%24%C2%B6GP%C2%B6ft%400%402000%40120%401%40100%401%400%400%40%40%40%40%40false%400%40-1%400%40-1%40-1%40%24f%40%24f%40%24f%40%24f%40%24f%40%24%C2%A7bt%400%402000%40120%401%40100%401%400%400%40%40%40%40%40false%400%40-1%400%40-1%40-1%40%24f%40%24f%40%24f%40%24f%40%24f%40%24%C2%A7tf%40%24f%40%24f%40%24f%40%24f%40%24f%40%24#sts=true"
-	}
+		url: "https://www.bahn.de/buchung/start?so=Berlin+Hbf&zo=Berlin%2C+Fernsehturm+%28Tourismus%29&soid=O%3DBerlin+Hbf&zoid=O%3DBerlin%2C+Fernsehturm+%28Tourismus%29&cbs=true&hd=Tue+May+27+2025+19%3A16%3A00+GMT%2B0000+%28Coordinated+Universal+Time%29&gh=%C2%B6HKI%C2%B6T%24A%3D1%40O%3DBerlin+Hbf%40X%3D13369549%40Y%3D52525589%40L%3D8011160%40a%3D128%40%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410962%40Y%3D52521481%40L%3D8011155%40a%3D128%40%24202505272114%24202505272120%24RE+73786%24%241%24%24%24%24%24%24%C2%A7W%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410962%40Y%3D52521481%40L%3D8011155%40a%3D128%40%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410728%40Y%3D52521409%40L%3D618011155%40a%3D128%40%24202505272120%24202505272120%24%24%241%24%24%24%24%24%24%C2%A7G%40F%24A%3D1%40O%3DBerlin+Alexanderplatz%40X%3D13410728%40Y%3D52521409%40L%3D618011155%40a%3D128%40%24A%3D4%40O%3DBerlin%2C+Fernsehturm+%28Tourismus%29%40X%3D13409694%40Y%3D52521301%40L%3D991671997%40a%3D128%40%24202505272121%24202505272123%24%24%241%24%24%24%24%24%24%C2%B6GP%C2%B6ft%400%402000%40120%401%40100%401%400%400%40%40%40%40%40false%400%40-1%400%40-1%40-1%40%24f%40%24f%40%24f%40%24f%40%24f%40%24%C2%A7bt%400%402000%40120%401%40100%401%400%400%40%40%40%40%40false%400%40-1%400%40-1%40-1%40%24f%40%24f%40%24f%40%24f%40%24f%40%24%C2%A7tf%40%24f%40%24f%40%24f%40%24f%40%24f%40%24#sts=true",
+	},
 };
 
 const lindauInselToAugsburgExpected = {
@@ -195,15 +195,15 @@ const lindauInselToAugsburgExpected = {
 				type: "station",
 				position: {
 					lat: 47.544308,
-					lng: 9.68078
-				}
+					lng: 9.68078,
+				},
 			},
 			time: {
 				departure: {
-					time: new Date("2025-05-30T14:50:00.000Z")
-				}
+					time: new Date("2025-05-30T14:50:00.000Z"),
+				},
 			},
-			hidden: false
+			hidden: false,
 		},
 		{
 			type: "onward-journey",
@@ -213,8 +213,8 @@ const lindauInselToAugsburgExpected = {
 				type: "station",
 				position: {
 					lat: 47.544308,
-					lng: 9.68078
-				}
+					lng: 9.68078,
+				},
 			},
 			destinationLocation: {
 				name: "Lindau-Reutin",
@@ -222,20 +222,20 @@ const lindauInselToAugsburgExpected = {
 				type: "station",
 				position: {
 					lat: 47.552406,
-					lng: 9.70284
-				}
+					lng: 9.70284,
+				},
 			},
 			time: {
 				arrival: {
-					time: new Date("2025-05-30T14:50:00.000Z")
+					time: new Date("2025-05-30T14:50:00.000Z"),
 				},
 				departure: {
-					time: new Date("2025-05-30T15:10:00.000Z")
-				}
+					time: new Date("2025-05-30T15:10:00.000Z"),
+				},
 			},
 			transferTime: 20,
 			travelTime: 20,
-			distance: 1886
+			distance: 1886,
 		},
 		{
 			type: "leg",
@@ -248,20 +248,20 @@ const lindauInselToAugsburgExpected = {
 					type: "station",
 					position: {
 						lat: 47.552406,
-						lng: 9.70284
-					}
+						lng: 9.70284,
+					},
 				},
 				time: {
 					departure: {
 						time: new Date("2025-05-30T15:10:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "22",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalData: {
 				location: {
@@ -270,20 +270,20 @@ const lindauInselToAugsburgExpected = {
 					type: "station",
 					position: {
 						lat: 48.033733,
-						lng: 10.71623
-					}
+						lng: 10.71623,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-05-30T16:29:00.000Z"),
 						delay: 6,
-						status: "delayed"
-					}
+						status: "delayed",
+					},
 				},
 				platformData: {
 					platform: "2",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			duration: 79,
 			direction: "München Hbf Gl.27-36",
@@ -301,8 +301,8 @@ const lindauInselToAugsburgExpected = {
 					"Bordrestaurant",
 					"Auslastung: hoch",
 					"Betreiber: DB Fernverkehr AG",
-					"Fahrtnummer: 195"
-				]
+					"Fahrtnummer: 195",
+				],
 			},
 			stopovers: [
 				{
@@ -312,33 +312,33 @@ const lindauInselToAugsburgExpected = {
 						type: "station",
 						position: {
 							lat: 47.985847,
-							lng: 10.186954
-						}
+							lng: 10.186954,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-30T16:04:00.000Z"),
 							delay: 6,
-							status: "delayed"
+							status: "delayed",
 						},
 						departure: {
 							time: new Date("2025-05-30T16:06:00.000Z"),
 							delay: 5,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
-				}
+						platformChanged: false,
+					},
+				},
 			],
 			polyline: [
 				[47.552406, 9.70284],
 				[47.985847, 10.186954],
-				[48.033733, 10.71623]
+				[48.033733, 10.71623],
 			],
-			succeededBy: "transfer"
+			succeededBy: "transfer",
 		},
 		{
 			type: "transfer",
@@ -350,33 +350,33 @@ const lindauInselToAugsburgExpected = {
 					type: "station",
 					position: {
 						lat: 48.033733,
-						lng: 10.71623
-					}
+						lng: 10.71623,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-05-30T16:29:00.000Z"),
 						delay: 6,
-						status: "delayed"
+						status: "delayed",
 					},
 					departure: {
 						time: new Date("2025-05-30T16:38:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "2",
-					platformChanged: false
+					platformChanged: false,
 				},
 				platformData2: {
 					platform: "1",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalProduct: "longDistanceExpress",
 			departureProduct: "regional",
-			isStopover: false
+			isStopover: false,
 		},
 		{
 			type: "leg",
@@ -389,20 +389,20 @@ const lindauInselToAugsburgExpected = {
 					type: "station",
 					position: {
 						lat: 48.033733,
-						lng: 10.71623
-					}
+						lng: 10.71623,
+					},
 				},
 				time: {
 					departure: {
 						time: new Date("2025-05-30T16:38:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "1",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			arrivalData: {
 				location: {
@@ -411,20 +411,20 @@ const lindauInselToAugsburgExpected = {
 					type: "station",
 					position: {
 						lat: 48.365246,
-						lng: 10.885595
-					}
+						lng: 10.885595,
+					},
 				},
 				time: {
 					arrival: {
 						time: new Date("2025-05-30T17:09:00.000Z"),
 						delay: 0,
-						status: "on-time"
-					}
+						status: "on-time",
+					},
 				},
 				platformData: {
 					platform: "10 C-E",
-					platformChanged: false
-				}
+					platformChanged: false,
+				},
 			},
 			duration: 31,
 			direction: "Augsburg Hbf",
@@ -442,8 +442,8 @@ const lindauInselToAugsburgExpected = {
 					"Behindertengerechte Ausstattung",
 					"Klimaanlage",
 					"Betreiber: Bayerische Regiobahn",
-					"Fahrtnummer: 62785"
-				]
+					"Fahrtnummer: 62785",
+				],
 			},
 			stopovers: [
 				{
@@ -453,25 +453,25 @@ const lindauInselToAugsburgExpected = {
 						type: "station",
 						position: {
 							lat: 48.17845,
-							lng: 10.768106
-						}
+							lng: 10.768106,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-30T16:47:00.000Z"),
 							delay: 0,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-05-30T16:48:00.000Z"),
 							delay: 0,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "3",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -480,25 +480,25 @@ const lindauInselToAugsburgExpected = {
 						type: "station",
 						position: {
 							lat: 48.266373,
-							lng: 10.83789
-						}
+							lng: 10.83789,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-30T16:55:00.000Z"),
 							delay: 0,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-05-30T16:55:00.000Z"),
 							delay: 0,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "2",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -507,25 +507,25 @@ const lindauInselToAugsburgExpected = {
 						type: "station",
 						position: {
 							lat: 48.311356,
-							lng: 10.868911
-						}
+							lng: 10.868911,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-30T16:59:00.000Z"),
 							delay: 0,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-05-30T17:00:00.000Z"),
 							delay: 0,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "2",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -534,25 +534,25 @@ const lindauInselToAugsburgExpected = {
 						type: "station",
 						position: {
 							lat: 48.338684,
-							lng: 10.886081
-						}
+							lng: 10.886081,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-30T17:03:00.000Z"),
 							delay: 0,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-05-30T17:03:00.000Z"),
 							delay: 0,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
+						platformChanged: false,
+					},
 				},
 				{
 					location: {
@@ -561,26 +561,26 @@ const lindauInselToAugsburgExpected = {
 						type: "station",
 						position: {
 							lat: 48.35508,
-							lng: 10.893074
-						}
+							lng: 10.893074,
+						},
 					},
 					time: {
 						arrival: {
 							time: new Date("2025-05-30T17:05:00.000Z"),
 							delay: 0,
-							status: "on-time"
+							status: "on-time",
 						},
 						departure: {
 							time: new Date("2025-05-30T17:06:00.000Z"),
 							delay: 0,
-							status: "on-time"
-						}
+							status: "on-time",
+						},
 					},
 					platformData: {
 						platform: "1",
-						platformChanged: false
-					}
-				}
+						platformChanged: false,
+					},
+				},
 			],
 			polyline: [
 				[48.033733, 10.71623],
@@ -589,28 +589,28 @@ const lindauInselToAugsburgExpected = {
 				[48.311356, 10.868911],
 				[48.338684, 10.886081],
 				[48.35508, 10.893074],
-				[48.365246, 10.885595]
+				[48.365246, 10.885595],
 			],
-			precededBy: "transfer"
-		}
+			precededBy: "transfer",
+		},
 	],
 	arrivalTime: {
 		time: new Date("2025-05-30T17:09:00.000Z"),
 		delay: 0,
-		status: "on-time"
+		status: "on-time",
 	},
 	departureTime: {
-		time: new Date("2025-05-30T14:50:00.000Z")
+		time: new Date("2025-05-30T14:50:00.000Z"),
 	},
 	ticketData: {
 		currency: "EUR",
-		url: "https://www.bahn.de/buchung/start?so=Lindau-Insel&zo=Augsburg+Hbf&soid=O%3DLindau-Insel&zoid=O%3DAugsburg+Hbf&cbs=true&hd=Fri+May+30+2025+14%3A50%3A00+GMT%2B0000+%28Coordinated+Universal+Time%29&gh=%C2%B6HKI%C2%B6TF%24A%3D1%40O%3DLindau-Insel%40X%3D9680465%40Y%3D47544343%40L%3D8000230%40a%3D128%40%24A%3D1%40O%3DLindau-Reutin%40X%3D9703289%40Y%3D47552388%40L%3D8003693%40a%3D128%40%24202505301650%24202505301710%24%24%241%24%24%24%24%24%24%C2%A7T%24A%3D1%40O%3DLindau-Reutin%40X%3D9703289%40Y%3D47552388%40L%3D8003693%40a%3D128%40%24A%3D1%40O%3DBuchloe%40X%3D10716221%40Y%3D48033725%40L%3D8000057%40a%3D128%40%24202505301710%24202505301823%24ECE++195%24%241%24%24%24%24%24%24%C2%A7T%24A%3D1%40O%3DBuchloe%40X%3D10716221%40Y%3D48033725%40L%3D8000057%40a%3D128%40%24A%3D1%40O%3DAugsburg+Hbf%40X%3D10885568%40Y%3D48365444%40L%3D8000013%40a%3D128%40%24202505301838%24202505301909%24BRB62785%24%241%24%24%24%24%24%24#sts=true"
-	}
+		url: "https://www.bahn.de/buchung/start?so=Lindau-Insel&zo=Augsburg+Hbf&soid=O%3DLindau-Insel&zoid=O%3DAugsburg+Hbf&cbs=true&hd=Fri+May+30+2025+14%3A50%3A00+GMT%2B0000+%28Coordinated+Universal+Time%29&gh=%C2%B6HKI%C2%B6TF%24A%3D1%40O%3DLindau-Insel%40X%3D9680465%40Y%3D47544343%40L%3D8000230%40a%3D128%40%24A%3D1%40O%3DLindau-Reutin%40X%3D9703289%40Y%3D47552388%40L%3D8003693%40a%3D128%40%24202505301650%24202505301710%24%24%241%24%24%24%24%24%24%C2%A7T%24A%3D1%40O%3DLindau-Reutin%40X%3D9703289%40Y%3D47552388%40L%3D8003693%40a%3D128%40%24A%3D1%40O%3DBuchloe%40X%3D10716221%40Y%3D48033725%40L%3D8000057%40a%3D128%40%24202505301710%24202505301823%24ECE++195%24%241%24%24%24%24%24%24%C2%A7T%24A%3D1%40O%3DBuchloe%40X%3D10716221%40Y%3D48033725%40L%3D8000057%40a%3D128%40%24A%3D1%40O%3DAugsburg+Hbf%40X%3D10885568%40Y%3D48365444%40L%3D8000013%40a%3D128%40%24202505301838%24202505301909%24BRB62785%24%241%24%24%24%24%24%24#sts=true",
+	},
 };
 
 beforeAll(() => {
 	vi.mock("$app/server", () => ({
-		read: (): object => ({ text: () => "" })
+		read: (): object => ({ text: () => "" }),
 	}));
 });
 
@@ -627,8 +627,8 @@ const parser = new FptfResponseParser({
 		tram: "tram",
 		bus: "bus",
 		ferry: "ferry",
-		taxi: "taxi"
-	}
+		taxi: "taxi",
+	},
 });
 
 test("Parse journey with ending walk", () => {

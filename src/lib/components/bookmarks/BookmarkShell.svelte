@@ -30,14 +30,14 @@
 				type: "link",
 				name: `${bookmarkType === "diagram" ? "Suchanfrage" : "Reise"} anzeigen`,
 				url,
-				icon: iconRightArrow
+				icon: iconRightArrow,
 			},
 			{
 				type: "function",
 				name: "Lesezeichen löschen",
 				onClick: () => removeBookmark(bookmarkType, url),
-				icon: iconClose
-			}
+				icon: iconClose,
+			},
 		];
 	}
 </script>

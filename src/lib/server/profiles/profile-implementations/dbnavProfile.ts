@@ -1,7 +1,7 @@
 import { Profile } from "../profile";
 import {
 	FptfDataService,
-	type FptfOptionId
+	type FptfOptionId,
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 // @ts-expect-error no types for db-vendo-client yet
 import { createClient } from "db-vendo-client";
@@ -44,13 +44,13 @@ export class DbnavProfile extends Profile<
 		tram: { name: { de: "Straßenbahn" } },
 		bus: { name: { de: "Bus" } },
 		taxi: { name: { de: "Ruftaxi" } },
-		ferry: { name: { de: "Schiff" } }
+		ferry: { name: { de: "Schiff" } },
 	};
 	protected override readonly options = {
 		bike: {},
 		accessible: {},
 		maxTransfers: {},
-		minTransferTime: {}
+		minTransferTime: {},
 	};
 
 	protected override readonly journeyDataService = new FptfDataService({
@@ -66,14 +66,14 @@ export class DbnavProfile extends Profile<
 			tram: "tram",
 			bus: "bus",
 			ferry: "ferry",
-			taxi: "taxi"
+			taxi: "taxi",
 		},
 		lineShapeParser: new DbnavLineShapeParser(),
 		hasTickets: true,
 		ticketUrlParser: new DbnavTicketUrlParser(),
 		quota: {
 			threshold: 60,
-			interval: 60
-		}
+			interval: 60,
+		},
 	});
 }

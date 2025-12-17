@@ -25,8 +25,8 @@
 				{ value: "system", name: "System" },
 				{ value: "light", name: "Hell" },
 				{ value: "dark", name: "Dunkel" },
-				{ value: "midnight", name: "Mitternacht" }
-			]
+				{ value: "midnight", name: "Mitternacht" },
+			],
 		}}
 	/>
 	<Setting
@@ -39,8 +39,8 @@
 				{ value: "yellow", name: "Gelb" },
 				{ value: "green", name: "Grün" },
 				{ value: "blue", name: "Blau" },
-				{ value: "purple", name: "Violett" }
-			]
+				{ value: "purple", name: "Violett" },
+			],
 		}}
 	/>
 	<Setting
@@ -58,8 +58,8 @@
 			type: "options",
 			options: [
 				{ value: "classic", name: "Klassisch" },
-				{ value: "map", name: "Karte" }
-			]
+				{ value: "map", name: "Karte" },
+			],
 		}}
 	/>
 	<h2>Karte</h2>

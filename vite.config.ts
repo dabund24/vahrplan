@@ -5,13 +5,13 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	plugins: [sveltekit()],
 	build: {
-		target: "es2022"
+		target: "es2022",
 	},
 	test: {
 		mockReset: true,
 		testTimeout: undefined,
 		env: {
-			["TZ"]: "UTC"
-		}
-	}
+			["TZ"]: "UTC",
+		},
+	},
 });

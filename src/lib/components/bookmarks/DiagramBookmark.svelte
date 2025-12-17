@@ -15,7 +15,7 @@
 <BookmarkShell bookmarkType="diagram" {bookmark} {bookmarkIndex}>
 	<div class="time-data">
 		{bookmark.scrollDirection === "later" ? "Abfahrt" : "Ankunft"}: {dateToString(
-			bookmark.time
+			bookmark.time,
 		)}, {timeToString(bookmark.time)}
 	</div>
 	<ol>

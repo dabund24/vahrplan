@@ -3,7 +3,7 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type BodyfulHttpMethod,
-	type RequestData
+	type RequestData,
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { Ctx } from "$lib/types";
@@ -16,7 +16,7 @@ export function BodySettable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends BodyfulHttpMethod,
-		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
+		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>,
 	>(base: BaseT) {
 		abstract class BodySettable extends base {
 			/**
@@ -27,13 +27,13 @@ export function BodySettable<ReqT, ResT, RequestEventT extends ApiClientRequestE
 			 */
 			protected abstract formatBody: (
 				content: ReqT,
-				ctx: Pick<Ctx, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">,
 			) => string;
 
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
-				fetchFn?: typeof fetch
+				fetchFn?: typeof fetch,
 			): Promise<VahrplanResult<ResT>> {
 				const ctx = { profileConfig: requestData.profileConfig };
 				requestData.requestInit.body = this.formatBody(content, ctx);

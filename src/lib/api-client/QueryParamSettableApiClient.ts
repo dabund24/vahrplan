@@ -3,7 +3,7 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type HttpMethod,
-	type RequestData
+	type RequestData,
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
 import type { Ctx } from "$lib/types";
@@ -16,7 +16,7 @@ export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRe
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
-		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
+		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>,
 	>(base: BaseT) {
 		abstract class QueryParamSettable extends base {
 			/**
@@ -33,13 +33,13 @@ export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRe
 			 */
 			protected abstract formatQueryParams: (
 				content: ReqT,
-				ctx: Pick<Ctx, "profileConfig">
+				ctx: Pick<Ctx, "profileConfig">,
 			) => URLSearchParams;
 
 			protected writeArrayQueryParameter(
 				queryParams: URLSearchParams,
 				paramName: Lowercase<string>,
-				paramValues: (string | number)[]
+				paramValues: (string | number)[],
 			): void {
 				for (const paramValue of paramValues) {
 					queryParams.append(`${paramName}[]`, String(paramValue));
@@ -48,7 +48,7 @@ export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRe
 
 			protected readArrayQueryParameter(
 				queryParams: URLSearchParams,
-				paramName: Lowercase<string>
+				paramName: Lowercase<string>,
 			): string[] {
 				return queryParams.getAll(`${paramName}[]`);
 			}
@@ -56,7 +56,7 @@ export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRe
 			protected writeBooleanQueryParameter(
 				queryParams: URLSearchParams,
 				paramName: string,
-				paramValue: boolean
+				paramValue: boolean,
 			): void {
 				if (paramValue) {
 					queryParams.set(paramName, "");
@@ -66,7 +66,7 @@ export function QueryParamSettable<ReqT, ResT, RequestEventT extends ApiClientRe
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
-				fetchFn?: typeof fetch
+				fetchFn?: typeof fetch,
 			): Promise<VahrplanResult<ResT>> {
 				const ctx = { profileConfig: requestData.profileConfig };
 				const queryParams = this.formatQueryParams(content, ctx);

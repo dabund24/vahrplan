@@ -29,7 +29,7 @@ const defaultProducts: Record<Product, true> = {
 	tram: true,
 	bus: true,
 	taxi: true,
-	ferry: true
+	ferry: true,
 };
 
 const defaultOptions: {
@@ -38,12 +38,12 @@ const defaultOptions: {
 	bike: false,
 	accessible: false,
 	maxTransfers: -1,
-	minTransferTime: 0
+	minTransferTime: 0,
 };
 
 export const defaultJourneysFilters: JourneysFilters = {
 	products: defaultProducts,
-	options: defaultOptions
+	options: defaultOptions,
 };
 
 export const settings = writable<Settings>({
@@ -55,14 +55,14 @@ export const settings = writable<Settings>({
 		shortLinksDiagrams: false,
 		shortLinksJourneys: false,
 		mapGeolocation: false,
-		isMapAlwaysLight: false
+		isMapAlwaysLight: false,
 	},
 	...defaultJourneysFilters,
 	storage: {
 		general: false,
 		options: false,
-		products: false
-	}
+		products: false,
+	},
 });
 
 if (browser) {
@@ -95,7 +95,7 @@ if (browser) {
 		const themeColorElement = document.getElementById("theme-color")!;
 		themeColorElement.setAttribute(
 			"content",
-			themeColorFromColorScheme(settings.general.colorScheme, settings.general.color)
+			themeColorFromColorScheme(settings.general.colorScheme, settings.general.color),
 		);
 
 		return settings;
@@ -110,7 +110,7 @@ if (browser) {
  */
 function applyLocalStorageSettingGroupToAppSettings<K extends Exclude<keyof Settings, "storage">>(
 	type: K,
-	settings: Settings
+	settings: Settings,
 ): Settings {
 	const storageSettingsStringified = window.localStorage.getItem(type);
 	if (storageSettingsStringified === null) {
@@ -134,7 +134,7 @@ function applyLocalStorageSettingGroupToAppSettings<K extends Exclude<keyof Sett
 
 function themeColorFromColorScheme(
 	colorScheme: Settings["general"]["colorScheme"],
-	accentColor: Settings["general"]["color"]
+	accentColor: Settings["general"]["color"],
 ): string {
 	if (colorScheme === "midnight") {
 		return "#000";

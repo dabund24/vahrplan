@@ -6,7 +6,7 @@ import type {
 	TransitData,
 	KeyedItem,
 	TransitType,
-	ParsedTime
+	ParsedTime,
 } from "$lib/types";
 import { MINUTE_IN_MS } from "$lib/constants";
 
@@ -15,7 +15,7 @@ export function isDefined<T>(arg: T | undefined): arg is T {
 }
 
 export function valueIsDefined<T, K extends number | string>(
-	keyedItem: KeyedItem<T | undefined, K>
+	keyedItem: KeyedItem<T | undefined, K>,
 ): keyedItem is KeyedItem<T, K> {
 	return keyedItem.value !== undefined;
 }
@@ -29,7 +29,7 @@ export function getFirstAndLastTime(blocks: JourneyBlock[]): Record<TransitType,
 	const arrivalBlock = blocks.findLast<DefiningBlock>(isTimeDefined);
 	return {
 		departure: getTimeFromBlock(departureBlock, "departure"),
-		arrival: getTimeFromBlock(arrivalBlock, "arrival")
+		arrival: getTimeFromBlock(arrivalBlock, "arrival"),
 	};
 }
 
@@ -80,18 +80,18 @@ export function getBlockEnd(block: JourneyBlock | undefined): ParsedLocation | u
 export function mergeTransitData(
 	transitData1: TransitData,
 	transitData2: TransitData,
-	singlePlatform?: boolean
+	singlePlatform?: boolean,
 ): TransitData {
 	return {
 		location: transitData1.location,
 		time: {
 			arrival: transitData1.time.arrival,
-			departure: transitData2.time.departure
+			departure: transitData2.time.departure,
 		},
 		attribute: transitData1.attribute,
 		attribute2: transitData2.attribute,
 		platformData: transitData1.platformData,
-		platformData2: singlePlatform ? undefined : transitData2.platformData
+		platformData2: singlePlatform ? undefined : transitData2.platformData,
 	};
 }
 
@@ -100,7 +100,7 @@ export function getRawLocationBlock(location: ParsedLocation): LocationBlock {
 		type: "location",
 		location,
 		time: {},
-		hidden: false
+		hidden: false,
 	};
 }
 
@@ -111,7 +111,7 @@ export function timeToString(time: string | number | undefined): string {
 	const date = new Date(time);
 	return date.toLocaleTimeString("de-DE", {
 		hour: "2-digit",
-		minute: "2-digit"
+		minute: "2-digit",
 	});
 }
 
@@ -123,7 +123,7 @@ export function dateToString(date: string | undefined): string {
 		weekday: "short",
 		day: "numeric",
 		month: "short",
-		year: "numeric"
+		year: "numeric",
 	});
 }
 
@@ -142,7 +142,7 @@ export function dateToInputDate(date: string): string {
  */
 export function dateDifference(
 	sooner: string | number | Date | undefined,
-	later: string | number | Date | undefined
+	later: string | number | Date | undefined,
 ): number | undefined {
 	if (sooner === undefined || later === undefined) {
 		return undefined;

@@ -8,7 +8,7 @@ export const bvgLocationRawRes = {
 		type: "location",
 		id: "900100003",
 		latitude: 52.521508,
-		longitude: 13.411267
+		longitude: 13.411267,
 	},
 	products: {
 		suburban: true,
@@ -17,9 +17,9 @@ export const bvgLocationRawRes = {
 		bus: true,
 		ferry: false,
 		express: false,
-		regional: true
+		regional: true,
 	},
 	ids: {
-		ifopt: "de:11000:900100003"
-	}
+		ifopt: "de:11000:900100003",
+	},
 } as Station | Stop | Location;

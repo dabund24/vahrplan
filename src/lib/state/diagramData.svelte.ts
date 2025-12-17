@@ -2,13 +2,13 @@ import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataS
 import type { RelativeTimeType, SubJourney, TreeNode } from "$lib/types";
 import {
 	type DisplayedFormData,
-	getDisplayedFormData
+	getDisplayedFormData,
 } from "$lib/state/displayedFormData.svelte.js";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import {
 	getSelectedData,
 	type SelectedData,
-	setSelectedData
+	setSelectedData,
 } from "$lib/state/selectedData.svelte";
 import { browser } from "$app/environment";
 import { toast } from "$lib/state/toastStore";
@@ -43,7 +43,7 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 		columns: Array.from({ length: columnCount }, () => ({
 			earlierRef: "",
 			laterRef: "",
-			journeys: []
+			journeys: [],
 		})),
 		tree: [],
 		svgData: {
@@ -51,11 +51,11 @@ function getEmptyDiagramData(columnCount: number): DiagramData {
 			minutesPerHeight: 1,
 			minTime: 0,
 			maxTime: 0,
-			columns: []
+			columns: [],
 		},
 		transferLocations: { idToRepresentative: {}, representatives: {} },
 		recommendedVias: Array.from({ length: columnCount }, () => []),
-		isNew: Array.from({ length: columnCount }, () => [])
+		isNew: Array.from({ length: columnCount }, () => []),
 	};
 }
 
@@ -74,7 +74,7 @@ export async function setDiagramDataFromFormData(formData: DisplayedFormData): P
 		.request({
 			stops: formData.locations.map((l) => l.value.id),
 			timeData: formData.timeData,
-			filters: formData.filters
+			filters: formData.filters,
 		})
 		.then((result) => {
 			if (!result.isError) {
@@ -94,8 +94,8 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
 	const oldDiagramData = diagramData;
 	const tokens = await Promise.all(
 		selectedBy.selectedJourneys.map(
-			async (rowIndex, columnIndex) => (await getJourney(columnIndex, rowIndex)).refreshToken
-		)
+			async (rowIndex, columnIndex) => (await getJourney(columnIndex, rowIndex)).refreshToken,
+		),
 	);
 	const journeys = await journeyApiClient.request(tokens);
 	if (journeys.isError || oldDiagramData !== diagramData) {
@@ -115,7 +115,7 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
  */
 async function refreshJourneyData(
 	refreshedJourneyData: SubJourney[],
-	selectedBy: SelectedData
+	selectedBy: SelectedData,
 ): Promise<void> {
 	refreshedJourneyData.forEach((subJourney, columnIndex) => {
 		const rowIndex = selectedBy.selectedJourneys[columnIndex];
@@ -136,11 +136,11 @@ async function refreshSvgData(refreshedSvgData: SvgData, selectedBy: SelectedDat
 	diagramData = diagramData.then((diagramData) => {
 		diagramData.svgData.maxTime = Math.max(
 			diagramData.svgData.maxTime,
-			refreshedSvgData.maxTime
+			refreshedSvgData.maxTime,
 		);
 		diagramData.svgData.minTime = Math.min(
 			diagramData.svgData.minTime,
-			refreshedSvgData.minTime
+			refreshedSvgData.minTime,
 		);
 		refreshedSvgData.columns.forEach(({ subJourneys: [refreshedJourney] }, columnIndex) => {
 			const rowIndex = selectedBy.selectedJourneys[columnIndex];
@@ -175,7 +175,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		tree,
 		transferLocations,
 		recommendedVias,
-		filters: displayedFormData.filters
+		filters: displayedFormData.filters,
 	});
 
 	if (res.isError || oldDiagramData !== diagramData) {
@@ -184,7 +184,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 
 	columns.forEach((column, columnIndex) => {
 		column.journeys[scrollDirection === "earlier" ? "unshift" : "push"](
-			...res.content.columns[columnIndex].journeys
+			...res.content.columns[columnIndex].journeys,
 		);
 		column[`${scrollDirection}Ref`] = res.content.columns[columnIndex][`${scrollDirection}Ref`];
 	});
@@ -205,14 +205,14 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 		svgData: scrollSvgData(svgData, res.content.svgData, scrollDirection),
 		transferLocations: res.content.transferLocations,
 		recommendedVias: res.content.recommendedVias,
-		isNew: res.content.isNew
+		isNew: res.content.isNew,
 	});
 }
 
 function scrollSvgData(
 	oldSvgData: SvgData,
 	newSvgData: SvgData,
-	scrollDirection: RelativeTimeType
+	scrollDirection: RelativeTimeType,
 ): SvgData {
 	let arrayExpansionFn: "push" | "unshift";
 	if (scrollDirection === "earlier") {

@@ -2,7 +2,7 @@ import type { JourneyBlock, ParsedLocation, SubJourney, TransitType } from "$lib
 import { MAX_DATE } from "$lib/constants";
 import {
 	getLocationRepresentative,
-	type LocationEquivalenceSystem
+	type LocationEquivalenceSystem,
 } from "../../../routes/[lang=lang]/[profile=profileId]/api/diagram/locationRepresentativesUtils";
 import { computeTransferSvgData, type TransferSvgData } from "$lib/server/svgData/transferSvgData";
 import { computeLegSvgData, type LegSvgData } from "$lib/server/svgData/legSvgData";
@@ -37,7 +37,7 @@ export function generateSvgData(
 	ctx: {
 		timeData: Record<TransitType, string>[][];
 		transferLocations: LocationEquivalenceSystem;
-	}
+	},
 ): SvgData {
 	const minTime = computeMinTime(ctx.timeData);
 	const maxTime = computeMaxTime(ctx.timeData);
@@ -52,15 +52,15 @@ export function generateSvgData(
 	const columns: SvgData["columns"] = subJourneys.map((column, columnIndex) => {
 		const journeyEndPositions = {
 			departure: stops[columnIndex]?.position ?? { lat: 0, lng: 0 },
-			arrival: stops[columnIndex + 1]?.position ?? { lat: 0, lng: 0 }
+			arrival: stops[columnIndex + 1]?.position ?? { lat: 0, lng: 0 },
 		};
 		return {
 			subJourneys: column.map((subJourney) => ({
 				blocks: subJourneyToSvgData(subJourney, {
 					journeyEndPositions,
-					transferLocations: ctx.transferLocations
-				})
-			}))
+					transferLocations: ctx.transferLocations,
+				}),
+			})),
 		};
 	});
 
@@ -70,7 +70,7 @@ export function generateSvgData(
 function computeMinTime(timeData: Record<TransitType, string>[][]): number {
 	const minTime = timeData.reduce(
 		(currentMin, column) => Math.min(currentMin, new Date(column[0].departure).getTime()),
-		MAX_DATE
+		MAX_DATE,
 	);
 	return computeCoordinateY(minTime);
 }
@@ -81,7 +81,7 @@ function computeMaxTime(timeData: Record<TransitType, string>[][]): number {
 		const columnMax = column.reduce(
 			(currentColumnMax, subJourneyData) =>
 				Math.max(currentColumnMax, new Date(subJourneyData.arrival).getTime()),
-			0
+			0,
 		);
 
 		return Math.max(currentMax, columnMax);
@@ -91,21 +91,21 @@ function computeMaxTime(timeData: Record<TransitType, string>[][]): number {
 
 function computeStops(
 	subJourneys: SubJourney[][],
-	transferLocations: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem,
 ): (ParsedLocation | undefined)[] {
 	return subJourneys.reduce(
 		(stops, column) => [
 			...stops,
-			legBlockToLocation(column[0].blocks.at(-1), "arrival", transferLocations)
+			legBlockToLocation(column[0].blocks.at(-1), "arrival", transferLocations),
 		],
-		[legBlockToLocation(subJourneys[0][0].blocks[0], "departure", transferLocations)]
+		[legBlockToLocation(subJourneys[0][0].blocks[0], "departure", transferLocations)],
 	);
 }
 
 function legBlockToLocation(
 	block: JourneyBlock | undefined,
 	locationType: TransitType,
-	transferLocations: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem,
 ): ParsedLocation | undefined {
 	if (block === undefined) {
 		return undefined;
@@ -128,7 +128,7 @@ function subJourneyToSvgData(
 	ctx: {
 		journeyEndPositions: Record<TransitType, ParsedLocation["position"]>;
 		transferLocations: LocationEquivalenceSystem;
-	}
+	},
 ): BlockSvgData[] {
 	const { journeyEndPositions, transferLocations } = ctx;
 	const blocksSvgData: BlockSvgData[] = [];
@@ -144,8 +144,8 @@ function subJourneyToSvgData(
 				computeTransferSvgData(block, blockIndex, {
 					journeyEndPositions,
 					transferLocations: transferLocations,
-					subJourney
-				})
+					subJourney,
+				}),
 			);
 		}
 	});

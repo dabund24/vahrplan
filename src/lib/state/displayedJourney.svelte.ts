@@ -5,13 +5,13 @@ import type {
 	KeyedItem,
 	ParsedLocation,
 	SubJourney,
-	TransitType
+	TransitType,
 } from "$lib/types";
 import { getDiagramData, type DiagramData } from "$lib/state/diagramData.svelte";
 import { getSelectedData, type SelectedData } from "$lib/state/selectedData.svelte";
 import {
 	type DisplayedFormData,
-	getDisplayedFormData
+	getDisplayedFormData,
 } from "$lib/state/displayedFormData.svelte.js";
 import { getMergingBlock } from "$lib/merge";
 import { browser } from "$app/environment";
@@ -33,7 +33,7 @@ let displayedJourney: DisplayedJourney = $state({
 	selectedSubJourneys: [],
 	blocks: [],
 	locations: [],
-	statuses: new Set()
+	statuses: new Set(),
 });
 
 // TODO change to async derived once supported: https://github.com/sveltejs/svelte/issues/14305
@@ -45,7 +45,7 @@ $effect.root(() => {
 		const j = computeDisplayedJourney({
 			displayedFormData,
 			diagramData,
-			selectedData
+			selectedData,
 		});
 
 		void j.then((j) => {
@@ -60,7 +60,7 @@ export function getDisplayedJourney(): DisplayedJourney {
 			blocks: [],
 			selectedSubJourneys: [],
 			locations: [],
-			statuses: new SvelteSet()
+			statuses: new SvelteSet(),
 		};
 	}
 	return displayedJourney;
@@ -69,7 +69,7 @@ export function getDisplayedJourney(): DisplayedJourney {
 async function computeDisplayedJourney({
 	displayedFormData,
 	diagramData,
-	selectedData
+	selectedData,
 }: {
 	displayedFormData: DisplayedFormData | undefined;
 	diagramData: Promise<DiagramData>;
@@ -91,13 +91,13 @@ async function computeDisplayedJourney({
 		locations: displayedFormData.locations,
 		statuses: computeStatuses(blocks),
 		departure: selectedSubJourneys[0]?.departureTime?.time,
-		arrival: selectedSubJourneys.at(-1)?.arrivalTime?.time
+		arrival: selectedSubJourneys.at(-1)?.arrivalTime?.time,
 	};
 }
 
 async function computeSelectedSubJourneys(
 	diagramData: Promise<DiagramData>,
-	selectedData: SelectedData
+	selectedData: SelectedData,
 ): Promise<DisplayedJourney["selectedSubJourneys"]> {
 	return Promise.all(
 		selectedData.selectedJourneys.map(async (rowIndex, columnIndex) => {
@@ -105,13 +105,13 @@ async function computeSelectedSubJourneys(
 				return undefined;
 			}
 			return (await diagramData).columns[columnIndex].journeys[rowIndex];
-		})
+		}),
 	);
 }
 
 function computeMergingBlocks(
 	locations: ParsedLocation[],
-	selectedSubJourneys: DisplayedJourney["selectedSubJourneys"]
+	selectedSubJourneys: DisplayedJourney["selectedSubJourneys"],
 ): AdhesiveBlock[] {
 	return locations.map((location, columnIndex) => {
 		const precedingBlock: JourneyBlock =
@@ -130,27 +130,27 @@ function computeMergingBlocks(
 
 function computeDisplayedBlocks(
 	mergingBlocks: AdhesiveBlock[],
-	selectedSubJourneys: DisplayedJourney["selectedSubJourneys"]
+	selectedSubJourneys: DisplayedJourney["selectedSubJourneys"],
 ): DisplayedJourney["blocks"] {
 	return Array.from({ length: 2 * mergingBlocks.length - 1 }, (_v, i) => {
 		const mergingBlock = mergingBlocks[i / 2];
 		if (i % 2 === 0) {
 			return {
 				value: mergingBlock !== undefined ? [mergingBlock] : [],
-				key: `-${i}`
+				key: `-${i}`,
 			};
 		}
 
 		const subJourney = selectedSubJourneys[~~(i / 2)];
 		return {
 			value: subJourney?.blocks ?? [{ type: "unselected" }],
-			key: subJourney?.refreshToken ?? String(i)
+			key: subJourney?.refreshToken ?? String(i),
 		};
 	});
 }
 
 function computeStatuses(
-	displayedBlocks: DisplayedJourney["blocks"]
+	displayedBlocks: DisplayedJourney["blocks"],
 ): DisplayedJourney["statuses"] {
 	const statuses: DisplayedJourney["statuses"] = new SvelteSet();
 
@@ -161,7 +161,7 @@ function computeStatuses(
 			(block) =>
 				block.type === "transfer" ||
 				block.type === "walk" ||
-				block.type === "onward-journey"
+				block.type === "onward-journey",
 		)
 		.some((transfer) => {
 			if (transfer.type === "transfer") {

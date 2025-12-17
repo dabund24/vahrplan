@@ -21,7 +21,7 @@
 		}
 		const reqData = diagramApiClient.formDataToRequestData(displayedFormData);
 		return diagramApiClient.formatNonApiUrl(reqData, {
-			profileConfig: displayedFormData.profileConfig
+			profileConfig: displayedFormData.profileConfig,
 		}).href;
 	});
 
@@ -31,7 +31,7 @@
 		}
 		const tokens = displayedJourney.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
 		return journeyApiClient.formatNonApiUrl(tokens, {
-			profileConfig: displayedFormData.profileConfig
+			profileConfig: displayedFormData.profileConfig,
 		}).href;
 	});
 </script>

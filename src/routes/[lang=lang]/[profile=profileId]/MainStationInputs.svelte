@@ -29,7 +29,7 @@
 		stops = [
 			...stops.slice(0, index),
 			{ value: undefined, key: Math.random() },
-			...stops.slice(index, stops.length)
+			...stops.slice(index, stops.length),
 		];
 	}
 	function reverseStops(): void {

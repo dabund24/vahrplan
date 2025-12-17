@@ -4,11 +4,11 @@ import type {
 	SubJourney,
 	TransferBlock,
 	TransitType,
-	WalkingBlock
+	WalkingBlock,
 } from "$lib/types";
 import {
 	getLocationRepresentative,
-	type LocationEquivalenceSystem
+	type LocationEquivalenceSystem,
 } from "../../../routes/[lang=lang]/[profile=profileId]/api/diagram/locationRepresentativesUtils";
 import { type SvgPosition, type TransferPosition } from "$lib/server/svgData/svgData.server";
 import { computeCoordinateX, computeCoordinateY } from "$lib/server/svgData/util";
@@ -29,7 +29,7 @@ export function computeTransferSvgData(
 		journeyEndPositions: Record<TransitType, ParsedLocation["position"]>;
 		transferLocations: LocationEquivalenceSystem;
 		subJourney: SubJourney;
-	}
+	},
 ): TransferSvgData {
 	const { journeyEndPositions, transferLocations, subJourney } = ctx;
 	const transferPosition = determineTransferPosition(subJourney, blockIndex);
@@ -44,14 +44,14 @@ export function computeTransferSvgData(
 	let end: [number, number];
 	const startY = computeCoordinateY(time.arrival?.time);
 	const endY = computeCoordinateY(
-		new Date(time.arrival?.time ?? 0).getTime() + block.transferTime * MINUTE_IN_MS
+		new Date(time.arrival?.time ?? 0).getTime() + block.transferTime * MINUTE_IN_MS,
 	);
 
 	if (transferPosition === "middle") {
 		// transfer is somewhere in the middle, so use representative location
 		const location = getLocationRepresentative(
 			transferLocations,
-			block.type === "transfer" ? block.transitData.location : block.destinationLocation
+			block.type === "transfer" ? block.transitData.location : block.destinationLocation,
 		);
 		start = [computeCoordinateX(location.position, journeyEndPositions), startY];
 		end = [computeCoordinateX(location.position, journeyEndPositions), endY];
@@ -60,7 +60,7 @@ export function computeTransferSvgData(
 			start,
 			end,
 			locationId: location.id,
-			transferPosition
+			transferPosition,
 		};
 	}
 

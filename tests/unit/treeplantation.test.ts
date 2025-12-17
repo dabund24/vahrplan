@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import type { TransitType } from "$lib/types";
 import {
 	buildTree,
-	unfoldTree
+	unfoldTree,
 } from "../../src/routes/[lang=lang]/[profile=profileId]/api/diagram/treePlantation.server";
 
 function mockTime(date: number): string {
@@ -13,8 +13,8 @@ const simpleInput = [
 	[
 		{ departure: mockTime(0), arrival: mockTime(1) },
 		{ departure: mockTime(1), arrival: mockTime(2) },
-		{ departure: mockTime(2), arrival: mockTime(3) }
-	]
+		{ departure: mockTime(2), arrival: mockTime(3) },
+	],
 ];
 
 const complicatedInput: Record<TransitType, string>[][] = [
@@ -23,18 +23,18 @@ const complicatedInput: Record<TransitType, string>[][] = [
 		{ departure: mockTime(1), arrival: mockTime(6) },
 		{ departure: mockTime(2), arrival: mockTime(7) },
 		{ departure: mockTime(3), arrival: mockTime(8) },
-		{ departure: mockTime(4), arrival: mockTime(8) }
+		{ departure: mockTime(4), arrival: mockTime(8) },
 	],
 	[
 		{ departure: mockTime(4), arrival: mockTime(10) },
 		{ departure: mockTime(7), arrival: mockTime(9) },
-		{ departure: mockTime(7), arrival: mockTime(11) }
+		{ departure: mockTime(7), arrival: mockTime(11) },
 	],
 	[
 		{ departure: mockTime(10), arrival: mockTime(10) },
 		{ departure: mockTime(10), arrival: mockTime(15) },
-		{ departure: mockTime(11), arrival: mockTime(11) }
-	]
+		{ departure: mockTime(11), arrival: mockTime(11) },
+	],
 ];
 
 test("build tree simple", () => {
@@ -45,32 +45,32 @@ test("build tree simple", () => {
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(0),
-				arrival: mockTime(1)
+				arrival: mockTime(1),
 			},
 			columnIndex: 0,
 			rowIndex: 0,
-			children: []
+			children: [],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(1),
-				arrival: mockTime(2)
+				arrival: mockTime(2),
 			},
 			columnIndex: 0,
 			rowIndex: 1,
-			children: []
+			children: [],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(2),
-				arrival: mockTime(3)
+				arrival: mockTime(3),
 			},
 			columnIndex: 0,
 			rowIndex: 2,
-			children: []
-		}
+			children: [],
+		},
 	];
 
 	expect(tree).toEqual(expected);
@@ -87,39 +87,39 @@ test("build complicated tree", () => {
 					type: "journeyNode",
 					timeData: {
 						departure: mockTime(4),
-						arrival: mockTime(10)
+						arrival: mockTime(10),
 					},
 					columnIndex: 1,
 					rowIndex: 0,
-					children: []
-				}
-			]
+					children: [],
+				},
+			],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(0),
-				arrival: mockTime(5)
+				arrival: mockTime(5),
 			},
 			columnIndex: 0,
 			rowIndex: 0,
-			children: []
+			children: [],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(1),
-				arrival: mockTime(6)
+				arrival: mockTime(6),
 			},
 			columnIndex: 0,
 			rowIndex: 1,
-			children: []
+			children: [],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(2),
-				arrival: mockTime(7)
+				arrival: mockTime(7),
 			},
 			columnIndex: 0,
 			rowIndex: 2,
@@ -128,7 +128,7 @@ test("build complicated tree", () => {
 					type: "journeyNode",
 					timeData: {
 						departure: mockTime(7),
-						arrival: mockTime(9)
+						arrival: mockTime(9),
 					},
 					columnIndex: 1,
 					rowIndex: 1,
@@ -137,29 +137,29 @@ test("build complicated tree", () => {
 							type: "journeyNode",
 							timeData: {
 								departure: mockTime(10),
-								arrival: mockTime(10)
+								arrival: mockTime(10),
 							},
 							columnIndex: 2,
 							rowIndex: 0,
-							children: []
+							children: [],
 						},
 						{
 							type: "journeyNode",
 							timeData: {
 								departure: mockTime(10),
-								arrival: mockTime(15)
+								arrival: mockTime(15),
 							},
 							columnIndex: 2,
 							rowIndex: 1,
-							children: []
-						}
-					]
+							children: [],
+						},
+					],
 				},
 				{
 					type: "journeyNode",
 					timeData: {
 						departure: mockTime(7),
-						arrival: mockTime(11)
+						arrival: mockTime(11),
 					},
 					columnIndex: 1,
 					rowIndex: 2,
@@ -168,36 +168,36 @@ test("build complicated tree", () => {
 							type: "journeyNode",
 							timeData: {
 								departure: mockTime(11),
-								arrival: mockTime(11)
+								arrival: mockTime(11),
 							},
 							columnIndex: 2,
 							rowIndex: 2,
-							children: []
-						}
-					]
-				}
-			]
+							children: [],
+						},
+					],
+				},
+			],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(3),
-				arrival: mockTime(8)
+				arrival: mockTime(8),
 			},
 			columnIndex: 0,
 			rowIndex: 3,
-			children: []
+			children: [],
 		},
 		{
 			type: "journeyNode",
 			timeData: {
 				departure: mockTime(4),
-				arrival: mockTime(8)
+				arrival: mockTime(8),
 			},
 			columnIndex: 0,
 			rowIndex: 4,
-			children: []
-		}
+			children: [],
+		},
 	];
 
 	expect(tree).toEqual(expected);

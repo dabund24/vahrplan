@@ -21,7 +21,7 @@
 
 	let stops: KeyedItem<ParsedLocation | undefined, number>[] = $state([
 		{ value: undefined, key: 0 },
-		{ value: undefined, key: 1 }
+		{ value: undefined, key: 1 },
 	]);
 	$effect.pre(() => {
 		if (page.data.profileConfig && initialFormData === undefined) {
@@ -31,7 +31,7 @@
 		if (initialFormData === undefined) {
 			stops = [
 				{ value: undefined, key: 0 },
-				{ value: undefined, key: 1 }
+				{ value: undefined, key: 1 },
 			];
 			return;
 		}
@@ -76,7 +76,7 @@
 			timeData: { type: "absolute", scrollDirection, time: journeyTime.toISOString() },
 			filters,
 			geolocationDate: new Date(),
-			profileConfig
+			profileConfig,
 		};
 		// handle current position
 		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
@@ -119,7 +119,7 @@
 			<SingleSelect
 				titles={[
 					{ type: "text", title: "Abfahrt" },
-					{ type: "text", title: "Ankunft" }
+					{ type: "text", title: "Ankunft" },
 				]}
 				bind:selected={departureArrivalSelection}
 			/>

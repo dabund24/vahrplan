@@ -15,7 +15,7 @@
 		iconType,
 		isSmallIcon = false,
 		secondaryProduct = undefined,
-		isCancelled = false
+		isCancelled = false,
 	}: Props = $props();
 </script>
 

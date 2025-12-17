@@ -8,7 +8,7 @@ export function constrain(
 	min: Length,
 	max: Length,
 	pos: Length,
-	priority: "min" | "max"
+	priority: "min" | "max",
 ): Length {
 	if (element === undefined) {
 		return "100%";

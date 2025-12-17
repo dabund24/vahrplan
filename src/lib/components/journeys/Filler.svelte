@@ -22,13 +22,13 @@
 					"&to=" +
 					block.destinationLocation.position.lat +
 					"%2C" +
-					block.destinationLocation.position.lng
+					block.destinationLocation.position.lng,
 	);
 
 	let duration = $derived(
 		block.type === "walk" || block.type === "onward-journey" || block.type === "transfer"
 			? block.transferTime
-			: undefined
+			: undefined,
 	);
 </script>
 

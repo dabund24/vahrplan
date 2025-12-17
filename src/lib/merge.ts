@@ -6,7 +6,7 @@ import type {
 	ParsedTime,
 	TransferBlock,
 	TransitData,
-	WalkingBlock
+	WalkingBlock,
 } from "$lib/types";
 import { dateDifference, getRawLocationBlock, mergeTransitData } from "$lib/util";
 import type { Product } from "./types";
@@ -38,7 +38,7 @@ import type { Product } from "./types";
 export function getMergingBlock(
 	precedingBlock: JourneyBlock,
 	location: ParsedLocation,
-	succeedingBlock: JourneyBlock
+	succeedingBlock: JourneyBlock,
 ): AdhesiveBlock {
 	if (
 		(precedingBlock.type !== "unselected" &&
@@ -72,7 +72,7 @@ export function getMergingBlock(
 		if (
 			positionsAreEqual(
 				precedingBlock.arrivalData.location.position,
-				succeedingBlock.departureData.location.position
+				succeedingBlock.departureData.location.position,
 			)
 		) {
 			const isMergeWithStopover = precedingBlock.blockKey === succeedingBlock.blockKey;
@@ -83,7 +83,7 @@ export function getMergingBlock(
 				precedingBlock.product ?? "",
 				succeedingBlock.departureData,
 				succeedingBlock.product ?? "",
-				isMergeWithStopover
+				isMergeWithStopover,
 			);
 		} else {
 			precedingBlock.succeededBy = undefined;
@@ -92,7 +92,7 @@ export function getMergingBlock(
 				precedingBlock.arrivalData.location,
 				precedingBlock.arrivalData.time,
 				succeedingBlock.departureData.location,
-				succeedingBlock.departureData.time
+				succeedingBlock.departureData.time,
 			);
 		}
 	} else if (precedingBlock.type === "leg" && succeedingBlock.type === "location") {
@@ -101,7 +101,7 @@ export function getMergingBlock(
 		if (
 			positionsAreEqual(
 				precedingBlock.arrivalData.location.position,
-				succeedingBlock.location.position
+				succeedingBlock.location.position,
 			)
 		) {
 			precedingBlock.succeededBy = undefined;
@@ -114,7 +114,7 @@ export function getMergingBlock(
 				precedingBlock.arrivalData.location,
 				precedingBlock.arrivalData.time,
 				succeedingBlock.location,
-				succeedingBlock.time
+				succeedingBlock.time,
 			);
 		}
 	} else if (precedingBlock.type === "location" && succeedingBlock.type === "leg") {
@@ -122,7 +122,7 @@ export function getMergingBlock(
 		if (
 			positionsAreEqual(
 				precedingBlock.location.position,
-				succeedingBlock.departureData.location.position
+				succeedingBlock.departureData.location.position,
 			)
 		) {
 			precedingBlock.hidden = true;
@@ -134,7 +134,7 @@ export function getMergingBlock(
 				precedingBlock.location,
 				precedingBlock.time,
 				succeedingBlock.departureData.location,
-				succeedingBlock.departureData.time
+				succeedingBlock.departureData.time,
 			);
 		}
 	} else if (precedingBlock.type === "location" && succeedingBlock.type === "location") {
@@ -147,16 +147,16 @@ export function getMergingBlock(
 
 export function mergeLocationBlocks(
 	arrivalBlock: LocationBlock,
-	departureBlock: LocationBlock
+	departureBlock: LocationBlock,
 ): LocationBlock {
 	return {
 		type: "location",
 		time: {
 			arrival: arrivalBlock.time.arrival,
-			departure: departureBlock.time.departure
+			departure: departureBlock.time.departure,
 		},
 		location: arrivalBlock.location,
-		hidden: false
+		hidden: false,
 	};
 }
 
@@ -164,7 +164,7 @@ function mergingWalkToBlock(
 	departureLocation: ParsedLocation,
 	departureTime: ParsedTime,
 	arrivalLocation: ParsedLocation,
-	arrivalTime: ParsedTime
+	arrivalTime: ParsedTime,
 ): WalkingBlock {
 	return {
 		type: "walk",
@@ -173,7 +173,7 @@ function mergingWalkToBlock(
 		time: { departure: departureTime.arrival, arrival: arrivalTime.departure },
 		distance: 0,
 		travelTime: undefined,
-		transferTime: dateDifference(departureTime.arrival?.time, arrivalTime.departure?.time) ?? 0
+		transferTime: dateDifference(departureTime.arrival?.time, arrivalTime.departure?.time) ?? 0,
 	};
 }
 
@@ -182,7 +182,7 @@ export function transferToBlock(
 	arrivalProduct: Product,
 	departureData: TransitData,
 	departureProduct: Product,
-	isStopover: boolean
+	isStopover: boolean,
 ): TransferBlock {
 	return {
 		type: "transfer",
@@ -191,13 +191,13 @@ export function transferToBlock(
 		transitData: mergeTransitData(arrivalData, departureData, isStopover),
 		arrivalProduct,
 		departureProduct,
-		isStopover
+		isStopover,
 	};
 }
 
 function positionsAreEqual(
 	positionA: ParsedLocation["position"],
-	positionB: ParsedLocation["position"]
+	positionB: ParsedLocation["position"],
 ): boolean {
 	return positionA.lat === positionB.lat && positionA.lng === positionB.lng;
 }

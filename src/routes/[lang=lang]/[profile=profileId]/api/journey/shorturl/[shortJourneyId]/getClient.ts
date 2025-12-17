@@ -8,8 +8,8 @@ import type { Ctx } from "$lib/types";
 
 export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], RequestEvent>()(
 	PathParamSettable<string, string[], RequestEvent>()(
-		ApiClient<string, string[], "GET", RequestEvent>
-	)
+		ApiClient<string, string[], "GET", RequestEvent>,
+	),
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "journey/shorturl/[shortJourneyId]";
@@ -18,16 +18,16 @@ export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], 
 
 	protected override formatUrlPath = (
 		content: string,
-		{ apiPathBase }: Pick<Ctx, "apiPathBase">
+		{ apiPathBase }: Pick<Ctx, "apiPathBase">,
 	): `${Ctx["apiPathBase"]}${string}` => `${apiPathBase}journey/shorturl/${content}`;
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): string => reqEvent.params.shortJourneyId;
 
 	protected override formatNonApiUrlSuffix = (
 		content: string,
-		ctx: Pick<Ctx, "profileConfig" | "pathBase">
+		ctx: Pick<Ctx, "profileConfig" | "pathBase">,
 	): URL => {
 		const { pathBase } = ctx;
 		const path = `${pathBase}journey/shorturl/${content}`;
@@ -36,13 +36,13 @@ export class GetJourneyShortUrlApiClient extends NonApiUsable<string, string[], 
 
 	protected override requestEventFromUrl = (
 		url: URL,
-		ctx: Pick<Ctx, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">,
 	): MinimalRequestEvent<"GET", RequestEvent> => ({
 		url,
 		params: {
 			lang: ctx.profileConfig.lang,
 			profile: ctx.profileConfig.id,
-			shortJourneyId: url.pathname.substring(url.pathname.lastIndexOf("/") + 1)
-		}
+			shortJourneyId: url.pathname.substring(url.pathname.lastIndexOf("/") + 1),
+		},
 	});
 }

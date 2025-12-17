@@ -10,7 +10,7 @@ type ReqType = KeylessDatabaseEntry<
 >;
 
 export class PutDiagramShortApiClient extends BodySettable<ReqType, string, RequestEvent>()(
-	ApiClient<ReqType, string, "PUT", RequestEvent>
+	ApiClient<ReqType, string, "PUT", RequestEvent>,
 ) {
 	protected override readonly methodType = "PUT";
 	protected override readonly route = "diagram/shorturl";
@@ -21,6 +21,6 @@ export class PutDiagramShortApiClient extends BodySettable<ReqType, string, Requ
 		JSON.stringify(content);
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>
+		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>,
 	): Promise<ReqType> => reqEvent.request.json() as Promise<ReqType>;
 }

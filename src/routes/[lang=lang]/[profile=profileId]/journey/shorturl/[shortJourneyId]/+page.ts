@@ -11,7 +11,7 @@ export const load: PageLoad = async ({ params: { shortJourneyId }, fetch, parent
 	const serverRequestData: ServerRequestData = {
 		fetchFn: fetch,
 		lang,
-		profileConfig
+		profileConfig,
 	};
 	const { content: refreshTokens } = (
 		await shortUrlClient.request(shortJourneyId, serverRequestData)

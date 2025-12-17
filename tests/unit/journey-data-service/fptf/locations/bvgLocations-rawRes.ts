@@ -9,7 +9,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100003",
 			latitude: 52.521508,
-			longitude: 13.411267
+			longitude: 13.411267,
 		},
 		products: {
 			suburban: true,
@@ -18,11 +18,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100003"
-		}
+			ifopt: "de:11000:900100003",
+		},
 	},
 	{
 		type: "stop",
@@ -32,7 +32,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100026",
 			latitude: 52.52105,
-			longitude: 13.411285
+			longitude: 13.411285,
 		},
 		products: {
 			suburban: true,
@@ -41,11 +41,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100026"
-		}
+			ifopt: "de:11000:900100026",
+		},
 	},
 	{
 		type: "stop",
@@ -55,7 +55,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100005",
 			latitude: 52.522083,
-			longitude: 13.414593
+			longitude: 13.414593,
 		},
 		products: {
 			suburban: true,
@@ -64,11 +64,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100005"
-		}
+			ifopt: "de:11000:900100005",
+		},
 	},
 	{
 		type: "stop",
@@ -78,7 +78,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100024",
 			latitude: 52.521481,
-			longitude: 13.411924
+			longitude: 13.411924,
 		},
 		products: {
 			suburban: true,
@@ -87,11 +87,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100024"
-		}
+			ifopt: "de:11000:900100024",
+		},
 	},
 	{
 		type: "stop",
@@ -101,7 +101,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100731",
 			latitude: 52.523513,
-			longitude: 13.411366
+			longitude: 13.411366,
 		},
 		products: {
 			suburban: true,
@@ -110,11 +110,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100731"
-		}
+			ifopt: "de:11000:900100731",
+		},
 	},
 	{
 		type: "stop",
@@ -124,7 +124,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100031",
 			latitude: 52.522937,
-			longitude: 13.410755
+			longitude: 13.410755,
 		},
 		products: {
 			suburban: true,
@@ -133,11 +133,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100031"
-		}
+			ifopt: "de:11000:900100031",
+		},
 	},
 	{
 		type: "stop",
@@ -147,7 +147,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100708",
 			latitude: 52.521796,
-			longitude: 13.408418
+			longitude: 13.408418,
 		},
 		products: {
 			suburban: true,
@@ -156,11 +156,11 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100708"
-		}
+			ifopt: "de:11000:900100708",
+		},
 	},
 	{
 		type: "stop",
@@ -170,7 +170,7 @@ export const bvgLocationsRawRes = [
 			type: "location",
 			id: "900100006",
 			latitude: 52.520412,
-			longitude: 13.414432
+			longitude: 13.414432,
 		},
 		products: {
 			suburban: true,
@@ -179,18 +179,18 @@ export const bvgLocationsRawRes = [
 			bus: true,
 			ferry: false,
 			express: false,
-			regional: true
+			regional: true,
 		},
 		ids: {
-			ifopt: "de:11000:900100006"
-		}
+			ifopt: "de:11000:900100006",
+		},
 	},
 	{
 		type: "location",
 		id: null,
 		latitude: 52.521778,
 		longitude: 13.414036,
-		address: "Alexanderplatz, 10178 Berlin-Mitte"
+		address: "Alexanderplatz, 10178 Berlin-Mitte",
 	},
 	{
 		type: "location",
@@ -198,6 +198,6 @@ export const bvgLocationsRawRes = [
 		latitude: 52.523549,
 		longitude: 13.418441,
 		name: "Berlin, Holiday Inn Centre Alexanderplatz****",
-		poi: true
-	}
+		poi: true,
+	},
 ] as (Station | Stop | Location)[];

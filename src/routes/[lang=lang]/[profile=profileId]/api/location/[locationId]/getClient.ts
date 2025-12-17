@@ -5,7 +5,7 @@ import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import { YEAR_IN_SECONDS } from "$lib/constants";
 
 export class GetLocationApiClient extends PathParamSettable<string, ParsedLocation, RequestEvent>()(
-	ApiClient<string, ParsedLocation, "GET", RequestEvent>
+	ApiClient<string, ParsedLocation, "GET", RequestEvent>,
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "location/[locationId]";
@@ -14,10 +14,10 @@ export class GetLocationApiClient extends PathParamSettable<string, ParsedLocati
 
 	protected override formatUrlPath = (
 		content: string,
-		{ apiPathBase }: Pick<Ctx, "apiPathBase" | "profileConfig">
+		{ apiPathBase }: Pick<Ctx, "apiPathBase" | "profileConfig">,
 	): `${Ctx["apiPathBase"]}${string}` => `${apiPathBase}location/${content}`;
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): string => reqEvent.params.locationId;
 }

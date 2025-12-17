@@ -30,7 +30,7 @@
 				}
 				return acc;
 			},
-			[""]
+			[""],
 		);
 		if (coords.at(-1) === "") {
 			coords.pop();

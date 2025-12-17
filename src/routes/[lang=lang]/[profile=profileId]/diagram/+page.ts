@@ -5,7 +5,7 @@ import { error, redirect } from "@sveltejs/kit";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import {
 	getDisplayedFormData,
-	type DisplayedFormData
+	type DisplayedFormData,
 } from "$lib/state/displayedFormData.svelte.js";
 import type { GetDiagramApiClient } from "../api/diagram/getClient";
 import { VahrplanError } from "$lib/VahrplanError";
@@ -28,10 +28,10 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 	const formData = await diagramRequestDataToFormData(reqContent, {
 		fetchFn: fetch,
 		lang,
-		profileConfig
+		profileConfig,
 	});
 	return {
-		formData
+		formData,
 	};
 };
 
@@ -44,7 +44,7 @@ export const load: PageLoad = async ({ url, fetch, parent }) => {
 function formDataMatchesUrl(
 	url: URL,
 	formData: DisplayedFormData | undefined,
-	ctx: Pick<Ctx, "profileConfig">
+	ctx: Pick<Ctx, "profileConfig">,
 ): boolean {
 	if (formData === undefined) {
 		return false;
@@ -53,7 +53,7 @@ function formDataMatchesUrl(
 	const currentDiagramData: Parameters<(typeof diagramApiClient)["formatNonApiUrl"]>[0] = {
 		stops: formData.locations.map((l) => l.value.id),
 		timeData: formData.timeData,
-		filters: formData.filters
+		filters: formData.filters,
 	};
 
 	return diagramApiClient.formatNonApiUrl(currentDiagramData, ctx).href === url.href;
@@ -61,7 +61,7 @@ function formDataMatchesUrl(
 
 async function diagramRequestDataToFormData(
 	diagramRequestData: Parameters<GetDiagramApiClient["formatNonApiUrl"]>[0],
-	serverRequestData: ServerRequestData
+	serverRequestData: ServerRequestData,
 ): Promise<DisplayedFormData> {
 	const locationApiClient = apiClient("GET", "location/[locationId]");
 	const stopObjects: KeyedItem<ParsedLocation, number>[] = await Promise.all(
@@ -71,15 +71,15 @@ async function diagramRequestDataToFormData(
 			).throwIfError();
 			return {
 				key: Math.random(),
-				value: location.content
+				value: location.content,
 			};
-		})
+		}),
 	);
 
 	if (stopObjects.length < 2) {
 		error(
 			400,
-			VahrplanError.withMessage("HAFAS_INVALID_REQUEST", "Weniger als 2 Stationen angegeben")
+			VahrplanError.withMessage("HAFAS_INVALID_REQUEST", "Weniger als 2 Stationen angegeben"),
 		);
 	}
 
@@ -88,6 +88,6 @@ async function diagramRequestDataToFormData(
 		timeData: diagramRequestData.timeData,
 		filters: diagramRequestData.filters,
 		geolocationDate: new Date(),
-		profileConfig: serverRequestData.profileConfig
+		profileConfig: serverRequestData.profileConfig,
 	};
 }

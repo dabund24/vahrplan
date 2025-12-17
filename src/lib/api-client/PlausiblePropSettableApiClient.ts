@@ -3,7 +3,7 @@ import {
 	ApiClient,
 	type ApiClientRequestEvent,
 	type HttpMethod,
-	type RequestData
+	type RequestData,
 } from "$lib/api-client/ApiClient";
 import type { VahrplanResult } from "$lib/VahrplanResult";
 
@@ -17,7 +17,7 @@ export function PlausiblePropSettable<ReqT, ResT, RequestEventT extends ApiClien
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	return function <
 		MethodT extends HttpMethod,
-		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>
+		BaseT extends AbstractConstructor<ApiClient<ReqT, ResT, MethodT, RequestEventT>>,
 	>(base: BaseT) {
 		abstract class PlausiblePropSettable extends base {
 			/**
@@ -26,17 +26,17 @@ export function PlausiblePropSettable<ReqT, ResT, RequestEventT extends ApiClien
 			 * @protected
 			 */
 			protected abstract formatProps: (
-				content: ReqT
+				content: ReqT,
 			) => Record<PlausibleProp, string | number>;
 
 			protected override requestInternal(
 				content: ReqT,
 				requestData: RequestData,
-				fetchFn?: typeof fetch
+				fetchFn?: typeof fetch,
 			): Promise<VahrplanResult<ResT>> {
 				requestData.plausibleProps = {
 					...requestData.plausibleProps,
-					...this.formatProps(content)
+					...this.formatProps(content),
 				};
 				return super.requestInternal(content, requestData, fetchFn);
 			}

@@ -19,7 +19,7 @@
 	import {
 		getDisplayedFormData,
 		searchDiagram,
-		type DisplayedFormData
+		type DisplayedFormData,
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
@@ -38,7 +38,7 @@
 		if (locations.length === 0) {
 			return {
 				pageTitle: "Reiseauswahl",
-				pageDescription: "Reiseauswahl in Vahrplan"
+				pageDescription: "Reiseauswahl in Vahrplan",
 			};
 		}
 		const viaString =
@@ -49,7 +49,7 @@
 						.map((location) => location.value.name)
 						.reduce(
 							(acc, name, i, array) =>
-								`${acc}${i === array.length - 1 ? " und" : ","} ${name}`
+								`${acc}${i === array.length - 1 ? " und" : ","} ${name}`,
 						)}`;
 		return {
 			pageTitle:
@@ -59,7 +59,7 @@
 					.reduce((acc, name) => `${acc} – ${name}`),
 			pageDescription:
 				`Reiseauswahl für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
-				` am ${dateToString(departure)} mit Abfahrt ${timeToString(departure)} Uhr`
+				` am ${dateToString(departure)} mit Abfahrt ${timeToString(departure)} Uhr`,
 		};
 	});
 
@@ -80,7 +80,7 @@
 
 	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
 		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent },
-		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent }
+		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent },
 	];
 </script>
 
@@ -159,7 +159,7 @@
 							{#snippet tabEnvironment(
 								miniTabs: Snippet,
 								tabContent: Snippet,
-								activeTab?: number
+								activeTab?: number,
 							)}
 								<JourneySummary
 									miniTabsSnippet={miniTabs}
@@ -194,9 +194,9 @@
 							{
 								title: "Klassische Ansicht",
 								icon: detailsIcon,
-								content: journeyOverview
+								content: journeyOverview,
 							},
-							{ title: "Karte", icon: mapIcon, content: map }
+							{ title: "Karte", icon: mapIcon, content: map },
 						]}
 						startingTab={$settings.general.journeyDetailsStandardView === "classic"
 							? 0

@@ -6,7 +6,7 @@ import { bvgJourneysRawRes } from "./bvgJourneys-rawRes";
 import { bvgJourneysFormattedReq } from "./bvgJourneys-formattedReq";
 
 vi.mock("$app/server", () => ({
-	read: (): object => ({ text: () => "" })
+	read: (): object => ({ text: () => "" }),
 }));
 
 test("fptf data service journeys()", async () => {
@@ -15,11 +15,11 @@ test("fptf data service journeys()", async () => {
 			createClient: (): Pick<HafasClient, "journeys"> => ({
 				journeys(...params): Promise<Journeys> {
 					expect(params, "request was formatted incorrectly").toEqual(
-						bvgJourneysFormattedReq
+						bvgJourneysFormattedReq,
 					);
 					return Promise.resolve(bvgJourneysRawRes);
-				}
-			})
+				},
+			}),
 		};
 	});
 
@@ -30,7 +30,7 @@ test("fptf data service journeys()", async () => {
 			timeData: {
 				time: "2025-12-08T03:13:00+01:00",
 				type: "absolute",
-				scrollDirection: "later"
+				scrollDirection: "later",
 			},
 			filters: {
 				products: {
@@ -40,17 +40,17 @@ test("fptf data service journeys()", async () => {
 					ferry: true,
 					subway: true,
 					suburban: true,
-					tram: false
+					tram: false,
 				},
 				options: {
 					bike: true,
 					accessible: true,
 					maxTransfers: 0,
-					minTransferTime: 5
-				}
-			}
+					minTransferTime: 5,
+				},
+			},
 		},
-		{ lang: "de" }
+		{ lang: "de" },
 	);
 
 	expect(!res.isError && res.content).toEqual(bvgJourneysParsedRes);

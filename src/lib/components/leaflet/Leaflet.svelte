@@ -11,7 +11,7 @@
 	import {
 		cleanupCurrentPositionData,
 		currentPositionData,
-		setupCurrentPositionData
+		setupCurrentPositionData,
 	} from "$lib/geolocation.svelte.js";
 	import IconTrainLocation from "$lib/components/IconTrainLocation.svelte";
 	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
@@ -44,7 +44,7 @@
 	});
 
 	setContext("map", {
-		getMap: () => map
+		getMap: () => map,
 	});
 
 	function addLayersToMap(map: L.Map): void {
@@ -52,23 +52,23 @@
 			maxZoom: 19,
 			attribution:
 				'&copy; <a href="https:///www.openstreetmap.org/copyright">OpenStreetMap</a>',
-			className: "osm-tiles"
+			className: "osm-tiles",
 		}).addTo(map);
 	}
 
 	$effect(() =>
 		setMapContent(map, {
 			selectedData,
-			displayedJourney
-		})
+			displayedJourney,
+		}),
 	);
 
 	function setMapContent(
 		map: L.Map | undefined,
 		{
 			selectedData,
-			displayedJourney
-		}: { selectedData: SelectedData; displayedJourney: DisplayedJourney }
+			displayedJourney,
+		}: { selectedData: SelectedData; displayedJourney: DisplayedJourney },
 	): void {
 		if (map === undefined) return;
 		let coordinates: L.LatLngLiteral[];
@@ -81,9 +81,9 @@
 						? [
 								block.departureData.location.position,
 								...block.stopovers.map((s) => s.location.position),
-								block.arrivalData.location.position
+								block.arrivalData.location.position,
 							]
-						: block.location.position
+						: block.location.position,
 				);
 		} else if (displayedFormData !== undefined) {
 			coordinates = displayedJourney.locations.map((location) => location.value.position);
@@ -91,11 +91,11 @@
 			// fit germany
 			coordinates = [
 				{ lat: 55.0, lng: 6.332 },
-				{ lat: 47.5, lng: 14.635 }
+				{ lat: 47.5, lng: 14.635 },
 			];
 		}
 		map.fitBounds(L.latLngBounds(coordinates), {
-			padding: [10, 100]
+			padding: [10, 100],
 		});
 	}
 </script>
@@ -147,7 +147,7 @@
 							data={{
 								location: block.currentLocation,
 								time: {},
-								platformData: null
+								platformData: null,
 							}}
 						>
 							<IconTrainLocation product={block.product} />
@@ -173,7 +173,7 @@
 						data={{
 							location: block.location,
 							time: block.time,
-							platformData: null
+							platformData: null,
 						}}
 					>
 						<IconStationLocation
@@ -195,10 +195,10 @@
 						position: currentPositionData.position,
 						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
 						name: "Live-Standort",
-						id: JSON.stringify({ type: "location" })
+						id: JSON.stringify({ type: "location" }),
 					},
 					time: {},
-					platformData: null
+					platformData: null,
 				}}
 				orientation={currentPositionData.orientation}
 			>

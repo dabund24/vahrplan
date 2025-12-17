@@ -8,7 +8,7 @@ import type { LocationEquivalenceSystem } from "../diagram/locationRepresentativ
 import type { SvgData } from "$lib/server/svgData/svgData.server";
 import {
 	type PlausibleProp,
-	PlausiblePropSettable
+	PlausiblePropSettable,
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 
 type ResType = {
@@ -20,16 +20,16 @@ type ResType = {
 export class GetJourneyApiClient extends NonApiUsable<string[], ResType, RequestEvent>()(
 	QueryParamSettable<string[], ResType, RequestEvent>()(
 		PlausiblePropSettable<string[], ResType, RequestEvent>()(
-			ApiClient<string[], ResType, "GET", RequestEvent>
-		)
-	)
+			ApiClient<string[], ResType, "GET", RequestEvent>,
+		),
+	),
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "journey";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = 30;
 	protected override readonly queryParamNames = {
-		tokens: "tokens"
+		tokens: "tokens",
 	} as const;
 
 	protected override formatQueryParams = (content: string[]): URLSearchParams => {
@@ -39,7 +39,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 	};
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): string[] =>
 		this.readArrayQueryParameter(reqEvent.url.searchParams, this.queryParamNames.tokens);
 
@@ -48,7 +48,7 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 
 	public override formatNonApiUrlSuffix = (
 		content: string[],
-		ctx: Pick<Ctx, "profileConfig" | "pathBase">
+		ctx: Pick<Ctx, "profileConfig" | "pathBase">,
 	): URL => {
 		const { pathBase } = ctx;
 		const path = `${pathBase}journey`;
@@ -62,15 +62,15 @@ export class GetJourneyApiClient extends NonApiUsable<string[], ResType, Request
 
 	protected override requestEventFromUrl = (
 		url: URL,
-		ctx: Pick<Ctx, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">,
 	): MinimalRequestEvent<"GET", RequestEvent> => ({
 		url,
-		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id }
+		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id },
 	});
 
 	protected override formatProps = (
-		content: string[]
+		content: string[],
 	): Record<PlausibleProp, string | number> => ({
-		viaCount: content.length - 1
+		viaCount: content.length - 1,
 	});
 }

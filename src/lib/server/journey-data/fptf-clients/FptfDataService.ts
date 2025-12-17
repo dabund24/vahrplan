@@ -1,7 +1,7 @@
 import {
 	JourneyDataService,
 	type JourneyDataServiceConfig,
-	type JourneyNodesWithRefs
+	type JourneyNodesWithRefs,
 } from "$lib/server/journey-data/JourneyDataService";
 import type { HafasClient, Line } from "hafas-client";
 import type { ParsedLocation, Product, SubJourney } from "$lib/types";
@@ -57,25 +57,25 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			bike: "bike",
 			accessible: "accessibility",
 			maxTransfers: "transfers",
-			minTransferTime: "transferTime"
+			minTransferTime: "transferTime",
 		} as const;
 		super({
 			productMapping: config.productMapping,
 			optionMapping,
 			hasTickets: config.hasTickets,
-			quota: config.quota
+			quota: config.quota,
 		});
 
 		this.client = config.client;
 		this.requestFormatter = new FptfRequestFormatter({
 			optionMapping,
 			productMapping: config.productMapping,
-			hasTickets: config.hasTickets
+			hasTickets: config.hasTickets,
 		});
 		this.responseParser = new FptfResponseParser({
 			productMapping: config.productMapping,
 			lineShapeParser: config.lineShapeParser,
-			ticketUrlParser: config.ticketUrlParser
+			ticketUrlParser: config.ticketUrlParser,
 		});
 	}
 
@@ -87,9 +87,9 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			{
 				formatReqParams: this.requestFormatter.formatRequest.journeys,
 				request: this.client.journeys,
-				parseRes: this.responseParser.parseResponse.journeys
+				parseRes: this.responseParser.parseResponse.journeys,
 			},
-			...params
+			...params,
 		);
 
 	public override refresh = (
@@ -100,9 +100,9 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			{
 				formatReqParams: this.requestFormatter.formatRequest.refresh,
 				request: this.client.refreshJourney!,
-				parseRes: this.responseParser.parseResponse.refresh
+				parseRes: this.responseParser.parseResponse.refresh,
 			},
-			...params
+			...params,
 		);
 
 	public override location = (
@@ -113,9 +113,9 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			{
 				formatReqParams: this.requestFormatter.formatRequest.location,
 				request: this.client.stop,
-				parseRes: this.responseParser.parseResponse.location
+				parseRes: this.responseParser.parseResponse.location,
 			},
-			...params
+			...params,
 		);
 
 	public override locations = (
@@ -126,9 +126,9 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			{
 				formatReqParams: this.requestFormatter.formatRequest.locations,
 				request: this.client.locations,
-				parseRes: this.responseParser.parseResponse.locations
+				parseRes: this.responseParser.parseResponse.locations,
 			},
-			...params
+			...params,
 		);
 
 	protected override parseError = (err: unknown): VahrplanError => {

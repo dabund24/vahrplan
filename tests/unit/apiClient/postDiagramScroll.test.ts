@@ -19,14 +19,14 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 			tram: true,
 			bus: true,
 			taxi: true,
-			ferry: true
+			ferry: true,
 		},
 		options: {
 			bike: false,
 			accessible: true,
 			minTransferTime: 0,
-			maxTransfers: -1
-		}
+			maxTransfers: -1,
+		},
 	},
 	tree: [
 		{
@@ -34,7 +34,7 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 			columnIndex: 0,
 			timeData: { departure: "123", arrival: "456" },
 			rowIndex: 0,
-			children: []
+			children: [],
 		},
 		{
 			type: "journeyNode",
@@ -44,24 +44,24 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 			children: [
 				{
 					type: "emptyNode",
-					children: []
-				}
-			]
-		}
+					children: [],
+				},
+			],
+		},
 	],
 	transferLocations: {
 		idToRepresentative: {
 			foo: "foo",
-			bar: "foo"
+			bar: "foo",
 		},
 		representatives: {
 			foo: {
 				type: "station",
 				name: "Foo",
 				id: "foo",
-				position: { lng: 1, lat: 2 }
-			}
-		}
+				position: { lng: 1, lat: 2 },
+			},
+		},
 	},
 	recommendedVias: [
 		[
@@ -70,28 +70,28 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 					type: "station",
 					name: "Hello",
 					position: { lng: 0, lat: 1 },
-					id: "123456789"
+					id: "123456789",
 				},
-				locationId: "123456789"
+				locationId: "123456789",
 			},
 			{
 				location: {
 					type: "address",
 					name: "My street",
 					position: { lng: 42, lat: 24 },
-					id: "refresh"
+					id: "refresh",
 				},
-				locationId: "refresh"
-			}
+				locationId: "refresh",
+			},
 		],
-		[]
-	]
+		[],
+	],
 };
 
 test(`POST ${route} api client parsing and formatting`, async () => {
 	await apiClientParseFormatTest(client, input, {
 		expectedPath: `/de/dbnav/api/diagram/scroll/${input.scrollDirection}`,
-		params: { scrollDirection: input.scrollDirection }
+		params: { scrollDirection: input.scrollDirection },
 	});
 });
 
@@ -100,6 +100,6 @@ test(`POST ${route} api client plausible`, async () => {
 
 	await apiClientPlausibleTest(client, input, {
 		goal: "POST /api/diagram/scroll/[scrollDirection]",
-		props: { viaCount: 0 }
+		props: { viaCount: 0 },
 	});
 });

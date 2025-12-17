@@ -68,7 +68,7 @@ export type ProfileConfig = {
 export abstract class Profile<
 	IdT extends ProfileId,
 	ProductT extends Product = never,
-	OptionT extends keyof typeof Profile.availableOptions = never
+	OptionT extends keyof typeof Profile.availableOptions = never,
 > {
 	/**
 	 * all options ever available. a profile uses a subset of those
@@ -77,11 +77,11 @@ export abstract class Profile<
 	static readonly availableOptions = {
 		bike: {
 			name: { de: "Fahrradmitnahme" },
-			defaultValue: false
+			defaultValue: false,
 		},
 		accessible: {
 			name: { de: "Barrierefreies Reisen" },
-			defaultValue: false
+			defaultValue: false,
 		},
 		maxTransfers: {
 			name: { de: "Maximalanzahl an Umstiegen" },
@@ -94,8 +94,8 @@ export abstract class Profile<
 				3: { name: "3" },
 				4: { name: "4" },
 				5: { name: "5" },
-				[-1]: { name: "beliebig" }
-			}
+				[-1]: { name: "beliebig" },
+			},
 		},
 		minTransferTime: {
 			name: { de: "Mindest-Umsteigezeit" },
@@ -111,9 +111,9 @@ export abstract class Profile<
 				30: { name: "30min" },
 				40: { name: "40min" },
 				50: { name: "50min" },
-				60: { name: "1h" }
-			}
-		}
+				60: { name: "1h" },
+			},
+		},
 	} as const satisfies { [K in keyof OptionValues]: OptionConfig<OptionValues[K]> };
 	/** @sealed */
 	protected readonly userAgent = `https://vahrplan.de ${version}`;
@@ -142,7 +142,7 @@ export abstract class Profile<
 	 */
 	private assignLangNames<T extends Record<string, { name: LocaleString }>>(
 		lang: Language,
-		obj: T
+		obj: T,
 	): { [K in keyof T]: NameWithKnownLocale<T[K]> } {
 		const res = {} as { [K in keyof T]: NameWithKnownLocale<T[K]> };
 		let feature: keyof T;
@@ -179,7 +179,7 @@ export abstract class Profile<
 			lang,
 			supportedLanguages: this.supportedLanguages,
 			products: this.assignLangNames(lang, this.products),
-			options: this.assignLangNames(lang, opt)
+			options: this.assignLangNames(lang, opt),
 		};
 
 		if (this.disabledNotice !== undefined) {

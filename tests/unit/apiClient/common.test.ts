@@ -18,7 +18,7 @@ test("api client success", async () => {
 	const result = await client.request(input, {
 		profileConfig: exampleProfileConfig,
 		lang: "de",
-		fetchFn: fetch
+		fetchFn: fetch,
 	});
 
 	expect(fetch).toHaveBeenCalledOnce();
@@ -34,13 +34,13 @@ test("api client error", async () => {
 
 	global.location = { origin: "http://localhost" } as Location;
 	global.fetch = vi.fn(async (_request: RequestInfo | URL, _?: RequestInit) =>
-		Promise.resolve(json(error))
+		Promise.resolve(json(error)),
 	);
 
 	const result = await client.request(input, {
 		profileConfig: exampleProfileConfig,
 		lang: "de",
-		fetchFn: fetch
+		fetchFn: fetch,
 	});
 
 	expect(fetch).toHaveBeenCalledOnce();

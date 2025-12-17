@@ -7,7 +7,7 @@ import { YEAR_IN_SECONDS } from "$lib/constants";
 type ReqType = KeylessDatabaseEntry<string[]>;
 
 export class PutJourneyShortUrlApiClient extends BodySettable<ReqType, string, RequestEvent>()(
-	ApiClient<ReqType, string, "PUT", RequestEvent>
+	ApiClient<ReqType, string, "PUT", RequestEvent>,
 ) {
 	protected override readonly methodType = "PUT";
 	protected override readonly route = "journey/shorturl";
@@ -17,6 +17,6 @@ export class PutJourneyShortUrlApiClient extends BodySettable<ReqType, string, R
 	protected override formatBody = (content: ReqType): string => JSON.stringify(content);
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>
+		reqEvent: MinimalRequestEvent<"PUT", RequestEvent>,
 	): Promise<ReqType> => reqEvent.request.json() as Promise<ReqType>;
 }

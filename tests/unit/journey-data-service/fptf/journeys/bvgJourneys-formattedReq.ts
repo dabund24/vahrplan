@@ -9,7 +9,7 @@ export const bvgJourneysFormattedReq = [
 			subway: true,
 			tram: false,
 			bus: true,
-			ferry: true
+			ferry: true,
 		},
 		transferTime: 5,
 		transfers: 0,
@@ -20,6 +20,6 @@ export const bvgJourneysFormattedReq = [
 		tickets: false,
 		language: "de",
 		departure: new Date("2025-12-08T03:13:00+01:00"),
-		entrances: false
-	}
+		entrances: false,
+	},
 ];

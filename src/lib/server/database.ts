@@ -7,7 +7,7 @@ let valkeyClient: Awaited<ReturnType<typeof createClient>>;
 
 if (!building && process.env.NODE_ENV !== "test") {
 	valkeyClient = await createClient({
-		url: process.env.DATABASE_URL ?? "redis://localhost:6379"
+		url: process.env.DATABASE_URL ?? "redis://localhost:6379",
 	}).connect();
 }
 
@@ -30,7 +30,7 @@ export async function setDatabaseEntry<T>(entry: DatabaseEntry<T>): Promise<void
  */
 export async function getDatabaseEntry<T>(
 	type: DatabaseEntryType,
-	key: string
+	key: string,
 ): Promise<T | undefined> {
 	const dbKey = `${type}:${key}`;
 	const stringifiedData = await valkeyClient.get(dbKey);
@@ -45,7 +45,7 @@ export async function getDatabaseEntry<T>(
  * @param keylessEntry entry data without lacking a key
  */
 export function generateHashedDatabaseEntry<T>(
-	keylessEntry: KeylessDatabaseEntry<T>
+	keylessEntry: KeylessDatabaseEntry<T>,
 ): DatabaseEntry<T> {
 	const key = hash("md5", JSON.stringify(keylessEntry.value), "base64url");
 	return { ...keylessEntry, key };

@@ -10,7 +10,7 @@
 	let locations = $derived(displayedFormData?.locations.map((l) => l.value) ?? []);
 
 	const ticketData = $derived(
-		getDisplayedJourney().selectedSubJourneys.map((j) => j?.ticketData)
+		getDisplayedJourney().selectedSubJourneys.map((j) => j?.ticketData),
 	);
 </script>
 
@@ -37,7 +37,7 @@
 						Tickets {data.minPrice !== undefined
 							? `ab ${new Intl.NumberFormat("de-DE", {
 									style: "currency",
-									currency: data.currency
+									currency: data.currency,
 								}).format(data.minPrice)}`
 							: ""}
 					</a>

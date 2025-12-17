@@ -9,7 +9,7 @@ export class HafasClientLineShapeParser extends LineShapeParser<Line> {
 
 		const resLine = LineShapeParser.traewellingLineShapes.find(
 			({ delfiAgencyName, lineName }) =>
-				delfiAgencyName === line?.operator?.name && lineName === line?.name
+				delfiAgencyName === line?.operator?.name && lineName === line?.name,
 		);
 
 		if (resLine === undefined) {
@@ -21,7 +21,7 @@ export class HafasClientLineShapeParser extends LineShapeParser<Line> {
 			shape: resLine.shape,
 			backgroundColor: resLine.backgroundColor,
 			textColor: resLine.textColor,
-			borderColor: resLine.borderColor
+			borderColor: resLine.borderColor,
 		};
 	};
 }

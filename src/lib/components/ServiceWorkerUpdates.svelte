@@ -13,7 +13,7 @@
 	 */
 	function listenForWaitingServiceWorker(
 		reg: ServiceWorkerRegistration,
-		isFirstVisit: boolean
+		isFirstVisit: boolean,
 	): void {
 		const showUpdateButton = (): void => {
 			isUpdatable = true;

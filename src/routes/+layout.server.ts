@@ -6,5 +6,5 @@ export const load: LayoutServerLoad = () => ({
 	news,
 	profileConfig: profileRegistry("empty").configOfLanguage("de"),
 	lang: "de",
-	allProfileConfigs: allProfileConfigs("de")
+	allProfileConfigs: allProfileConfigs("de"),
 });

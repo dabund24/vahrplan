@@ -11,7 +11,7 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 		timeData: {
 			type: "absolute",
 			time: new Date().toISOString(),
-			scrollDirection: "later"
+			scrollDirection: "later",
 		},
 		filters: {
 			products: {
@@ -24,23 +24,23 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 				tram: true,
 				bus: false,
 				taxi: true,
-				ferry: false
+				ferry: false,
 			},
 			options: {
 				bike: false,
 				accessible: true,
 				minTransferTime: 10,
-				maxTransfers: 4
-			}
-		}
+				maxTransfers: 4,
+			},
+		},
 	},
-	expirationDate: 69420
+	expirationDate: 69420,
 };
 
 test(`PUT ${route} api client parsing and formatting`, async () => {
 	await apiClientParseFormatTest(client, input, {
 		expectedPath: `/de/dbnav/api/diagram/shorturl`,
-		params: {}
+		params: {},
 	});
 });
 
@@ -49,6 +49,6 @@ test(`PUT ${route} api client plausible`, async () => {
 
 	await apiClientPlausibleTest(client, input, {
 		goal: "PUT /api/diagram/shorturl",
-		props: {}
+		props: {},
 	});
 });

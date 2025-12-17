@@ -8,7 +8,7 @@ import type { LocationEquivalenceSystem } from "../../locationRepresentativesUti
 import type { RecommendedVia } from "../../viaRecommendations.server";
 import {
 	type PlausibleProp,
-	PlausiblePropSettable
+	PlausiblePropSettable,
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 
 type ReqType = {
@@ -24,9 +24,9 @@ type ReqType = {
 export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramData, RequestEvent>()(
 	PathParamSettable<ReqType, DiagramData, RequestEvent>()(
 		PlausiblePropSettable<ReqType, DiagramData, RequestEvent>()(
-			ApiClient<ReqType, DiagramData, "POST", RequestEvent>
-		)
-	)
+			ApiClient<ReqType, DiagramData, "POST", RequestEvent>,
+		),
+	),
 ) {
 	protected override readonly methodType = "POST";
 	protected override readonly route = "diagram/scroll/[scrollDirection]";
@@ -37,7 +37,7 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 
 	protected override formatUrlPath = (
 		content: ReqType,
-		{ apiPathBase }: Pick<Ctx, "apiPathBase" | "profileConfig">
+		{ apiPathBase }: Pick<Ctx, "apiPathBase" | "profileConfig">,
 	): `${Ctx["apiPathBase"]}${string}` =>
 		`${apiPathBase}diagram/scroll/${content.scrollDirection}`;
 
@@ -48,21 +48,21 @@ export class PostDiagramScrollApiClient extends BodySettable<ReqType, DiagramDat
 			filters: content.filters,
 			tree: content.tree,
 			transferLocations: content.transferLocations,
-			recommendedVias: content.recommendedVias
+			recommendedVias: content.recommendedVias,
 		};
 		return JSON.stringify(bodyContent);
 	};
 
 	protected override parseRequestContent = async (
-		reqEvent: MinimalRequestEvent<"POST", RequestEvent>
+		reqEvent: MinimalRequestEvent<"POST", RequestEvent>,
 	): Promise<ReqType> => ({
 		scrollDirection: reqEvent.params.scrollDirection as RelativeTimeType,
-		...((await reqEvent.request.json()) as Omit<ReqType, "scrollDirection">)
+		...((await reqEvent.request.json()) as Omit<ReqType, "scrollDirection">),
 	});
 
 	protected override formatProps = (
-		content: ReqType
+		content: ReqType,
 	): Record<PlausibleProp, string | number> => ({
-		viaCount: content.stops.length - 2
+		viaCount: content.stops.length - 2,
 	});
 }

@@ -10,13 +10,13 @@ import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import {
 	DIAGRAM_COLUMN_MAX_REQUESTS,
 	DIAGRAM_MAX_COLUMNS,
-	DIAGRAM_MIN_COLUMNS
+	DIAGRAM_MIN_COLUMNS,
 } from "$lib/constants";
 import { VahrplanError } from "$lib/VahrplanError";
 import { browser } from "$app/environment";
 import {
 	type PlausibleProp,
-	PlausiblePropSettable
+	PlausiblePropSettable,
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 import type { OptionId, PossibleOptionValues, Profile } from "$lib/server/profiles/profile";
 
@@ -29,9 +29,9 @@ type ReqType = {
 export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, RequestEvent>()(
 	PlausiblePropSettable<ReqType, DiagramData, RequestEvent>()(
 		QueryParamSettable<ReqType, DiagramData, RequestEvent>()(
-			ApiClient<ReqType, DiagramData, "GET", RequestEvent>
-		)
-	)
+			ApiClient<ReqType, DiagramData, "GET", RequestEvent>,
+		),
+	),
 ) {
 	protected override readonly methodType = "GET";
 	protected override readonly route = "diagram";
@@ -54,21 +54,21 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		bike: "bike",
 		accessible: "accessible",
 		maxTransfers: "max-transfers",
-		minTransferTime: "min-transfer-time"
+		minTransferTime: "min-transfer-time",
 	} as const satisfies Record<string, string> & {
 		[K in keyof ReqType["filters"]["products"]]: CamelToKebab<K>;
 	};
 
 	protected override formatQueryParams = (
 		content: ReqType,
-		{ profileConfig }: Pick<Ctx, "profileConfig">
+		{ profileConfig }: Pick<Ctx, "profileConfig">,
 	): URLSearchParams => {
 		const queryParams = new URLSearchParams();
 		this.writeArrayQueryParameter(queryParams, this.queryParamNames.stops, content.stops);
 		queryParams.set(this.queryParamNames.time, content.timeData.time);
 		queryParams.set(
 			this.queryParamNames.timeRole,
-			content.timeData.scrollDirection === "later" ? "departure" : "arrival"
+			content.timeData.scrollDirection === "later" ? "departure" : "arrival",
 		);
 
 		let product: Product;
@@ -77,7 +77,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 			this.writeBooleanQueryParameter(
 				queryParams,
 				this.queryParamNames[product],
-				content.filters.products[product]
+				content.filters.products[product],
 			);
 		}
 
@@ -89,7 +89,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 				this.writeBooleanQueryParameter(
 					queryParams,
 					this.queryParamNames[optionKey],
-					value
+					value,
 				);
 			} else {
 				queryParams.set(this.queryParamNames[optionKey], String(value));
@@ -108,12 +108,12 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 	private readNonBooleanOptionValue = <
 		KeyT extends {
 			[K in OptionId]: PossibleOptionValues<K> extends boolean ? never : K;
-		}[OptionId]
+		}[OptionId],
 	>(
 		key: KeyT,
 		defaultValue: PossibleOptionValues<KeyT> &
 			(typeof Profile.availableOptions)[KeyT]["defaultValue"],
-		queryParams: URLSearchParams
+		queryParams: URLSearchParams,
 	): PossibleOptionValues<KeyT> => {
 		const paramValue = queryParams.get(this.queryParamNames[key]);
 		if (paramValue === null) {
@@ -124,7 +124,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 	};
 
 	protected override parseRequestContent = (
-		reqEvent: MinimalRequestEvent<"GET", RequestEvent>
+		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): ReqType => {
 		const url = reqEvent.url;
 		const stops = this.readArrayQueryParameter(url.searchParams, this.queryParamNames.stops);
@@ -137,8 +137,8 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 				400,
 				VahrplanError.withMessage(
 					"HAFAS_INVALID_REQUEST",
-					"Ungültige Anzahl an Zwischenstationen."
-				)
+					"Ungültige Anzahl an Zwischenstationen.",
+				),
 			);
 		}
 
@@ -156,14 +156,14 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 			tram: url.searchParams.has(this.queryParamNames.tram),
 			bus: url.searchParams.has(this.queryParamNames.bus),
 			taxi: url.searchParams.has(this.queryParamNames.taxi),
-			ferry: url.searchParams.has(this.queryParamNames.ferry)
+			ferry: url.searchParams.has(this.queryParamNames.ferry),
 		};
 
 		const options: { [K in OptionId]: PossibleOptionValues<K> } = {
 			bike: url.searchParams.has(this.queryParamNames.bike),
 			accessible: url.searchParams.has(this.queryParamNames.accessible),
 			maxTransfers: this.readNonBooleanOptionValue("maxTransfers", -1, url.searchParams),
-			minTransferTime: this.readNonBooleanOptionValue("minTransferTime", 0, url.searchParams)
+			minTransferTime: this.readNonBooleanOptionValue("minTransferTime", 0, url.searchParams),
 		};
 
 		return {
@@ -171,12 +171,12 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 			timeData: {
 				type: "absolute",
 				time: timeParam,
-				scrollDirection
+				scrollDirection,
 			},
 			filters: {
 				products,
-				options
-			}
+				options,
+			},
 		};
 	};
 
@@ -184,14 +184,14 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		1 + (reqContent.stops.length - 2) * DIAGRAM_COLUMN_MAX_REQUESTS; // first column is always one request
 
 	protected override formatProps = (
-		content: ReqType
+		content: ReqType,
 	): Record<PlausibleProp, string | number> => ({
-		viaCount: content.stops.length - 2
+		viaCount: content.stops.length - 2,
 	});
 
 	protected override formatNonApiUrlSuffix = (
 		content: ReqType,
-		ctx: Pick<Ctx, "profileConfig" | "pathBase">
+		ctx: Pick<Ctx, "profileConfig" | "pathBase">,
 	): URL => {
 		const queryParams = this.formatQueryParams(content, ctx);
 		const { pathBase } = ctx;
@@ -205,15 +205,15 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 
 	protected override requestEventFromUrl = (
 		url: URL,
-		ctx: Pick<Ctx, "profileConfig">
+		ctx: Pick<Ctx, "profileConfig">,
 	): MinimalRequestEvent<"GET", RequestEvent> => ({
 		url,
-		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id }
+		params: { lang: ctx.profileConfig.lang, profile: ctx.profileConfig.id },
 	});
 
 	public formDataToRequestData = (formData: DisplayedFormData): ReqType => ({
 		stops: formData.locations.map((l) => l.value.id),
 		timeData: formData.timeData,
-		filters: formData.filters
+		filters: formData.filters,
 	});
 }

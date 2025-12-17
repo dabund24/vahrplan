@@ -38,7 +38,7 @@
 	const diagramScaleY = $derived(diagramCoordinateRangeY / minutesPerHeight);
 	const yMin = $derived(-2 * diagramHeightOffsetRatio * minutesPerHeight);
 	const ySize = $derived(
-		diagramCoordinateRangeY + 3 * diagramHeightOffsetRatio * minutesPerHeight
+		diagramCoordinateRangeY + 3 * diagramHeightOffsetRatio * minutesPerHeight,
 	);
 </script>
 

@@ -3,7 +3,7 @@ import { computeCoordinateX, computeCoordinateY } from "$lib/server/svgData/util
 import type { SvgPosition } from "$lib/server/svgData/svgData.server";
 import {
 	getLocationRepresentative,
-	type LocationEquivalenceSystem
+	type LocationEquivalenceSystem,
 } from "../../../routes/[lang=lang]/[profile=profileId]/api/diagram/locationRepresentativesUtils";
 
 export type LegSvgData = {
@@ -22,30 +22,30 @@ export type LegSvgData = {
 export function computeLegSvgData(
 	legBlock: LegBlock,
 	journeyEndPositions: Record<TransitType, ParsedLocation["position"]>,
-	transferLocations: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem,
 ): LegSvgData {
 	const departureLocation = getLocationRepresentative(
 		transferLocations,
-		legBlock.departureData.location
+		legBlock.departureData.location,
 	);
 	const start: [number, number] = [
 		computeCoordinateX(departureLocation.position, journeyEndPositions),
-		computeCoordinateY(legBlock.departureData.time.departure?.time)
+		computeCoordinateY(legBlock.departureData.time.departure?.time),
 	];
 
 	const arrivalLocation = getLocationRepresentative(
 		transferLocations,
-		legBlock.arrivalData.location
+		legBlock.arrivalData.location,
 	);
 	const end: [number, number] = [
 		computeCoordinateX(arrivalLocation.position, journeyEndPositions),
-		computeCoordinateY(legBlock.arrivalData.time.arrival?.time)
+		computeCoordinateY(legBlock.arrivalData.time.arrival?.time),
 	];
 
 	const transferableStopovers = determineTransferableStopovers(
 		legBlock,
 		journeyEndPositions,
-		transferLocations
+		transferLocations,
 	);
 
 	return {
@@ -54,25 +54,25 @@ export function computeLegSvgData(
 		transferableStopovers,
 		start,
 		end,
-		isCancelled: legBlock.attribute === "cancelled"
+		isCancelled: legBlock.attribute === "cancelled",
 	};
 }
 
 function determineTransferableStopovers(
 	legBlock: LegBlock,
 	journeyEndPositions: Record<TransitType, ParsedLocation["position"]>,
-	transferLocations: LocationEquivalenceSystem
+	transferLocations: LocationEquivalenceSystem,
 ): LegSvgData["transferableStopovers"] {
 	return legBlock.stopovers.reduce((acc: LegSvgData["transferableStopovers"], stopover) => {
 		if (transferLocations.idToRepresentative[stopover.location.id] !== undefined) {
 			const location = getLocationRepresentative(transferLocations, stopover.location);
 			const start: [number, number] = [
 				computeCoordinateX(stopover.location.position, journeyEndPositions),
-				computeCoordinateY(stopover.time.arrival?.time)
+				computeCoordinateY(stopover.time.arrival?.time),
 			];
 			const end: [number, number] = [
 				computeCoordinateX(stopover.location.position, journeyEndPositions),
-				computeCoordinateY(stopover.time.departure?.time)
+				computeCoordinateY(stopover.time.departure?.time),
 			];
 			acc.push({ id: location.id, start, end });
 		}

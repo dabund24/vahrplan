@@ -3,7 +3,7 @@ import { HOUR_IN_MINUTES } from "$lib/constants";
 
 export function computeTimeMarksData(
 	minTime: number,
-	minutesPerHeight: number
+	minutesPerHeight: number,
 ): SvgData["timeMarksData"] {
 	const timeMarkInterval = computeTimeMarkInterval(minutesPerHeight);
 	const firstTimeMark = computeFirstTimeMark(minTime, timeMarkInterval);
@@ -24,7 +24,7 @@ const timeMarkIntervals = [
 	10,
 	5,
 	2,
-	1
+	1,
 ];
 
 function computeTimeMarkInterval(minutesPerHeight: number): number {

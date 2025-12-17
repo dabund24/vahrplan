@@ -12,7 +12,7 @@ export type LocationEquivalenceSystem = {
  */
 export function getLocationRepresentative(
 	locationEquivalenceSystem: LocationEquivalenceSystem,
-	location: ParsedLocation | string
+	location: ParsedLocation | string,
 ): ParsedLocation {
 	const locationId = typeof location === "string" ? location : location.id;
 	const representativeId = locationEquivalenceSystem.idToRepresentative[locationId];

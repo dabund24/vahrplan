@@ -10,7 +10,7 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "hello";
 	await apiClientParseFormatTest(client, input, {
 		expectedPath: `/de/dbnav/api/location/${input}`,
-		params: { locationId: input }
+		params: { locationId: input },
 	});
 });
 
@@ -20,6 +20,6 @@ test(`GET ${route} api client plausible`, async () => {
 
 	await apiClientPlausibleTest(client, input, {
 		goal: "GET /api/location/[locationId]",
-		props: {}
+		props: {},
 	});
 });

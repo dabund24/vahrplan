@@ -5,8 +5,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.521508,
-			lng: 13.411267
-		}
+			lng: 13.411267,
+		},
 	},
 	{
 		name: "S+U Alexanderplatz Bhf/Gontardstr. (Berlin)",
@@ -14,8 +14,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.52105,
-			lng: 13.411285
-		}
+			lng: 13.411285,
+		},
 	},
 	{
 		name: "U Alexanderplatz (Berlin) [Tram]",
@@ -23,8 +23,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.522083,
-			lng: 13.414593
-		}
+			lng: 13.414593,
+		},
 	},
 	{
 		name: "S+U Alexanderplatz Bhf/Dircksenstr. (Berlin)",
@@ -32,8 +32,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.521481,
-			lng: 13.411924
-		}
+			lng: 13.411924,
+		},
 	},
 	{
 		name: "S+U Alexanderplatz/Memhardstr. (Berlin) [Tram]",
@@ -41,8 +41,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.523513,
-			lng: 13.411366
-		}
+			lng: 13.411366,
+		},
 	},
 	{
 		name: "S+U Alexanderplatz Bhf/Memhardstr. (Berlin)",
@@ -50,8 +50,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.522937,
-			lng: 13.410755
-		}
+			lng: 13.410755,
+		},
 	},
 	{
 		name: "S+U Alexanderplatz (Bln) [Bus K.-Liebknecht-Str]",
@@ -59,8 +59,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.521796,
-			lng: 13.408418
-		}
+			lng: 13.408418,
+		},
 	},
 	{
 		name: "S+U Alexanderplatz Bhf/Grunerstr. (Berlin)",
@@ -68,8 +68,8 @@ export const bvgLocationsParsedRes = [
 		type: "station",
 		position: {
 			lat: 52.520412,
-			lng: 13.414432
-		}
+			lng: 13.414432,
+		},
 	},
 	{
 		name: "Alexanderplatz, 10178 Berlin-Mitte",
@@ -77,8 +77,8 @@ export const bvgLocationsParsedRes = [
 		type: "address",
 		position: {
 			lat: 52.521778,
-			lng: 13.414036
-		}
+			lng: 13.414036,
+		},
 	},
 	{
 		name: "Berlin, Holiday Inn Centre Alexanderplatz****",
@@ -86,7 +86,7 @@ export const bvgLocationsParsedRes = [
 		type: "poi",
 		position: {
 			lat: 52.523549,
-			lng: 13.418441
-		}
-	}
+			lng: 13.418441,
+		},
+	},
 ];

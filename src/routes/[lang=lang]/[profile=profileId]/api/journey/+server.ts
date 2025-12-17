@@ -11,10 +11,10 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const { lang, profile, reqContent } = client.parseRequest(reqEvent);
 	const dataService = journeyDataService(profile, lang);
 	const journeyResults = await Promise.all(
-		reqContent.map((token) => dataService.refresh(token, { lang: lang }))
+		reqContent.map((token) => dataService.refresh(token, { lang: lang })),
 	);
 	const subJourneys = setMergingProperties(
-		journeyResults.map((subJourney) => subJourney.throwIfError().content)
+		journeyResults.map((subJourney) => subJourney.throwIfError().content),
 	);
 
 	const transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(subJourneys);
@@ -22,7 +22,7 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const timeData = computeJourneyTimeData(subJourneys);
 	const svgData = generateSvgData(
 		subJourneys.map((c) => [c]),
-		{ transferLocations: transferLocations, timeData }
+		{ transferLocations: transferLocations, timeData },
 	);
 
 	return client.formatResponse(new VahrplanSuccess({ subJourneys, svgData, transferLocations }));
@@ -32,8 +32,8 @@ function computeJourneyTimeData(subJourneys: SubJourney[]): Record<TransitType, 
 	return subJourneys.map((subJourney) => [
 		{
 			departure: subJourney.departureTime?.time ?? "",
-			arrival: subJourney.arrivalTime?.time ?? ""
-		}
+			arrival: subJourney.arrivalTime?.time ?? "",
+		},
 	]);
 }
 

@@ -23,7 +23,7 @@
 		priority = "min",
 		isDisabled = false,
 		leftPane,
-		rightPane
+		rightPane,
 	}: Props = $props();
 
 	let container: HTMLElement | undefined;
@@ -51,7 +51,7 @@
 
 	function drag(
 		node: HTMLElement,
-		callback: (event: PointerEvent) => void
+		callback: (event: PointerEvent) => void,
 	): { destroy: () => void } {
 		const pointerdown = (event: PointerEvent): void => {
 			if (
@@ -84,7 +84,7 @@
 		return {
 			destroy(): void {
 				node.removeEventListener("pointerdown", pointerdown);
-			}
+			},
 		};
 	}
 </script>

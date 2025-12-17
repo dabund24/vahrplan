@@ -6,7 +6,7 @@
 	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 	import {
 		addDisplayedLocation,
-		removeDisplayedLocation
+		removeDisplayedLocation,
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { getLocationRepresentative } from "../api/diagram/locationRepresentativesUtils";
@@ -24,7 +24,7 @@
 		locationIndex,
 		isStopover = false,
 		isDisplayedLocation,
-		pressedStationId = $bindable()
+		pressedStationId = $bindable(),
 	}: Props = $props();
 
 	const locationNamePromise = $derived.by(async () => {

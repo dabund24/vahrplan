@@ -13,7 +13,7 @@ type RequestData = {
 export async function fetchJourneys(
 	stops: string[],
 	{ timeStart, filters }: { timeStart: TimeData[] | TimeData; filters: JourneysFilters },
-	ctx: Pick<Ctx, "dataService" | "lang">
+	ctx: Pick<Ctx, "dataService" | "lang">,
 ): Promise<VahrplanResult<JourneyNodesWithRefs[]>> {
 	const scrollDirection = (Array.isArray(timeStart) ? timeStart[0] : timeStart).scrollDirection;
 
@@ -34,7 +34,7 @@ export async function fetchJourneys(
 		const column = await fetchUntil(
 			{ fromTo: { from, to }, timeData: nextColumnStart, filters },
 			nextColumnTimeLimit,
-			ctx
+			ctx,
 		);
 		if (column.isError || column.content.journeys.length === 0) {
 			const errMessage = `Keine Verbindungen von ${i + 1}. zu ${i + 2}. Station gefunden`;
@@ -48,12 +48,12 @@ export async function fetchJourneys(
 			nextColumnStart = {
 				type: "absolute",
 				scrollDirection,
-				time: determineNextCoulumnStart(column.content.journeys, scrollDirection)
+				time: determineNextCoulumnStart(column.content.journeys, scrollDirection),
 			};
 		}
 		nextColumnTimeLimit = determineNextColumnTimeLimit(
 			column.content.journeys,
-			scrollDirection
+			scrollDirection,
 		);
 	}
 
@@ -62,7 +62,7 @@ export async function fetchJourneys(
 
 function determineNextColumnTimeLimit(
 	subJourneys: SubJourney[],
-	scrollDirection: RelativeTimeType
+	scrollDirection: RelativeTimeType,
 ): string {
 	if (scrollDirection === "later") {
 		return subJourneys.at(-1)?.arrivalTime?.time ?? "";
@@ -72,7 +72,7 @@ function determineNextColumnTimeLimit(
 
 function determineNextCoulumnStart(
 	subJourneys: SubJourney[],
-	scrollDirection: RelativeTimeType
+	scrollDirection: RelativeTimeType,
 ): string {
 	if (scrollDirection === "later") {
 		return subJourneys.at(0)?.arrivalTime?.time ?? "";
@@ -83,7 +83,7 @@ function determineNextCoulumnStart(
 async function fetchUntil(
 	{ fromTo, timeData, filters }: RequestData,
 	timeLimit: string,
-	{ dataService, lang }: Pick<Ctx, "dataService" | "lang">
+	{ dataService, lang }: Pick<Ctx, "dataService" | "lang">,
 ): Promise<VahrplanResult<JourneyNodesWithRefs>> {
 	const reverseScrollDirection: RelativeTimeType =
 		timeData.scrollDirection === "earlier" ? "later" : "earlier";
@@ -106,7 +106,7 @@ async function fetchUntil(
 		timeData = {
 			type: "relative",
 			scrollDirection: timeData.scrollDirection,
-			time: j.content[`${timeData.scrollDirection}Ref`]
+			time: j.content[`${timeData.scrollDirection}Ref`],
 		};
 
 		// update result
@@ -121,7 +121,7 @@ async function fetchUntil(
 	result.journeys.sort(
 		(a, b) =>
 			new Date(a.departureTime?.time ?? 0).getTime() -
-			new Date(b.departureTime?.time ?? 0).getTime()
+			new Date(b.departureTime?.time ?? 0).getTime(),
 	);
 
 	return new VahrplanSuccess(result);
@@ -141,5 +141,5 @@ const journeysExceedLimit: Record<
 		new Date(journeys.at(-1)?.departureTime?.time ?? MAX_DATE).getTime() >
 		new Date(time).getTime(),
 	earlier: (journeys, time) =>
-		new Date(journeys.at(0)?.arrivalTime?.time ?? 0).getTime() < new Date(time).getTime()
+		new Date(journeys.at(0)?.arrivalTime?.time ?? 0).getTime() < new Date(time).getTime(),
 };

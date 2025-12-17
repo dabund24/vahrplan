@@ -17,5 +17,5 @@ export const EMPTY_PROFILE: ProfileConfig = {
 	supportedLanguages: ["de"],
 	lang: "de",
 	products: {},
-	options: {}
+	options: {},
 };

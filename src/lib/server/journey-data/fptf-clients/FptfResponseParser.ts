@@ -12,11 +12,11 @@ import type {
 	TransitAttribute,
 	TransitData,
 	TransitType,
-	WalkingBlock
+	WalkingBlock,
 } from "$lib/types";
 import type {
 	FptfDataService,
-	FptfDataServiceConfig
+	FptfDataServiceConfig,
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
@@ -37,7 +37,7 @@ type HafasTimeData = {
 };
 
 export class FptfResponseParser<
-	ProductT extends Product
+	ProductT extends Product,
 > extends JourneyDataResponseParser<ProductT> {
 	private readonly lineShapeParser: LineShapeParser<Line>;
 	private readonly ticketUrlParser?: TicketUrlParser;
@@ -60,7 +60,7 @@ export class FptfResponseParser<
 			refreshToken: journey.refreshToken ?? "",
 			blocks,
 			arrivalTime: arrival.arrival ?? { time: new Date(0).toISOString() },
-			departureTime: departure.departure ?? { time: new Date(0).toISOString() }
+			departureTime: departure.departure ?? { time: new Date(0).toISOString() },
 		};
 		if (this.ticketUrlParser !== undefined && ticketData !== undefined) {
 			ticketData.url = this.ticketUrlParser.generateTicketUrl(res);
@@ -68,7 +68,7 @@ export class FptfResponseParser<
 
 		return {
 			...res,
-			ticketData
+			ticketData,
 		};
 	};
 
@@ -104,7 +104,7 @@ export class FptfResponseParser<
 					const locationBlock = this.parseLocationBlock(
 						leg.departure,
 						thisBlock.originLocation,
-						"departure"
+						"departure",
 					);
 					blocks.splice(0, 0, locationBlock);
 				} else if (nextLeg === undefined) {
@@ -112,7 +112,7 @@ export class FptfResponseParser<
 					const locationBlock = this.parseLocationBlock(
 						leg.arrival,
 						thisBlock.destinationLocation,
-						"arrival"
+						"arrival",
 					);
 					blocks.push(locationBlock);
 				}
@@ -127,7 +127,7 @@ export class FptfResponseParser<
 					lastBlock.product ?? "",
 					thisBlock.departureData,
 					thisBlock.product ?? "",
-					false
+					false,
 				);
 				blocks.splice(-1, 0, transferBlock);
 				lastBlock.succeededBy = "transfer";
@@ -146,7 +146,7 @@ export class FptfResponseParser<
 			blockKey:
 				`${leg.line?.operator?.name}${leg.line?.fahrtNr}${leg.line?.name}${leg.direction}`.replace(
 					/\W/g,
-					"_"
+					"_",
 				), // make it usable as a css variable
 			attribute: leg.cancelled ? "cancelled" : undefined,
 			departureData: {
@@ -156,28 +156,28 @@ export class FptfResponseParser<
 					{
 						time: leg.departure,
 						timePlanned: leg.plannedDeparture,
-						delay: leg.departureDelay
+						delay: leg.departureDelay,
 					},
-					"departure"
+					"departure",
 				),
 				platformData: this.parsePlatformData(
 					departurePlatform,
-					leg.plannedDeparturePlatform
-				)
+					leg.plannedDeparturePlatform,
+				),
 			},
 			arrivalData: {
 				location: this.parseStationStopLocation(leg.destination),
 				attribute: this.parseTransitAttribute(leg.stopovers?.at(-1)),
 				time: this.parseSingleTime(
 					{ time: leg.arrival, timePlanned: leg.plannedArrival, delay: leg.arrivalDelay },
-					"arrival"
+					"arrival",
 				),
-				platformData: this.parsePlatformData(arrivalPlatform, leg.plannedArrivalPlatform)
+				platformData: this.parsePlatformData(arrivalPlatform, leg.plannedArrivalPlatform),
 			},
 			duration:
 				dateDifference(
 					leg.departure ?? leg.plannedDeparture,
-					leg.arrival ?? leg.plannedArrival
+					leg.arrival ?? leg.plannedArrival,
 				) ?? 0,
 			direction: leg.direction ?? undefined,
 			name: leg.line?.name ?? leg.line?.productName,
@@ -194,19 +194,19 @@ export class FptfResponseParser<
 			polyline:
 				leg.polyline?.features.map((feature) => [
 					feature.geometry.coordinates[1],
-					feature.geometry.coordinates[0]
-				]) ?? []
+					feature.geometry.coordinates[0],
+				]) ?? [],
 		};
 		if (block.polyline.length === 0) {
 			block.polyline = [block.departureData, ...block.stopovers, block.arrivalData].map(
-				(stop) => [stop.location.position.lat, stop.location.position.lng]
+				(stop) => [stop.location.position.lat, stop.location.position.lng],
 			);
 		}
 		return block;
 	};
 
 	protected override readonly parseLegCurrentLocation = (
-		leg: Leg
+		leg: Leg,
 	): ParsedGeolocation | undefined => {
 		if (leg.currentLocation === undefined) {
 			return undefined;
@@ -217,26 +217,26 @@ export class FptfResponseParser<
 			id: JSON.stringify({ type: "location" } as Location),
 			position: {
 				lat: leg.currentLocation.latitude ?? 0,
-				lng: leg.currentLocation.longitude ?? 0
+				lng: leg.currentLocation.longitude ?? 0,
 			},
-			asAt: new Date()
+			asAt: new Date(),
 		};
 	};
 
 	protected override readonly parseLocationBlock = (
 		time: string | undefined,
 		location: ParsedLocation,
-		type: TransitType
+		type: TransitType,
 	): LocationBlock => ({
 		type: "location",
 		location,
 		time: this.parseSingleTime({ time, timePlanned: time, delay: undefined }, type),
-		hidden: false
+		hidden: false,
 	});
 
 	protected override readonly parseWalkingBlock = (
 		walk: Leg,
-		nextDeparture: string | undefined
+		nextDeparture: string | undefined,
 	): WalkingBlock => ({
 		type: "walk",
 		originLocation: this.parseStationStopLocation(walk.origin),
@@ -245,22 +245,22 @@ export class FptfResponseParser<
 			{
 				time: walk.departure,
 				timePlanned: walk.plannedDeparture,
-				delay: walk.departureDelay
+				delay: walk.departureDelay,
 			},
 			{
 				time: walk.arrival,
 				timePlanned: walk.plannedArrival,
-				delay: walk.arrivalDelay
-			}
+				delay: walk.arrivalDelay,
+			},
 		),
 		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
 		travelTime: dateDifference(walk.departure, walk.arrival),
-		distance: walk.distance ?? 0
+		distance: walk.distance ?? 0,
 	});
 
 	protected override readonly parseOnwardJourneyBlock = (
 		leg: Leg,
-		nextDeparture: string | undefined
+		nextDeparture: string | undefined,
 	): OnwardJourneyBlock => ({
 		type: "onward-journey",
 		originLocation: this.parseStationStopLocation(leg.origin),
@@ -270,17 +270,17 @@ export class FptfResponseParser<
 			{
 				time: leg.arrival,
 				timePlanned: leg.plannedArrival,
-				delay: leg.arrivalDelay
-			}
+				delay: leg.arrivalDelay,
+			},
 		),
 		transferTime: dateDifference(leg.departure ?? leg.plannedDeparture, nextDeparture) ?? 0,
 		travelTime: dateDifference(leg.departure, leg.arrival),
 		recommendedAction: undefined,
-		distance: leg.distance ?? 0
+		distance: leg.distance ?? 0,
 	});
 
 	protected override readonly parseStationStopLocation = (
-		location: Station | Stop | Location | undefined
+		location: Station | Stop | Location | undefined,
 	): ParsedLocation => {
 		if (location === undefined) {
 			return {
@@ -289,8 +289,8 @@ export class FptfResponseParser<
 				type: "station",
 				position: {
 					lat: 0,
-					lng: 0
-				}
+					lng: 0,
+				},
 			};
 		}
 		if (location.type === "station" || location.type === "stop") {
@@ -300,8 +300,8 @@ export class FptfResponseParser<
 				type: "station",
 				position: {
 					lat: location.location?.latitude ?? 0,
-					lng: location.location?.longitude ?? 0
-				}
+					lng: location.location?.longitude ?? 0,
+				},
 			};
 		} else if (location.poi) {
 			return {
@@ -310,8 +310,8 @@ export class FptfResponseParser<
 				type: "poi",
 				position: {
 					lat: location.latitude ?? 0,
-					lng: location.longitude ?? 0
-				}
+					lng: location.longitude ?? 0,
+				},
 			};
 		} else {
 			return {
@@ -320,8 +320,8 @@ export class FptfResponseParser<
 				type: "address",
 				position: {
 					lat: location.latitude ?? 0,
-					lng: location.longitude ?? 0
-				}
+					lng: location.longitude ?? 0,
+				},
 			};
 		}
 	};
@@ -332,13 +332,13 @@ export class FptfResponseParser<
 			{
 				time: stopover.arrival,
 				timePlanned: stopover.plannedArrival,
-				delay: stopover.arrivalDelay
+				delay: stopover.arrivalDelay,
 			},
 			{
 				time: stopover.departure,
 				timePlanned: stopover.plannedDeparture,
-				delay: stopover.departureDelay
-			}
+				delay: stopover.departureDelay,
+			},
 		);
 		let attribute: TransitData["attribute"] = undefined;
 		if (
@@ -355,14 +355,14 @@ export class FptfResponseParser<
 			time,
 			platformData: this.parsePlatformData(
 				platform,
-				stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform
-			)
+				stopover.plannedArrivalPlatform ?? stopover.plannedDeparturePlatform,
+			),
 		};
 	};
 
 	protected override readonly parseSingleTime = (
 		{ time, timePlanned, delay }: HafasTimeData,
-		type: TransitType
+		type: TransitType,
 	): ParsedTime => {
 		if ((timePlanned ?? undefined) === undefined) {
 			return { [type]: null };
@@ -382,34 +382,34 @@ export class FptfResponseParser<
 			[type]: {
 				time: new Date((hasRealtime ? time : timePlanned) ?? ""),
 				delay: hasRealtime ? delay / 60 : undefined,
-				status
-			}
+				status,
+			},
 		};
 	};
 
 	protected override readonly parseTimePair = (
 		arrivalTimeData: HafasTimeData,
-		departureTimeData: HafasTimeData
+		departureTimeData: HafasTimeData,
 	): ParsedTime => ({
 		...this.parseSingleTime(arrivalTimeData, "arrival"),
-		...this.parseSingleTime(departureTimeData, "departure")
+		...this.parseSingleTime(departureTimeData, "departure"),
 	});
 
 	protected override readonly parsePlatformData = (
 		platform: Leg[`${TransitType}Platform`],
-		plannedPlatform: Leg[`${TransitType}Platform`]
+		plannedPlatform: Leg[`${TransitType}Platform`],
 	): TransitData["platformData"] => {
 		if (platform === undefined) {
 			return null;
 		}
 		return {
 			platform,
-			platformChanged: platform !== plannedPlatform
+			platformChanged: platform !== plannedPlatform,
 		};
 	};
 
 	protected override readonly parseTransitAttribute = (
-		stopover: StopOver | undefined
+		stopover: StopOver | undefined,
 	): TransitAttribute => {
 		if (stopover?.cancelled) {
 			return "cancelled";
@@ -429,7 +429,7 @@ export class FptfResponseParser<
 	private readonly parseGenericLegInfo = (leg: Leg): LegBlock["info"] => {
 		const genericInfo: LegBlock["info"] = {
 			statuses: [],
-			hints: []
+			hints: [],
 		};
 
 		const remarks = leg.remarks?.concat() ?? [];
@@ -497,7 +497,7 @@ export class FptfResponseParser<
 	};
 
 	protected override readonly parseLoadFactor = (
-		loadFactor: string | undefined
+		loadFactor: string | undefined,
 	): LegBlock["loadFactor"] => {
 		switch (loadFactor) {
 			case "low-to-medium":
@@ -527,31 +527,33 @@ export class FptfResponseParser<
 		return {
 			hint: journey.price?.hint,
 			currency: journey.price?.currency ?? "EUR",
-			minPrice: journey.price?.amount
+			minPrice: journey.price?.amount,
 		};
 	};
 
 	public override readonly parseResponse = {
 		journeys: (
-			unparsedJourneys: Awaited<ReturnType<FptfDataService<ProductT>["client"]["journeys"]>>
+			unparsedJourneys: Awaited<ReturnType<FptfDataService<ProductT>["client"]["journeys"]>>,
 		): UnpackedVahrplanResult<Awaited<ReturnType<FptfDataService<ProductT>["journeys"]>>> => ({
 			journeys: unparsedJourneys.journeys?.map(this.parseSubJourney) ?? [],
 			earlierRef: unparsedJourneys.earlierRef,
-			laterRef: unparsedJourneys.laterRef
+			laterRef: unparsedJourneys.laterRef,
 		}),
 
 		refresh: (
 			unparsedJourney: Awaited<
 				ReturnType<NonNullable<FptfDataService<ProductT>["client"]["refreshJourney"]>>
-			>
+			>,
 		): UnpackedVahrplanResult<Awaited<ReturnType<FptfDataService<ProductT>["refresh"]>>> =>
 			this.parseSubJourney(unparsedJourney.journey),
 
 		locations: (
-			unparsedLocations: Awaited<ReturnType<FptfDataService<ProductT>["client"]["locations"]>>
+			unparsedLocations: Awaited<
+				ReturnType<FptfDataService<ProductT>["client"]["locations"]>
+			>,
 		): UnpackedVahrplanResult<Awaited<ReturnType<FptfDataService<ProductT>["locations"]>>> =>
 			unparsedLocations.map(this.parseStationStopLocation),
 
-		location: this.parseStationStopLocation
+		location: this.parseStationStopLocation,
 	};
 }

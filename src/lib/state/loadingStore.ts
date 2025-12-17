@@ -17,7 +17,7 @@ export function startLoading(estimatedDuration: number): number {
 	loadingStatus.set({
 		status: "loading",
 		estimatedDuration,
-		loadingId
+		loadingId,
 	});
 	return loadingId;
 }

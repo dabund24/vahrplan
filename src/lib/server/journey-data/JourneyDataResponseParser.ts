@@ -10,11 +10,11 @@ import type {
 	SubJourney,
 	TransitAttribute,
 	TransitData,
-	WalkingBlock
+	WalkingBlock,
 } from "$lib/types";
 import type {
 	JourneyDataService,
-	JourneyDataServiceConfig
+	JourneyDataServiceConfig,
 } from "$lib/server/journey-data/JourneyDataService";
 import type { UnpackedVahrplanResult } from "$lib/VahrplanResult";
 
@@ -22,7 +22,7 @@ export abstract class JourneyDataResponseParser<ProductT extends Product> {
 	protected readonly productMapping: Record<string, ProductT>;
 
 	protected constructor(
-		config: Pick<JourneyDataServiceConfig<ProductT, never>, "productMapping">
+		config: Pick<JourneyDataServiceConfig<ProductT, never>, "productMapping">,
 	) {
 		this.productMapping = this.invertProductMapping(config.productMapping);
 	}
@@ -85,7 +85,7 @@ export abstract class JourneyDataResponseParser<ProductT extends Product> {
 			: "longDistanceExpress";
 
 	private readonly invertProductMapping = (
-		invertedProductMapping: Record<ProductT, string>
+		invertedProductMapping: Record<ProductT, string>,
 	): Record<string, ProductT> => {
 		const res: Record<string, ProductT> = {};
 		for (const vahrplanProduct in invertedProductMapping) {

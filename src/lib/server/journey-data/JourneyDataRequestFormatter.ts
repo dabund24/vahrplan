@@ -2,18 +2,18 @@ import type { Product } from "$lib/types";
 import { type OptionId, type PossibleOptionValues } from "../profiles/profile";
 import type {
 	JourneyDataService,
-	JourneyDataServiceConfig
+	JourneyDataServiceConfig,
 } from "$lib/server/journey-data/JourneyDataService";
 
 export abstract class JourneyDataRequestFormatter<
 	ProductT extends Product,
-	OptionT extends OptionId
+	OptionT extends OptionId,
 > {
 	public constructor(
 		config: Omit<
 			JourneyDataServiceConfig<ProductT, OptionT>,
 			"requestFormatter" | "responseParser"
-		>
+		>,
 	) {
 		this.optionMapping = config.optionMapping;
 		this.productMapping = config.productMapping;

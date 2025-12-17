@@ -23,13 +23,13 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 
 	const diagramApiClient = apiClient("GET", "diagram");
 	urlHref ??= diagramApiClient.formatNonApiUrl(diagramApiClient.formDataToRequestData(formData), {
-		profileConfig: page.data.profileConfig
+		profileConfig: page.data.profileConfig,
 	}).href;
 
 	if (navigator.share) {
 		void navigator.share({
 			title: document.title,
-			url: urlHref
+			url: urlHref,
 		});
 	} else {
 		void navigator.clipboard
@@ -49,7 +49,7 @@ async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL
 	const keylessDatabaseEntry: KeylessDatabaseEntry<typeof diagramRequestData> = {
 		type: "journeys",
 		value: diagramRequestData,
-		expirationDate: new Date(formData.timeData.time).getTime() + 604_800_000 // 7 days
+		expirationDate: new Date(formData.timeData.time).getTime() + 604_800_000, // 7 days
 	};
 
 	const response = await apiClient("PUT", "diagram/shorturl").request(keylessDatabaseEntry);
@@ -59,6 +59,6 @@ async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL
 	}
 
 	return apiClient("GET", "diagram/shorturl/[shortDiagramId]").formatNonApiUrl(response.content, {
-		profileConfig
+		profileConfig,
 	});
 }
