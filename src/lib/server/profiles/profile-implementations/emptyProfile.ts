@@ -3,7 +3,7 @@ import { JourneyDataService } from "$lib/server/journey-data/JourneyDataService"
 import { VahrplanError } from "$lib/VahrplanError";
 import { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDataRequestFormatter";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
-import { DbnavLineShapeParser } from "$lib/server/journey-data/fptf-clients/DbnavLineShapeParser";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/line-shapes/DbnavLineShapeParser";
 
 /**
  * used as a fallback if no profile is set yet

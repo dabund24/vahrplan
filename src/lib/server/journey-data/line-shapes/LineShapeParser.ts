@@ -1,12 +1,15 @@
 import { read } from "$app/server";
-import lineShapesCsv from "../../../../assets/line-shapes.csv?url";
+import lineShapesCsv from "../../../../../assets/line-shapes.csv?url";
+import type { Settings } from "$lib/state/settingStore";
+
+type PresetColor = "product" | "background" | "foreground" | Settings["general"]["color"];
 
 export type LineShape = {
 	linePrefix?: string;
 	lineName: string;
-	backgroundColor: string;
-	textColor: string;
-	borderColor?: string;
+	background: { type: "fixed" | "svg"; value: string } | { type: "preset"; value: PresetColor };
+	text: { type: "fixed"; value: string } | { type: "preset"; value: PresetColor };
+	border?: { type: "fixed"; value: string } | { type: "preset"; value: PresetColor };
 	shape: "circle" | "hexagon" | "rectangle" | "rectangle-rounded-corner" | "pill" | "trapezoid";
 };
 
@@ -24,7 +27,7 @@ export abstract class LineShapeParser<T> {
 
 		for (const line of csvLines) {
 			const [
-				_shortOperatorName,
+				shortOperatorName,
 				lineName,
 				operatorCode,
 				lineId,
@@ -38,16 +41,20 @@ export abstract class LineShapeParser<T> {
 			] = line.split(",");
 
 			const lineCodeEntry = {
+				shortOperatorName,
 				lineName,
 				operatorCode: operatorCode === "" ? undefined : operatorCode,
 				lineId,
-				backgroundColor,
-				textColor,
-				borderColor: borderColor === "" ? undefined : borderColor,
+				background: { type: "fixed", value: backgroundColor },
+				text: { type: "fixed", value: textColor },
+				border:
+					borderColor === ""
+						? undefined
+						: ({ type: "fixed", value: borderColor } as const),
 				["delfiAgencyID"]: delfiAgencyId,
 				delfiAgencyName,
 				shape: shape as LineShape["shape"],
-			};
+			} as const;
 			result.push(lineCodeEntry);
 		}
 
@@ -67,6 +74,7 @@ export abstract class LineShapeParser<T> {
 	};
 
 	protected static traewellingLineShapes: (LineShape & {
+		shortOperatorName: string;
 		operatorCode?: string;
 		lineId: string;
 		["delfiAgencyID"]: string;
@@ -79,8 +87,34 @@ export abstract class LineShapeParser<T> {
 		);
 	}
 
+	protected readonly stringToNormalForm = (str: string): string =>
+		str.toLowerCase().replaceAll(" ", "");
+
+	protected readonly getProductLineShape = (
+		lineName: string,
+		conf: {
+			shape: LineShape["shape"];
+			type: "filled" | "outlined";
+		},
+	): LineShape =>
+		conf.type === "filled"
+			? {
+					lineName,
+					background: { type: "preset", value: "product" },
+					text: { type: "preset", value: "background" },
+					shape: conf.shape,
+				}
+			: {
+					lineName,
+					background: { type: "preset", value: "background" },
+					text: { type: "preset", value: "product" },
+					border: { type: "preset", value: "product" },
+					shape: conf.shape,
+				};
+
 	/**
 	 * parse line shape details from an object
 	 */
-	public abstract readonly getLineShape: (lineDetails: T | undefined) => LineShape | undefined;
+	// eslint-disable-next-line no-restricted-syntax
+	public abstract getLineShape(lineDetails: T | undefined): LineShape | undefined;
 }

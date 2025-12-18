@@ -18,7 +18,7 @@ import type {
 	FptfDataService,
 	FptfDataServiceConfig,
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
-import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
+import type { LineShapeParser } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 import type { UnpackedVahrplanResult } from "$lib/VahrplanResult";
 import { dateDifference, getFirstAndLastTime } from "$lib/util";

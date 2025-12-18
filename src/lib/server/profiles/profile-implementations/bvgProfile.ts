@@ -5,7 +5,7 @@ import {
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import { createClient } from "hafas-client";
 import { profile } from "hafas-client/p/bvg";
-import { HafasClientLineShapeParser } from "$lib/server/journey-data/fptf-clients/HafasClientLineShapeParser";
+import { BvgLineShapeParser } from "$lib/server/journey-data/line-shapes/BvgLineShapeParser";
 
 /**
  * uses https://github.com/public-transport/hafas-client/tree/main/p/db
@@ -48,7 +48,7 @@ export class BvgProfile extends Profile<
 			bus: "bus",
 			ferry: "ferry",
 		},
-		lineShapeParser: new HafasClientLineShapeParser(),
+		lineShapeParser: new BvgLineShapeParser(),
 		hasTickets: false,
 	});
 }

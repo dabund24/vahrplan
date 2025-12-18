@@ -2,7 +2,7 @@ import { beforeAll, expect, test, vi } from "vitest";
 import { berlinToBerlinFernsehturmJourney } from "../fixtures/journeyRealtimeArrivingWalk";
 import { lindauInselToAugsburgJourney } from "../fixtures/journeyRealtimeStartingOnwardJourney";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
-import { DbnavLineShapeParser } from "$lib/server/journey-data/fptf-clients/DbnavLineShapeParser";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/line-shapes/DbnavLineShapeParser";
 import { DbnavTicketUrlParser } from "$lib/server/journey-data/fptf-clients/DbnavTicketUrlParser";
 
 const berlinToBerlinFernsehturmExpected = {
@@ -289,6 +289,22 @@ const lindauInselToAugsburgExpected = {
 			direction: "München Hbf Gl.27-36",
 			name: "ECE 195",
 			productName: "ECE",
+			lineShape: {
+				background: {
+					type: "preset",
+					value: "background",
+				},
+				border: {
+					type: "preset",
+					value: "product",
+				},
+				lineName: "ECE 195",
+				shape: "pill",
+				text: {
+					type: "preset",
+					value: "product",
+				},
+			},
 			product: "longDistanceExpress",
 			operator: "DB Fernverkehr AG",
 			loadFactor: "high",

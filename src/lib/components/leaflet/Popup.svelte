@@ -43,14 +43,15 @@
 	{#if popupData.type === "line"}
 		<Duration duration={popupData.duration} />
 		<div class="product--{popupData.product} line--vertical line--product"></div>
-		<span
-			><LineNameDirection
+		<span>
+			<LineNameDirection
 				lineName={popupData.name}
 				productName={popupData.productName}
+				product={popupData.product}
 				direction={popupData.direction}
 				lineShape={popupData.lineShape}
-			/></span
-		>
+			/>
+		</span>
 	{:else if popupData.type === "walk"}
 		<Duration duration={popupData.duration} />
 		<div class="filler-icon">

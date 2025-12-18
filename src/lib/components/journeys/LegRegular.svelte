@@ -92,6 +92,7 @@
 						<LineNameDirection
 							lineName={block.name}
 							productName={block.productName}
+							product={block.product}
 							direction={block.direction}
 							lineShape={block.lineShape}
 						/>
@@ -107,7 +108,7 @@
 						/>
 					</div>
 				</details>
-				<JourneyInfo info={block.info} blockKey={block.blockKey} />
+				<JourneyInfo {block} />
 			{/if}
 		</div>
 		<div class="flex-row top-or-bottom">
