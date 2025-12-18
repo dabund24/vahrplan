@@ -6,13 +6,15 @@
 	import { pushState } from "$app/navigation";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import type { ComponentProps, Snippet } from "svelte";
+	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
 
 	type Props = {
-		info: LegBlock["info"];
-		blockKey: string;
+		block: LegBlock;
 	};
 
-	let { info, blockKey }: Props = $props();
+	let { block }: Props = $props();
+
+	const { info, blockKey, lineShape, product, name, productName, direction } = $derived(block);
 
 	function showInfoModal(): void {
 		pushState("", {
@@ -86,16 +88,15 @@
 <MiniTabs {tabEnvironment} {tabs} />
 
 {#snippet tabEnvironment(miniTabs: Snippet, tabContent: Snippet)}
-	{#snippet modalHeaderItems()}
-		{@render miniTabs()}
-	{/snippet}
-	<Modal
-		title="Fahrtinformationen"
-		showModalKey={`showTripInfoModal${blockKey}`}
-		headerItems={modalHeaderItems}
-		height="20rem"
-		children={tabContent}
-	/>
+	<Modal showModalKey={`showTripInfoModal${blockKey}`} height="20rem" children={tabContent}>
+		{#snippet headerItems()}
+			{@render miniTabs()}
+		{/snippet}
+
+		{#snippet title()}
+			<LineNameDirection lineName={name} {productName} {product} {lineShape} {direction} />
+		{/snippet}
+	</Modal>
 {/snippet}
 
 <style>

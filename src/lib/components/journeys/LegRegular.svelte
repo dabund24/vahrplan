@@ -108,7 +108,7 @@
 						/>
 					</div>
 				</details>
-				<JourneyInfo info={block.info} blockKey={block.blockKey} />
+				<JourneyInfo {block} />
 			{/if}
 		</div>
 		<div class="flex-row top-or-bottom">
