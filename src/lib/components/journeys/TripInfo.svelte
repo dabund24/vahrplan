@@ -64,7 +64,7 @@
 {/snippet}
 
 {#snippet hints()}
-	<ul>
+	<ul class="padded-top-bottom">
 		{#each info.hints as warningText, i (i)}
 			<li>
 				<Warning>
@@ -98,9 +98,3 @@
 		{/snippet}
 	</Modal>
 {/snippet}
-
-<style>
-	ul {
-		padding: 0.5rem 0;
-	}
-</style>
