@@ -29,6 +29,18 @@ export class ScopedHafasClientLineShapeParser extends ScopedLineShapeParser<Line
 			return this.getProductLineShape(line.name ?? line.productName ?? "", customShape);
 		}
 
-		return this.scopedLineShapes[this.stringToNormalForm(line.name ?? "")];
-	};
+		const matchedLineShape = this.scopedLineShapes[this.stringToNormalForm(line.name ?? "")];
+		if (matchedLineShape === undefined) {
+			return undefined;
+		}
+
+		return {
+			lineName: matchedLineShape.lineName,
+			linePrefix: matchedLineShape.linePrefix,
+			background: matchedLineShape.background,
+			text: matchedLineShape.text,
+			border: matchedLineShape.border,
+			shape: matchedLineShape.shape,
+		};
+	}
 }

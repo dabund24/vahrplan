@@ -267,6 +267,34 @@ test("line shapes Bus X660", () => {
 	expect(actual).toEqual(expected);
 });
 
+test("line shapes ICE", () => {
+	const hafasLine = {
+		type: "line",
+		id: "ice-1502",
+		fahrtNr: "1502",
+		name: "ICE 1502",
+		public: true,
+		adminCode: "80____",
+		productName: "ICE",
+		mode: "train",
+		product: "nationalExpress",
+		operator: {
+			type: "operator",
+			id: "db-fernverkehr-ag",
+			name: "DB Fernverkehr AG",
+		},
+	} as const;
+	const expected = {
+		lineName: "ICE 1502",
+		background: { type: "preset", value: "background" },
+		text: { type: "preset", value: "product" },
+		border: { type: "preset", value: "product" },
+		shape: "pill",
+	};
+	const actual = lineShapeParser.getLineShape(hafasLine);
+	expect(actual).toEqual(expected);
+});
+
 test.skip("line shapes Rufbus N4", () => {
 	const hafasLine = {
 		type: "line",
