@@ -35,6 +35,10 @@ In the constructor parameters of `FptfDataService`, which you will use as the `j
 
 You can use `FptfOptionId` for the `OptionT` generic, since all profiles from `hafas-client` should support the options listed there.
 
+### Line Shape Parser
+
+This is for nice looking colorful icons. You can either create an instance of `ScopedHafasClientLineShapeParser` or create a custom class extending `ScopedHafasClientLineShapeParser` depending on how many special cases you can/want to handle.
+
 ## Add to Registry
 
 Add your profile to the object in [/src/lib/server/profiles/profileRegistry.ts](/src/lib/server/profiles/profileRegistry.ts).
