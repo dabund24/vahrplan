@@ -781,6 +781,22 @@ export const bvgRefreshParsedRes = {
 			},
 			duration: 13,
 			direction: "Flughafen BER",
+			lineShape: {
+				background: {
+					type: "preset",
+					value: "background",
+				},
+				border: {
+					type: "preset",
+					value: "product",
+				},
+				lineName: "X7",
+				shape: "pill",
+				text: {
+					type: "preset",
+					value: "product",
+				},
+			},
 			name: "X7",
 			productName: "Bus",
 			product: "bus",

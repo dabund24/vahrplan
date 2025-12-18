@@ -289,6 +289,22 @@ const lindauInselToAugsburgExpected = {
 			direction: "München Hbf Gl.27-36",
 			name: "ECE 195",
 			productName: "ECE",
+			lineShape: {
+				background: {
+					type: "preset",
+					value: "background",
+				},
+				border: {
+					type: "preset",
+					value: "product",
+				},
+				lineName: "ECE 195",
+				shape: "pill",
+				text: {
+					type: "preset",
+					value: "product",
+				},
+			},
 			product: "longDistanceExpress",
 			operator: "DB Fernverkehr AG",
 			loadFactor: "high",

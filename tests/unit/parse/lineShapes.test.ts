@@ -30,9 +30,8 @@ test("line shapes first entry", () => {
 	const expected = {
 		linePrefix: "ag",
 		lineName: "RB 15",
-		backgroundColor: "#24b27d",
-		textColor: "#ffffff",
-		borderColor: undefined,
+		background: { type: "fixed", value: "#24b27d" },
+		text: { type: "fixed", value: "#ffffff" },
 		shape: "rectangle",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
@@ -55,9 +54,8 @@ test("line shapes last entry", () => {
 	const expected = {
 		linePrefix: "STR",
 		lineName: "N17",
-		backgroundColor: "#67b337",
-		textColor: "#ffffff",
-		borderColor: undefined,
+		background: { type: "fixed", value: "#67b337" },
+		text: { type: "fixed", value: "#ffffff" },
 		shape: "rectangle",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
@@ -86,9 +84,8 @@ test("line shapes all RE 1", () => {
 			expected: {
 				linePrefix: undefined,
 				lineName: "RE1",
-				backgroundColor: "#be1b40",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#be1b40" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle-rounded-corner",
 			},
 		},
@@ -112,9 +109,8 @@ test("line shapes all RE 1", () => {
 			expected: {
 				linePrefix: undefined,
 				lineName: "RE1",
-				backgroundColor: "#108449",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#108449" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle",
 			},
 		},
@@ -138,9 +134,8 @@ test("line shapes all RE 1", () => {
 			expected: {
 				linePrefix: undefined,
 				lineName: "RE1",
-				backgroundColor: "#e2001a",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#e2001a" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle",
 			},
 		},
@@ -164,9 +159,8 @@ test("line shapes all RE 1", () => {
 			expected: {
 				linePrefix: "TLX",
 				lineName: "RE1",
-				backgroundColor: "#e97b3b",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#e97b3b" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle-rounded-corner",
 			},
 		},
@@ -189,9 +183,8 @@ test("line shapes all RE 1", () => {
 			},
 			expected: {
 				lineName: "RE 1",
-				backgroundColor: "#88c946",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#88c946" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle",
 			},
 		},
@@ -214,9 +207,8 @@ test("line shapes all RE 1", () => {
 			},
 			expected: {
 				lineName: "RE 1",
-				backgroundColor: "#e50000",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#e50000" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle",
 			},
 		},
@@ -239,9 +231,8 @@ test("line shapes all RE 1", () => {
 			},
 			expected: {
 				lineName: "RE 1",
-				backgroundColor: "#ff2d16",
-				textColor: "#ffffff",
-				borderColor: undefined,
+				background: { type: "fixed", value: "#ff2d16" },
+				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle-rounded-corner",
 			},
 		},
@@ -268,9 +259,8 @@ test("line shapes Bus X660", () => {
 	const expected = {
 		linePrefix: "Bus",
 		lineName: "X660",
-		backgroundColor: "#8e5c2e",
-		textColor: "#ffffff",
-		borderColor: undefined,
+		background: { type: "fixed", value: "#8e5c2e" },
+		text: { type: "fixed", value: "#ffffff" },
 		shape: "rectangle",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
@@ -292,9 +282,8 @@ test.skip("line shapes Rufbus N4", () => {
 	} as const;
 	const expected = {
 		lineName: "Rufbus N4",
-		backgroundColor: "#000000",
-		textColor: "#ffffff",
-		borderColor: undefined,
+		background: { type: "fixed", value: "#000000" },
+		text: { type: "fixed", value: "#ffffff" },
 		shape: "pill",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
