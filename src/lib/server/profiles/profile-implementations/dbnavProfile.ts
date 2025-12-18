@@ -8,7 +8,7 @@ import { createClient } from "db-vendo-client";
 // @ts-expect-error no types for db-vendo-client yet
 import { profile } from "db-vendo-client/p/dbnav";
 import type { HafasClient } from "hafas-client";
-import { DbnavLineShapeParser } from "$lib/server/journey-data/fptf-clients/DbnavLineShapeParser";
+import { DbnavLineShapeParser } from "$lib/server/journey-data/line-shapes/DbnavLineShapeParser";
 import { DbnavTicketUrlParser } from "$lib/server/journey-data/fptf-clients/DbnavTicketUrlParser";
 
 /**

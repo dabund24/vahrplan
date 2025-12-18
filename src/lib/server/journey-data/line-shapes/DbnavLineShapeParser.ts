@@ -1,4 +1,7 @@
-import { type LineShape, LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
+import {
+	type LineShape,
+	LineShapeParser,
+} from "$lib/server/journey-data/line-shapes/LineShapeParser";
 import type { Line } from "hafas-client";
 
 export class DbnavLineShapeParser extends LineShapeParser<Line> {
@@ -23,7 +26,7 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 		}
 
 		if (line.product === "national" || line.product === "nationalExpress") {
-			return this.getLongDistanceLineShape(line.name);
+			return this.getProductLineShape(line.name, { shape: "pill", type: "outlined" });
 		}
 		if (line.productName === "WB") {
 			return this.getWestbahnLineShape(line.name ?? "WB");
@@ -32,11 +35,11 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 			return this.getFlixtrainLineShape(line.name ?? "FLX");
 		}
 
-		const lineName = line.name.toLowerCase().replaceAll(" ", "");
+		const lineName = this.stringToNormalForm(line.name);
 		const lineNumber = lineName.replace(line.productName?.toLowerCase() ?? "", "");
 
 		const matchedRow = LineShapeParser.traewellingLineShapes.find((lineShapeEntry) => {
-			const entryLineName = lineShapeEntry.lineName.toLowerCase().replaceAll(" ", "");
+			const entryLineName = this.stringToNormalForm(lineShapeEntry.lineName);
 			const isLineNameMatch = entryLineName === lineName || entryLineName === lineNumber;
 			if (!isLineNameMatch) {
 				return false;
@@ -57,7 +60,7 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 		}
 
 		const linePrefix =
-			matchedRow.lineName.toLowerCase().replaceAll(" ", "") === lineName
+			this.stringToNormalForm(matchedRow.lineName) === lineName
 				? undefined
 				: line.productName;
 		return {

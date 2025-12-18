@@ -2,7 +2,7 @@ import type { OptionId, PossibleOptionValues, ProfileConfig } from "./server/pro
 import type { Language } from "../params/lang";
 import type { ProfileId } from "../params/profileId";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
-import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
+import type { LineShape } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 
 export type KeyedItem<T, K extends number | string> = {
 	value: T;

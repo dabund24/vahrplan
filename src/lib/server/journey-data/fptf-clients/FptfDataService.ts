@@ -9,7 +9,7 @@ import { type VahrplanResult } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 import type { OptionId } from "../../profiles/profile";
 import { FptfRequestFormatter } from "$lib/server/journey-data/fptf-clients/FptfRequestFormatter";
-import type { LineShapeParser } from "$lib/server/journey-data/LineShapeParser";
+import type { LineShapeParser } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { settings } from "$lib/state/settingStore";
-	import type { LineShape } from "$lib/server/journey-data/LineShapeParser";
+	import type { LineShape } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 	import type { Product } from "$lib/types";
 
 	type Props = {
