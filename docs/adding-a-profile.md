@@ -37,7 +37,7 @@ You can use `FptfOptionId` for the `OptionT` generic, since all profiles from `h
 
 ### Line Shape Parser
 
-This is for nice looking colorful icons. You can either create an instance of `ScopedHafasClientLineShapeParser` or create a custom class extending `ScopedHafasClientLineShapeParser` depending on how many special cases you can/want to handle.
+This is for nice looking colorful icons. You can either create an instance of `ScopedHafasClientLineShapeParser` or create a custom class extending `ScopedHafasClientLineShapeParser` depending on how many special cases you can/want to handle. Have a look at `BvgLineShapeParser` in case you need an example.
 
 ## Add to Registry
 
