@@ -10,9 +10,17 @@ type OverrideColorProducts = Record<
 	}
 >;
 
+/**
+ * regionally scope line shapes for hafas client lines and only match by the line names
+ */
 export class ScopedHafasClientLineShapeParser extends ScopedLineShapeParser<Line> {
 	private readonly overrideColorProducts: OverrideColorProducts;
 
+	/**
+	 *
+	 * @param operatorPrefix the prefix for the first column values of `line-shapes.svg` you would like to set the scope to
+	 * @param overrideColorProducts map upstream (!!!!!) products to a preset in case they are not handled in `line-shapes.svg`
+	 */
 	constructor(operatorPrefix: string, overrideColorProducts: OverrideColorProducts) {
 		super(operatorPrefix);
 
