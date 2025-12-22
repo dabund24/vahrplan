@@ -14,15 +14,55 @@
 
 	let { block }: Props = $props();
 
-	const { info, blockKey, lineShape, product, name, productName } = $derived(block);
+	const { blockKey, lineShape, product, name, productName } = $derived(block);
 
-	function showInfoModal(): void {
-		pushState("", {
-			[`showTripInfoModal${blockKey}`]: true,
-		});
+	function loadFactorToString(loadFactor: NonNullable<LegBlock["loadFactor"]>): string {
+		return `Auslastung: ${
+			{
+				low: "gering",
+				medium: "mittel",
+				high: "hoch",
+				"very-high": "sehr hoch",
+			}[loadFactor]
+		}`;
 	}
 
-	let tabs: ComponentProps<typeof MiniTabs>["tabs"] = $derived(
+	function operatorToString(operator: NonNullable<LegBlock["operator"]>): string {
+		return `Betreiber: ${operator}`;
+	}
+
+	function cycleToString(cycle: NonNullable<LegBlock["cycle"]>): string {
+		if (cycle.min === cycle.max) {
+			return `Fährt alle ${cycle.max} Minuten`;
+		}
+		return `Fährt alle ${cycle.min} bis ${cycle.max} Minuten`;
+	}
+
+	function tripNumberToString(tripNumber: NonNullable<LegBlock["tripNumber"]>): string {
+		return `Fahrtnummer: ${tripNumber}`;
+	}
+
+	const info = $derived.by(() => {
+		const info: LegBlock["info"] = {
+			statuses: [...block.info.statuses],
+			hints: [...block.info.hints],
+		};
+		if (block.loadFactor !== undefined) {
+			info.hints.push(loadFactorToString(block.loadFactor));
+		}
+		if (block.operator !== undefined) {
+			info.hints.push(operatorToString(block.operator));
+		}
+		if (block.cycle !== undefined) {
+			info.hints.push(cycleToString(block.cycle));
+		}
+		if (block.tripNumber !== undefined) {
+			info.hints.push(tripNumberToString(block.tripNumber));
+		}
+		return info;
+	});
+
+	const tabs: ComponentProps<typeof MiniTabs>["tabs"] = $derived(
 		(Object.keys(info) as (keyof LegBlock["info"])[])
 			.filter((key) => info[key].length > 0)
 			.map(
@@ -41,6 +81,12 @@
 					})[key],
 			),
 	);
+
+	function showInfoModal(): void {
+		pushState("", {
+			[`showTripInfoModal${blockKey}`]: true,
+		});
+	}
 </script>
 
 {#snippet infoIconRed()}
