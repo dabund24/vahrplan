@@ -52,8 +52,8 @@ export const bvgRefreshParsedRes = {
 			product: "subway",
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
-				min: 600,
-				max: 600,
+				min: 10,
+				max: 10,
 			},
 			tripNumber: "21817",
 			info: {
@@ -67,9 +67,6 @@ export const bvgRefreshParsedRes = {
 				hints: [
 					"Fahrradmitnahme möglich (S+U Alexanderplatz Bhf (Berlin))",
 					"Fahrradmitnahme möglich (U Hermannplatz (Berlin))",
-					"Betreiber: Berliner Verkehrsbetriebe",
-					"Fährt alle 10 Minuten",
-					"Fahrtnummer: 21817",
 				],
 			},
 			currentLocation: {
@@ -321,8 +318,8 @@ export const bvgRefreshParsedRes = {
 			product: "subway",
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
-				min: 600,
-				max: 600,
+				min: 10,
+				max: 10,
 			},
 			tripNumber: "20374",
 			info: {
@@ -330,9 +327,6 @@ export const bvgRefreshParsedRes = {
 				hints: [
 					"Fahrradmitnahme möglich (U Hermannplatz (Berlin))",
 					"Fahrradmitnahme möglich (U Rudow (Berlin))",
-					"Betreiber: Berliner Verkehrsbetriebe",
-					"Fährt alle 10 Minuten",
-					"Fahrtnummer: 20374",
 				],
 			},
 			currentLocation: {
@@ -802,17 +796,13 @@ export const bvgRefreshParsedRes = {
 			product: "bus",
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
-				min: 600,
-				max: 1860,
+				min: 10,
+				max: 31,
 			},
 			tripNumber: "170757",
 			info: {
 				statuses: [],
-				hints: [
-					"Betreiber: Berliner Verkehrsbetriebe",
-					"Fährt alle 10 bis 31 Minuten",
-					"Fahrtnummer: 170757",
-				],
+				hints: [],
 			},
 			stopovers: [
 				{

@@ -75,8 +75,6 @@ const berlinToBerlinFernsehturmExpected = {
 					"Laptop-Steckdosen",
 					"Klimaanlage",
 					"WLAN verfügbar",
-					"Betreiber: Ostdeutsche Eisenbahn GmbH",
-					"Fahrtnummer: 73786",
 				],
 			},
 			stopovers: [
@@ -315,9 +313,6 @@ const lindauInselToAugsburgExpected = {
 					"Fahrradmitnahme reservierungspflichtig",
 					"Fahrradmitnahme begrenzt möglich",
 					"Bordrestaurant",
-					"Auslastung: hoch",
-					"Betreiber: DB Fernverkehr AG",
-					"Fahrtnummer: 195",
 				],
 			},
 			stopovers: [
@@ -457,8 +452,6 @@ const lindauInselToAugsburgExpected = {
 					"Rampe im Zug",
 					"Behindertengerechte Ausstattung",
 					"Klimaanlage",
-					"Betreiber: Bayerische Regiobahn",
-					"Fahrtnummer: 62785",
 				],
 			},
 			stopovers: [

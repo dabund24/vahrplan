@@ -421,13 +421,7 @@ export class FptfResponseParser<
 	};
 
 	protected override readonly parseLegInfo = (leg: Leg): LegBlock["info"] => {
-		const info = this.parseGenericLegInfo(leg);
-		info.hints.push(...this.parseStaticLegHints(leg));
-		return info;
-	};
-
-	private readonly parseGenericLegInfo = (leg: Leg): LegBlock["info"] => {
-		const genericInfo: LegBlock["info"] = {
+		const info: LegBlock["info"] = {
 			statuses: [],
 			hints: [],
 		};
@@ -438,62 +432,13 @@ export class FptfResponseParser<
 
 		for (const remark of remarks ?? []) {
 			if (remark.type === "hint") {
-				genericInfo.hints.push(remark.text);
+				info.hints.push(remark.text);
 			} else if (remark.text !== undefined) {
-				genericInfo.statuses.push(remark.text);
+				info.statuses.push(remark.text);
 			}
 		}
 
-		return genericInfo;
-	};
-
-	/** @deprecated static leg hints not needed in the future. Will be included by frontend */
-	private readonly parseStaticLegHints = (leg: Leg): string[] => {
-		const hints = [];
-
-		// load factor:
-		if (leg.loadFactor !== undefined) {
-			let parsedLoadFactor: string;
-			switch (leg.loadFactor) {
-				case "low-to-medium":
-					parsedLoadFactor = "gering";
-					break;
-				case "high":
-					parsedLoadFactor = "mittel";
-					break;
-				case "very-high":
-					parsedLoadFactor = "hoch";
-					break;
-				case "exceptionally-high":
-					parsedLoadFactor = "außergewöhnlich hoch";
-					break;
-				default:
-					parsedLoadFactor = "unbekannt";
-			}
-			hints.push(`Auslastung: ${parsedLoadFactor}`);
-		}
-
-		// operator:
-		if (leg.line?.operator?.name !== undefined) {
-			hints.push(`Betreiber: ${leg.line.operator.name}`);
-		}
-
-		// cycle:
-		if (leg.cycle?.min !== undefined && leg.cycle.max !== undefined) {
-			let xToY: string;
-			if (leg.cycle.min === leg.cycle.max) {
-				xToY = `${leg.cycle.min / 60}`;
-			} else {
-				xToY = `${leg.cycle.min / 60} bis ${leg.cycle.max / 60}`;
-			}
-			hints.push(`Fährt alle ${xToY} Minuten`);
-		}
-
-		// trip id
-		if (leg.line?.fahrtNr !== undefined) {
-			hints.push(`Fahrtnummer: ${leg.line.fahrtNr}`);
-		}
-		return hints;
+		return info;
 	};
 
 	protected override readonly parseLoadFactor = (
@@ -520,7 +465,7 @@ export class FptfResponseParser<
 		if (min === undefined || max === undefined) {
 			return undefined;
 		}
-		return { min, max };
+		return { min: min / 60, max: max / 60 };
 	};
 
 	protected override readonly parseTicketData = (journey: Journey): SubJourney["ticketData"] => {

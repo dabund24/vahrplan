@@ -59,8 +59,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19464",
 					info: {
@@ -68,9 +68,6 @@ export const bvgScrollParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19464",
 						],
 					},
 					stopovers: [
@@ -602,8 +599,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19463",
 					info: {
@@ -611,9 +608,6 @@ export const bvgScrollParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19463",
 						],
 					},
 					stopovers: [
@@ -1145,8 +1139,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19462",
 					info: {
@@ -1154,9 +1148,6 @@ export const bvgScrollParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19462",
 						],
 					},
 					stopovers: [
@@ -1688,8 +1679,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19461",
 					info: {
@@ -1697,9 +1688,6 @@ export const bvgScrollParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19461",
 						],
 					},
 					stopovers: [
@@ -2231,8 +2219,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19460",
 					info: {
@@ -2240,9 +2228,6 @@ export const bvgScrollParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19460",
 						],
 					},
 					stopovers: [
@@ -2774,8 +2759,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19459",
 					info: {
@@ -2783,9 +2768,6 @@ export const bvgScrollParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19459",
 						],
 					},
 					stopovers: [
