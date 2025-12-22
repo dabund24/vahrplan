@@ -3,7 +3,6 @@
 		PUBLIC_IMPRINT_TOWN,
 		PUBLIC_IMPRINT_STREET,
 		PUBLIC_IMPRINT_EMAIL_ADDRESS,
-		PUBLIC_PHONE_NUMBER,
 	} from "$env/static/public";
 </script>
 
@@ -22,8 +21,6 @@
 		{PUBLIC_IMPRINT_TOWN}
 	</p>
 	<p>
-		Kontakt:<br />
 		E-Mail: {PUBLIC_IMPRINT_EMAIL_ADDRESS}<br />
-		Telefon: {PUBLIC_PHONE_NUMBER}
 	</p>
 </div>
