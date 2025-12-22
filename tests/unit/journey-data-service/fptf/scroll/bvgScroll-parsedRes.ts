@@ -59,8 +59,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19464",
 					info: {
@@ -599,8 +599,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19463",
 					info: {
@@ -1139,8 +1139,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19462",
 					info: {
@@ -1679,8 +1679,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19461",
 					info: {
@@ -2219,8 +2219,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19460",
 					info: {
@@ -2759,8 +2759,8 @@ export const bvgScrollParsedRes = {
 					product: "suburban",
 					operator: "S-Bahn Berlin GmbH",
 					cycle: {
-						min: 1200,
-						max: 1200,
+						min: 20,
+						max: 20,
 					},
 					tripNumber: "19459",
 					info: {

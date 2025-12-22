@@ -465,7 +465,7 @@ export class FptfResponseParser<
 		if (min === undefined || max === undefined) {
 			return undefined;
 		}
-		return { min, max };
+		return { min: min / 60, max: max / 60 };
 	};
 
 	protected override readonly parseTicketData = (journey: Journey): SubJourney["ticketData"] => {

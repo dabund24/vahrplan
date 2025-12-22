@@ -52,8 +52,8 @@ export const bvgRefreshParsedRes = {
 			product: "subway",
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
-				min: 600,
-				max: 600,
+				min: 10,
+				max: 10,
 			},
 			tripNumber: "21817",
 			info: {
@@ -318,8 +318,8 @@ export const bvgRefreshParsedRes = {
 			product: "subway",
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
-				min: 600,
-				max: 600,
+				min: 10,
+				max: 10,
 			},
 			tripNumber: "20374",
 			info: {
@@ -796,8 +796,8 @@ export const bvgRefreshParsedRes = {
 			product: "bus",
 			operator: "Berliner Verkehrsbetriebe",
 			cycle: {
-				min: 600,
-				max: 1860,
+				min: 10,
+				max: 31,
 			},
 			tripNumber: "170757",
 			info: {
