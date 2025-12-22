@@ -14,7 +14,7 @@
 
 	let { block }: Props = $props();
 
-	const { info, blockKey, lineShape, product, name, productName, direction } = $derived(block);
+	const { info, blockKey, lineShape, product, name, productName } = $derived(block);
 
 	function showInfoModal(): void {
 		pushState("", {
@@ -94,7 +94,7 @@
 		{/snippet}
 
 		{#snippet title()}
-			<LineNameDirection lineName={name} {productName} {product} {lineShape} {direction} />
+			<LineNameDirection lineName={name} {productName} {product} {lineShape} />
 		{/snippet}
 	</Modal>
 {/snippet}
