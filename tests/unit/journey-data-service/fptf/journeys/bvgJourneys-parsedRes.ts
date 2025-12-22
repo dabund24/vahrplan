@@ -68,9 +68,6 @@ export const bvgJourneysParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 13 bis 20 Minuten",
-							"Fahrtnummer: 19318",
 						],
 					},
 					stopovers: [
@@ -611,9 +608,6 @@ export const bvgJourneysParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19291",
 						],
 					},
 					stopovers: [
@@ -1154,9 +1148,6 @@ export const bvgJourneysParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19290",
 						],
 					},
 					stopovers: [
@@ -1697,9 +1688,6 @@ export const bvgJourneysParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19289",
 						],
 					},
 					stopovers: [
@@ -2240,9 +2228,6 @@ export const bvgJourneysParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19288",
 						],
 					},
 					stopovers: [
@@ -2783,9 +2768,6 @@ export const bvgJourneysParsedRes = {
 						hints: [
 							"Fahrradmitnahme möglich (S+U Berlin Hauptbahnhof)",
 							"Fahrradmitnahme möglich (Flughafen BER)",
-							"Betreiber: S-Bahn Berlin GmbH",
-							"Fährt alle 20 Minuten",
-							"Fahrtnummer: 19287",
 						],
 					},
 					stopovers: [
