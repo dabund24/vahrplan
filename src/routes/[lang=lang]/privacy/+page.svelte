@@ -2,7 +2,6 @@
 	import {
 		PUBLIC_IMPRINT_TOWN,
 		PUBLIC_IMPRINT_STREET,
-		PUBLIC_PHONE_NUMBER,
 		PUBLIC_IMPRINT_EMAIL_ADDRESS,
 	} from "$env/static/public";
 </script>
@@ -121,10 +120,7 @@
 		{PUBLIC_IMPRINT_STREET}<br />
 		{PUBLIC_IMPRINT_TOWN}
 	</p>
-	<p
-		>Telefon: {PUBLIC_PHONE_NUMBER}<br />
-		E-Mail: {PUBLIC_IMPRINT_EMAIL_ADDRESS}</p
-	>
+	<p>E-Mail: {PUBLIC_IMPRINT_EMAIL_ADDRESS}</p>
 	<p
 		>Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person, die allein oder
 		gemeinsam mit anderen &uuml;ber die Zwecke und Mittel der Verarbeitung von personenbezogenen
