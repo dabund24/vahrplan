@@ -279,7 +279,7 @@ export class FptfResponseParser<
 		distance: leg.distance ?? 0,
 	});
 
-	protected override readonly parseStationStopLocation = (
+	public override readonly parseStationStopLocation = (
 		location: Station | Stop | Location | undefined,
 	): ParsedLocation => {
 		if (location === undefined) {

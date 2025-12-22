@@ -3,9 +3,9 @@ import {
 	type JourneyDataServiceConfig,
 	type JourneyNodesWithRefs,
 } from "$lib/server/journey-data/JourneyDataService";
-import type { HafasClient, Line } from "hafas-client";
+import type { HafasClient, Line, Location, Station, Stop } from "hafas-client";
 import type { ParsedLocation, Product, SubJourney } from "$lib/types";
-import { type VahrplanResult } from "$lib/VahrplanResult";
+import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 import type { OptionId } from "../../profiles/profile";
 import { FptfRequestFormatter } from "$lib/server/journey-data/fptf-clients/FptfRequestFormatter";
@@ -107,8 +107,19 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 
 	public override location = (
 		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>
-	): Promise<VahrplanResult<ParsedLocation>> =>
-		this.performRequest(
+	): Promise<VahrplanResult<ParsedLocation>> => {
+		if (params[0].startsWith("{")) {
+			let hafasLocation: Station | Stop | Location;
+			try {
+				hafasLocation = JSON.parse(params[0]) as Station | Stop | Location;
+			} catch {
+				return Promise.resolve(new VahrplanError("HAFAS_INVALID_REQUEST"));
+			}
+			const parsedLocation = this.responseParser.parseStationStopLocation(hafasLocation);
+			return Promise.resolve(new VahrplanSuccess(parsedLocation));
+		}
+
+		return this.performRequest(
 			"location",
 			{
 				formatReqParams: this.requestFormatter.formatRequest.location,
@@ -117,6 +128,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 			},
 			...params,
 		);
+	};
 
 	public override locations = (
 		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["locations"]>
