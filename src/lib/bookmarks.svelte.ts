@@ -30,6 +30,8 @@ type DiagramBookmark = {
 	/** same as time if user has defined arrival time, otherwise estimated arrival time; TODO turn into mandatory property */
 	arrival?: string;
 	type: "absolute";
+	/** @deprecated use id instead */
+	link?: string;
 };
 
 type JourneyBookmark = {
@@ -39,6 +41,8 @@ type JourneyBookmark = {
 	destination: Pick<ParsedLocation, "name" | "type">;
 	arrival: string;
 	departure: string;
+	/** @deprecated use id instead */
+	link?: string;
 };
 
 export type BookmarkData<T extends BookmarkType> = T extends "diagram"
@@ -238,8 +242,8 @@ export function removeBookmark<T extends BookmarkType>(type: T, id: string): voi
 }
 
 const remove: { [T in BookmarkType]: (id: string) => Bookmarks[T] } = {
-	diagram: (id) => bookmarks.diagram.filter((b) => b.id !== id),
-	journey: (id) => bookmarks.journey.filter((b) => b.id !== id),
+	diagram: (id) => bookmarks.diagram.filter((b) => (b.link ?? b.id) !== id),
+	journey: (id) => bookmarks.journey.filter((b) => (b.link ?? b.id) !== id),
 	location: (id) => bookmarks.location.filter((b) => b.id !== id),
 	profile: (id) => bookmarks.profile.filter((b) => b.id !== id),
 };

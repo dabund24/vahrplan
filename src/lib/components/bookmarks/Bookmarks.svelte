@@ -80,7 +80,7 @@
 
 {#snippet bookmarks(bookmarkList: BookmarkList)}
 	<ol class="flex-column">
-		{#each bookmarkList as bookmark, i (bookmark.bookmark.id)}
+		{#each bookmarkList as bookmark, i (bookmark.bookmark.link ?? bookmark.bookmark.id)}
 			<li class="flex-row" transition:scale animate:flip={{ duration: 400 }}>
 				{#if bookmark.type === "diagram"}
 					<DiagramBookmark bookmark={bookmark.bookmark} bookmarkIndex={i} />
