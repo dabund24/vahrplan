@@ -69,13 +69,13 @@
 			{/snippet}
 			<li>
 				{#if option.type === "link"}
-					<a href={option.url} class="flex-row padded-top-bottom option-button">
+					<a href={option.url} class="flex-row hoverable padded-top-bottom option-button">
 						{@render buttonContent()}
 					</a>
 				{:else if option.type === "function"}
 					<button
 						onclick={() => void handleOptionClick(option.onClick)}
-						class="flex-row padded-top-bottom option-button"
+						class="flex-row hoverable padded-top-bottom option-button"
 					>
 						{@render buttonContent()}
 					</button>
@@ -177,14 +177,8 @@
 		align-items: center;
 		box-sizing: border-box;
 		text-decoration: none;
-		border: none;
-		border-radius: 0;
+		border-color: transparent;
 		background-color: transparent;
-		&:hover,
-		&:active {
-			border: none;
-			background-color: var(--foreground-color--very-transparent);
-		}
 	}
 
 	/*
