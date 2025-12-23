@@ -203,7 +203,7 @@
 			{#await suggestions}
 				{#each { length: 10 } as _, i (i)}
 					<li class="suggestion flex-row skeleton">
-						<span class="flex-row padded-top-bottom suggestion__button">
+						<span class="flex-row hoverable suggestion__button">
 							<span class="suggestion-icon">
 								<IconStationLocation color="foreground" iconType="station" />
 							</span>
@@ -225,7 +225,7 @@
 					>
 						<button
 							type="button"
-							class="flex-row padded-top-bottom suggestion__button"
+							class="flex-row hoverable suggestion__button"
 							class:focused={focusedId === i}
 							tabindex="-1"
 							onclick={() => void handleSuggestionClick(suggestion)}
@@ -239,7 +239,7 @@
 							{suggestion.name}
 						</button>
 						{#if suggestion.name !== "Standort"}
-							<span aria-hidden="true">
+							<span class="bookmark-toggle" aria-hidden="true">
 								<BookmarkToggle
 									type="location"
 									value={suggestion}
@@ -278,6 +278,7 @@
 	ul {
 		flex-direction: column;
 		display: none;
+		padding-top: 0.25rem;
 	}
 	.inner-wrapper:focus-within ul,
 	ul:active {
@@ -323,36 +324,20 @@
 	.suggestion__button {
 		align-items: center;
 		gap: 0.5rem;
-		margin-left: calc(var(--line-width) * -1);
+		margin: 0 calc(var(--line-width) * -1);
+		box-sizing: content-box;
+        padding: 0.5rem calc(2rem + 2 * var(--line-width)) 0.5rem 0.5rem;
 		text-align: left;
 		width: 100%;
 		align-self: stretch;
-
-		&:hover::before {
-			height: var(--line-length--vertical);
-		}
-		&:hover .suggestion-icon {
-			--foreground-color: var(--accent-color);
-		}
 	}
 
-	.suggestion__button.focused .suggestion-icon {
-		--foreground-color: var(--accent-color);
-	}
-	.suggestion__button.focused::before {
-		height: var(--line-length--vertical);
+	.suggestion__button.focused {
+		border-color: var(--accent-color);
 	}
 
-	.suggestion__button::before {
-		content: "";
-		display: flex;
-		flex-shrink: 0;
-		height: 0;
-		width: var(--line-width);
-		border-radius: var(--border-radius--small);
-		background-color: var(--accent-color);
-		transition: height 0.4s var(--cubic-bezier--regular);
-		margin: -1rem 0;
+    .bookmark-toggle {
+		margin-left: calc(-2rem - 2 * var(--line-width));
 	}
 
 	.suggestion-icon {
