@@ -326,7 +326,7 @@
 		gap: 0.5rem;
 		margin: 0 calc(var(--line-width) * -1);
 		box-sizing: content-box;
-        padding: 0.5rem calc(2rem + 2 * var(--line-width)) 0.5rem 0.5rem;
+		padding: 0.5rem calc(2rem + 2 * var(--line-width)) 0.5rem 0.5rem;
 		text-align: left;
 		width: 100%;
 		align-self: stretch;
@@ -336,7 +336,7 @@
 		border-color: var(--accent-color);
 	}
 
-    .bookmark-toggle {
+	.bookmark-toggle {
 		margin-left: calc(-2rem - 2 * var(--line-width));
 	}
 
