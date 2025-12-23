@@ -16,7 +16,8 @@
 	let { stopovers, departureTime, arrivalTime, blockKey, product }: Props = $props();
 
 	function getStopoverTime(stopover: TransitData, transitType: TransitType): number {
-		return new Date(stopover.time[transitType]?.time ?? 0).getTime();
+		const backupTime = (stopover.time.arrival ?? stopover.time.departure)?.time;
+		return new Date(stopover.time[transitType]?.time ?? backupTime ?? 0).getTime();
 	}
 </script>
 
