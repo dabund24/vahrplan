@@ -48,6 +48,5 @@ export class BvgProfile extends Profile<
 			ferry: "ferry",
 		},
 		lineShapeParser: new BvgLineShapeParser(),
-		hasTickets: false,
 	});
 }

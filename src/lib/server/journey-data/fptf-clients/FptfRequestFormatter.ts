@@ -54,7 +54,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 			bike: this.formatOptionValues.bike(filters.options.bike),
 			results: 10,
 			stopovers: true,
-			tickets: this.hasTickets,
+			tickets: true,
 			entrances: false,
 			language: lang,
 		};

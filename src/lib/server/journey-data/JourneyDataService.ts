@@ -26,7 +26,6 @@ export type JourneyNodesWithRefs = {
 export type JourneyDataServiceConfig<ProductT extends Product, OptionT extends OptionId> = {
 	productMapping: Record<ProductT, string>;
 	optionMapping: Record<OptionT, string>;
-	hasTickets: boolean;
 	quota?: ConstructorParameters<typeof RateLimiter>[0];
 };
 

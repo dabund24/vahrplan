@@ -29,7 +29,7 @@ export type HafasError = Error & {
 
 export type FptfDataServiceConfig<ProductT extends Product> = Pick<
 	JourneyDataServiceConfig<ProductT, FptfOptionId>,
-	"productMapping" | "hasTickets" | "quota"
+	"productMapping" | "quota"
 > & {
 	client: HafasClient;
 	lineShapeParser: LineShapeParser<Line>;
@@ -62,7 +62,6 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		super({
 			productMapping: config.productMapping,
 			optionMapping,
-			hasTickets: config.hasTickets,
 			quota: config.quota,
 		});
 
@@ -70,7 +69,6 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 		this.requestFormatter = new FptfRequestFormatter({
 			optionMapping,
 			productMapping: config.productMapping,
-			hasTickets: config.hasTickets,
 		});
 		this.responseParser = new FptfResponseParser({
 			productMapping: config.productMapping,
