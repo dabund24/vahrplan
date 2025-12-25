@@ -53,11 +53,11 @@ function getErrorCodeFromErrorType(type: VahrplanErrorType): VahrplanError["code
 function getDescriptionFromErrorType(type: VahrplanErrorType): string {
 	switch (type) {
 		case "HAFAS_INVALID_REQUEST":
-			return "Hafas: ungültige Anfrage.";
+			return "Datenquelle sagt: ungültige Anfrage :(";
 		case "HAFAS_ACCESS_DENIED":
-			return "Hafas: Zugriff verweigert.";
+			return "Datenquelle sagt: Zugriff verweigert :(";
 		case "HAFAS_NOT_FOUND":
-			return "Hafas: Ressource nicht gefunden.";
+			return "Datenquelle sagt: Ressource nicht gefunden :(";
 		case "NOT_FOUND":
 			return "Ressource nicht gefunden.";
 		case "QUOTA_EXCEEDED":
@@ -66,6 +66,6 @@ function getDescriptionFromErrorType(type: VahrplanErrorType): string {
 		case "ERROR":
 			return "Server-Fehler.";
 		case "HAFAS_SERVER_ERROR":
-			return "Hafas: Server-Fehler.";
+			return "Datenquelle sagt: Server-Fehler :(";
 	}
 }

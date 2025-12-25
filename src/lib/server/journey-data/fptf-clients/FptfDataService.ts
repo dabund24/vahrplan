@@ -143,13 +143,13 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 
 	protected override parseError = (err: unknown): VahrplanError => {
 		let errorType: VahrplanError["type"] = "ERROR";
-		let message = "Hafas: Server-Fehler. Die Anfrage ist möglicherweise ungültig.";
+		let message = "Datenquelle sagt: Server-Fehler. Die Anfrage ist möglicherweise ungültig.";
 		if (FptfDataService.isHafasError(err)) {
 			if (err.code === "QUOTA_EXCEEDED") {
 				// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
 				return new VahrplanError("QUOTA_EXCEEDED");
 			}
-			message = `Hafas: ${err.hafasDescription ?? "Hafas-Fehler"}`;
+			message = `Datenquelle sagt: ${err.hafasDescription ?? "Server-Fehler"}`;
 			errorType = `HAFAS_${err.code ?? "SERVER_ERROR"}`;
 		}
 		return VahrplanError.withMessage(errorType, message);
