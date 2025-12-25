@@ -21,7 +21,7 @@ export class EmptyProfile extends Profile<"empty"> {
 		never
 	> {
 		public constructor() {
-			super({ productMapping: {}, optionMapping: {}, hasTickets: false });
+			super({ productMapping: {}, optionMapping: {} });
 		}
 		protected override products = {};
 		protected override optionIds = {};
@@ -36,7 +36,7 @@ export class EmptyProfile extends Profile<"empty"> {
 				location: () => void {},
 				locations: () => void {},
 			};
-		})({ productMapping: {}, optionMapping: {}, hasTickets: false });
+		})({ productMapping: {}, optionMapping: {} });
 		protected override responseParser = new FptfResponseParser({
 			productMapping: {},
 			lineShapeParser: new DbnavLineShapeParser(),

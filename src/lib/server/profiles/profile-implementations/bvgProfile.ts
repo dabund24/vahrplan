@@ -8,8 +8,7 @@ import { profile } from "hafas-client/p/bvg";
 import { BvgLineShapeParser } from "$lib/server/journey-data/line-shapes/BvgLineShapeParser";
 
 /**
- * uses https://github.com/public-transport/hafas-client/tree/main/p/db
- * via https://github.com/public-transport/db-vendo-client/tree/main/p/dbnav
+ * uses https://github.com/public-transport/hafas-client/tree/main/p/bvg
  */
 export class BvgProfile extends Profile<
 	"bvg",
@@ -49,6 +48,5 @@ export class BvgProfile extends Profile<
 			ferry: "ferry",
 		},
 		lineShapeParser: new BvgLineShapeParser(),
-		hasTickets: false,
 	});
 }

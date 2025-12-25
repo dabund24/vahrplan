@@ -17,12 +17,10 @@ export abstract class JourneyDataRequestFormatter<
 	) {
 		this.optionMapping = config.optionMapping;
 		this.productMapping = config.productMapping;
-		this.hasTickets = config.hasTickets;
 	}
 
 	protected readonly productMapping: Record<ProductT, string>;
 	protected readonly optionMapping: Record<OptionT, string>;
-	protected readonly hasTickets: boolean;
 
 	/**
 	 * map option values to their representative in the upstream api

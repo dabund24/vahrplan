@@ -69,7 +69,6 @@ export class DbnavProfile extends Profile<
 			taxi: "taxi",
 		},
 		lineShapeParser: new DbnavLineShapeParser(),
-		hasTickets: true,
 		ticketUrlParser: new DbnavTicketUrlParser(),
 		quota: {
 			threshold: 60,

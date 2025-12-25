@@ -17,7 +17,7 @@ export const bvgJourneysFormattedReq = [
 		bike: true,
 		results: 10,
 		stopovers: true,
-		tickets: false,
+		tickets: true,
 		language: "de",
 		departure: new Date("2025-12-08T03:13:00+01:00"),
 		entrances: false,
