@@ -278,7 +278,6 @@
 	ul {
 		flex-direction: column;
 		display: none;
-		padding-top: 0.25rem;
 	}
 	.inner-wrapper:focus-within ul,
 	ul:active {
@@ -319,6 +318,10 @@
 	.suggestion {
 		position: relative;
 		align-items: center;
+	}
+
+	ul:not(.hide-suggestions) .suggestion:first-child {
+		margin-top: 0.25rem;
 	}
 
 	.suggestion__button {
