@@ -8,6 +8,7 @@
 	import { page } from "$app/state";
 	import type { Product } from "$lib/types";
 	import type { ProfileConfig } from "$lib/server/profiles/profile";
+	import ProductToggle from "./ProductToggle.svelte";
 
 	const products = $derived(
 		Object.entries(page.data.profileConfig.products) as [
@@ -126,13 +127,12 @@
 			Nur Fernverkehr
 		</button>
 	</div>
-	{#each products as [productId, productName] (productId)}
-		<Setting
-			settingName={productName.name}
-			bind:setting={$settings.products[productId]}
-			settingInfo={{ type: "boolean" }}
-		/>
-	{/each}
+	<hr />
+	<div class="flex-row products-wrapper padded-top-bottom">
+		{#each products as [productId, { name: productName }] (productId)}
+			<ProductToggle {productId} {productName} />
+		{/each}
+	</div>
 {/snippet}
 
 <style>
@@ -143,6 +143,11 @@
 			padding: 0.5rem 0.75rem;
 			text-wrap: nowrap;
 		}
+	}
+
+	.products-wrapper {
+		flex-wrap: wrap;
+		gap: 0.5rem;
 	}
 
 	.button-content {
