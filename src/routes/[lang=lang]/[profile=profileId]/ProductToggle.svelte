@@ -33,7 +33,7 @@
 	}
 
 	button[aria-pressed="true"] {
-        background: var(--product-color);
-        color: var(--background-color);
+		background: var(--product-color);
+		color: var(--background-color);
 	}
 </style>
