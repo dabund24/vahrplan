@@ -30,6 +30,7 @@
 		border-radius: 50vh;
 		padding: 0.5rem 1rem;
 		color: var(--product-color);
+		transition: none;
 	}
 
 	button[aria-pressed="true"] {
