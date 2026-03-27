@@ -143,7 +143,7 @@ function themeColorFromColorScheme(
 	let isDarkTheme: boolean;
 	if (colorScheme === "system") {
 		isDarkTheme =
-			window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+			window.matchMedia?.("(prefers-color-scheme: dark)").matches;
 	} else {
 		isDarkTheme = colorScheme === "dark";
 	}
