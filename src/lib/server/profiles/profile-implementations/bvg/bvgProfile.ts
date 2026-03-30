@@ -1,11 +1,11 @@
-import { Profile } from "../profile";
+import { Profile } from "../../profile";
 import {
 	FptfDataService,
 	type FptfOptionId,
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import { createClient } from "hafas-client";
 import { profile } from "hafas-client/p/bvg";
-import { BvgLineShapeParser } from "$lib/server/journey-data/line-shapes/BvgLineShapeParser";
+import { BvgLineShapeParser } from "$lib/server/profiles/profile-implementations/bvg/BvgLineShapeParser";
 
 /**
  * uses https://github.com/public-transport/hafas-client/tree/main/p/bvg

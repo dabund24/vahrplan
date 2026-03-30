@@ -1,6 +1,6 @@
 import type { Line } from "hafas-client";
 import { expect, test, vi } from "vitest";
-import { DbnavLineShapeParser } from "$lib/server/journey-data/line-shapes/DbnavLineShapeParser";
+import { DbnavLineShapeParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavLineShapeParser";
 import type { LineShape } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 
 const lineShapeParser = new DbnavLineShapeParser();
