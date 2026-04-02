@@ -159,6 +159,11 @@ export abstract class LineShapeParser<T> {
 	protected readonly stringToNormalForm = (str: string): string =>
 		str.toLowerCase().replaceAll(" ", "");
 
+	protected readonly lineNumberFromLineNameAndProduct = (
+		lineName: string,
+		productName: string,
+	): string => this.stringToNormalForm(lineName).replace(productName.toLowerCase() ?? "", "");
+
 	protected readonly getProductLineShape = (
 		lineName: string,
 		conf: { shape: LineShape["shape"]; type: "filled" | "outlined" },
