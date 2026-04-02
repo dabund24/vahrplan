@@ -198,7 +198,7 @@ export class FptfResponseParser<
 					feature.geometry.coordinates[0],
 				]) ?? [],
 		};
-		if (block.polyline.length === 0) {
+		if (block.polyline.length < 3) {
 			block.polyline = [block.departureData, ...block.stopovers, block.arrivalData].map(
 				(stop) => [stop.location.position.lat, stop.location.position.lng],
 			);
