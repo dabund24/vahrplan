@@ -4,10 +4,12 @@ import type { ProfileId } from "../../../params/profileId";
 import type { Language } from "../../../params/lang";
 import { EmptyProfile } from "./profile-implementations/emptyProfile";
 import { BvgProfile } from "$lib/server/profiles/profile-implementations/bvg/bvgProfile";
+import { OebbProfile } from "$lib/server/profiles/profile-implementations/oebb/oebbProfile";
 
 const profiles = {
 	empty: new EmptyProfile(),
 	dbnav: new DbnavProfile(),
+	oebb: new OebbProfile(),
 	bvg: new BvgProfile(),
 } as const satisfies {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

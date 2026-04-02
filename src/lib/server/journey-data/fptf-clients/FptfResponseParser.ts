@@ -180,7 +180,8 @@ export class FptfResponseParser<
 					leg.arrival ?? leg.plannedArrival,
 				) ?? 0,
 			direction: leg.direction ?? undefined,
-			name: leg.line?.name ?? leg.line?.productName,
+			// oebb fix. Find better solution if more cases like this arise
+			name: leg.line?.name?.split("(Zug-Nr.")[0].trim() ?? leg.line?.productName,
 			productName: leg.line?.productName ?? leg.line?.name,
 			product: this.parseProduct(leg.line?.product),
 			lineShape: this.lineShapeParser.getLineShape(leg.line),
