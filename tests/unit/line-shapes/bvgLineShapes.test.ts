@@ -1,5 +1,5 @@
 import { expect, test, vi } from "vitest";
-import { BvgLineShapeParser } from "$lib/server/journey-data/line-shapes/BvgLineShapeParser";
+import { BvgLineShapeParser } from "$lib/server/profiles/profile-implementations/bvg/BvgLineShapeParser";
 
 const lineShapeParser = new BvgLineShapeParser();
 
@@ -7,7 +7,7 @@ vi.mock("$app/server", async () => {
 	const fs = await import("fs");
 	return {
 		read: (): object => ({
-			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes.csv").toString(),
+			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes-de.csv").toString(),
 		}),
 	};
 });

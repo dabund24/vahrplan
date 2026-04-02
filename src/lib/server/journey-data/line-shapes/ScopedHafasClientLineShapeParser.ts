@@ -1,6 +1,6 @@
 import { type LineShape } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 import type { Line } from "hafas-client";
-import { ScopedLineShapeParser } from "$lib/server/journey-data/ScopedLineShapeParser";
+import { ScopedLineShapeParser } from "$lib/server/journey-data/line-shapes/ScopedLineShapeParser";
 
 type OverrideColorProducts = Record<
 	string,

@@ -12,7 +12,7 @@ Add the profile id of the new profile to the array in [/src/params/profileId.ts]
 
 ## Implement the Profile Class
 
-Implement [the abstract profile class](/src/lib/server/profiles/profile.ts) in [/src/params/profileId.ts](/src/lib/server/profiles/profile-implementations). You can use [the BVG profile](/src/lib/server/profiles/profile-implementations/bvgProfile.ts) as a guidance. Some further hints:
+Implement [the abstract profile class](/src/lib/server/profiles/profile.ts) in [/src/params/profileId.ts](/src/lib/server/profiles/profile-implementations). You can use [the BVG profile](/src/lib/server/profiles/profile-implementations/bvg/bvgProfile.ts) as a guidance. Some further hints:
 
 ### Products
 

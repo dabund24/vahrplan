@@ -36,9 +36,9 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 		}
 
 		const lineName = this.stringToNormalForm(line.name);
-		const lineNumber = lineName.replace(line.productName?.toLowerCase() ?? "", "");
+		const lineNumber = this.lineNumberFromLineNameAndProduct(line.name, line.productName ?? "");
 
-		const matchedRow = LineShapeParser.traewellingLineShapes.find((lineShapeEntry) => {
+		const matchedRow = LineShapeParser.traewellingLineShapesDe.find((lineShapeEntry) => {
 			const entryLineName = this.stringToNormalForm(lineShapeEntry.lineName);
 			const isLineNameMatch = entryLineName === lineName || entryLineName === lineNumber;
 			if (!isLineNameMatch) {

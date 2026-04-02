@@ -2,8 +2,8 @@ import { beforeAll, expect, test, vi } from "vitest";
 import { berlinToBerlinFernsehturmJourney } from "../fixtures/journeyRealtimeArrivingWalk";
 import { lindauInselToAugsburgJourney } from "../fixtures/journeyRealtimeStartingOnwardJourney";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
-import { DbnavLineShapeParser } from "$lib/server/journey-data/line-shapes/DbnavLineShapeParser";
-import { DbnavTicketUrlParser } from "$lib/server/journey-data/fptf-clients/DbnavTicketUrlParser";
+import { DbnavLineShapeParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavLineShapeParser";
+import { DbnavTicketUrlParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavTicketUrlParser";
 
 const berlinToBerlinFernsehturmExpected = {
 	refreshToken:
