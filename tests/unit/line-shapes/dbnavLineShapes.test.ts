@@ -288,7 +288,7 @@ test("line shapes ICE", () => {
 		lineName: "ICE 1502",
 		background: { type: "preset", value: "background" },
 		text: { type: "preset", value: "product" },
-		border: { type: "preset", value: "product" },
+		border: { type: "preset", value: "red" },
 		shape: "pill",
 	};
 	const actual = lineShapeParser.getLineShape(hafasLine);
