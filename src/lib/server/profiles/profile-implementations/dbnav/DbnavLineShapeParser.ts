@@ -5,34 +5,29 @@ import {
 import type { Line } from "hafas-client";
 
 export class DbnavLineShapeParser extends LineShapeParser<Line> {
-	public getWestbahnLineShape = (lineName: string): LineShape => ({
-		shape: "pill",
-		lineName,
-		text: { type: "fixed", value: "#fff" },
-		background: { type: "fixed", value: "#0085ca" },
-		border: { type: "fixed", value: "#c4d600" },
-	});
-
-	public getFlixtrainLineShape = (lineName: string): LineShape => ({
-		shape: "pill",
-		lineName,
-		text: { type: "fixed", value: "#000" },
-		background: { type: "fixed", value: "#97d700" },
-	});
-
 	public override getLineShape = (line?: Line): LineShape | undefined => {
 		if (line?.name === undefined) {
 			return undefined;
 		}
 
 		if (line.productName === "WB") {
-			return this.getWestbahnLineShape(line.name ?? "WB");
+			return this.getCustomLineShape(line.name ?? "WB", "westbahn");
 		}
 		if (line.productName === "FLX") {
-			return this.getFlixtrainLineShape(line.name ?? "FLX");
+			return this.getCustomLineShape(line.name ?? "FLX", "flix");
 		}
+		if (line.productName === "NJ") {
+			return this.getCustomLineShape(line.name ?? "NJ", "oebbNightjet");
+		}
+		if (line.productName === "EC" || line.productName === "EN") {
+			return this.getCustomLineShape(line.name ?? line.productName, "eurocity");
+		}
+		if (line.productName === "RJ" || line.productName === "RJX") {
+			return this.getCustomLineShape(line.name ?? line.productName, "oebbRailjet");
+		}
+
 		if (line.productName === "ICE" || line.productName === "IC") {
-			return this.getCustomLineShape(line.name ?? "", "dbIce");
+			return this.getCustomLineShape(line.name ?? "ICE", "dbIce");
 		}
 
 		if (line.product === "national" || line.product === "nationalExpress") {
