@@ -25,14 +25,18 @@ export class DbnavLineShapeParser extends LineShapeParser<Line> {
 			return undefined;
 		}
 
-		if (line.product === "national" || line.product === "nationalExpress") {
-			return this.getProductLineShape(line.name, { shape: "pill", type: "outlined" });
-		}
 		if (line.productName === "WB") {
 			return this.getWestbahnLineShape(line.name ?? "WB");
 		}
 		if (line.productName === "FLX") {
 			return this.getFlixtrainLineShape(line.name ?? "FLX");
+		}
+		if (line.productName === "ICE" || line.productName === "IC") {
+			return this.getCustomLineShape(line.name ?? "", "dbIce");
+		}
+
+		if (line.product === "national" || line.product === "nationalExpress") {
+			return this.getProductLineShape(line.name, { shape: "pill", type: "outlined" });
 		}
 
 		const lineName = this.stringToNormalForm(line.name);
