@@ -30,7 +30,7 @@
 		) {
 			return `var(--${lineColor.value}-color)`;
 		}
-		return `var(--accent-${lineColor.value})`;
+		return `var(--accent--${lineColor.value})`;
 	}
 </script>
 
