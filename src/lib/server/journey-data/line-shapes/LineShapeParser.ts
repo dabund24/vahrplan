@@ -154,6 +154,12 @@ export abstract class LineShapeParser<T> {
 			background: { type: "fixed", value: "#3333cc" },
 			text: { type: "fixed", value: "#fff" },
 		},
+		dbIce: {
+			shape: "pill",
+			border: { type: "preset", value: "red" },
+			background: { type: "preset", value: "background" },
+			text: { type: "preset", value: "product" },
+		},
 	} satisfies Record<string, Omit<LineShape, "lineName">>;
 
 	protected readonly stringToNormalForm = (str: string): string =>
