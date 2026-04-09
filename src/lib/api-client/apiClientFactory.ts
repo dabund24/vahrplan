@@ -13,6 +13,7 @@ import { GetProfileApiClient } from "../../routes/[lang=lang]/[profile=profileId
 import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
 import { GetProfilesApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profiles/getClient";
+import { GetTripApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/trip/[tripId]/getClient";
 
 /**
  * this contains all api paths without the preceding `/[lang]/[profile]/api/`
@@ -25,6 +26,7 @@ type ApiRouteShort =
 	| "journey"
 	| "journey/shorturl"
 	| "journey/shorturl/[shortJourneyId]"
+	| "trip/[tripId]"
 	| "location/[locationId]"
 	| "locations/[name]"
 	| "profile"
@@ -50,6 +52,7 @@ const clients = {
 		...clientEntries("diagram/shorturl/[shortDiagramId]", GetDiagramShortUrlApiClient),
 		...clientEntries("journey", GetJourneyApiClient),
 		...clientEntries("journey/shorturl/[shortJourneyId]", GetJourneyShortUrlApiClient),
+		...clientEntries("trip/[tripId]", GetTripApiClient),
 		...clientEntries("location/[locationId]", GetLocationApiClient),
 		...clientEntries("locations/[name]", GetLocationsApiClient),
 		...clientEntries("profile", GetProfileApiClient),

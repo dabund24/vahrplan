@@ -234,6 +234,10 @@ export type UnselectedBlock = {
 	type: "unselected";
 };
 
+export type Trip = {
+	leg: LegBlock;
+};
+
 export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk | PopupDataOnwardJourney;
 
 export type PopupDataWalk = {

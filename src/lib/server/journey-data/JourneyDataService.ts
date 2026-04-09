@@ -5,6 +5,7 @@ import type {
 	Product,
 	SubJourney,
 	TimeData,
+	Trip,
 } from "$lib/types";
 import { VahrplanError } from "$lib/VahrplanError";
 import {
@@ -63,6 +64,12 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 		token: string,
 		ctx: Pick<Ctx, "lang">,
 	) => Promise<VahrplanResult<SubJourney>>;
+
+	/**
+	 * get a trip from a tripId
+	 * @param tokens refresh tokens of the sub-journeys
+	 */
+	public abstract trip: (tripId: string, ctx: Pick<Ctx, "lang">) => Promise<VahrplanResult<Trip>>;
 
 	/**
 	 * suggest locations based on a string. Can be used for autocomplete inputs

@@ -493,6 +493,14 @@ export class FptfResponseParser<
 		): UnpackedVahrplanResult<Awaited<ReturnType<FptfDataService<ProductT>["refresh"]>>> =>
 			this.parseSubJourney(unparsedJourney.journey),
 
+		trip: (
+			unparsedTrip: Awaited<
+				ReturnType<NonNullable<FptfDataService<ProductT>["client"]["trip"]>>
+			>,
+		): UnpackedVahrplanResult<Awaited<ReturnType<FptfDataService<ProductT>["trip"]>>> => ({
+			leg: this.parseLegBlock(unparsedTrip.trip),
+		}),
+
 		locations: (
 			unparsedLocations: Awaited<
 				ReturnType<FptfDataService<ProductT>["client"]["locations"]>

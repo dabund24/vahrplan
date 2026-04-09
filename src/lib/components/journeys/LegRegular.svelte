@@ -9,6 +9,7 @@
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 	import IconExpand from "$lib/components/icons/IconExpand.svelte";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+	import TripLink from "$lib/components/journeys/TripLink.svelte";
 
 	type Props = {
 		block: LegBlock;
@@ -108,6 +109,7 @@
 						/>
 					</div>
 				</details>
+				<TripLink tripId={block.tripId} />
 				<JourneyInfo {block} />
 			{/if}
 		</div>
