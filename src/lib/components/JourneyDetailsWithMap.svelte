@@ -14,13 +14,20 @@
 	type Props = {
 		header: Snippet;
 		backButton: Snippet;
-		displayedFormData: DisplayedFormData | undefined;
+		displayedFormData?: DisplayedFormData | undefined;
 		displayedJourney: DisplayedJourney;
 		selectedData: SelectedData;
+		isCompact?: boolean;
 	};
 
-	const { header, backButton, displayedFormData, displayedJourney, selectedData }: Props =
-		$props();
+	const {
+		header,
+		backButton,
+		displayedFormData,
+		displayedJourney,
+		selectedData,
+		isCompact,
+	}: Props = $props();
 
 	let clientWidth: number = $state(0);
 </script>
@@ -35,7 +42,7 @@
 {/snippet}
 {#snippet journeyOverview()}
 	{@render header()}
-	<Journeys {displayedJourney} {selectedData} />
+	<Journeys {displayedJourney} {selectedData} {isCompact} />
 {/snippet}
 {#snippet map()}
 	{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
@@ -105,6 +112,7 @@
 			text-decoration: none;
 			height: 1rem;
 			align-items: center;
+			box-sizing: content-box;
 		}
 		.mini-tab-container {
 			margin-left: auto;

@@ -13,9 +13,10 @@
 	type Props = {
 		displayedJourney: DisplayedJourney;
 		selectedData: SelectedData;
+		isCompact?: boolean;
 	};
 
-	const { displayedJourney, selectedData }: Props = $props();
+	const { displayedJourney, selectedData, isCompact }: Props = $props();
 
 	let warningMessage = $derived.by(() => {
 		const statuses = displayedJourney.statuses;
@@ -44,7 +45,7 @@
 		<div in:scale animate:flip={{ duration: 400 }}>
 			{#each subJourney.value as block, i (i)}
 				{#if block.type === "leg"}
-					<LegRegular {block} />
+					<LegRegular {block} {isCompact} />
 				{:else if block.type === "walk" || block.type === "onward-journey" || block.type === "transfer" || block.type === "unselected"}
 					<Filler {block} />
 				{:else if block.type === "location" && !block.hidden}
