@@ -16,7 +16,7 @@
 	);
 </script>
 
-<a {href} class="flex-row hoverable hoverable--visible">Ganze Reise <IconRightArrow /></a>
+<a {href} data-sveltekit-preload-data="off" class="flex-row hoverable hoverable--visible">Ganze Reise <IconRightArrow /></a>
 
 <style>
 	a {
