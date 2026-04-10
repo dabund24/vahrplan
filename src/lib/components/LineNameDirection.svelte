@@ -47,8 +47,6 @@
 				style:background
 				style:color={foregroundColor}
 				style:border-color={borderColor}
-				style:background-size="calc(100% + 0.25rem) calc(100% + 0.25rem)"
-				style:background-position="-0.125rem -0.125rem"
 			>
 				{lineShape.lineName}
 			</span>
@@ -67,10 +65,12 @@
 		line-clamp: 2;
 	}
 	.shape {
-		padding: 0 0.5rem;
-		border-width: 0.125rem; /* 2px */
+		padding: 0 0.5em;
+		border-width: 0.125em; /* 2px */
 		border-style: solid;
-		line-height: calc(1lh + 0.25rem);
+		background-size: calc(100% + 0.25em) calc(100% + 0.25em);
+		background-position: -0.125em -0.125em;
+		line-height: calc(1lh + 0.25em);
 	}
 
 	.shape--pill,
