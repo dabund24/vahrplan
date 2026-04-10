@@ -107,7 +107,7 @@
 
 	.actions--mobile {
 		gap: var(--line-width);
-		> :global(:first-child) {
+		> :global(:first-child:where(a, button)) {
 			gap: 0.5rem;
 			text-decoration: none;
 			height: 1rem;
