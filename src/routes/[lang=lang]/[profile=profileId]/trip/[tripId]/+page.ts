@@ -4,11 +4,9 @@ import type { ServerRequestData } from "$lib/api-client/ApiClient";
 import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 import type { Trip } from "$lib/types";
 
-export const load: PageLoad = async ({ fetch, parent, url, params }) => {
+export const load: PageLoad = async ({ fetch, parent, url }) => {
 	const { lang, profileConfig } = await parent();
 	const tripApiClient = apiClient("GET", "trip/[tripId]");
-
-	console.log(params);
 
 	const { reqContent } = tripApiClient.parseNonApiUrl(url, { profileConfig });
 
@@ -17,8 +15,6 @@ export const load: PageLoad = async ({ fetch, parent, url, params }) => {
 		lang,
 		profileConfig,
 	};
-
-	console.log(reqContent);
 
 	const { content: trip } = (
 		await tripApiClient.request(reqContent, serverRequestData)
