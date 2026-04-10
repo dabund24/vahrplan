@@ -100,6 +100,7 @@
 						<IconExpand />
 					</summary>
 					<div>
+						<TripLink tripId={block.tripId} />
 						<Stopovers
 							stopovers={block.stopovers}
 							blockKey={block.blockKey}
@@ -109,7 +110,6 @@
 						/>
 					</div>
 				</details>
-				<TripLink tripId={block.tripId} />
 				<JourneyInfo {block} />
 			{/if}
 		</div>

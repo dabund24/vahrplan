@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import { page } from "$app/state";
+	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 
 	type Props = {
 		tripId: string;
@@ -15,4 +16,14 @@
 	);
 </script>
 
-<a {href} class="hoverable hoverable--visible">Ganze Reise</a>
+<a {href} class="flex-row hoverable hoverable--visible">Ganze Reise <IconRightArrow /></a>
+
+<style>
+	a {
+		margin: 0.5rem 0;
+		width: fit-content;
+		gap: 0.5rem;
+		text-decoration: none;
+		align-items: center;
+	}
+</style>
