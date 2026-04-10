@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount, type Snippet } from "svelte";
+	import { browser } from "$app/environment";
 
 	type Props = {
 		departureTime: number; // Unix timestamp of departure
@@ -24,7 +25,11 @@
 		indicatorContainer.style.animation = "";
 	});
 
-	onDestroy(() => document.removeEventListener("visibilitychange", synchronizeAnimation));
+	onDestroy(() => {
+		if (browser) {
+			document.removeEventListener("visibilitychange", synchronizeAnimation);
+		}
+	});
 
 	/**
 	 * synchronizes the progress animation
