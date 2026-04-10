@@ -10,10 +10,10 @@
 		departureTime: number;
 		arrivalTime: number;
 		product: Product;
-		blockKey: string;
+		legIconAnchorPrefix: string;
 	};
 
-	let { stopovers, departureTime, arrivalTime, blockKey, product }: Props = $props();
+	let { stopovers, departureTime, arrivalTime, legIconAnchorPrefix, product }: Props = $props();
 
 	function getStopoverTime(stopover: TransitData, transitType: TransitType): number {
 		const backupTime = (stopover.time.arrival ?? stopover.time.departure)?.time;
@@ -29,9 +29,9 @@
 )}
 	<div
 		class="train-progress-container"
-		style:top="anchor(--leg--{blockKey}{departureTime}-icon--{i1} center)"
-		style:left="anchor(--leg--{blockKey}{departureTime}-icon--{i1} left)"
-		style:bottom="anchor(--leg--{blockKey}{departureTime}-icon--{i2} center)"
+		style:top="anchor({legIconAnchorPrefix}{i1} center)"
+		style:left="anchor({legIconAnchorPrefix}{i1} left)"
+		style:bottom="anchor({legIconAnchorPrefix}{i2} center)"
 	>
 		<div>
 			<TrainProgressIndicator
@@ -61,7 +61,7 @@
 			<div class="time">
 				<Time time={stopover.time} hasVariableWidth={false} />
 			</div>
-			<div style="anchor-name:--leg--{blockKey}{departureTime}-icon--{i + 1}">
+			<div style="anchor-name:{legIconAnchorPrefix}{i + 1}">
 				<IconStationLocation
 					iconType={stopover.location.type}
 					color="product"
