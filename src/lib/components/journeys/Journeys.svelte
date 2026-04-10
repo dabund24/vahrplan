@@ -7,11 +7,15 @@
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { dateDifference } from "$lib/util";
 	import Warning from "$lib/components/Warning.svelte";
-	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
-	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import { type DisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { type SelectedData } from "$lib/state/selectedData.svelte";
 
-	const displayedJourney = $derived(getDisplayedJourney());
-	const selectedData = $derived(getSelectedData());
+	type Props = {
+		displayedJourney: DisplayedJourney;
+		selectedData: SelectedData;
+	};
+
+	const { displayedJourney, selectedData }: Props = $props();
 
 	let warningMessage = $derived.by(() => {
 		const statuses = displayedJourney.statuses;

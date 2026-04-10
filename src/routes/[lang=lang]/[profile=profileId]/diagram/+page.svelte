@@ -29,12 +29,15 @@
 	import IconHome from "$lib/components/icons/IconHome.svelte";
 	import SvgDiagramSkeleton from "./SvgDiagramSkeleton.svelte";
 	import ProfileChips from "$lib/components/profiles/ProfileChips.svelte";
+	import { getSelectedData } from "$lib/state/selectedData.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
+	const displayedJourney = $derived(getDisplayedJourney());
+	const selectedData = $derived(getSelectedData());
 	const diagramData = $derived(getDiagramData());
 
 	let { pageTitle, pageDescription } = $derived.by(() => {
-		const { departure, locations } = getDisplayedJourney();
+		const { departure, locations } = displayedJourney;
 		if (locations.length === 0) {
 			return {
 				pageTitle: "Reiseauswahl",
@@ -179,14 +182,14 @@
 						<IconJourneyInfo />
 					{/snippet}
 					{#snippet journeyOverview()}
-						<Journeys />
+						<Journeys {displayedJourney} {selectedData} />
 					{/snippet}
 					{#snippet mapIcon()}
 						<IconMap />
 					{/snippet}
 					{#snippet map()}
 						{#await import("$lib/components/leaflet/Leaflet.svelte") then { default: Leaflet }}
-							<Leaflet />
+							<Leaflet {displayedFormData} {displayedJourney} {selectedData} />
 						{/await}
 					{/snippet}
 					<MiniTabs
