@@ -103,7 +103,7 @@
 						<IconExpand />
 					</summary>
 					<div>
-						<TripLink tripId={block.tripId} />
+						<TripLink leg={block} />
 						<Stopovers
 							stopovers={block.stopovers}
 							{legIconAnchorPrefix}

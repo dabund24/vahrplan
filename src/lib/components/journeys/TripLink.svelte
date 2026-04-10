@@ -2,17 +2,29 @@
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import { page } from "$app/state";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
+	import type { LegBlock } from "$lib/types";
 
 	type Props = {
-		tripId: string;
+		leg: LegBlock;
 	};
 
-	const { tripId }: Props = $props();
+	const { leg }: Props = $props();
+
+	const { tripId, departureData, arrivalData } = $derived(leg);
 
 	const tripApiClient = apiClient("GET", "trip/[tripId]");
 
 	const { href } = $derived(
-		tripApiClient.formatNonApiUrl({ tripId }, { profileConfig: page.data.profileConfig }),
+		tripApiClient.formatNonApiUrl(
+			{
+				tripId,
+				highlightData: {
+					fromStop: departureData.location.id,
+					toStop: arrivalData.location.id,
+				},
+			},
+			{ profileConfig: page.data.profileConfig },
+		),
 	);
 </script>
 

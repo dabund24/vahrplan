@@ -8,6 +8,10 @@ import { PathParamSettable } from "$lib/api-client/PathParamSettableApiClient";
 
 type ReqType = {
 	tripId: string;
+	highlightData?: {
+		fromStop: string;
+		toStop: string;
+	};
 };
 
 export class GetTripApiClient extends NonApiUsable<ReqType, Trip, RequestEvent>()(
@@ -21,15 +25,37 @@ export class GetTripApiClient extends NonApiUsable<ReqType, Trip, RequestEvent>(
 	protected override readonly route = "trip/[tripId]";
 	protected override readonly isLoadingAnimated = true;
 	protected override readonly cacheMaxAge = 30;
-	protected override readonly queryParamNames = {} as const;
+	protected override readonly queryParamNames = {
+		fromStop: "from-stop",
+		toStop: "to-stop",
+	} as const;
 
-	protected override formatQueryParams = (_content: ReqType): URLSearchParams => {
-		return new URLSearchParams();
+	protected override formatQueryParams = (content: ReqType): URLSearchParams => {
+		const params = new URLSearchParams();
+		if (content.highlightData !== undefined) {
+			let paramName: keyof typeof this.queryParamNames;
+			for (paramName in this.queryParamNames) {
+				params.set(this.queryParamNames[paramName], content.highlightData[paramName]);
+			}
+		}
+		return params;
 	};
 
 	protected override parseRequestContent = (
 		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
-	): ReqType => ({ tripId: decodeURIComponent(reqEvent.params.tripId) });
+	): ReqType => {
+		const content: ReqType = {
+			tripId: decodeURIComponent(reqEvent.params.tripId),
+			highlightData: undefined,
+		};
+		const queryParams = reqEvent.url.searchParams;
+		const fromStop = queryParams.get(this.queryParamNames.fromStop);
+		const toStop = queryParams.get(this.queryParamNames.toStop);
+		if (fromStop !== null && toStop !== null) {
+			content.highlightData = { fromStop, toStop };
+		}
+		return content;
+	};
 
 	protected override formatUrlPath = (
 		{ tripId }: ReqType,
@@ -37,12 +63,16 @@ export class GetTripApiClient extends NonApiUsable<ReqType, Trip, RequestEvent>(
 	): `${Ctx["apiPathBase"]}${string}` => `${apiPathBase}trip/${encodeURIComponent(tripId)}`;
 
 	public override formatNonApiUrlSuffix = (
-		{ tripId }: ReqType,
+		content: ReqType,
 		ctx: Pick<Ctx, "profileConfig" | "pathBase">,
 	): URL => {
-		const { pathBase } = ctx;
-		const path = `${pathBase}trip/${encodeURIComponent(tripId)}`;
-		return new URL(path, browser ? location.origin : "http://localhost");
+		const queryParams = this.formatQueryParams(content);
+		const path = `${ctx.pathBase}trip/${encodeURIComponent(content.tripId)}`;
+		const url = new URL(path, browser ? location.origin : "http://localhost");
+		for (const [queryParamKey, queryParamValue] of queryParams) {
+			url.searchParams.append(queryParamKey, queryParamValue);
+		}
+		return url;
 	};
 
 	protected override requestEventFromUrl = (
