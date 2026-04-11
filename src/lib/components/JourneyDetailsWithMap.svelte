@@ -60,9 +60,9 @@
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	>
 		{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
-			<div class="actions--mobile flex-row">
+			<div class="actions flex-row">
 				{@render backButton()}
-				<div class="mini-tab-container">
+				<div class="actions__right-element">
 					{@render miniTabSelector()}
 				</div>
 				<JourneyOptions />
@@ -75,8 +75,11 @@
 {:else}
 	<div class="columns">
 		<section class="journeys content-wrapper">
-			<div class="actions--desktop">
-				<JourneyOptions />
+			<div class="actions actions--desktop flex-row">
+				{@render backButton()}
+				<div class="actions__right-element">
+					<JourneyOptions />
+				</div>
 			</div>
 			{@render journeyOverview()}
 		</section>
@@ -106,7 +109,7 @@
         position: relative;
 	}
 
-	.actions--mobile {
+	.actions {
 		gap: var(--line-width);
 		> :global(:first-child:where(a, button)) {
 			gap: 0.5rem;
@@ -115,7 +118,7 @@
 			align-items: center;
 			box-sizing: content-box;
 		}
-		.mini-tab-container {
+		.actions__right-element {
 			margin-left: auto;
 		}
 	}
