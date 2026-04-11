@@ -13,6 +13,7 @@
 	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
 	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
 	import IconTrip from "$lib/components/icons/IconTrip.svelte";
+	import { browser } from "$app/environment";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -63,7 +64,7 @@
 	{#if currentRoute === "/[lang=lang]/[profile=profileId]/trip/[tripId]"}
 		<MobileNavbarItem
 			{currentRoute}
-			link={location.href}
+			link={browser ? location.href : "/"}
 			route="/[lang=lang]/[profile=profileId]/trip/[tripId]"
 			pageName="Fahrtdetails"
 		>
