@@ -12,6 +12,7 @@
 	import { page } from "$app/state";
 	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
 	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
+	import IconTrip from "$lib/components/icons/IconTrip.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -57,6 +58,16 @@
 			pageName="Reisedetails"
 		>
 			{#snippet icon()}<IconDetails />{/snippet}
+		</MobileNavbarItem>
+	{/if}
+	{#if currentRoute === "/[lang=lang]/[profile=profileId]/trip/[tripId]"}
+		<MobileNavbarItem
+			{currentRoute}
+			link={location.href}
+			route="/[lang=lang]/[profile=profileId]/trip/[tripId]"
+			pageName="Fahrtdetails"
+		>
+			{#snippet icon()}<IconTrip />{/snippet}
 		</MobileNavbarItem>
 	{/if}
 	<hr />
