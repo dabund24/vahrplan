@@ -20,6 +20,19 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Vahrplan - {trip.leg.name}</title>
+	<meta
+		name="title"
+		content="Vahrplan - {trip.leg.name}"
+	/>
+	<meta
+		name="description"
+		content="Fahrtdetails zu {trip.leg.name}"
+	/>
+</svelte:head>
+
+
 <JourneyDetailsWithMap {displayedJourney} {selectedData} isCompact={true}>
 	{#snippet header()}
 		<div class="flex-row">
