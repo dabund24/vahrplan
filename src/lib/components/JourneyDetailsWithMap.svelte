@@ -103,6 +103,7 @@
 	section {
 		max-height: 100%;
 		overflow: auto;
+        position: relative;
 	}
 
 	.actions--mobile {
