@@ -4,10 +4,12 @@
 	import JourneyDetailsWithMap from "$lib/components/JourneyDetailsWithMap.svelte";
 	import type { SelectedData } from "$lib/state/selectedData.svelte";
 	import TripInfo from "$lib/components/journeys/TripInfo.svelte";
-	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte";
 	import IconLeftArrow from "$lib/components/icons/IconLeftArrow.svelte";
 	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
 	import { refreshTrip } from "./tripUtils";
+	import IconHome from "$lib/components/icons/IconHome.svelte";
+	import { browser } from "$app/environment";
+	import { page } from "$app/state";
 
 	const { data }: PageProps = $props();
 
@@ -18,6 +20,11 @@
 		isFullJourneySelected: true,
 		isNoneSelected: false,
 	};
+
+	const isShowBackButton = $derived(
+		// @ts-expect-error new navigation api
+		!browser || !("navigation" in window) || navigation.canGoBack,
+	);
 </script>
 
 <svelte:head>
@@ -41,11 +48,19 @@
 		</div>
 	{/snippet}
 	{#snippet backButton()}
-		{#if getDisplayedFormData() !== undefined}
+		{#if isShowBackButton}
 			<button class="hoverable hoverable--visible" onclick={() => void history.back()}>
 				<IconLeftArrow />
 				Zurück
 			</button>
+		{:else}
+			<a
+				class="hoverable hoverable--visible"
+				href="/{page.data.lang}/{page.data.profileConfig.id}"
+			>
+				<IconHome />
+				Startseite
+			</a>
 		{/if}
 	{/snippet}
 	{#snippet options()}
