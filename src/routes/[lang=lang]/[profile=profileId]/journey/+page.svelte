@@ -14,6 +14,7 @@
 	import { apiClient } from "$lib/api-client/apiClientFactory";
 	import JourneyDetailsWithMap from "$lib/components/JourneyDetailsWithMap.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import JourneyOptions from "./JourneyOptions.svelte";
 
 	const diagramApiClient = apiClient("GET", "diagram");
 
@@ -82,11 +83,13 @@
 			</Warning>
 		{/if}
 	{/snippet}
-
 	{#snippet backButton()}
 		<a href={diagramUrl} class="hoverable hoverable--visible">
 			<IconLeftArrow />
 			Reiseauswahl
 		</a>
+	{/snippet}
+	{#snippet options()}
+		<JourneyOptions />
 	{/snippet}
 </JourneyDetailsWithMap>

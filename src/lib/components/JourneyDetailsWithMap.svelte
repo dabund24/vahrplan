@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import IconJourneyInfo from "$lib/components/icons/IconJourneyInfo.svelte";
-	import JourneyOptions from "../../routes/[lang=lang]/[profile=profileId]/journey/JourneyOptions.svelte";
 	import Journeys from "$lib/components/journeys/Journeys.svelte";
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import TicketModal from "$lib/components/TicketModal.svelte";
@@ -14,6 +13,7 @@
 	type Props = {
 		header: Snippet;
 		backButton: Snippet;
+		options: Snippet;
 		displayedFormData?: DisplayedFormData | undefined;
 		displayedJourney: DisplayedJourney;
 		selectedData: SelectedData;
@@ -23,6 +23,7 @@
 	const {
 		header,
 		backButton,
+		options,
 		displayedFormData,
 		displayedJourney,
 		selectedData,
@@ -60,12 +61,12 @@
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	>
 		{#snippet tabEnvironment(miniTabSelector: Snippet, tabContent: Snippet)}
-			<div class="actions flex-row">
+			<div class="actions actions--mobile flex-row">
 				{@render backButton()}
 				<div class="actions__right-element">
 					{@render miniTabSelector()}
 				</div>
-				<JourneyOptions />
+				{@render options()}
 			</div>
 			<div class="content-wrapper">
 				{@render tabContent()}
@@ -78,7 +79,7 @@
 			<div class="actions actions--desktop flex-row">
 				{@render backButton()}
 				<div class="actions__right-element">
-					<JourneyOptions />
+					{@render options()}
 				</div>
 			</div>
 			{@render journeyOverview()}
@@ -106,7 +107,7 @@
 	section {
 		max-height: 100%;
 		overflow: auto;
-        position: relative;
+		position: relative;
 	}
 
 	.actions {

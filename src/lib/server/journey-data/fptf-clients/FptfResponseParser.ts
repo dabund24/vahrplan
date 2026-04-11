@@ -498,7 +498,7 @@ export class FptfResponseParser<
 				ReturnType<NonNullable<FptfDataService<ProductT>["client"]["trip"]>>
 			>,
 		): UnpackedVahrplanResult<Awaited<ReturnType<FptfDataService<ProductT>["trip"]>>> => ({
-			leg: this.parseLegBlock(unparsedTrip.trip),
+			leg: { ...this.parseLegBlock(unparsedTrip.trip), tripId: unparsedTrip.trip.id },
 		}),
 
 		locations: (

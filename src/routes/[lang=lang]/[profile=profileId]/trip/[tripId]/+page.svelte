@@ -6,13 +6,12 @@
 	import TripInfo from "$lib/components/journeys/TripInfo.svelte";
 	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte";
 	import IconLeftArrow from "$lib/components/icons/IconLeftArrow.svelte";
+	import IconRefresh from "$lib/components/icons/IconRefresh.svelte";
+	import { refreshTrip } from "./tripUtils";
 
 	const { data }: PageProps = $props();
 
-	const {
-		displayedJourney,
-		trip: { leg },
-	} = $derived(data);
+	let { displayedJourney, trip, highlightData } = $derived(data);
 
 	const selectedData: SelectedData = {
 		selectedJourneys: [0],
@@ -26,13 +25,13 @@
 		<div class="flex-row">
 			<h1>
 				<LineNameDirection
-					lineName={leg.name}
-					lineShape={leg.lineShape}
-					product={leg.product}
-					productName={leg.productName}
+					lineName={trip.leg.name}
+					lineShape={trip.leg.lineShape}
+					product={trip.leg.product}
+					productName={trip.leg.productName}
 				/>
 			</h1>
-			<TripInfo block={leg} />
+			<TripInfo block={trip.leg} />
 		</div>
 	{/snippet}
 	{#snippet backButton()}
@@ -42,6 +41,18 @@
 				Zurück
 			</button>
 		{/if}
+	{/snippet}
+	{#snippet options()}
+		<button
+			class="hoverable hoverable--visible"
+			onclick={async () =>
+				void ({ displayedJourney, trip } = (await refreshTrip(
+					trip.leg.tripId,
+					highlightData,
+				)) ?? { displayedJourney, trip })}
+		>
+			<IconRefresh />
+		</button>
 	{/snippet}
 </JourneyDetailsWithMap>
 
