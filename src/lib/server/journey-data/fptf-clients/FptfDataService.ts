@@ -4,7 +4,7 @@ import {
 	type JourneyNodesWithRefs,
 } from "$lib/server/journey-data/JourneyDataService";
 import type { HafasClient, Line, Location, Station, Stop } from "hafas-client";
-import type { ParsedLocation, Product, SubJourney } from "$lib/types";
+import type { ParsedLocation, Product, SubJourney, Trip } from "$lib/types";
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 import type { OptionId } from "../../profiles/profile";
@@ -99,6 +99,19 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				formatReqParams: this.requestFormatter.formatRequest.refresh,
 				request: this.client.refreshJourney!,
 				parseRes: this.responseParser.parseResponse.refresh,
+			},
+			...params,
+		);
+
+	public override trip = (
+		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["trip"]>
+	): Promise<VahrplanResult<Trip>> =>
+		this.performRequest(
+			"trip",
+			{
+				formatReqParams: this.requestFormatter.formatRequest.trip,
+				request: this.client.trip!,
+				parseRes: this.responseParser.parseResponse.trip,
 			},
 			...params,
 		);

@@ -14,13 +14,17 @@
 		setupCurrentPositionData,
 	} from "$lib/geolocation.svelte.js";
 	import IconTrainLocation from "$lib/components/IconTrainLocation.svelte";
-	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
-	import { type DisplayedJourney, getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
-	import { getSelectedData, type SelectedData } from "$lib/state/selectedData.svelte";
+	import { type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { type DisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { type SelectedData } from "$lib/state/selectedData.svelte";
 
-	const displayedFormData = $derived(getDisplayedFormData());
-	const displayedJourney = $derived(getDisplayedJourney());
-	const selectedData = $derived(getSelectedData());
+	type Props = {
+		displayedFormData: DisplayedFormData | undefined;
+		displayedJourney: DisplayedJourney;
+		selectedData: SelectedData;
+	};
+
+	const { displayedFormData, displayedJourney, selectedData }: Props = $props();
 
 	let map: L.Map | undefined = $state();
 	let mapElement: HTMLElement;

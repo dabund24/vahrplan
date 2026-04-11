@@ -13,6 +13,7 @@ import type {
 	Station,
 	Stop,
 	StopOptions,
+	TripOptions,
 } from "hafas-client";
 import type { PossibleOptionValues } from "../../profiles/profile";
 import type { Language } from "../../../../params/lang";
@@ -100,6 +101,18 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 				polylines: true,
 			};
 			return [token, fptfOptions];
+		},
+
+		trip: (
+			...[tripId, { lang }]: Parameters<JourneyDataService<ProductT, FptfOptionId>["trip"]>
+		): Parameters<NonNullable<FptfDataService<ProductT>["client"]["trip"]>> => {
+			const fptfOptions: TripOptions = {
+				language: lang,
+				polyline: true,
+				entrances: false,
+				subStops: false,
+			};
+			return [tripId, fptfOptions];
 		},
 
 		locations: (

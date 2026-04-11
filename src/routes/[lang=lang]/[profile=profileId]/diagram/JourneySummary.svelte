@@ -111,7 +111,7 @@
 				<IconRightArrow />
 			</a>
 		{/if}
-		<div class="mini-tab-container">
+		<div class="actions__right-element">
 			{@render miniTabsSnippet()}
 		</div>
 		<DiagramOptions />
@@ -260,7 +260,7 @@
 			left: 0;
 			padding: 4px 0 0.5rem;
 			width: min(100%, 100cqw - 1rem); /* scrollbar is not part of container :/ */
-			.mini-tab-container {
+			.actions__right-element {
 				margin-right: auto;
 			}
 			a {
@@ -270,7 +270,7 @@
 	}
 
 	@media screen and (max-width: 999px) {
-		.mini-tab-container {
+		.actions__right-element {
 			margin-left: auto;
 		}
 	}

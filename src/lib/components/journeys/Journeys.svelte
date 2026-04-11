@@ -7,11 +7,16 @@
 	import DateDuration from "$lib/components/DateDuration.svelte";
 	import { dateDifference } from "$lib/util";
 	import Warning from "$lib/components/Warning.svelte";
-	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
-	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import { type DisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { type SelectedData } from "$lib/state/selectedData.svelte";
 
-	const displayedJourney = $derived(getDisplayedJourney());
-	const selectedData = $derived(getSelectedData());
+	type Props = {
+		displayedJourney: DisplayedJourney;
+		selectedData: SelectedData;
+		isCompact?: boolean;
+	};
+
+	const { displayedJourney, selectedData, isCompact }: Props = $props();
 
 	let warningMessage = $derived.by(() => {
 		const statuses = displayedJourney.statuses;
@@ -40,7 +45,7 @@
 		<div in:scale animate:flip={{ duration: 400 }}>
 			{#each subJourney.value as block, i (i)}
 				{#if block.type === "leg"}
-					<LegRegular {block} />
+					<LegRegular {block} {isCompact} />
 				{:else if block.type === "walk" || block.type === "onward-journey" || block.type === "transfer" || block.type === "unselected"}
 					<Filler {block} />
 				{:else if block.type === "location" && !block.hidden}

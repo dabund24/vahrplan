@@ -613,7 +613,7 @@ h2 {
 		top: 0;
 		position: sticky;
 		z-index: 420;
-		margin: 0 -0.5rem 0.5rem;
+		margin: 0 -0.5rem 0;
 		box-shadow: var(--background-color--transparent) 0 -1rem 0.5rem 1.5rem;
 	}
 }

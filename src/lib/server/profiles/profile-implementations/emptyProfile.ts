@@ -33,6 +33,7 @@ export class EmptyProfile extends Profile<"empty"> {
 			public override formatRequest = {
 				journeys: () => void {},
 				refresh: () => void {},
+				trip: () => void {},
 				location: () => void {},
 				locations: () => void {},
 			};
@@ -45,6 +46,7 @@ export class EmptyProfile extends Profile<"empty"> {
 			Promise.resolve(new VahrplanError("NOT_FOUND"));
 		public refresh = (): Promise<VahrplanError> =>
 			Promise.resolve(new VahrplanError("NOT_FOUND"));
+		public trip = (): Promise<VahrplanError> => Promise.resolve(new VahrplanError("NOT_FOUND"));
 		public locations = (): Promise<VahrplanError> =>
 			Promise.resolve(new VahrplanError("NOT_FOUND"));
 		public location = (): Promise<VahrplanError> =>

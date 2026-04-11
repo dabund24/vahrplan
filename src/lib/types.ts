@@ -185,6 +185,7 @@ export type LegBlock = {
 	currentLocation?: ParsedGeolocation;
 	stopovers: TransitData[];
 	polyline: [number, number][];
+	highlightData?: { beginIndex: number; endIndex: number };
 	precededBy?: "transfer" | "stopover";
 	succeededBy?: "transfer" | "stopover";
 } & { [K in TransitType as `${K}Data`]: TransitData };
@@ -232,6 +233,10 @@ export type ErrorBlock = {
 
 export type UnselectedBlock = {
 	type: "unselected";
+};
+
+export type Trip = {
+	leg: LegBlock;
 };
 
 export type PopupData = PopupDataStation | PopupDataLine | PopupDataWalk | PopupDataOnwardJourney;

@@ -9,6 +9,8 @@
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
 	import IconExpand from "$lib/components/icons/IconExpand.svelte";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+	import TripLink from "$lib/components/journeys/TripLink.svelte";
+	import LegHighlighter from "$lib/components/journeys/LegHighlighter.svelte";
 
 	type Props = {
 		block: LegBlock;
@@ -21,14 +23,20 @@
 		new Date(block.departureData.time.departure?.time ?? 0).getTime(),
 	);
 	const arrivalTime = $derived(new Date(block.arrivalData.time.arrival?.time ?? 0).getTime());
+
+	const legAnchorName = $derived(`--leg--${block.blockKey}`);
+	const legIconAnchorPrefix = $derived(`${legAnchorName}${departureTime}-icon--`);
 </script>
 
 <div
 	class="flex-row leg product--{block.product}"
 	class:hide-top={block.precededBy === "stopover" && !isCompact}
 	class:hide-bottom={block.succeededBy === "stopover" && !isCompact}
-	style:anchor-name="--leg--{block.blockKey}"
+	style:anchor-name={legAnchorName}
 >
+	{#if block.highlightData !== undefined}
+		<LegHighlighter {legIconAnchorPrefix} highlightData={block.highlightData} />
+	{/if}
 	<div class="flex-column">
 		<div class="top-or-bottom time flex-column">
 			<Time time={block.departureData.time} />
@@ -47,10 +55,7 @@
 			product={block.product}
 			orientation="vertical"
 		/>
-		<div
-			class="line__station-icon"
-			style="anchor-name: --leg--{block.blockKey}{departureTime}-icon--0;"
-		>
+		<div class="line__station-icon" style="anchor-name: {legIconAnchorPrefix}0;">
 			<IconStationLocation
 				color="product"
 				iconType="station"
@@ -60,8 +65,7 @@
 		<div class="line--product line--vertical"></div>
 		<div
 			class="line__station-icon"
-			style:anchor-name="--leg--{block.blockKey}{departureTime}-icon--{block.stopovers
-				.length + 1}"
+			style:anchor-name="{legIconAnchorPrefix}{block.stopovers.length + 1}"
 		>
 			<IconStationLocation
 				color="product"
@@ -78,7 +82,7 @@
 			{#if isCompact}
 				<Stopovers
 					stopovers={block.stopovers}
-					blockKey={block.blockKey}
+					{legIconAnchorPrefix}
 					{departureTime}
 					{arrivalTime}
 					product={block.product}
@@ -87,7 +91,7 @@
 				<details>
 					<summary
 						class="hoverable flex-row"
-						style="anchor-name: --leg--{block.blockKey}{departureTime}__stopovers-summary"
+						style="anchor-name: {legAnchorName}{departureTime}__stopovers-summary"
 					>
 						<LineNameDirection
 							lineName={block.name}
@@ -99,9 +103,10 @@
 						<IconExpand />
 					</summary>
 					<div>
+						<TripLink leg={block} />
 						<Stopovers
 							stopovers={block.stopovers}
-							blockKey={block.blockKey}
+							{legIconAnchorPrefix}
 							{departureTime}
 							{arrivalTime}
 							product={block.product}
