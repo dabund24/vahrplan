@@ -19,7 +19,7 @@
 <style>
 	div {
 		position: absolute;
-        width: var(--height--icon--small);
+		width: var(--height--icon--small);
 		background-color: var(--product-color);
 		border-radius: 50vh;
 	}
