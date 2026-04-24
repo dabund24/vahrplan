@@ -71,7 +71,7 @@ export class DbnavProfile extends Profile<
 		lineShapeParser: new DbnavLineShapeParser(),
 		ticketUrlParser: new DbnavTicketUrlParser(),
 		quota: {
-			threshold: 60,
+			threshold: 40,
 			interval: 60,
 		},
 	});
