@@ -6,7 +6,7 @@ import {
 // @ts-expect-error no types for db-vendo-client yet
 import { createClient } from "db-vendo-client";
 // @ts-expect-error no types for db-vendo-client yet
-import { profile } from "db-vendo-client/p/dbnav";
+import { profile } from "db-vendo-client/p/db";
 import type { HafasClient } from "hafas-client";
 import { DbnavLineShapeParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavLineShapeParser";
 import { DbnavTicketUrlParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavTicketUrlParser";
