@@ -40,7 +40,7 @@
 {#if page.data.profileConfig.disabledNotice !== undefined}
 	<div class="content-wrapper">
 		<Warning color="red">
-			{page.data.profileConfig.disabledNotice.name} Wähle eine andere Datenquelle aus.
+			{page.data.profileConfig.disabledNotice.name} Wähle oben eine andere Datenquelle aus.
 		</Warning>
 	</div>
 {/if}
