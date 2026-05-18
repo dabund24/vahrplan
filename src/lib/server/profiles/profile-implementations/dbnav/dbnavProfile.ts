@@ -31,7 +31,11 @@ export class DbnavProfile extends Profile<
 > {
 	protected override readonly id = "dbnav";
 	protected override readonly name = { de: "Deutschland" };
-	protected override readonly disabledNotice = undefined;
+	protected override readonly disabledNotice = {
+		name: {
+			de: "Leider ist die Datenschnittstelle der DB aktuell nicht verwendbar. Ich weiß noch nicht, ob dies in naher Zukunft behebbar sein wird. Sorry für die Umstände.",
+		},
+	};
 	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {
