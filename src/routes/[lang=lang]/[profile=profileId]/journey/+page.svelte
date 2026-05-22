@@ -50,7 +50,7 @@
 
 	const diagramUrl = $derived.by(() => {
 		if (displayedFormData === undefined) {
-			return "/de/dbnav";
+			return "/de/profiles";
 		}
 
 		return diagramApiClient.formatNonApiUrl(
