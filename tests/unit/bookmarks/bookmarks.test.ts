@@ -12,7 +12,7 @@ import {
 	initBookmarks,
 	removeBookmark,
 } from "$lib/bookmarks.svelte";
-import { exampleProfileConfig } from "../../testUtils";
+import { exampleProfileConfig, exampleProfileConfig2 } from "../../testUtils";
 
 const sunBookmarkData: BookmarkData<"location"> = {
 	id: "sun",
@@ -72,6 +72,9 @@ describe.sequential("add and remove bookmarks", () => {
 			expect(
 				getIsBookmarked("location", sunBookmark, { profileConfig: exampleProfileConfig }),
 			).toBe(true);
+			expect(
+				getIsBookmarked("location", sunBookmark, { profileConfig: exampleProfileConfig2 }),
+			).toBe(false);
 			expect(
 				getIsBookmarked("location", moonBookmark, { profileConfig: exampleProfileConfig }),
 			).toBe(false);

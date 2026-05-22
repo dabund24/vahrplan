@@ -211,7 +211,11 @@ export function getIsBookmarked<T extends BookmarkType>(
 	ctx: Pick<Ctx, "profileConfig">,
 ): boolean {
 	const bookmarkId = formatBookmarkId[type](bookmarkData, ctx);
-	return bookmarks[type].some(({ id }) => id === bookmarkId);
+	return bookmarks[type].some(
+		(bookmark) =>
+			(!("profile" in bookmark) || bookmark.profile == ctx.profileConfig.id) &&
+			bookmark.id === bookmarkId,
+	);
 }
 
 export const bookmarkToString: { [T in BookmarkType]: (bookmarkData: BookmarkData<T>) => string } =
