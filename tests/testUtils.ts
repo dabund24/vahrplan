@@ -57,3 +57,52 @@ export const exampleProfileConfig: ProfileConfig = {
 		},
 	},
 };
+
+export const exampleProfileConfig2: ProfileConfig = {
+	name: "Beispiel2",
+	id: "oebb",
+	lang: "de",
+	supportedLanguages: ["de"],
+	products: {
+		tram: {
+			name: "Straßenbahn",
+		},
+		suburban: {
+			name: "S-Bahn",
+		},
+	},
+	options: {
+		maxTransfers: {
+			name: "Mindest-Umsteigezeit",
+			possibleValues: [0, 1, 2, 3, 4, 5, -1],
+			defaultValue: -1,
+			optionNames: {
+				"0": {
+					name: "nur Direkt-Verbindungen"
+				},
+				"1": {
+					name: "1"
+				},
+				"2": {
+					name: "2"
+				},
+				"3": {
+					name: "3"
+				},
+				"4": {
+					name: "4"
+				},
+				"5": {
+					name: "5"
+				},
+				"-1": {
+					name: "beliebig"
+				}
+			},
+		},
+		accessible: {
+			name: "Barrierefreiheit",
+			defaultValue: false,
+		},
+	},
+};
