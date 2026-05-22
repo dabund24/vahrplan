@@ -5,12 +5,14 @@ import type { Language } from "../../../params/lang";
 import { EmptyProfile } from "./profile-implementations/emptyProfile";
 import { BvgProfile } from "$lib/server/profiles/profile-implementations/bvg/bvgProfile";
 import { OebbProfile } from "$lib/server/profiles/profile-implementations/oebb/oebbProfile";
+import { SbahnmuenchenProfile } from "$lib/server/profiles/profile-implementations/sbahnmuenchen/sbahnmuenchenProfile";
 
 const profiles = {
 	empty: new EmptyProfile(),
 	dbnav: new DbnavProfile(),
 	oebb: new OebbProfile(),
 	bvg: new BvgProfile(),
+	sbahnmuenchen: new SbahnmuenchenProfile(),
 } as const satisfies {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[K in ProfileId]: Profile<K, any, any>;
