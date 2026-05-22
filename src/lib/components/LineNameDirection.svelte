@@ -68,8 +68,8 @@
 		padding: 0 0.5em;
 		border-width: 0.125em; /* 2px */
 		border-style: solid;
-		background-size: calc(100% + 0.25em) calc(100% + 0.25em);
-		background-position: -0.125em -0.125em;
+		background-size: calc(100% + 0.25em) calc(100% + 0.25em) !important;
+		background-position: -0.125em -0.125em !important;
 		line-height: calc(1lh + 0.25em);
 	}
 
