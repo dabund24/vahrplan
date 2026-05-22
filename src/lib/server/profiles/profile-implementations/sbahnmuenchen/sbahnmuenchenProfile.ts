@@ -6,6 +6,7 @@ import {
 import { createClient } from "hafas-client";
 import { profile } from "hafas-client/p/sbahn-muenchen";
 import { SbahnmuenchenLineShapeParser } from "$lib/server/profiles/profile-implementations/sbahnmuenchen/SbahnmuenchenLineShapeParser";
+import { DbnavTicketUrlParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavTicketUrlParser";
 
 export class SbahnmuenchenProfile extends Profile<
 	"sbahnmuenchen",
@@ -57,6 +58,7 @@ export class SbahnmuenchenProfile extends Profile<
 			taxi: "on-call",
 		},
 		lineShapeParser: new SbahnmuenchenLineShapeParser(),
+		ticketUrlParser: new DbnavTicketUrlParser(), // uses same ids as dbnav
 		quota: {
 			threshold: 60,
 			interval: 60,
