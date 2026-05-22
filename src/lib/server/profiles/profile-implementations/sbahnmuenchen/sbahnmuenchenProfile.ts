@@ -5,9 +5,7 @@ import {
 } from "$lib/server/journey-data/fptf-clients/FptfDataService";
 import { createClient } from "hafas-client";
 import { profile } from "hafas-client/p/sbahn-muenchen";
-import {
-	SbahnmuenchenLineShapeParser
-} from "$lib/server/profiles/profile-implementations/sbahnmuenchen/SbahnmuenchenLineShapeParser";
+import { SbahnmuenchenLineShapeParser } from "$lib/server/profiles/profile-implementations/sbahnmuenchen/SbahnmuenchenLineShapeParser";
 
 export class SbahnmuenchenProfile extends Profile<
 	"sbahnmuenchen",

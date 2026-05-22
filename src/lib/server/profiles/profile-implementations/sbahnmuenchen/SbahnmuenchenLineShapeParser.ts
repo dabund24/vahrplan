@@ -67,7 +67,7 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 					value: "linear-gradient(to top left, #C3022D 50%, #51832B 50%)",
 				},
 				text: { type: "fixed", value: "#fff" },
-				lineName: "U7"
+				lineName: "U7",
 			};
 		}
 
