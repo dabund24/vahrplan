@@ -78,26 +78,26 @@ export const exampleProfileConfig2: ProfileConfig = {
 			defaultValue: -1,
 			optionNames: {
 				"0": {
-					name: "nur Direkt-Verbindungen"
+					name: "nur Direkt-Verbindungen",
 				},
 				"1": {
-					name: "1"
+					name: "1",
 				},
 				"2": {
-					name: "2"
+					name: "2",
 				},
 				"3": {
-					name: "3"
+					name: "3",
 				},
 				"4": {
-					name: "4"
+					name: "4",
 				},
 				"5": {
-					name: "5"
+					name: "5",
 				},
 				"-1": {
-					name: "beliebig"
-				}
+					name: "beliebig",
+				},
 			},
 		},
 		accessible: {
