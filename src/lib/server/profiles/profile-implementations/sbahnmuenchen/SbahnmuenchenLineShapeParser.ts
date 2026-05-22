@@ -11,30 +11,34 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 	}
 
 	public override getLineShape = (line?: Line): LineShape | undefined => {
+		if (line === undefined) {
+			return undefined;
+		}
 		let isPrependProductName = false;
-		if (line?.name?.startsWith("Bus ")) {
-			line.name = line?.name?.replace("Bus ", "");
+		const preparedLine = { ...line };
+		if (line.name?.startsWith("Bus ")) {
+			preparedLine.name = line.name?.replace("Bus ", "");
 			isPrependProductName = true;
-		} else if (line?.name?.startsWith("STR ")) {
-			line.name = line?.name?.replace("STR ", "");
+		} else if (preparedLine.name?.startsWith("STR ")) {
+			preparedLine.name = line.name?.replace("STR ", "");
 			isPrependProductName = true;
 		}
 
-		const lineShape = this.getLineShapeFromPreparedLine(line);
+		const lineShape = this.getLineShapeFromPreparedLine(preparedLine);
 
 		if (isPrependProductName && lineShape !== undefined) {
-			lineShape.linePrefix = line?.productName;
+			lineShape.linePrefix = line.productName;
 		}
 		return lineShape;
 	};
 
-	private getLineShapeFromPreparedLine = (line?: Line): LineShape | undefined => {
+	private getLineShapeFromPreparedLine = (line: Line): LineShape | undefined => {
 		const matchedTraewellingLineShape = super.getLineShape(line);
 		if (matchedTraewellingLineShape !== undefined) {
 			return matchedTraewellingLineShape;
 		}
 
-		if (line?.product === "bus" && line.name?.startsWith("X")) {
+		if (line.product === "bus" && line.name?.startsWith("X")) {
 			return {
 				shape: "rectangle",
 				background: { type: "fixed", value: "#4d9380" },
@@ -42,7 +46,7 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 				lineName: line.name,
 			};
 		}
-		if (line?.product === "bus" && line.name?.startsWith("N")) {
+		if (line.product === "bus" && line.name?.startsWith("N")) {
 			return {
 				shape: "rectangle",
 				background: { type: "fixed", value: "#1c1c1b" },
@@ -50,7 +54,7 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 				lineName: line.name,
 			};
 		}
-		if (line?.product === "bus") {
+		if (line.product === "bus") {
 			return {
 				shape: "rectangle",
 				background: { type: "fixed", value: "#00556c" },
@@ -59,7 +63,7 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 			};
 		}
 
-		if (line?.name === "U7") {
+		if (line.name === "U7") {
 			return {
 				shape: "rectangle",
 				background: {
@@ -71,7 +75,7 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 			};
 		}
 
-		if (line?.name === "U8") {
+		if (line.name === "U8") {
 			return {
 				shape: "rectangle",
 				background: {
@@ -79,11 +83,11 @@ export class SbahnmuenchenLineShapeParser extends ScopedHafasClientLineShapePars
 					value: "linear-gradient(to top left, #ED6720 50%, #C3022D 50%)",
 				},
 				text: { type: "fixed", value: "#fff" },
-				lineName: "U7",
+				lineName: "U8",
 			};
 		}
 
-		if (line?.product === "region") {
+		if (line.product === "region") {
 			return {
 				shape: "rectangle",
 				background: { type: "fixed", value: "#1427c5" },
