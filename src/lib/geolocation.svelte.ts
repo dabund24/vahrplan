@@ -168,7 +168,7 @@ export async function getCurrentGeolocation(): Promise<ParsedGeolocation | undef
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
 				const currentLocation: ParsedLocation = getParsedGeolocation(
-					new SvelteDate(position.timestamp),
+					new SvelteDate(Date.now()),
 					{
 						lat: position.coords.latitude,
 						lng: position.coords.longitude,
