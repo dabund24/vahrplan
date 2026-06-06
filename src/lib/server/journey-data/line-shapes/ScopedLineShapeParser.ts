@@ -3,12 +3,12 @@ import { LineShapeParser } from "$lib/server/journey-data/line-shapes/LineShapeP
 export abstract class ScopedLineShapeParser<T> extends LineShapeParser<T> {
 	protected scopedLineShapes: Record<
 		string,
-		(typeof ScopedLineShapeParser.traewellingLineShapesDe)[number]
+		(typeof ScopedLineShapeParser.traewellingLineShapes.de)[number]
 	> = {};
 
 	protected constructor(operatorPrefix: string) {
 		super();
-		const filteredLineShapes = ScopedLineShapeParser.traewellingLineShapesDe.filter(
+		const filteredLineShapes = ScopedLineShapeParser.traewellingLineShapes.de.filter(
 			({ shortOperatorName }) => shortOperatorName.startsWith(operatorPrefix),
 		);
 

@@ -10,11 +10,14 @@ export class TransitiousLineShapeParser extends LineShapeParser<Line> {
 			return undefined;
 		}
 
-		return LineShapeParser.traewellingLineShapesDe.find(
-			({ delfiAgencyID: id, lineName }) =>
-				id === lineDetails.operator?.id &&
-				this.stringToNormalForm(lineName) ===
-					this.stringToNormalForm(lineDetails.name ?? ""),
-		);
+		return Object.values(LineShapeParser.traewellingLineShapes)
+			.flat()
+			.find(
+				({ gtfsAgencyId, gtfsAgencyName, lineName }) =>
+					gtfsAgencyId === lineDetails.operator?.id &&
+					gtfsAgencyName === lineDetails.operator?.name &&
+					this.stringToNormalForm(lineName) ===
+						this.stringToNormalForm(lineDetails.name ?? ""),
+			);
 	}
 }

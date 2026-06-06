@@ -1,6 +1,9 @@
 import { read } from "$app/server";
-import lineShapesDeCsv from "../../../../../assets/line-shapes-de.csv?url";
-import lineShapesAtCsv from "../../../../../assets/line-shapes-at.csv?url";
+import lineShapesDeCsv from "../../../../../assets/line-colors.csv?url";
+import lineShapesAtCsv from "../../../../../assets/line-colors-AT.csv?url";
+import lineShapesChCsv from "../../../../../assets/line-colors-CH.csv?url";
+import lineShapesSeCsv from "../../../../../assets/line-colors-SE.csv?url";
+import lineShapesVbnCsv from "../../../../../assets/line-colors-VBN.csv?url";
 import type { Settings } from "$lib/state/settingStore";
 
 type PresetColor = "product" | "background" | "foreground" | Settings["general"]["color"];
@@ -18,8 +21,8 @@ type TraewellingLineShapeDe = LineShape & {
 	shortOperatorName: string;
 	operatorCode?: string;
 	lineId: string;
-	["delfiAgencyID"]: string;
-	delfiAgencyName: string;
+	gtfsAgencyId: string;
+	gtfsAgencyName: string;
 };
 
 type TraewellingLineShapeAt = LineShape & {
@@ -28,8 +31,13 @@ type TraewellingLineShapeAt = LineShape & {
 	gtfsAgencyName: string;
 };
 
-const traewellingLineShapesDe = await buildTraewellingLineShapesDe();
-const traewellingLineShapesAt = await buildTraewellingLineShapesAt();
+const traewellingLineShapes = {
+	de: await buildTraewellingLineShapesDe(),
+	at: await buildTraewellingLineShapes(lineShapesAtCsv),
+	ch: await buildTraewellingLineShapes(lineShapesChCsv),
+	se: await buildTraewellingLineShapes(lineShapesSeCsv),
+	vbn: await buildTraewellingLineShapes(lineShapesVbnCsv),
+} as const;
 
 async function buildTraewellingLineShapesDe(): Promise<TraewellingLineShapeDe[]> {
 	const result: TraewellingLineShapeDe[] = [];
@@ -47,8 +55,8 @@ async function buildTraewellingLineShapesDe(): Promise<TraewellingLineShapeDe[]>
 			borderColor,
 			shape,
 			_wikidataQid,
-			delfiAgencyId,
-			delfiAgencyName,
+			gtfsAgencyId,
+			gtfsAgencyName,
 		] = line.split(",");
 
 		const lineCodeEntry = {
@@ -60,8 +68,8 @@ async function buildTraewellingLineShapesDe(): Promise<TraewellingLineShapeDe[]>
 			text: { type: "fixed", value: textColor },
 			border:
 				borderColor === "" ? undefined : ({ type: "fixed", value: borderColor } as const),
-			["delfiAgencyID"]: delfiAgencyId,
-			delfiAgencyName,
+			gtfsAgencyId,
+			gtfsAgencyName,
 			shape: shape as LineShape["shape"],
 		} as const;
 		result.push(lineCodeEntry);
@@ -70,10 +78,10 @@ async function buildTraewellingLineShapesDe(): Promise<TraewellingLineShapeDe[]>
 	return result;
 }
 
-async function buildTraewellingLineShapesAt(): Promise<TraewellingLineShapeAt[]> {
+async function buildTraewellingLineShapes(path: string): Promise<TraewellingLineShapeAt[]> {
 	const result: TraewellingLineShapeAt[] = [];
 
-	const csvLines = await lineShapeCsvIterator(lineShapesAtCsv);
+	const csvLines = await lineShapeCsvIterator(path);
 
 	for (const line of csvLines) {
 		const [
@@ -122,8 +130,7 @@ async function lineShapeCsvIterator(route: string): Promise<Iterable<string>> {
  * @typeParam T - the type line details should be parsed from
  */
 export abstract class LineShapeParser<T> {
-	protected static traewellingLineShapesDe: TraewellingLineShapeDe[] = traewellingLineShapesDe;
-	protected static traewellingLineShapesAt: TraewellingLineShapeAt[] = traewellingLineShapesAt;
+	protected static traewellingLineShapes = traewellingLineShapes;
 
 	private static readonly customLineShapes = {
 		flix: {
