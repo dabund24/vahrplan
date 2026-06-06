@@ -112,6 +112,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 				polyline: true,
 				entrances: false,
 				subStops: false,
+				stopovers: true,
 			};
 			return [tripId, fptfOptions];
 		},
