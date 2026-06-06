@@ -64,21 +64,15 @@
 				smoothFactor: 2,
 			});
 		} else {
-			polyline = L.polyline(
-				[block.originLocation.position, block.destinationLocation.position],
-				{
-					dashArray: "4 8",
-					weight: 4,
-					color: "var(--foreground-color)",
-				},
-			);
-			polylinePadding = L.polyline(
-				[block.originLocation.position, block.destinationLocation.position],
-				{
-					color: "transparent",
-					weight: 16,
-				},
-			);
+			polyline = L.polyline(block.polyline, {
+				dashArray: "4 8",
+				weight: 4,
+				color: "var(--foreground-color)",
+			});
+			polylinePadding = L.polyline(block.polyline, {
+				color: "transparent",
+				weight: 16,
+			});
 		}
 		polyline.addTo(map);
 		polylinePadding.addTo(map);
