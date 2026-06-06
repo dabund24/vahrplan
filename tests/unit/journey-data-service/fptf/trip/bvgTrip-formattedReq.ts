@@ -4,6 +4,7 @@ export const bvgTripFormattedReq = [
 		language: "de",
 		polyline: true,
 		entrances: false,
+		stopovers: true,
 		subStops: false,
 	},
 ];
