@@ -144,6 +144,10 @@ const berlinToBerlinFernsehturmExpected = {
 					status: "on-time",
 				},
 			},
+			polyline: [
+				[52.521526, 13.411088],
+				[52.5213, 13.409694],
+			],
 			transferTime: 3,
 			travelTime: 3,
 			distance: 137,
@@ -231,6 +235,10 @@ const lindauInselToAugsburgExpected = {
 					time: new Date("2025-05-30T15:10:00.000Z"),
 				},
 			},
+			polyline: [
+				[47.544308, 9.68078],
+				[47.552406, 9.70284],
+			],
 			transferTime: 20,
 			travelTime: 20,
 			distance: 1886,
