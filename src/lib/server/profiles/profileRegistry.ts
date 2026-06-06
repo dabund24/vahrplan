@@ -6,9 +6,11 @@ import { EmptyProfile } from "./profile-implementations/emptyProfile";
 import { BvgProfile } from "$lib/server/profiles/profile-implementations/bvg/bvgProfile";
 import { OebbProfile } from "$lib/server/profiles/profile-implementations/oebb/oebbProfile";
 import { SbahnmuenchenProfile } from "$lib/server/profiles/profile-implementations/sbahnmuenchen/sbahnmuenchenProfile";
+import { TransitiousProfile } from "$lib/server/profiles/profile-implementations/transitious/transitiousProfile";
 
 const profiles = {
 	empty: new EmptyProfile(),
+	transitious: new TransitiousProfile(),
 	dbnav: new DbnavProfile(),
 	oebb: new OebbProfile(),
 	bvg: new BvgProfile(),
