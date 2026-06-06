@@ -56,6 +56,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 			results: 10,
 			stopovers: true,
 			tickets: true,
+			polylines: true,
 			entrances: false,
 			language: lang,
 		};

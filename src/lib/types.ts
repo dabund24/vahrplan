@@ -194,6 +194,7 @@ export type WalkingBlock = {
 	type: "walk";
 	originLocation: ParsedLocation;
 	destinationLocation: ParsedLocation;
+	polyline: [number, number][];
 	time: ParsedTime;
 	transferTime: number;
 	travelTime?: number;
@@ -204,6 +205,7 @@ export type OnwardJourneyBlock = {
 	type: "onward-journey";
 	originLocation: ParsedLocation;
 	destinationLocation: ParsedLocation;
+	polyline: [number, number][];
 	time: ParsedTime;
 	transferTime: number;
 	travelTime?: number;
