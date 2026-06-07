@@ -37,22 +37,20 @@
 		{/each}
 	</div>
 </div>
-{#if page.data.profileConfig.disabledNotice !== undefined}
-	<div class="content-wrapper">
+<div class="content-wrapper">
+	{#if page.data.profileConfig.disabledNotice !== undefined}
 		<Warning color="red">
 			{page.data.profileConfig.disabledNotice.name} Wähle oben eine andere Datenquelle aus.
 		</Warning>
-	</div>
-{/if}
-{#if page.data.profileConfig.infoLink !== undefined}
-	<div class="content-wrapper">
+	{/if}
+	{#if page.data.profileConfig.infoLink !== undefined}
 		<Warning>
 			<a target="_blank" href={page.data.profileConfig.infoLink.url}>
 				{page.data.profileConfig.infoLink.name}
 			</a>
 		</Warning>
-	</div>
-{/if}
+	{/if}
+</div>
 
 <style>
 	.scrollable {
@@ -94,6 +92,11 @@
 
 	.hoverable {
 		text-decoration: none;
+	}
+
+	.content-wrapper {
+		padding-left: 0.25rem;
+		padding-right: 0.25rem;
 	}
 
 	@media screen and (min-width: 1000px) {
