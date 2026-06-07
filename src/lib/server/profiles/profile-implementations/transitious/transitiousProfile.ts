@@ -24,6 +24,15 @@ export class TransitiousProfile extends Profile<
 	| "ferry",
 	FptfOptionId
 > {
+	static readonly operatorNames = {
+		db: ["DB Fernverkehr AG", "Deutsche Bahn AG"],
+		oebb: ["OEBB Personenverkehr AG Kundenservice", "Österreichische Bundesbahnen"],
+		sbb: ["Schweizerische Bundesbahnen SBB", "SBB"],
+		ns: ["NS Int"],
+		flix: ["FlixBus-eu", "FlixTrain-de"],
+		westbahn: ["WESTbahn Management GmbH"],
+	};
+
 	protected override readonly id = "transitious" as const;
 	protected override readonly name = { de: "Weltweit" };
 	protected override readonly disabledNotice = undefined;
