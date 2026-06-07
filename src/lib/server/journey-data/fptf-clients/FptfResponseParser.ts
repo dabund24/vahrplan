@@ -147,6 +147,10 @@ export class FptfResponseParser<
 	};
 
 	protected override readonly parseLegBlock = (leg: Leg): LegBlock => {
+		if (leg.line?.name !== undefined) {
+			// preprocess line name
+			leg.line.name = leg.line?.name?.replace(/\s\(.*\)$/, "");
+		}
 		const departurePlatform = leg.departurePlatform ?? undefined;
 		const arrivalPlatform = leg.arrivalPlatform ?? undefined;
 		const departureLocation = this.parseStationStopLocation(leg.origin);
@@ -192,8 +196,7 @@ export class FptfResponseParser<
 					leg.arrival ?? leg.plannedArrival,
 				) ?? 0,
 			direction: leg.direction ?? undefined,
-			// oebb fix. Find better solution if more cases like this arise
-			name: leg.line?.name?.split("(Zug-Nr.")[0].trim() ?? leg.line?.productName,
+			name: leg.line?.name ?? leg.line?.productName,
 			productName: leg.line?.productName ?? leg.line?.name,
 			product: this.parseProduct(leg.line?.product),
 			lineShape: this.lineShapeParser.getLineShape(leg.line),
