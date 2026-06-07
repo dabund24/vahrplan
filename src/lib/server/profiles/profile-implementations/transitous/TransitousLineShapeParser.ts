@@ -3,9 +3,9 @@ import {
 	LineShapeParser,
 } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 import type { Line } from "hafas-client";
-import { TransitiousProfile } from "$lib/server/profiles/profile-implementations/transitious/transitiousProfile";
+import { TransitousProfile } from "$lib/server/profiles/profile-implementations/transitous/transitousProfile";
 
-export class TransitiousLineShapeParser extends LineShapeParser<Line> {
+export class TransitousLineShapeParser extends LineShapeParser<Line> {
 	override getLineShape(lineDetails: Line | undefined): LineShape | undefined {
 		if (lineDetails == undefined) {
 			return undefined;
@@ -14,7 +14,7 @@ export class TransitiousLineShapeParser extends LineShapeParser<Line> {
 		type CustomProductKey = Parameters<typeof this.getCustomLineShape>[1];
 		const hardCodedProducts: {
 			productNames: string[];
-			operators?: (keyof typeof TransitiousProfile.operatorNames)[];
+			operators?: (keyof typeof TransitousProfile.operatorNames)[];
 			customProductKey: CustomProductKey;
 		}[] = [
 			{
@@ -46,7 +46,7 @@ export class TransitiousLineShapeParser extends LineShapeParser<Line> {
 				productNames.includes(lineDetails.productName ?? "") &&
 				(operators === undefined ||
 					operators.some((operator) =>
-						TransitiousProfile.operatorNames[operator].includes(
+						TransitousProfile.operatorNames[operator].includes(
 							lineDetails.operator?.name ?? "",
 						),
 					))

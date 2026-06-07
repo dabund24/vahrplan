@@ -28,9 +28,9 @@ const moonBookmarkData: BookmarkData<"location"> = {
 	position: { lat: 42, lng: 69 },
 };
 
-const sunBookmark: Bookmarks["location"][number] = { ...sunBookmarkData, profile: "transitious" };
+const sunBookmark: Bookmarks["location"][number] = { ...sunBookmarkData, profile: "transitous" };
 
-const moonBookmark: Bookmarks["location"][number] = { ...moonBookmarkData, profile: "transitious" };
+const moonBookmark: Bookmarks["location"][number] = { ...moonBookmarkData, profile: "transitous" };
 
 describe("load initial bookmarks", () => {
 	test("both sun and moon stored", () => {

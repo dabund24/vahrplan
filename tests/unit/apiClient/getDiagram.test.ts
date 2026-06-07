@@ -38,7 +38,7 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 		client,
 		input,
 		{
-			expectedPath: "/de/transitious/api/diagram",
+			expectedPath: "/de/transitous/api/diagram",
 			params: {},
 		},
 		{

@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
-import { TransitiousLineShapeParser } from "$lib/server/profiles/profile-implementations/transitious/TransitiousLineShapeParser";
+import { TransitousLineShapeParser } from "$lib/server/profiles/profile-implementations/transitous/TransitousLineShapeParser";
 
-const lineShapeParser = new TransitiousLineShapeParser();
+const lineShapeParser = new TransitousLineShapeParser();
 
 vi.mock("$app/server", async () => {
 	const fs = await import("fs");

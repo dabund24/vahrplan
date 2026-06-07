@@ -1,4 +1,4 @@
-export const transitiousTripRawRes = {
+export const transitousTripRawRes = {
 	trip: {
 		origin: {
 			type: "station",

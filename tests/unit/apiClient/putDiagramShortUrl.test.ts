@@ -39,7 +39,7 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 
 test(`PUT ${route} api client parsing and formatting`, async () => {
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/transitious/api/diagram/shorturl`,
+		expectedPath: `/de/transitous/api/diagram/shorturl`,
 		params: {},
 	});
 });

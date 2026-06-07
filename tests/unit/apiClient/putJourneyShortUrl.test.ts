@@ -13,7 +13,7 @@ test(`PUT ${route} api client parsing and formatting`, async () => {
 		expirationDate: 123456789,
 	};
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/transitious/api/journey/shorturl`,
+		expectedPath: `/de/transitous/api/journey/shorturl`,
 		params: {},
 	});
 });

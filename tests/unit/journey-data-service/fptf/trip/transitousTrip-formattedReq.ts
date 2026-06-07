@@ -1,4 +1,4 @@
-export const transitiousTripFormattedReq = [
+export const transitousTripFormattedReq = [
 	"20260608_14:46_de-DELFI_3211624697",
 	{
 		language: "de",

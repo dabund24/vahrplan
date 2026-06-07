@@ -5,7 +5,7 @@ export const profileIds = [
 	"bvg",
 	"sbahnmuenchen",
 	"oebb",
-	"transitious",
+	"transitous",
 ] as const;
 export type ProfileId = (typeof profileIds)[number] | "empty";
 

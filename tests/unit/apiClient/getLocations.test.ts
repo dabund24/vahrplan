@@ -9,7 +9,7 @@ let input: Parameters<(typeof client)["request"]>[0];
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "Nordpol";
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/transitious/api/locations/${input}`,
+		expectedPath: `/de/transitous/api/locations/${input}`,
 		params: { name: input },
 	});
 });

@@ -9,7 +9,7 @@ let input: Parameters<(typeof client)["request"]>[0];
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = { lang: "de" };
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/transitious/api/profiles`,
+		expectedPath: `/de/transitous/api/profiles`,
 		params: {},
 	});
 });

@@ -77,8 +77,8 @@ const bookmarkData: BookmarkData<"diagram"> = {
 };
 
 const bookmark: Bookmarks["diagram"][number] = {
-	id: "http://localhost/de/transitious/diagram?stops%5B%5D=bodacious&stops%5B%5D=serendipitous&time=1970-01-01T00%3A00%3A00.069Z&time-role=departure&long-distance-express=&min-transfer-time=0",
-	profile: "transitious",
+	id: "http://localhost/de/transitous/diagram?stops%5B%5D=bodacious&stops%5B%5D=serendipitous&time=1970-01-01T00%3A00%3A00.069Z&time-role=departure&long-distance-express=&min-transfer-time=0",
+	profile: "transitous",
 	stops: [
 		{ type: "station", name: "Waaa" },
 		{ type: "poi", name: "Weee" },

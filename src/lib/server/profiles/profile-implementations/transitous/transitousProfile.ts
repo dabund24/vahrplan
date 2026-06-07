@@ -8,10 +8,10 @@ import { createClient } from "@motis-project/motis-fptf-client";
 // @ts-expect-error missing motis-fptf-client types
 import { profile } from "@motis-project/motis-fptf-client/p/transitous";
 import type { HafasClient } from "hafas-client";
-import { TransitiousLineShapeParser } from "$lib/server/profiles/profile-implementations/transitious/TransitiousLineShapeParser";
+import { TransitousLineShapeParser } from "$lib/server/profiles/profile-implementations/transitous/TransitousLineShapeParser";
 
-export class TransitiousProfile extends Profile<
-	"transitious",
+export class TransitousProfile extends Profile<
+	"transitous",
 	| "longDistanceExpress"
 	| "longDistance"
 	| "regionalExpress"
@@ -33,7 +33,7 @@ export class TransitiousProfile extends Profile<
 		westbahn: ["WESTbahn Management GmbH"],
 	};
 
-	protected override readonly id = "transitious" as const;
+	protected override readonly id = "transitous" as const;
 	protected override readonly name = { de: "Weltweit" };
 	protected override readonly infoLink = {
 		name: { de: "Über die Datenquelle" },
@@ -75,7 +75,7 @@ export class TransitiousProfile extends Profile<
 			ferry: "ferry",
 			taxi: "taxi",
 		},
-		lineShapeParser: new TransitiousLineShapeParser(),
+		lineShapeParser: new TransitousLineShapeParser(),
 		quota: {
 			threshold: 180,
 			interval: 60,
