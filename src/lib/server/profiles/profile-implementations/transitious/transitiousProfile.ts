@@ -24,14 +24,14 @@ export class TransitiousProfile extends Profile<
 	| "ferry",
 	FptfOptionId
 > {
-	protected override id = "transitious" as const;
+	protected override readonly id = "transitious" as const;
 	protected override readonly name = { de: "Weltweit" };
 	protected override readonly disabledNotice = undefined;
 	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {
-		longDistanceExpress: { name: Profile.translingual("Hochgeschwindigkeits-Zug") },
-		longDistance: { name: Profile.translingual("Fernzug/Nachtzug") },
+		longDistanceExpress: { name: { de: "Hochgeschwindigkeits-Zug" } },
+		longDistance: { name: { de: "Fernzug/Nachtzug" } },
 		regionalExpress: { name: { de: "sonstige Schnellzüge" } },
 		regional: { name: { de: "Regionalzug" } },
 		suburban: { name: { de: "S-Bahn" } },
