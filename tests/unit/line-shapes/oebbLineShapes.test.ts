@@ -6,8 +6,9 @@ const lineShapeParser = new OebbLineShapeParser();
 vi.mock("$app/server", async () => {
 	const fs = await import("fs");
 	return {
-		read: (): object => ({
-			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes-at.csv").toString(),
+		read: (route: string): object => ({
+			text: () =>
+				fs.readFileSync(`tests/unit/fixtures/${route.split("/").at(-1)}`).toString(),
 		}),
 	};
 });

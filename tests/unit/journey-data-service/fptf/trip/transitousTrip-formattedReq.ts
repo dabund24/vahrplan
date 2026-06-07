@@ -1,5 +1,5 @@
-export const bvgTripFormattedReq = [
-	"1|73342|0|86|11042026",
+export const transitousTripFormattedReq = [
+	"20260608_14:46_de-DELFI_3211624697",
 	{
 		language: "de",
 		polyline: true,

@@ -24,5 +24,5 @@ export class GetProfilesApiClient extends PathParamSettable<ReqType, ResType, Re
 	): ReqType => ({ lang: reqEvent.params.lang });
 
 	protected override formatUrlPath = ({ lang }: ReqType): `${Ctx["apiPathBase"]}${string}` =>
-		`/${lang}/dbnav/api/profiles`; // we are free to choose the profile parameter except for empty
+		`/${lang}/transitous/api/profiles`; // we are free to choose the profile parameter except for empty
 }

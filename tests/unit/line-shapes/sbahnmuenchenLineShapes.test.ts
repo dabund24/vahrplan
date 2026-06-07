@@ -6,8 +6,9 @@ const lineShapeParser = new SbahnmuenchenLineShapeParser();
 vi.mock("$app/server", async () => {
 	const fs = await import("fs");
 	return {
-		read: (): object => ({
-			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes-de.csv").toString(),
+		read: (route: string): object => ({
+			text: () =>
+				fs.readFileSync(`tests/unit/fixtures/${route.split("/").at(-1)}`).toString(),
 		}),
 	};
 });
@@ -27,7 +28,7 @@ test("bus", () => {
 	const expected = {
 		background: {
 			type: "fixed",
-			value: "#8e5c2e",
+			value: "#c8602e",
 		},
 		border: undefined,
 		lineName: "X660",
@@ -57,7 +58,7 @@ test("tram", () => {
 	const expected = {
 		background: {
 			type: "fixed",
-			value: "#ee1c25",
+			value: "#e3000f",
 		},
 		border: undefined,
 		lineName: "19",

@@ -22,7 +22,16 @@ import type { LineShapeParser } from "$lib/server/journey-data/line-shapes/LineS
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
 import type { UnpackedVahrplanResult } from "$lib/VahrplanResult";
 import { dateDifference, getFirstAndLastTime } from "$lib/util";
-import type { Journey, Leg, Line, Location, Station, Stop, StopOver } from "hafas-client";
+import type {
+	FeatureCollection,
+	Journey,
+	Leg,
+	Line,
+	Location,
+	Station,
+	Stop,
+	StopOver,
+} from "hafas-client";
 import { transferToBlock } from "$lib/merge";
 
 type FptfResponseFormatterConfig<ProductT extends Product> = Pick<
@@ -138,9 +147,30 @@ export class FptfResponseParser<
 	};
 
 	protected override readonly parseLegBlock = (leg: Leg): LegBlock => {
+		if (leg.line?.name !== undefined) {
+			// preprocess line name
+			leg.line.name = leg.line?.name?.replace(/\s\(.*\)$/, "");
+		}
 		const departurePlatform = leg.departurePlatform ?? undefined;
 		const arrivalPlatform = leg.arrivalPlatform ?? undefined;
-		const block: LegBlock = {
+		const departureLocation = this.parseStationStopLocation(leg.origin);
+		const arrivalLocation = this.parseStationStopLocation(leg.destination);
+		let fptfStopovers = leg.stopovers;
+		// remove first/last stopover if redundant
+		if (
+			fptfStopovers?.at(0)?.stop?.name === leg.origin?.name ||
+			fptfStopovers?.at(0)?.stop?.id === leg.origin?.id
+		) {
+			fptfStopovers = fptfStopovers?.slice(1);
+		}
+		if (
+			fptfStopovers?.at(-1)?.stop?.name === leg.destination?.name ||
+			fptfStopovers?.at(-1)?.stop?.id === leg.destination?.id
+		) {
+			fptfStopovers = fptfStopovers?.slice(0, -1);
+		}
+		const stopovers = fptfStopovers?.map(this.parseStopover) ?? [];
+		return {
 			type: "leg",
 			tripId: leg.tripId ?? "",
 			blockKey:
@@ -150,7 +180,7 @@ export class FptfResponseParser<
 				), // make it usable as a css variable
 			attribute: leg.cancelled ? "cancelled" : undefined,
 			departureData: {
-				location: this.parseStationStopLocation(leg.origin),
+				location: departureLocation,
 				attribute: this.parseTransitAttribute(leg.stopovers?.at(0)),
 				time: this.parseSingleTime(
 					{
@@ -166,7 +196,7 @@ export class FptfResponseParser<
 				),
 			},
 			arrivalData: {
-				location: this.parseStationStopLocation(leg.destination),
+				location: arrivalLocation,
 				attribute: this.parseTransitAttribute(leg.stopovers?.at(-1)),
 				time: this.parseSingleTime(
 					{ time: leg.arrival, timePlanned: leg.plannedArrival, delay: leg.arrivalDelay },
@@ -180,8 +210,7 @@ export class FptfResponseParser<
 					leg.arrival ?? leg.plannedArrival,
 				) ?? 0,
 			direction: leg.direction ?? undefined,
-			// oebb fix. Find better solution if more cases like this arise
-			name: leg.line?.name?.split("(Zug-Nr.")[0].trim() ?? leg.line?.productName,
+			name: leg.line?.name ?? leg.line?.productName,
 			productName: leg.line?.productName ?? leg.line?.name,
 			product: this.parseProduct(leg.line?.product),
 			lineShape: this.lineShapeParser.getLineShape(leg.line),
@@ -191,19 +220,13 @@ export class FptfResponseParser<
 			tripNumber: leg.line?.fahrtNr,
 			info: this.parseLegInfo(leg),
 			currentLocation: this.parseLegCurrentLocation(leg),
-			stopovers: leg.stopovers?.slice(1, -1).map(this.parseStopover) ?? [],
-			polyline:
-				leg.polyline?.features.map((feature) => [
-					feature.geometry.coordinates[1],
-					feature.geometry.coordinates[0],
-				]) ?? [],
+			stopovers,
+			polyline: this.parsePolyline(leg.polyline, [
+				departureLocation,
+				...stopovers.map(({ location }) => location),
+				arrivalLocation,
+			]),
 		};
-		if (block.polyline.length < 3) {
-			block.polyline = [block.departureData, ...block.stopovers, block.arrivalData].map(
-				(stop) => [stop.location.position.lat, stop.location.position.lng],
-			);
-		}
-		return block;
 	};
 
 	protected override readonly parseLegCurrentLocation = (
@@ -238,47 +261,62 @@ export class FptfResponseParser<
 	protected override readonly parseWalkingBlock = (
 		walk: Leg,
 		nextDeparture: string | undefined,
-	): WalkingBlock => ({
-		type: "walk",
-		originLocation: this.parseStationStopLocation(walk.origin),
-		destinationLocation: this.parseStationStopLocation(walk.destination),
-		time: this.parseTimePair(
-			{
-				time: walk.departure,
-				timePlanned: walk.plannedDeparture,
-				delay: walk.departureDelay,
-			},
-			{
-				time: walk.arrival,
-				timePlanned: walk.plannedArrival,
-				delay: walk.arrivalDelay,
-			},
-		),
-		transferTime: dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
-		travelTime: dateDifference(walk.departure, walk.arrival),
-		distance: walk.distance ?? 0,
-	});
+	): WalkingBlock => {
+		const originLocation = this.parseStationStopLocation(walk.origin);
+		const destinationLocation = this.parseStationStopLocation(walk.destination);
+		return {
+			type: "walk",
+			originLocation,
+			destinationLocation,
+			polyline: this.parsePolyline(walk.polyline, [originLocation, destinationLocation]),
+			time: this.parseTimePair(
+				{
+					time: walk.departure,
+					timePlanned: walk.plannedDeparture,
+					delay: walk.departureDelay,
+				},
+				{
+					time: walk.arrival,
+					timePlanned: walk.plannedArrival,
+					delay: walk.arrivalDelay,
+				},
+			),
+			transferTime:
+				dateDifference(walk.departure ?? walk.plannedDeparture, nextDeparture) ?? 0,
+			travelTime: dateDifference(walk.departure, walk.arrival),
+			distance: walk.distance ?? 0,
+		};
+	};
 
 	protected override readonly parseOnwardJourneyBlock = (
 		leg: Leg,
 		nextDeparture: string | undefined,
-	): OnwardJourneyBlock => ({
-		type: "onward-journey",
-		originLocation: this.parseStationStopLocation(leg.origin),
-		destinationLocation: this.parseStationStopLocation(leg.destination),
-		time: this.parseTimePair(
-			{ time: leg.departure, timePlanned: leg.plannedDeparture, delay: leg.departureDelay },
-			{
-				time: leg.arrival,
-				timePlanned: leg.plannedArrival,
-				delay: leg.arrivalDelay,
-			},
-		),
-		transferTime: dateDifference(leg.departure ?? leg.plannedDeparture, nextDeparture) ?? 0,
-		travelTime: dateDifference(leg.departure, leg.arrival),
-		recommendedAction: undefined,
-		distance: leg.distance ?? 0,
-	});
+	): OnwardJourneyBlock => {
+		const originLocation = this.parseStationStopLocation(leg.origin);
+		const destinationLocation = this.parseStationStopLocation(leg.destination);
+		return {
+			type: "onward-journey",
+			originLocation,
+			destinationLocation,
+			polyline: this.parsePolyline(leg.polyline, [originLocation, destinationLocation]),
+			time: this.parseTimePair(
+				{
+					time: leg.departure,
+					timePlanned: leg.plannedDeparture,
+					delay: leg.departureDelay,
+				},
+				{
+					time: leg.arrival,
+					timePlanned: leg.plannedArrival,
+					delay: leg.arrivalDelay,
+				},
+			),
+			transferTime: dateDifference(leg.departure ?? leg.plannedDeparture, nextDeparture) ?? 0,
+			travelTime: dateDifference(leg.departure, leg.arrival),
+			recommendedAction: undefined,
+			distance: leg.distance ?? 0,
+		};
+	};
 
 	public override readonly parseStationStopLocation = (
 		location: Station | Stop | Location | undefined,
@@ -325,6 +363,23 @@ export class FptfResponseParser<
 				},
 			};
 		}
+	};
+
+	public override readonly parsePolyline = (
+		polyline: FeatureCollection | undefined,
+		stops: [ParsedLocation, ...ParsedLocation[], ParsedLocation],
+	): LegBlock["polyline"] => {
+		if (polyline === undefined || polyline.features.length < 3) {
+			return stops.map((stop) => [stop.position.lat, stop.position.lng]);
+		}
+		return [
+			[stops[0].position.lat, stops[0].position.lng],
+			...polyline.features.map(
+				({ geometry: { coordinates } }) =>
+					[coordinates[1], coordinates[0]] as const satisfies [number, number],
+			),
+			[stops.at(-1)!.position.lat ?? 0, stops.at(-1)?.position.lng ?? 0],
+		];
 	};
 
 	protected override readonly parseStopover = (stopover: StopOver): TransitData => {

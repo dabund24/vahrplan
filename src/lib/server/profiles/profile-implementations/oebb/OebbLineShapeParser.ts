@@ -26,7 +26,7 @@ export class OebbLineShapeParser extends LineShapeParser<Line> {
 		const normalizedLineName = this.stringToNormalForm(lineName);
 		const lineNumber = this.lineNumberFromLineNameAndProduct(lineName, productName ?? "");
 
-		const matchedRow = OebbLineShapeParser.traewellingLineShapesAt
+		const matchedRow = OebbLineShapeParser.traewellingLineShapes.at
 			.filter(({ shortOperatorName }) => foundShortOperatorName === shortOperatorName)
 			.find(({ lineName: shapeLineName }) => {
 				const normalizedShapeLineName = this.stringToNormalForm(shapeLineName);

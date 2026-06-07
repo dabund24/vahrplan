@@ -170,6 +170,10 @@ function mergingWalkToBlock(
 		type: "walk",
 		originLocation: departureLocation,
 		destinationLocation: arrivalLocation,
+		polyline: [
+			[departureLocation.position.lat, departureLocation.position.lng],
+			[arrivalLocation.position.lat, arrivalLocation.position.lng],
+		],
 		time: { departure: departureTime.arrival, arrival: arrivalTime.departure },
 		distance: 0,
 		travelTime: undefined,

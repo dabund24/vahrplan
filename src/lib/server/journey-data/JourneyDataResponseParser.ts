@@ -59,6 +59,8 @@ export abstract class JourneyDataResponseParser<ProductT extends Product> {
 
 	protected abstract readonly parseStationStopLocation: (...params: never[]) => ParsedLocation;
 
+	protected abstract readonly parsePolyline: (...params: never[]) => LegBlock["polyline"];
+
 	protected abstract readonly parseStopover: (...params: never[]) => TransitData;
 
 	protected abstract readonly parseSingleTime: (...params: never[]) => ParsedTime;

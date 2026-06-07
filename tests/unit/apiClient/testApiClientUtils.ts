@@ -37,7 +37,7 @@ export async function apiClientParseFormatTest<
 		url = new URL((request as Request).url);
 		parsed = client.parseRequest({
 			url,
-			params: { ...paramInfo.params, lang: "de", profile: "dbnav" },
+			params: { ...paramInfo.params, lang: "de", profile: "transitous" },
 			...({ request } as Record<never, never>),
 		} as MinimalRequestEvent<MethodT, RequestEventT>);
 		return Promise.resolve(new Response());

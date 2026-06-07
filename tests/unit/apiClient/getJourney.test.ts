@@ -9,7 +9,7 @@ let input: Parameters<(typeof client)["request"]>[0];
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = ["@#$^&*()", "fjewghiue", "qwerty"];
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/dbnav/api/journey`,
+		expectedPath: `/de/transitous/api/journey`,
 		params: {},
 	});
 });

@@ -17,7 +17,6 @@ export class BvgProfile extends Profile<
 > {
 	protected override readonly id = "bvg";
 	protected override readonly name = { de: "Berlin" };
-	protected override readonly disabledNotice = undefined;
 	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {

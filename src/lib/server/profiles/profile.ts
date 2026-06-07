@@ -44,6 +44,11 @@ type DisabledNotice = {
 	name: LocaleString;
 };
 
+type InfoLink = {
+	name: LocaleString;
+	url: string;
+};
+
 type NameWithKnownLocale<T extends { name: LocaleString }> = Omit<T, "name"> & {
 	name: string;
 };
@@ -60,6 +65,7 @@ export type ProfileConfig = {
 		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>; // TODO option names are still hard coded!
 	};
 	disabledNotice?: NameWithKnownLocale<DisabledNotice>;
+	infoLink?: NameWithKnownLocale<InfoLink>;
 };
 
 /**
@@ -123,7 +129,8 @@ export abstract class Profile<
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	protected abstract readonly name: LocaleString;
 	/** in case a profile ever stops working: use this property to indicate the reason */
-	protected abstract readonly disabledNotice?: DisabledNotice;
+	protected readonly disabledNotice?: DisabledNotice = undefined;
+	protected readonly infoLink?: InfoLink = undefined;
 	/** all languages the upstream api can return responses of */
 	protected abstract readonly supportedLanguages: Language[];
 	protected abstract readonly fallbackLanguage: Language;
@@ -184,6 +191,9 @@ export abstract class Profile<
 
 		if (this.disabledNotice !== undefined) {
 			res.disabledNotice = this.assignLangNames(lang, { _: this.disabledNotice })._;
+		}
+		if (this.infoLink !== undefined) {
+			res.infoLink = this.assignLangNames(lang, { _: this.infoLink })._;
 		}
 
 		return res;

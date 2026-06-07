@@ -10,7 +10,7 @@ let input: Parameters<(typeof client)["request"]>[0];
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "myDiagramId";
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/dbnav/api/diagram/shorturl/${input}`,
+		expectedPath: `/de/transitous/api/diagram/shorturl/${input}`,
 		params: { shortDiagramId: input },
 	});
 });
@@ -18,7 +18,7 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 test(`GET ${route} api client non-api url formatting`, () => {
 	input = "myDiagramId";
 	const url = client.formatNonApiUrl(input, { profileConfig: exampleProfileConfig });
-	expect(url.pathname).toEqual("/de/dbnav/diagram/shorturl/myDiagramId");
+	expect(url.pathname).toEqual("/de/transitous/diagram/shorturl/myDiagramId");
 });
 
 test(`GET ${route} api client non-api url parsing`, () => {

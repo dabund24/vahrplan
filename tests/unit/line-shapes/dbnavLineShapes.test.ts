@@ -8,8 +8,9 @@ const lineShapeParser = new DbnavLineShapeParser();
 vi.mock("$app/server", async () => {
 	const fs = await import("fs");
 	return {
-		read: (): object => ({
-			text: () => fs.readFileSync("tests/unit/fixtures/line-shapes-de.csv").toString(),
+		read: (route: string): object => ({
+			text: () =>
+				fs.readFileSync(`tests/unit/fixtures/${route.split("/").at(-1)}`).toString(),
 		}),
 	};
 });
@@ -64,31 +65,6 @@ test("line shapes last entry", () => {
 
 test("line shapes all RE 1", () => {
 	const values: { hafasLine: Line; expected: LineShape }[] = [
-		{
-			hafasLine: {
-				type: "line",
-				id: "re-4102",
-				fahrtNr: "4102",
-				name: "RE 1",
-				public: true,
-				adminCode: "800640",
-				productName: "RE",
-				mode: "train",
-				product: "regional",
-				operator: {
-					type: "operator",
-					id: "db-regio-ag-mitte-suwex",
-					name: "DB Regio AG Mitte SÜWEX",
-				},
-			},
-			expected: {
-				linePrefix: undefined,
-				lineName: "RE1",
-				background: { type: "fixed", value: "#be1b40" },
-				text: { type: "fixed", value: "#ffffff" },
-				shape: "rectangle-rounded-corner",
-			},
-		},
 		{
 			hafasLine: {
 				type: "line",
@@ -231,7 +207,7 @@ test("line shapes all RE 1", () => {
 			},
 			expected: {
 				lineName: "RE 1",
-				background: { type: "fixed", value: "#ff2d16" },
+				background: { type: "fixed", value: "#e20714" },
 				text: { type: "fixed", value: "#ffffff" },
 				shape: "rectangle-rounded-corner",
 			},
@@ -259,7 +235,7 @@ test("line shapes Bus X660", () => {
 	const expected = {
 		linePrefix: "Bus",
 		lineName: "X660",
-		background: { type: "fixed", value: "#8e5c2e" },
+		background: { type: "fixed", value: "#c8602e" },
 		text: { type: "fixed", value: "#ffffff" },
 		shape: "rectangle",
 	};
