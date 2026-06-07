@@ -44,7 +44,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@motis-project/motis-fptf-client": "^6.5.1",
+		"@motis-project/motis-fptf-client": "^6.5.2",
 		"db-vendo-client": "^6.10.8",
 		"hafas-client": "^6.3.6",
 		"leaflet": "^1.9.4",
