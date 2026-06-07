@@ -155,7 +155,21 @@ export class FptfResponseParser<
 		const arrivalPlatform = leg.arrivalPlatform ?? undefined;
 		const departureLocation = this.parseStationStopLocation(leg.origin);
 		const arrivalLocation = this.parseStationStopLocation(leg.destination);
-		const stopovers = leg.stopovers?.slice(1, -1).map(this.parseStopover) ?? [];
+		let fptfStopovers = leg.stopovers;
+		// remove first/last stopover if redundant
+		if (
+			fptfStopovers?.at(0)?.stop?.name === leg.origin?.name ||
+			fptfStopovers?.at(0)?.stop?.id === leg.origin?.id
+		) {
+			fptfStopovers = fptfStopovers?.slice(1);
+		}
+		if (
+			fptfStopovers?.at(-1)?.stop?.name === leg.destination?.name ||
+			fptfStopovers?.at(-1)?.stop?.id === leg.destination?.id
+		) {
+			fptfStopovers = fptfStopovers?.slice(0, -1);
+		}
+		const stopovers = fptfStopovers?.map(this.parseStopover) ?? [];
 		return {
 			type: "leg",
 			tripId: leg.tripId ?? "",
