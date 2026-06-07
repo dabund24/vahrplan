@@ -90,7 +90,7 @@ const input: Parameters<(typeof client)["request"]>[0] = {
 
 test(`POST ${route} api client parsing and formatting`, async () => {
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/dbnav/api/diagram/scroll/${input.scrollDirection}`,
+		expectedPath: `/de/transitious/api/diagram/scroll/${input.scrollDirection}`,
 		params: { scrollDirection: input.scrollDirection },
 	});
 });

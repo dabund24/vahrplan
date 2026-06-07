@@ -36,8 +36,8 @@ const bookmarkData: BookmarkData<"journey"> = {
 };
 
 const bookmark: Bookmarks["journey"][number] = {
-	id: "http://localhost/de/dbnav/journey?tokens%5B%5D=a",
-	profile: "dbnav",
+	id: "http://localhost/de/transitious/journey?tokens%5B%5D=a",
+	profile: "transitious",
 	start: { type: "address", name: "start" },
 	destination: { type: "address", name: "dest" },
 	departure: new Date(1).toISOString(),

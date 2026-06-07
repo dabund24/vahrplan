@@ -1,5 +1,4 @@
 import type { Profile, ProfileConfig } from "./profile";
-import { DbnavProfile } from "./profile-implementations/dbnav/dbnavProfile";
 import type { ProfileId } from "../../../params/profileId";
 import type { Language } from "../../../params/lang";
 import { EmptyProfile } from "./profile-implementations/emptyProfile";
@@ -11,7 +10,7 @@ import { TransitiousProfile } from "$lib/server/profiles/profile-implementations
 const profiles = {
 	empty: new EmptyProfile(),
 	transitious: new TransitiousProfile(),
-	dbnav: new DbnavProfile(),
+	// dbnav: new DbnavProfile(),
 	oebb: new OebbProfile(),
 	bvg: new BvgProfile(),
 	sbahnmuenchen: new SbahnmuenchenProfile(),

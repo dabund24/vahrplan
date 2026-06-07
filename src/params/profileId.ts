@@ -1,6 +1,12 @@
 import type { ParamMatcher } from "@sveltejs/kit";
 
-export const profileIds = ["dbnav", "bvg", "sbahnmuenchen", "oebb", "transitious"] as const;
+export const profileIds = [
+	// "dbnav",
+	"bvg",
+	"sbahnmuenchen",
+	"oebb",
+	"transitious",
+] as const;
 export type ProfileId = (typeof profileIds)[number] | "empty";
 
 export const match = ((param: string): param is ProfileId =>

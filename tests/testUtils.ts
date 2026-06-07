@@ -2,7 +2,7 @@ import type { ProfileConfig } from "$lib/server/profiles/profile";
 
 export const exampleProfileConfig: ProfileConfig = {
 	name: "Beispiel",
-	id: "dbnav",
+	id: "transitious",
 	lang: "de",
 	supportedLanguages: ["de"],
 	products: {

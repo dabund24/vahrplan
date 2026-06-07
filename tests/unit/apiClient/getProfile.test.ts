@@ -7,9 +7,9 @@ const client = apiClient("GET", route);
 let input: Parameters<(typeof client)["request"]>[0];
 
 test(`GET ${route} api client parsing and formatting`, async () => {
-	input = { lang: "de", profile: "dbnav" };
+	input = { lang: "de", profile: "transitious" };
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/dbnav/api/profile`,
+		expectedPath: `/de/transitious/api/profile`,
 		params: {},
 	});
 });

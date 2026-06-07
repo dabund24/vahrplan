@@ -10,7 +10,7 @@ let input: Parameters<(typeof client)["request"]>[0];
 test(`GET ${route} api client parsing and formatting`, async () => {
 	input = "knjgnaekgnaw";
 	await apiClientParseFormatTest(client, input, {
-		expectedPath: `/de/dbnav/api/journey/shorturl/${input}`,
+		expectedPath: `/de/transitious/api/journey/shorturl/${input}`,
 		params: { shortJourneyId: input },
 	});
 });
@@ -18,7 +18,7 @@ test(`GET ${route} api client parsing and formatting`, async () => {
 test(`GET ${route} api client non-api url formatting`, () => {
 	input = "knjgnaekgnaw";
 	const url = client.formatNonApiUrl(input, { profileConfig: exampleProfileConfig });
-	expect(url.pathname).toEqual("/de/dbnav/journey/shorturl/knjgnaekgnaw");
+	expect(url.pathname).toEqual("/de/transitious/journey/shorturl/knjgnaekgnaw");
 });
 
 test(`GET ${route} api client non-api url parsing`, () => {

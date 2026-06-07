@@ -16,7 +16,7 @@ import { DbnavTicketUrlParser } from "$lib/server/profiles/profile-implementatio
  * via https://github.com/public-transport/db-vendo-client/tree/main/p/dbnav
  */
 export class DbnavProfile extends Profile<
-	"dbnav",
+	"empty",
 	| "longDistanceExpress"
 	| "longDistance"
 	| "regionalExpress"
@@ -29,7 +29,7 @@ export class DbnavProfile extends Profile<
 	| "ferry",
 	FptfOptionId
 > {
-	protected override readonly id = "dbnav";
+	protected override readonly id = "empty";
 	protected override readonly name = { de: "Deutschland" };
 	protected override readonly disabledNotice = {
 		name: {
