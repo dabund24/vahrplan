@@ -35,7 +35,10 @@ export class TransitiousProfile extends Profile<
 
 	protected override readonly id = "transitious" as const;
 	protected override readonly name = { de: "Weltweit" };
-	protected override readonly disabledNotice = undefined;
+	protected override readonly infoLink = {
+		name: { de: "Über die Datenquelle" },
+		url: "https://transitous.org/sources/",
+	};
 	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {

@@ -24,7 +24,6 @@ export class OebbProfile extends Profile<
 > {
 	protected override readonly id = "oebb";
 	protected override readonly name = { de: "Österreich" };
-	protected override readonly disabledNotice = undefined;
 	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
 	protected override readonly fallbackLanguage = "de";
 	protected override readonly products = {

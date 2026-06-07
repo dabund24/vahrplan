@@ -44,6 +44,15 @@
 		</Warning>
 	</div>
 {/if}
+{#if page.data.profileConfig.infoLink !== undefined}
+	<div class="content-wrapper">
+		<Warning>
+			<a target="_blank" href={page.data.profileConfig.infoLink.url}>
+				{page.data.profileConfig.infoLink.name}
+			</a>
+		</Warning>
+	</div>
+{/if}
 
 <style>
 	.scrollable {
@@ -83,7 +92,7 @@
 		}
 	}
 
-	a {
+	.hoverable {
 		text-decoration: none;
 	}
 
