@@ -26,6 +26,7 @@ jobs:
               uses: docker/metadata-action@v5
               with:
                   images: dabund24/vahrplan
+                  tags: type=semver,pattern={{version}}
 
             - name: Build and push image
               uses: docker/build-push-action@v5
