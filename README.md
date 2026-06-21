@@ -1,6 +1,6 @@
 # Vahrplan <img src="static/favicon.svg" align="right" height="100"/>
 
-![Docker Image Version](https://img.shields.io/docker/v/dabund24/vahrplan)
+[![Docker Image Version](https://img.shields.io/docker/v/dabund24/vahrplan)](https://hub.docker.com/repository/docker/dabund24/vahrplan)
 
 _**V**oll**a**utomatische **H**ilfe für **R**outen**plan**ung_ (vahrplan) is a web application assisting users of public transport in Germany on planning longer journeys with transfers.
 
