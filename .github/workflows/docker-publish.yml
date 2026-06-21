@@ -1,10 +1,10 @@
-name: Publish Docker Image
+name: CD
 
 on: push
 
 jobs:
-    build-and-push:
-        name: Build and Push to Docker Hub
+    push-to-docker-hub:
+        name: Push to Docker Hub
         runs-on: ubuntu-latest
 
         steps:
