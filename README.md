@@ -1,5 +1,7 @@
 # Vahrplan <img src="static/favicon.svg" align="right" height="100"/>
 
+![Docker Image Version](https://img.shields.io/docker/v/dabund24/vahrplan)
+
 _**V**oll**a**utomatische **H**ilfe für **R**outen**plan**ung_ (vahrplan) is a web application assisting users of public transport in Germany on planning longer journeys with transfers.
 
 Users can investigate possible transfers in a detailed way in order to prepare for delays/cancellations in advance and/or incorporate longer stays into their journey. This is achieved by fetching journeys between all selected stopovers from [`Hafas`](https://de.wikipedia.org/wiki/HAFAS) and visualizing how they relate to each other in an interactive diagram.
