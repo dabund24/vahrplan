@@ -1,8 +1,9 @@
 services:
-    sveltekit:
+    vahrplan:
         build:
             context: .
             dockerfile: Dockerfile
+        image: dabund24/vahrplan:${APP_VERSION:-latest}
         ports:
             - "${APP_PORT:-3000}:3000"
         depends_on:
