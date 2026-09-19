@@ -10,7 +10,7 @@
 	import { beforeNavigate } from "$app/navigation";
 	import IconJourneySelection from "$lib/components/icons/IconJourneySelection.svelte";
 	import { page } from "$app/state";
-	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
+	import { basePath } from "../../../routes/[profile=profileId]/basePath.svelte";
 	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
 	import IconTrip from "$lib/components/icons/IconTrip.svelte";
 	import { browser } from "$app/environment";

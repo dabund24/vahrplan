@@ -1,3 +1,5 @@
+import { getTextDirection } from "$lib/paraglide/runtime";
+import { paraglideMiddleware } from "$lib/paraglide/server";
 import { sequence } from "@sveltejs/kit/hooks";
 import { type Handle, json } from "@sveltejs/kit";
 import { RateLimiter } from "$lib/server/RateLimiter";
@@ -19,4 +21,16 @@ const userRateLimiting: Handle = function ({ event, resolve }) {
 	return result.content;
 };
 
-export const handle = sequence(userRateLimiting);
+const handleParaglide: Handle = ({ event, resolve }) =>
+	paraglideMiddleware(event.request, ({ request, locale }) => {
+		event.request = request;
+
+		return resolve(event, {
+			transformPageChunk: ({ html }) =>
+				html
+					.replace("%paraglide.lang%", locale)
+					.replace("%paraglide.dir%", getTextDirection(locale)),
+		});
+	});
+
+export const handle = sequence(userRateLimiting, handleParaglide);
