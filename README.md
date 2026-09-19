@@ -47,7 +47,7 @@ The app should now run on [`http://localhost:3000`](http://localhost:3000)
 
 Prerequisites:
 
-- `node.js >= 22`
+- `node.js >= 26`
 - `Valkey >= 6.2.0` (or `Redis >= 6.2.0`)
 
 Instructions:
