@@ -51,6 +51,7 @@
 <div class="container">
 	<button
 		title="Optionen"
+		style="anchor-name: --{id}-popover-button"
 		popovertarget="{id}-popover"
 		class="hoverable"
 		class:hoverable--accent={isAccent}
@@ -98,6 +99,7 @@
 	<div
 		id="{id}-popover"
 		popover="auto"
+		style="position-anchor: --{id}-popover-button"
 		class:expand-to-top={isExpandedToTop}
 		bind:this={popoverElement}
 		onclick={() => void popoverElement.hidePopover()}
