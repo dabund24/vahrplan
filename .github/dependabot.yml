@@ -11,5 +11,5 @@ updates:
           interval: "monthly"
 
       groups:
-        all-dependencies:
-          patterns: [ "*" ]
+          all-dependencies:
+              patterns: ["*"]
