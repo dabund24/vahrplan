@@ -1,4 +1,7 @@
 <script lang="ts">
+	import type { Pathname } from "$app/types";
+	import { resolve } from "$app/paths";
+	import { locales, localizeHref } from "$lib/paraglide/runtime";
 	import "./styles.css";
 	import Navbar from "$lib/components/navbar/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
@@ -59,6 +62,12 @@
 		</footer>
 	</main>
 	<Toasts news={data.news} />
+</div>
+
+<div style="display:none">
+	{#each locales as locale (locale)}
+		<a href={resolve(localizeHref(page.url.pathname, { locale }) as Pathname)}>{locale}</a>
+	{/each}
 </div>
 
 <style>

@@ -34,24 +34,24 @@ export class TransitousProfile extends Profile<
 	};
 
 	protected override readonly id = "transitous" as const;
-	protected override readonly name = { de: "Weltweit" };
+	protected override readonly name = { de: "Weltweit", en: "Global" };
 	protected override readonly infoLink = {
-		name: { de: "Über die Datenquelle" },
+		name: { de: "Über die Datenquelle", en: "About this data source" },
 		url: "https://transitous.org/sources/",
 	};
-	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
-	protected override readonly fallbackLanguage = "de";
+	protected override readonly supportedLanguages = ["de", "en"] as const satisfies string[];
+	protected override readonly fallbackLanguage = "en";
 	protected override readonly products = {
-		longDistanceExpress: { name: { de: "Hochgeschwindigkeits-Zug" } },
-		longDistance: { name: { de: "Fernzug/Nachtzug" } },
-		regionalExpress: { name: { de: "sonstige Schnellzüge" } },
-		regional: { name: { de: "Regionalzug" } },
-		suburban: { name: { de: "S-Bahn" } },
-		subway: { name: { de: "U-Bahn" } },
-		tram: { name: { de: "Straßenbahn" } },
-		bus: { name: { de: "Bus" } },
-		taxi: { name: { de: "Ruftaxi" } },
-		ferry: { name: { de: "Schiff" } },
+		longDistanceExpress: { name: { de: "Hochgeschwindigkeits-Zug", en: "High-Speed Train" } },
+		longDistance: { name: { de: "Fernzug/Nachtzug", en: "Long-Distance Train/Night Train" } },
+		regionalExpress: { name: { de: "sonstige Schnellzüge", en: "other Fast Trains" } },
+		regional: { name: { de: "Regionalzug", en: "Regional Train" } },
+		suburban: { name: { de: "S-Bahn", en: "Commuter Train" } },
+		subway: { name: { de: "U-Bahn", en: "Underground Railway" } },
+		tram: { name: { de: "Straßenbahn", en: "Tram" } },
+		bus: { name: { de: "Bus", en: "Bus" } },
+		taxi: { name: { de: "Ruftaxi", en: "On-Demand Service" } },
+		ferry: { name: { de: "Schiff", en: "Ferry" } },
 	};
 	protected override readonly options = {
 		bike: {},

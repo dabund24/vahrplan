@@ -1,10 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import { resolve } from "$app/paths";
+import { DEFAULT_LOCALE, DEFAULT_PROFILE } from "$lib/constants";
 
 export const load: PageServerLoad = () => {
-	redirect(
-		308,
-		resolve("/[lang=lang]/[profile=profileId]", { lang: "de", profile: "transitous" }),
-	);
+	redirect(308, `/${DEFAULT_LOCALE}/${DEFAULT_PROFILE}`);
 };

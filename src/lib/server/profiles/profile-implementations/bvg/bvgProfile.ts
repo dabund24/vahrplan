@@ -16,17 +16,17 @@ export class BvgProfile extends Profile<
 	FptfOptionId
 > {
 	protected override readonly id = "bvg";
-	protected override readonly name = { de: "Berlin" };
-	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
-	protected override readonly fallbackLanguage = "de";
+	protected override readonly name = { de: "Berlin", en: "Berlin" };
+	protected override readonly supportedLanguages = ["de", "en"] as const satisfies string[];
+	protected override readonly fallbackLanguage = "en";
 	protected override readonly products = {
-		longDistanceExpress: { name: { de: "Fernverkehr" } },
-		regional: { name: { de: "Regionalverkehr" } },
-		suburban: { name: { de: "S-Bahn" } },
-		subway: { name: { de: "U-Bahn" } },
-		tram: { name: { de: "Straßenbahn" } },
-		bus: { name: { de: "Bus" } },
-		ferry: { name: { de: "Fähre" } },
+		longDistanceExpress: { name: { de: "Fernverkehr", en: "Long-Distance Services" } },
+		regional: { name: { de: "Regionalverkehr", en: "Regional Services" } },
+		suburban: { name: Profile.translingual("S-Bahn") },
+		subway: { name: Profile.translingual("U-Bahn") },
+		tram: { name: { de: "Straßenbahn", en: "Tram" } },
+		bus: { name: { de: "Bus", en: "Bus" } },
+		ferry: { name: { de: "Fähre", en: "Ferry" } },
 	};
 	protected override readonly options = {
 		bike: {},

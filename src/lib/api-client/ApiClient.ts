@@ -6,12 +6,12 @@ import { json, type RequestEvent, type RouteDefinition } from "@sveltejs/kit";
 import { browser } from "$app/environment";
 import { untrack } from "svelte";
 import type { PlausibleProp } from "$lib/api-client/PlausiblePropSettableApiClient";
-import type { Language } from "../../params/lang";
 import type { ProfileId } from "../../params/profileId";
 import type { ProfileConfig } from "../server/profiles/profile";
-import { EMPTY_PROFILE } from "$lib/constants";
+import { DEFAULT_LOCALE, EMPTY_PROFILE } from "$lib/constants";
 import type { Ctx } from "$lib/types";
 import type { RouteId } from "$app/types";
+import  { extractLocaleFromUrl, type Locale } from "$lib/paraglide/runtime";
 
 export type RequestData = {
 	url: URL;
@@ -28,7 +28,7 @@ export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T
 
 type ParsedRequest<MethodT extends HttpMethod, ReqT> = {
 	reqContent: MethodT extends BodyfulHttpMethod ? Promise<ReqT> : ReqT;
-	lang: Language;
+	lang: Locale;
 	profile: ProfileId;
 };
 
@@ -36,8 +36,8 @@ type ParsedRequest<MethodT extends HttpMethod, ReqT> = {
  * this is the minimal constraint a generated RequestEvent type needs to satisfy in api client implementations
  */
 export type ApiClientRequestEvent = RequestEvent<
-	{ lang: Language; profile: ProfileId },
-	Extract<RouteId, `/[lang=lang]/[profile=profileId]/api/${string}`>
+	{ profile: ProfileId },
+	Extract<RouteId, `/[profile=profileId]/api/${string}`>
 >;
 
 export type MinimalRequestEvent<
@@ -47,7 +47,7 @@ export type MinimalRequestEvent<
 
 export type ServerRequestData = {
 	fetchFn?: typeof fetch;
-	lang: Language;
+	lang: Locale;
 	profileConfig: ProfileConfig;
 };
 
@@ -63,7 +63,7 @@ export abstract class ApiClient<
 	RequestEventT extends ApiClientRequestEvent,
 > {
 	protected abstract readonly methodType: MethodT;
-	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[lang=lang]/[profile=profileId]/api/${infer RouteT}`
+	protected abstract readonly route: RequestEventT["route"]["id"] extends `/[profile=profileId]/api/${infer RouteT}`
 		? RouteT
 		: never;
 	protected abstract readonly cacheMaxAge: number;
@@ -86,7 +86,7 @@ export abstract class ApiClient<
 			profileConfig: page.data.profileConfig ?? EMPTY_PROFILE,
 		}))) as ServerRequestData;
 		const { fetchFn, lang, profileConfig } = serverRequestData;
-		const apiPathBase: `/${Language}/${ProfileId}/api/` = `/${lang}/${profileConfig.id}/api/`;
+		const apiPathBase: `/${Locale}/${ProfileId}/api/` = `/${lang}/${profileConfig.id}/api/`;
 		let urlBase: string;
 		if (browser) {
 			urlBase = location.origin;
@@ -206,7 +206,7 @@ export abstract class ApiClient<
 		reqEvent: MinimalRequestEvent<MethodT, RequestEventT>,
 	): ParsedRequest<MethodT, ReqT> => ({
 		reqContent: this.parseRequestContent(reqEvent),
-		lang: reqEvent.params.lang,
+		lang: extractLocaleFromUrl(reqEvent.url) ?? DEFAULT_LOCALE,
 		profile: reqEvent.params.profile,
 	});
 }

@@ -1,19 +1,18 @@
 import type { RequestEvent } from "@sveltejs/kit";
 import { ApiClient, type HttpMethod } from "$lib/api-client/ApiClient";
-import { GetDiagramApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/getClient";
-import { PostDiagramScrollApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/scroll/[scrollDirection]/postClient";
-import { GetDiagramShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/shorturl/[shortDiagramId]/getClient";
-import { GetJourneyApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/getClient";
-import { GetJourneyShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/shorturl/[shortJourneyId]/getClient";
-import { GetLocationApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/location/[locationId]/getClient";
-import { GetLocationsApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/locations/[name]/getClient";
-import { PutDiagramShortApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/diagram/shorturl/putClient";
-import { PutJourneyShortUrlApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/journey/shorturl/putClient";
-import { GetProfileApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profile/getClient";
-import type { Language } from "../../params/lang";
+import { GetDiagramApiClient } from "../../routes/[profile=profileId]/api/diagram/getClient";
+import { PostDiagramScrollApiClient } from "../../routes/[profile=profileId]/api/diagram/scroll/[scrollDirection]/postClient";
+import { GetDiagramShortUrlApiClient } from "../../routes/[profile=profileId]/api/diagram/shorturl/[shortDiagramId]/getClient";
+import { GetJourneyApiClient } from "../../routes/[profile=profileId]/api/journey/getClient";
+import { GetJourneyShortUrlApiClient } from "../../routes/[profile=profileId]/api/journey/shorturl/[shortJourneyId]/getClient";
+import { GetLocationApiClient } from "../../routes/[profile=profileId]/api/location/[locationId]/getClient";
+import { GetLocationsApiClient } from "../../routes/[profile=profileId]/api/locations/[name]/getClient";
+import { PutDiagramShortApiClient } from "../../routes/[profile=profileId]/api/diagram/shorturl/putClient";
+import { PutJourneyShortUrlApiClient } from "../../routes/[profile=profileId]/api/journey/shorturl/putClient";
+import { GetProfileApiClient } from "../../routes/[profile=profileId]/api/profile/getClient";
 import type { ProfileId } from "../../params/profileId";
-import { GetProfilesApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/profiles/getClient";
-import { GetTripApiClient } from "../../routes/[lang=lang]/[profile=profileId]/api/trip/[tripId]/getClient";
+import { GetProfilesApiClient } from "../../routes/[profile=profileId]/api/profiles/getClient";
+import { GetTripApiClient } from "../../routes/[profile=profileId]/api/trip/[tripId]/getClient";
 
 /**
  * this contains all api paths without the preceding `/[lang]/[profile]/api/`
@@ -35,8 +34,7 @@ type ApiRouteShort =
 /**
  * turns a short api route type into a long one by prepending `/[lang]/[profile]/api/`
  */
-type LongRoute<ShortRoute extends ApiRouteShort> =
-	`/[lang=lang]/[profile=profileId]/api/${ShortRoute}`;
+type LongRoute<ShortRoute extends ApiRouteShort> = `/[profile=profileId]/api/${ShortRoute}`;
 
 /**
  * all api routes
@@ -90,7 +88,7 @@ function clientEntries<RouteT extends ApiRouteShort, ClientT>(
 		infer _A,
 		infer _B,
 		infer _C,
-		RequestEvent<infer _D extends { lang: Language; profile: ProfileId }, LongRoute<RouteT>>
+		RequestEvent<infer _D extends { profile: ProfileId }, LongRoute<RouteT>>
 	>
 		? new () => ClientT
 		: never,
@@ -98,7 +96,7 @@ function clientEntries<RouteT extends ApiRouteShort, ClientT>(
 	const client = new clientClass();
 	return {
 		[route]: client,
-		[`/[lang=lang]/[profile=profileId]/api/${route}` satisfies LongRoute<RouteT>]: client,
+		[`/[profile=profileId]/api/${route}` satisfies LongRoute<RouteT>]: client,
 	} as Record<RouteT | LongRoute<RouteT>, ClientT>; // in a perfect world, this assertion would not be necessary. Unfortunately, it is: https://stackoverflow.com/a/64433457
 }
 

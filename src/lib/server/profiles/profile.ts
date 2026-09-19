@@ -1,11 +1,11 @@
 import type { Product } from "$lib/types";
 import type { AssertUniqueTuple, EmptyRecord } from "$lib/utilityTypes";
 import type { ProfileId } from "../../../params/profileId";
-import type { Language } from "../../../params/lang";
 import type { JourneyDataService } from "$lib/server/journey-data/JourneyDataService";
 import { version } from "$app/environment";
+import { type Locale } from "$lib/paraglide/runtime";
 
-type LocaleString = Record<Language, string>;
+type LocaleString = Record<Locale, string>;
 
 type OptionValues = {
 	bike: boolean;
@@ -58,8 +58,8 @@ export type ProfileConfig = {
 	id: ProfileId;
 	/** human-readable, unique profile name; ideally the city or region where it can be used */
 	name: string;
-	lang: Language;
-	supportedLanguages: Language[];
+	lang: Locale;
+	supportedLanguages: Locale[];
 	products: Partial<Record<Product, NameWithKnownLocale<ProductConfig>>>;
 	options: {
 		[K in OptionId]?: NameWithKnownLocale<(typeof Profile.availableOptions)[K]>; // TODO option names are still hard coded!
@@ -82,15 +82,15 @@ export abstract class Profile<
 	 */
 	static readonly availableOptions = {
 		bike: {
-			name: { de: "Fahrradmitnahme" },
+			name: { de: "Fahrradmitnahme", en: "Bike Carriage" },
 			defaultValue: false,
 		},
 		accessible: {
-			name: { de: "Barrierefreies Reisen" },
+			name: { de: "Barrierefreies Reisen", en: "Accessible Connections" },
 			defaultValue: false,
 		},
 		maxTransfers: {
-			name: { de: "Maximalanzahl an Umstiegen" },
+			name: { de: "Maximalanzahl an Umstiegen", en: "Max. Transfers" },
 			possibleValues: [0, 1, 2, 3, 4, 5, -1],
 			defaultValue: -1,
 			optionNames: {
@@ -100,11 +100,11 @@ export abstract class Profile<
 				3: { name: "3" },
 				4: { name: "4" },
 				5: { name: "5" },
-				[-1]: { name: "beliebig" },
+				[-1]: { name: "∞" },
 			},
 		},
 		minTransferTime: {
-			name: { de: "Mindest-Umsteigezeit" },
+			name: { de: "Mindest-Umsteigezeit", en: "Min. Transfer Time" },
 			possibleValues: [0, 2, 5, 10, 15, 20, 30, 40, 50, 60],
 			defaultValue: 0,
 			optionNames: {
@@ -132,8 +132,8 @@ export abstract class Profile<
 	protected readonly disabledNotice?: DisabledNotice = undefined;
 	protected readonly infoLink?: InfoLink = undefined;
 	/** all languages the upstream api can return responses of */
-	protected abstract readonly supportedLanguages: Language[];
-	protected abstract readonly fallbackLanguage: Language;
+	protected abstract readonly supportedLanguages: Locale[];
+	protected abstract readonly fallbackLanguage: Locale;
 	protected abstract readonly products: Record<ProductT, ProductConfig>;
 	protected abstract readonly options: Record<OptionT, EmptyRecord>;
 
@@ -148,7 +148,7 @@ export abstract class Profile<
 	 * @sealed
 	 */
 	private assignLangNames<T extends Record<string, { name: LocaleString }>>(
-		lang: Language,
+		lang: Locale,
 		obj: T,
 	): { [K in keyof T]: NameWithKnownLocale<T[K]> } {
 		const res = {} as { [K in keyof T]: NameWithKnownLocale<T[K]> };
@@ -166,7 +166,7 @@ export abstract class Profile<
 	 * @sealed
 	 */
 	protected static translingual(name: string): LocaleString {
-		return { de: name };
+		return { de: name, en: name };
 	}
 
 	/**
@@ -174,7 +174,7 @@ export abstract class Profile<
 	 * @param lang
 	 * @sealed
 	 */
-	public configOfLanguage(lang: Language): ProfileConfig {
+	public configOfLanguage(lang: Locale): ProfileConfig {
 		const opt = {} as Pick<typeof Profile.availableOptions, OptionT>;
 		for (const optionKey in this.options) {
 			opt[optionKey] = Profile.availableOptions[optionKey];

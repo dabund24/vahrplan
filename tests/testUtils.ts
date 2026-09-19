@@ -96,7 +96,7 @@ export const exampleProfileConfig2: ProfileConfig = {
 					name: "5",
 				},
 				"-1": {
-					name: "beliebig",
+					name: "∞",
 				},
 			},
 		},

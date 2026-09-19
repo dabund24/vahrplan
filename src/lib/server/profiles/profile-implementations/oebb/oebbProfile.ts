@@ -23,20 +23,20 @@ export class OebbProfile extends Profile<
 	FptfOptionId
 > {
 	protected override readonly id = "oebb";
-	protected override readonly name = { de: "Österreich" };
-	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
-	protected override readonly fallbackLanguage = "de";
+	protected override readonly name = { de: "Österreich", en: "Austria" };
+	protected override readonly supportedLanguages = ["de", "en"] as const satisfies string[];
+	protected override readonly fallbackLanguage = "en";
 	protected override readonly products = {
 		longDistanceExpress: { name: Profile.translingual("RailJet/InterCityExpress") },
 		longDistance: { name: Profile.translingual("InterCity/EuroCity/InterRegio") },
-		regionalExpress: { name: { de: "Nacht-/Schnellzüge" } },
-		regional: { name: { de: "Regionalzüge" } },
-		suburban: { name: { de: "S-Bahn" } },
-		subway: { name: { de: "U-Bahn" } },
-		tram: { name: { de: "Straßenbahn" } },
-		bus: { name: { de: "Bus" } },
-		taxi: { name: { de: "Ruftaxi" } },
-		ferry: { name: { de: "Schiff" } },
+		regionalExpress: { name: { de: "Nacht-/Schnellzug", en: "Night Train/Fast Train" } },
+		regional: { name: { de: "Regionalzug", en: "Regional Train" } },
+		suburban: { name: Profile.translingual("S-Bahn") },
+		subway: { name: { de: "U-Bahn", en: "Underground Railway" } },
+		tram: { name: { de: "Straßenbahn", en: "Tram" } },
+		bus: { name: { de: "Bus", en: "Bus" } },
+		taxi: { name: { de: "Ruftaxi", en: "On-Demand Service" } },
+		ferry: { name: { de: "Schiff", en: "Ferry" } },
 	};
 	protected override readonly options = {
 		bike: {},

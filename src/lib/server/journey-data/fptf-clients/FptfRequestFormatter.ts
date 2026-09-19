@@ -16,7 +16,7 @@ import type {
 	TripOptions,
 } from "hafas-client";
 import type { PossibleOptionValues } from "../../profiles/profile";
-import type { Language } from "../../../../params/lang";
+import type { Locale } from "$lib/paraglide/runtime";
 
 export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataRequestFormatter<
 	ProductT,
@@ -36,7 +36,7 @@ export class FptfRequestFormatter<ProductT extends Product> extends JourneyDataR
 	};
 
 	private readonly formatFptfOptions = (
-		lang: Language,
+		lang: Locale,
 		{
 			timeData,
 			filters,
