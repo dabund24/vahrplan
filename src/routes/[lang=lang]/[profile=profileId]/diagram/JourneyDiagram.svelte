@@ -19,9 +19,11 @@
 		<div class="flex-row diagram-box">
 			{#if node.type === "journeyNode"}
 				{@const subJourney = columns[node.columnIndex].journeys[node.rowIndex]}
+				{@const nextJourney = columns[node.columnIndex].journeys.at(node.rowIndex + 1)}
 				{@const isNewElement = isNew[node.columnIndex][node.rowIndex]}
 				<JourneyDiagramElement
 					{subJourney}
+					{nextJourney}
 					columnIndex={node.columnIndex}
 					rowIndex={node.rowIndex}
 					isNew={isNewElement}
