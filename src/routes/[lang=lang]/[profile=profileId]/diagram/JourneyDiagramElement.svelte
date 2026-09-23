@@ -70,7 +70,7 @@
 		</span>
 	</button>
 	{#if isNewDate()}
-		<JourneyDiagramDateIndicator time={subJourney.departureTime.time} />
+		<JourneyDiagramDateIndicator time={nextJourney.departureTime.time} />
 	{/if}
 </div>
 
