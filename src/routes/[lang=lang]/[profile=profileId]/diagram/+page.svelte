@@ -30,6 +30,8 @@
 	import SvgDiagramSkeleton from "./SvgDiagramSkeleton.svelte";
 	import ProfileChips from "$lib/components/profiles/ProfileChips.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
+	import JourneyDiagramDateIndicator from "./JourneyDiagramDateIndicator.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -81,6 +83,15 @@
 		}
 	}
 
+	function isFirstDepartureDateDiffers(columns: JourneyNodesWithRefs[]): boolean {
+		const firstDepartureDate = columns[0]?.journeys[0]?.departureTime.time;
+		const formDataDate = displayedFormData?.timeData.time;
+		return (
+			(firstDepartureDate ?? formDataDate !== undefined) &&
+			new Date(firstDepartureDate).getDate() !== new Date(formDataDate).getDate()
+		);
+	}
+
 	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
 		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent },
 		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent },
@@ -101,6 +112,9 @@
 			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
 			scrollDirection="earlier"
 		/>
+		{#if isFirstDepartureDateDiffers(columns)}
+			<JourneyDiagramDateIndicator time={columns[0]?.journeys[0]?.departureTime.time} />
+		{/if}
 		<JourneyDiagram nodes={tree} {columns} {isNew} />
 		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
 	{:catch err}
