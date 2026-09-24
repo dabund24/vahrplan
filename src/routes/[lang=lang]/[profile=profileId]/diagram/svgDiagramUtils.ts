@@ -89,3 +89,25 @@ function formatTimeMark(t: number, minTime: number, maxTime: number): TimeMark {
 	const topInsetPercent = (100 * yCoordinate) / yRange;
 	return { content, newDateContent, yCoordinate, topInsetPercent };
 }
+
+/**
+ * Compute if some, and if some, what initial date should be displayed above the svg diagram
+ *
+ * @param minMarkTime earliest possible time mark
+ * @param displayedFormDate date selected in the main form
+ * @param timeMarks time marks
+ */
+export function computeDisplayedInitialDate(
+	minMarkTime: number,
+	displayedFormDate: string,
+	timeMarks: TimeMark[],
+): string | undefined {
+	const minDate = new Date(minMarkTime * MINUTE_IN_MS);
+	if (
+		minDate.getDate() === new Date(displayedFormDate).getDate() ||
+		timeMarks.at(0)?.newDateContent !== undefined
+	) {
+		return undefined;
+	}
+	return dateToShortString(minMarkTime * MINUTE_IN_MS);
+}

@@ -3,9 +3,14 @@
 	import ProgressIndicator from "$lib/components/ProgressIndicator.svelte";
 	import { MINUTE_IN_MS } from "$lib/constants";
 
-	type Props = { timeMarks: TimeMark[]; minTime: number; maxTime: number };
+	type Props = {
+		timeMarks: TimeMark[];
+		minTime: number;
+		maxTime: number;
+		displayedInitialDate: string | undefined;
+	};
 
-	const { timeMarks, minTime, maxTime }: Props = $props();
+	const { timeMarks, minTime, maxTime, displayedInitialDate }: Props = $props();
 </script>
 
 <div class="time-marks">
@@ -26,6 +31,11 @@
 			</div>
 		</div>
 	{/each}
+	{#if displayedInitialDate !== undefined}
+		<div class="time-mark new-date" style:top="calc(0% - 0.5rem)">
+			<span class="centering-dot">.</span>{displayedInitialDate}
+		</div>
+	{/if}
 </div>
 
 <style>

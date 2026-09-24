@@ -137,7 +137,7 @@
 			isTextHidden={true}
 			scrollDirection="earlier"
 		/>
-		<SvgDiagram {svgData} {isNew} />
+		<SvgDiagram {svgData} {isNew} formDate={displayedFormData.timeData.time} />
 		<ScrollButton
 			isClickable={(columns[0]?.laterRef ?? "") !== ""}
 			isTextHidden={true}

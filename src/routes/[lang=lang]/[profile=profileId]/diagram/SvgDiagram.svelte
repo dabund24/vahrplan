@@ -6,13 +6,15 @@
 	import SvgNowLine from "./SvgNowLine.svelte";
 	import SvgDiagramWrapper from "./SvgDiagramWrapper.svelte";
 	import type { DiagramData } from "$lib/state/diagramData.svelte.js";
+	import { computeDisplayedInitialDate } from "./svgDiagramUtils.ts";
 
 	type Props = {
 		svgData: SvgData;
 		isNew: DiagramData["isNew"];
+		formDate: string;
 	};
 
-	const { svgData, isNew }: Props = $props();
+	const { svgData, isNew, formDate }: Props = $props();
 	const { columns, minTime, maxTime, minutesPerHeight, timeMarksData } = $derived(svgData);
 
 	const { selectedJourneys } = $derived(getSelectedData());
@@ -39,9 +41,20 @@
 	});
 
 	const timeMarks = $derived([...timeMarkIt(timeMarksData, minTime, maxTime)]);
+
+	const displayedInitialDate = $derived(
+		computeDisplayedInitialDate(minTime, formDate, timeMarks),
+	);
 </script>
 
-<SvgDiagramWrapper columnCount={columns.length} {minTime} {maxTime} {timeMarks} {minutesPerHeight}>
+<SvgDiagramWrapper
+	columnCount={columns.length}
+	{minTime}
+	{maxTime}
+	{timeMarks}
+	{minutesPerHeight}
+	{displayedInitialDate}
+>
 	{#snippet children(yMin: number, ySize: number)}
 		<SvgNowLine {minTime} {maxTime} columnCount={columns.length} />
 		<g stroke-linecap="round" fill="none" stroke-linejoin="round" stroke-width="2">
