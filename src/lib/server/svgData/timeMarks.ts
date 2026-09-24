@@ -12,6 +12,7 @@ export function computeTimeMarksData(
 }
 
 const timeMarkIntervals = [
+	24 * HOUR_IN_MINUTES,
 	12 * HOUR_IN_MINUTES,
 	8 * HOUR_IN_MINUTES,
 	6 * HOUR_IN_MINUTES,
