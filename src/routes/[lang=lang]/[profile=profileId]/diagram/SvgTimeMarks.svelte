@@ -56,6 +56,7 @@
 		background-color: var(--background-color--transparent);
 		border-radius: 50vh;
 		margin: auto;
+        width: fit-content;
 	}
 
 	.time-mark,
