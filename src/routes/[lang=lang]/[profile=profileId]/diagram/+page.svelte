@@ -83,13 +83,19 @@
 		}
 	}
 
-	function isFirstDepartureDateDiffers(columns: JourneyNodesWithRefs[]): boolean {
-		const firstDepartureDate = columns[0]?.journeys[0]?.departureTime.time;
-		const formDataDate = displayedFormData?.timeData.time;
-		return (
-			(firstDepartureDate ?? formDataDate !== undefined) &&
+	function computeFirstDepartureDifferentDate(
+		columns: JourneyNodesWithRefs[],
+	): string | undefined {
+		const firstDepartureDate = columns[0]?.journeys[0]?.departureTime?.time;
+		const formDataDate = displayedFormData?.timeData?.time;
+		if (
+			firstDepartureDate !== undefined &&
+			formDataDate !== undefined &&
 			new Date(firstDepartureDate).getDate() !== new Date(formDataDate).getDate()
-		);
+		) {
+			return firstDepartureDate;
+		}
+		return undefined;
 	}
 
 	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
@@ -112,8 +118,9 @@
 			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
 			scrollDirection="earlier"
 		/>
-		{#if isFirstDepartureDateDiffers(columns)}
-			<JourneyDiagramDateIndicator time={columns[0]?.journeys[0]?.departureTime.time} />
+		{@const firstDepartureDifferentDate = computeFirstDepartureDifferentDate(columns)}
+		{#if firstDepartureDifferentDate !== undefined}
+			<JourneyDiagramDateIndicator time={firstDepartureDifferentDate} />
 		{/if}
 		<JourneyDiagram nodes={tree} {columns} {isNew} />
 		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
@@ -137,7 +144,7 @@
 			isTextHidden={true}
 			scrollDirection="earlier"
 		/>
-		<SvgDiagram {svgData} {isNew} formDate={displayedFormData.timeData.time} />
+		<SvgDiagram {svgData} {isNew} formDate={displayedFormData?.timeData.time} />
 		<ScrollButton
 			isClickable={(columns[0]?.laterRef ?? "") !== ""}
 			isTextHidden={true}

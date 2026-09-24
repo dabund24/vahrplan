@@ -5,13 +5,13 @@
 	import { svgJourneyToPolylinePoints, timeMarkIt } from "./svgDiagramUtils";
 	import SvgNowLine from "./SvgNowLine.svelte";
 	import SvgDiagramWrapper from "./SvgDiagramWrapper.svelte";
-	import type { DiagramData } from "$lib/state/diagramData.svelte.js";
-	import { computeDisplayedInitialDate } from "./svgDiagramUtils.ts";
+	import type { DiagramData } from "$lib/state/diagramData.svelte";
+	import { computeDisplayedInitialDate } from "./svgDiagramUtils";
 
 	type Props = {
 		svgData: SvgData;
 		isNew: DiagramData["isNew"];
-		formDate: string;
+		formDate: string | undefined;
 	};
 
 	const { svgData, isNew, formDate }: Props = $props();

@@ -99,11 +99,12 @@ function formatTimeMark(t: number, minTime: number, maxTime: number): TimeMark {
  */
 export function computeDisplayedInitialDate(
 	minMarkTime: number,
-	displayedFormDate: string,
+	displayedFormDate: string | undefined,
 	timeMarks: TimeMark[],
 ): string | undefined {
 	const minDate = new Date(minMarkTime * MINUTE_IN_MS);
 	if (
+		displayedFormDate === undefined ||
 		minDate.getDate() === new Date(displayedFormDate).getDate() ||
 		timeMarks.at(0)?.newDateContent !== undefined
 	) {

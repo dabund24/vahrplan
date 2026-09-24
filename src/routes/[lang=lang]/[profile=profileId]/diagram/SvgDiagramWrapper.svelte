@@ -11,7 +11,7 @@
 		maxTime: number;
 		timeMarks: TimeMark[];
 		minutesPerHeight: number;
-		displayedInitialDate: string | undefined;
+		displayedInitialDate?: string;
 	};
 
 	const {

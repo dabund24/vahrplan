@@ -28,16 +28,21 @@
 		return Math.log2(duration + 2);
 	}
 
-	function isNewDate(): boolean {
-		if (nextJourney === undefined) {
-			return false;
+	function computeNextJourneyDifferentDateDeparture(): string | undefined {
+		const departure = subJourney.departureTime?.time;
+		const nextJourneyDeparture = nextJourney?.departureTime?.time;
+		if (
+			departure === undefined ||
+			nextJourneyDeparture === undefined ||
+			new Date(departure).getDate() === new Date(nextJourneyDeparture).getDate()
+		) {
+			return undefined;
 		}
 
-		return (
-			new Date(subJourney.departureTime.time).getDate() !==
-			new Date(nextJourney.departureTime.time).getDate()
-		);
+		return nextJourneyDeparture;
 	}
+
+	const nextJourneyDifferentDepartureDate = $derived(computeNextJourneyDifferentDateDeparture());
 </script>
 
 <div class="flex-column diagram-element-wrapper">
@@ -69,8 +74,8 @@
 			<Time time={{ arrival: subJourney.arrivalTime }} />
 		</span>
 	</button>
-	{#if isNewDate()}
-		<JourneyDiagramDateIndicator time={nextJourney.departureTime.time} />
+	{#if nextJourneyDifferentDepartureDate !== undefined}
+		<JourneyDiagramDateIndicator time={nextJourneyDifferentDepartureDate} />
 	{/if}
 </div>
 
