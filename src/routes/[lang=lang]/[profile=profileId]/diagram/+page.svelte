@@ -30,6 +30,8 @@
 	import SvgDiagramSkeleton from "./SvgDiagramSkeleton.svelte";
 	import ProfileChips from "$lib/components/profiles/ProfileChips.svelte";
 	import { getSelectedData } from "$lib/state/selectedData.svelte";
+	import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
+	import JourneyDiagramDateIndicator from "./JourneyDiagramDateIndicator.svelte";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -81,6 +83,21 @@
 		}
 	}
 
+	function computeFirstDepartureDifferentDate(
+		columns: JourneyNodesWithRefs[],
+	): string | undefined {
+		const firstDepartureDate = columns[0]?.journeys[0]?.departureTime?.time;
+		const formDataDate = displayedFormData?.timeData?.time;
+		if (
+			firstDepartureDate !== undefined &&
+			formDataDate !== undefined &&
+			new Date(firstDepartureDate).getDate() !== new Date(formDataDate).getDate()
+		) {
+			return firstDepartureDate;
+		}
+		return undefined;
+	}
+
 	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
 		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent },
 		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent },
@@ -101,6 +118,10 @@
 			isClickable={(columns[0]?.earlierRef ?? "") !== ""}
 			scrollDirection="earlier"
 		/>
+		{@const firstDepartureDifferentDate = computeFirstDepartureDifferentDate(columns)}
+		{#if firstDepartureDifferentDate !== undefined}
+			<JourneyDiagramDateIndicator time={firstDepartureDifferentDate} />
+		{/if}
 		<JourneyDiagram nodes={tree} {columns} {isNew} />
 		<ScrollButton isClickable={(columns[0]?.laterRef ?? "") !== ""} scrollDirection="later" />
 	{:catch err}
@@ -123,7 +144,7 @@
 			isTextHidden={true}
 			scrollDirection="earlier"
 		/>
-		<SvgDiagram {svgData} {isNew} />
+		<SvgDiagram {svgData} {isNew} formDate={displayedFormData?.timeData.time} />
 		<ScrollButton
 			isClickable={(columns[0]?.laterRef ?? "") !== ""}
 			isTextHidden={true}

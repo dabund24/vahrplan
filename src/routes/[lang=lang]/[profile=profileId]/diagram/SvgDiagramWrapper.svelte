@@ -11,10 +11,18 @@
 		maxTime: number;
 		timeMarks: TimeMark[];
 		minutesPerHeight: number;
+		displayedInitialDate?: string;
 	};
 
-	const { children, columnCount, maxTime, minTime, timeMarks, minutesPerHeight }: Props =
-		$props();
+	const {
+		children,
+		columnCount,
+		maxTime,
+		minTime,
+		timeMarks,
+		minutesPerHeight,
+		displayedInitialDate,
+	}: Props = $props();
 
 	let svgElement: SVGSVGElement;
 
@@ -48,7 +56,7 @@
 	style:--diagram-height="calc((1rem * var(--diagram--top-bottom-offset--rem) /
 	{diagramHeightOffsetRatio}) * {diagramScaleY})"
 >
-	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />
+	<SvgTimeMarks {timeMarks} {minTime} {maxTime} {displayedInitialDate} />
 	<svg
 		class="main-svg"
 		viewBox="-0.05 {yMin} {columnCount + 0.1} {ySize}"
@@ -77,7 +85,7 @@
 			{@render children(yMin, ySize)}
 		</g>
 	</svg>
-	<SvgTimeMarks {timeMarks} {minTime} {maxTime} />
+	<SvgTimeMarks {timeMarks} {minTime} {maxTime} {displayedInitialDate} />
 </div>
 
 <style>

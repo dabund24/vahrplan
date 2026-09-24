@@ -127,6 +127,16 @@ export function dateToString(date: string | undefined): string {
 	});
 }
 
+export function dateToShortString(date: string | number | undefined): string {
+	if (date === undefined) {
+		return "";
+	}
+	return new Date(date).toLocaleDateString("de-DE", {
+		day: "2-digit",
+		month: "2-digit",
+	});
+}
+
 export function dateToInputDate(date: string): string {
 	const dateObject = new Date(date);
 	const timezoneOffset = dateObject.getTimezoneOffset() * MINUTE_IN_MS;

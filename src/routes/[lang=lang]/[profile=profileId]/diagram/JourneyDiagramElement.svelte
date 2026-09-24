@@ -2,15 +2,17 @@
 	import type { SubJourney } from "$lib/types";
 	import Time from "$lib/components/Time.svelte";
 	import { getSelectedData, toggleJourneySelection } from "$lib/state/selectedData.svelte.js";
+	import JourneyDiagramDateIndicator from "./JourneyDiagramDateIndicator.svelte";
 
 	type Props = {
 		subJourney: SubJourney;
+		nextJourney?: SubJourney;
 		isNew: boolean;
 		columnIndex: number;
 		rowIndex: number;
 	};
 
-	let { subJourney, isNew, columnIndex, rowIndex }: Props = $props();
+	let { subJourney, nextJourney, isNew, columnIndex, rowIndex }: Props = $props();
 
 	const selectedData = $derived(getSelectedData());
 
@@ -25,36 +27,57 @@
 	function getLegWidth(duration: number): number {
 		return Math.log2(duration + 2);
 	}
+
+	function computeNextJourneyDifferentDateDeparture(): string | undefined {
+		const departure = subJourney.departureTime?.time;
+		const nextJourneyDeparture = nextJourney?.departureTime?.time;
+		if (
+			departure === undefined ||
+			nextJourneyDeparture === undefined ||
+			new Date(departure).getDate() === new Date(nextJourneyDeparture).getDate()
+		) {
+			return undefined;
+		}
+
+		return nextJourneyDeparture;
+	}
+
+	const nextJourneyDifferentDepartureDate = $derived(computeNextJourneyDifferentDateDeparture());
 </script>
 
-<button
-	type="button"
-	class="flex-row diagram-element hoverable"
-	class:is-new={isNew}
-	aria-current={isSelected}
-	onclick={handleDiagramElementClick}
-	title="Verbindung aus-/abwählen"
->
-	<span class="time">
-		<Time time={{ departure: subJourney.departureTime }} />
-	</span>
-	<span class="flex-row legs">
-		{#each displayedBlocks as block (block.blockKey)}
-			<svelte:element
-				this={block.attribute === "cancelled" ? "s" : "span"}
-				class="leg product--{block.product}"
-				class:cancelled={block.attribute === "cancelled"}
-				style="--duration: {getLegWidth(block.duration)}"
-			>
-				<span class="leg__name--long">{block.name}</span>
-				<span class="leg__name--short">{block.productName}</span>
-			</svelte:element>
-		{/each}
-	</span>
-	<span class="time">
-		<Time time={{ arrival: subJourney.arrivalTime }} />
-	</span>
-</button>
+<div class="flex-column diagram-element-wrapper">
+	<button
+		type="button"
+		class="flex-row diagram-element hoverable"
+		class:is-new={isNew}
+		aria-current={isSelected}
+		onclick={handleDiagramElementClick}
+		title="Verbindung aus-/abwählen"
+	>
+		<span class="time">
+			<Time time={{ departure: subJourney.departureTime }} />
+		</span>
+		<span class="flex-row legs">
+			{#each displayedBlocks as block (block.blockKey)}
+				<svelte:element
+					this={block.attribute === "cancelled" ? "s" : "span"}
+					class="leg product--{block.product}"
+					class:cancelled={block.attribute === "cancelled"}
+					style="--duration: {getLegWidth(block.duration)}"
+				>
+					<span class="leg__name--long">{block.name}</span>
+					<span class="leg__name--short">{block.productName}</span>
+				</svelte:element>
+			{/each}
+		</span>
+		<span class="time">
+			<Time time={{ arrival: subJourney.arrivalTime }} />
+		</span>
+	</button>
+	{#if nextJourneyDifferentDepartureDate !== undefined}
+		<JourneyDiagramDateIndicator time={nextJourneyDifferentDepartureDate} />
+	{/if}
+</div>
 
 <style>
 	.time {
@@ -96,9 +119,13 @@
 
 	:global(
 			.diagram-box:has(
-				> .diagram-column > :first-child > .diagram-element[aria-current="true"]
+				> .diagram-column
+					> :first-child
+					> .diagram-element-wrapper
+					> .diagram-element[aria-current="true"]
 			)
 		)
+		> .diagram-element-wrapper
 		> .diagram-element[aria-current="true"] {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
@@ -106,10 +133,11 @@
 	}
 
 	:global(
-			.diagram-box:has(> .diagram-element[aria-current="true"])
+			.diagram-box:has(> .diagram-element-wrapper > .diagram-element[aria-current="true"])
 				> .diagram-column
 				> :first-child
 		)
+		> .diagram-element-wrapper
 		> .diagram-element[aria-current="true"] {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;

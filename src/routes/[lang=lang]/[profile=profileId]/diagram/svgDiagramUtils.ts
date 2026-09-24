@@ -4,7 +4,7 @@ import type {
 	SvgData,
 	SvgPosition,
 } from "$lib/server/svgData/svgData.server";
-import { timeToString } from "$lib/util";
+import { dateToShortString, timeToString } from "$lib/util";
 import { MINUTE_IN_MS } from "$lib/constants";
 
 export function svgJourneyToPolylinePoints(
@@ -53,6 +53,7 @@ export function formatSvgPoint([x, y]: SvgPosition, columnIndex: number, minTime
 
 export type TimeMark = {
 	content: string;
+	newDateContent?: string;
 	yCoordinate: number;
 	topInsetPercent: number;
 };
@@ -78,9 +79,36 @@ export function* timeMarkIt(
 }
 
 function formatTimeMark(t: number, minTime: number, maxTime: number): TimeMark {
-	const content = timeToString(t * MINUTE_IN_MS);
+	const timeStamp = t * MINUTE_IN_MS;
+	const content = timeToString(timeStamp);
+	const date = new Date(timeStamp);
+	const newDateContent =
+		date.getMinutes() === 0 && date.getHours() === 0 ? dateToShortString(timeStamp) : undefined;
 	const yCoordinate = t - minTime;
 	const yRange = maxTime - minTime;
 	const topInsetPercent = (100 * yCoordinate) / yRange;
-	return { content, yCoordinate, topInsetPercent };
+	return { content, newDateContent, yCoordinate, topInsetPercent };
+}
+
+/**
+ * Compute if some, and if some, what initial date should be displayed above the svg diagram
+ *
+ * @param minMarkTime earliest possible time mark
+ * @param displayedFormDate date selected in the main form
+ * @param timeMarks time marks
+ */
+export function computeDisplayedInitialDate(
+	minMarkTime: number,
+	displayedFormDate: string | undefined,
+	timeMarks: TimeMark[],
+): string | undefined {
+	const minDate = new Date(minMarkTime * MINUTE_IN_MS);
+	if (
+		displayedFormDate === undefined ||
+		minDate.getDate() === new Date(displayedFormDate).getDate() ||
+		timeMarks.at(0)?.newDateContent !== undefined
+	) {
+		return undefined;
+	}
+	return dateToShortString(minMarkTime * MINUTE_IN_MS);
 }

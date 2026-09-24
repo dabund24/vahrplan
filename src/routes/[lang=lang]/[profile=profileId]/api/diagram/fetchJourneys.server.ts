@@ -3,6 +3,7 @@ import { type JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataS
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { DIAGRAM_COLUMN_MAX_REQUESTS, MAX_DATE } from "$lib/constants";
 import { VahrplanError } from "$lib/VahrplanError";
+import { dateDifference } from "$lib/util";
 
 type RequestData = {
 	fromTo: { from: string; to: string };
@@ -117,12 +118,14 @@ async function fetchUntil(
 		timeData.time !== ""
 	);
 
-	// sort by departure time
-	result.journeys.sort(
-		(a, b) =>
-			new Date(a.departureTime?.time ?? 0).getTime() -
-			new Date(b.departureTime?.time ?? 0).getTime(),
-	);
+	// sort by departure time and use arrival time as tiebreaker
+	result.journeys.sort((a, b) => {
+		const departureDiff = dateDifference(b.departureTime?.time, a.departureTime?.time);
+		if (departureDiff !== undefined && departureDiff !== 0) {
+			return departureDiff;
+		}
+		return dateDifference(b.arrivalTime?.time, a.arrivalTime?.time) ?? 0;
+	});
 
 	return new VahrplanSuccess(result);
 }
