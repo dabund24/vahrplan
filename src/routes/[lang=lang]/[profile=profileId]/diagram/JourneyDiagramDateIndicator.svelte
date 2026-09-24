@@ -16,7 +16,7 @@
 <style>
 	.line--regular {
 		background-color: var(--foreground-color--transparent);
-        width: 2rem;
+		width: 2rem;
 	}
 
 	.date-indicator {
