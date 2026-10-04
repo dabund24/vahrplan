@@ -4,6 +4,7 @@
 	import NavigationDrawer from "$lib/components/navbar/NavigationDrawer.svelte";
 	import { basePath } from "../../../routes/[profile=profileId]/basePath.svelte";
 	import { page } from "$app/state";
+	import LanguageSelection from "$lib/components/navbar/LanguageSelection.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -20,6 +21,7 @@
 		Vahrplan
 	</a>
 
+	<LanguageSelection />
 	<NavigationDrawer {currentRoute} {diagramUrl} {journeyUrl} />
 </div>
 
