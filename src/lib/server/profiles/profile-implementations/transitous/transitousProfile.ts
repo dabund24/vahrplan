@@ -34,7 +34,7 @@ export class TransitousProfile extends Profile<
 	};
 
 	protected override readonly id = "transitous" as const;
-	protected override readonly name = { de: "Weltweit", en: "Global" };
+	protected override readonly name = { de: "Weltweit", en: "Worldwide" };
 	protected override readonly infoLink = {
 		name: { de: "Über die Datenquelle", en: "About this data source" },
 		url: "https://transitous.org/sources/",
