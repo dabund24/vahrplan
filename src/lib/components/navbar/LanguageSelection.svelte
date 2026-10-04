@@ -8,7 +8,7 @@
 	};
 </script>
 
-<button popovertarget="language-selection" class="hoverable">
+<button popovertarget="language-selection" aria-label="Languages" class="hoverable">
 	<strong>{page.data.lang.toUpperCase()}</strong>
 </button>
 
@@ -17,6 +17,7 @@
 		<a
 			href={localizeHref(page.url.pathname, { locale })}
 			class="hoverable"
+			aria-current={page.data.lang === locale}
 			data-sveltekit-reload
 		>
 			{localeNames[locale]}
@@ -49,6 +50,10 @@
 
 	a {
 		text-decoration: none;
+		padding: 0.5rem 1rem;
+		&[aria-current="true"] {
+			border-color: var(--accent-color);
+		}
 	}
 
 	@media screen and (min-width: 1000px) {
