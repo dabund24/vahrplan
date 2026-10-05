@@ -4,6 +4,7 @@
 	import IconUpArrow from "$lib/components/icons/IconUpArrow.svelte";
 	import IconDownArrow from "$lib/components/icons/IconDownArrow.svelte";
 	import { toast } from "$lib/state/toastStore";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		isClickable: boolean;
@@ -17,7 +18,7 @@
 
 	function scroll(): void {
 		if (!isClickable) {
-			toast("Suche nach mehr Verbindungen nicht möglich.", "red");
+			toast(m.cannot_scroll(), "red");
 			return;
 		}
 		void scrollDiagramData(scrollDirection);

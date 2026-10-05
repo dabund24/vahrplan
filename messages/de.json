@@ -1,4 +1,24 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from de!"
+
+	"add_stop": "Stopp hinzufügen",
+	"remove_stop": "Stopp entfernen",
+	"reverse_stops": "Stopp-Reihenfolge umkehren",
+	"start_location": "Start",
+	"via": "Zwischenstopp",
+	"destination": "Ziel",
+
+	"max_via_warning": "Maximalanzahl Zwischenstopps erreicht",
+	"added_some_bookmark": "Lesezeichen für {bookmark} hinzugefügt",
+	"removed_some_bookmark": "Lesezeichen für {bookmark} entfernt",
+	"added_bookmark": "Lesezeichen hinzugefügt",
+	"removed_bookmark": "Lesezeichen entfernt",
+	"profile_not_selectable": "Datenquelle nicht auswählbar. {reason}",
+	"refreshed_journey_data": "Reisedaten aktualisiert",
+	"cannot_scroll": "Suche nach mehr Verbindungen nicht möglich",
+	"cannot_remove_stop": "Stopp kann nicht entfernt werden",
+	"start_location_or_destination_not_specified": "Start oder Ziel ist nicht angegeben",
+	"stop_consecutively_specified": "Stopp {stop} wurde mehrfach in Folge angegeben",
+	"copied_link_to_clipboard": "Link wurde in die Zwischenablage kopiert",
+	"short_url_generation_failed": "Kurzlink konnte nicht generiert werden"
 }

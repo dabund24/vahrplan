@@ -1,4 +1,24 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+
+	"add_stop": "Add stop",
+	"remove_stop": "Remove stop",
+	"reverse_stops": "Reverse stop order",
+	"start_location": "Start location",
+	"via": "Stopover",
+	"destination": "Destination",
+
+	"max_via_warning": "Maximal count of stopovers reached",
+	"added_some_bookmark": "Added bookmark for {something}",
+	"removed_some_bookmark": "Removed bookmark for {something}",
+	"added_bookmark": "Added bookmark",
+	"removed_bookmark": "Removed bookmark",
+	"profile_not_selectable": "Cannot select data source. {reason}",
+	"refreshed_journey_data": "Refreshed journey data",
+	"cannot_scroll": "Cannot find more connections",
+	"cannot_remove_stop": "Cannot remove stop",
+	"start_location_or_destination_not_specified": "Start location or destination was not specified",
+	"stop_consecutively_specified": "Stop {stop} was specified consecutively",
+	"copied_link_to_clipboard": "Copied link to clipboard",
+	"short_url_generation_failed": "Short URL generation failed"
 }

@@ -8,6 +8,7 @@
 	import IconPlus from "$lib/components/icons/IconPlus.svelte";
 	import { flip } from "svelte/animate";
 	import { scale } from "svelte/transition";
+	import { m } from "$lib/paraglide/messages.js";
 
 	type Props = {
 		stops: KeyedItem<ParsedLocation | undefined, number>[];
@@ -23,7 +24,7 @@
 	}
 	function addVia(index: number): void {
 		if (stops.length > DIAGRAM_MAX_COLUMNS) {
-			toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS - 1} Zwischenstationen möglich.`, "red");
+			toast(m.max_via_warning(), "red");
 			return;
 		}
 		stops = [
@@ -68,7 +69,7 @@
 					class="add-button hoverable hoverable--visible"
 					type="button"
 					onclick={() => void addVia(i)}
-					title="Station hinzufügen"
+					title={m.add_stop()}
 					tabindex={stop.value === undefined ? -1 : 0}
 				>
 					<IconPlus />
@@ -76,17 +77,17 @@
 				<StationInput
 					bind:selectedLocation={stop.value}
 					inputPlaceholder={i === 0
-						? "Start"
+						? m.start_location()
 						: i < stops.length - 1
-							? "Zwischenstation"
-							: "Ziel"}
+							? m.via()
+							: m.destination()}
 					stationInputId={i}
 				/>
 				<button
 					class="remove-button hoverable hoverable--visible"
 					type="button"
 					onclick={() => void removeVia(i)}
-					title="Station entfernen"
+					title={m.remove_stop()}
 				>
 					<IconClose />
 				</button>
@@ -94,7 +95,7 @@
 					class="hoverable hoverable--visible switch-button"
 					type="button"
 					onclick={reverseStops}
-					title="Stationsreihenfolge umkehren"
+					title={m.reverse_stops()}
 					aria-label="Stationsreihenfolge umkehren"
 				>
 					<IconSwap />
@@ -103,7 +104,7 @@
 					class="add-button hoverable hoverable--visible"
 					type="button"
 					onclick={() => void addVia(i + 1)}
-					title="Station hinzufügen"
+					title={m.add_stop()}
 					tabindex={i === stops.length - 1 && stop.value === undefined ? -1 : 0}
 				>
 					<IconPlus />

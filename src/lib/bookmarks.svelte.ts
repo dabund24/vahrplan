@@ -7,6 +7,7 @@ import { browser } from "$app/environment";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import type { ProfileId } from "../params/profileId";
 import type { ProfileConfig } from "$lib/server/profiles/profile";
+import { m } from "./paraglide/messages.js";
 
 export type BookmarkType = "diagram" | "journey" | "location" | "profile";
 
@@ -185,15 +186,14 @@ export function toggleBookmark<T extends BookmarkType>(
 ): void {
 	const id = formatBookmarkId[type](bookmarkData, ctx);
 	const indexInOldData = bookmarks[type].findIndex((bookmark) => bookmark.id === id);
-	const toastMessage = `Lesezeichen für ${bookmarkToString[type](bookmarkData)}`;
 	if (indexInOldData !== -1) {
 		// remove bookmark
 		bookmarks[type].splice(indexInOldData, 1);
-		toast(`${toastMessage} entfernt.`, "green");
+		toast(m.removed_some_bookmark({ bookmark: bookmarkToString[type](bookmarkData) }), "green");
 	} else {
 		addBookmark[type](id, bookmarkData, ctx);
 		bookmarks[type] = sortBookmarks[type](bookmarks[type]);
-		toast(`${toastMessage} hinzugefügt.`, "green");
+		toast(m.added_some_bookmark({ bookmark: bookmarkToString[type](bookmarkData) }), "green");
 	}
 
 	syncLocalStorage(type);
@@ -241,7 +241,7 @@ export function getBookmarks<T extends BookmarkType>(type: T): Bookmarks[T] {
  */
 export function removeBookmark<T extends BookmarkType>(type: T, id: string): void {
 	bookmarks[type] = remove[type](id);
-	toast("Lesezeichen gelöscht", "green");
+	toast(m.removed_bookmark(), "green");
 	syncLocalStorage(type);
 }
 

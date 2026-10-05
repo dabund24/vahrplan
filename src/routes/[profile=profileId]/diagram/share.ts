@@ -6,6 +6,7 @@ import { get } from "svelte/store";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { page } from "$app/state";
 import { deLocalizeHref } from "$lib/paraglide/runtime";
+import { m } from "$lib/paraglide/messages";
 
 /**
  * shares a diagram and shows the share dialog if supported.
@@ -37,7 +38,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 	} else {
 		void navigator.clipboard
 			.writeText(urlHref)
-			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
+			.then(() => toast(m.copied_link_to_clipboard(), "green"));
 	}
 }
 
@@ -57,7 +58,7 @@ async function generateDiagramShortUrl(formData: DisplayedFormData): Promise<URL
 
 	const response = await apiClient("PUT", "diagram/shorturl").request(keylessDatabaseEntry);
 	if (response.isError) {
-		toast("Kurzlink konnte nicht generiert werden.", "red");
+		toast(m.short_url_generation_failed(), "red");
 		return undefined;
 	}
 

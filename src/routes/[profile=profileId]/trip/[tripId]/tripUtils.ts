@@ -3,6 +3,7 @@ import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 import type { GetTripApiClient } from "../../api/trip/[tripId]/getClient";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { toast } from "$lib/state/toastStore";
+import { m } from "$lib/paraglide/messages";
 
 export function tripToDisplayedJourney(trip: Trip): DisplayedJourney {
 	const departureTime = trip.leg.departureData.time.departure;
@@ -29,7 +30,7 @@ export async function refreshTrip(
 	const tripApiClient = apiClient("GET", "trip/[tripId]");
 	const res = await tripApiClient.request({ tripId, highlightData });
 	if (!res.isError) {
-		toast("Fahrtdaten aktualisiert.", "green");
+		toast(m.refreshed_journey_data(), "green");
 		return { trip: res.content, displayedJourney: tripToDisplayedJourney(res.content) };
 	}
 	return undefined;

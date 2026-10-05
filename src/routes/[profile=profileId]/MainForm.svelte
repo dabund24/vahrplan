@@ -12,6 +12,7 @@
 	import { SvelteDate } from "svelte/reactivity";
 	import { page } from "$app/state";
 	import { untrack } from "svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -98,12 +99,12 @@
 
 	function verifyUserInput(stops: ParsedLocation[]): boolean {
 		if (stops.length < 2) {
-			toast("Start oder Ziel wurde nicht angegeben", "red");
+			toast(m.start_location_or_destination_not_specified(), "red");
 			return false;
 		}
 		for (let i = 1; i < stops.length; i++) {
 			if (stops[i].name === stops[i - 1].name) {
-				toast(`Station ${stops[i].name} wurde mehrfach in Folge angegeben.`, "red");
+				toast(m.stop_consecutively_specified({ stop: stops[i].name }), "red");
 				return false;
 			}
 		}

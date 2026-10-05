@@ -5,6 +5,7 @@ import { settings } from "$lib/state/settingStore";
 import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 import type { SelectedData } from "$lib/state/selectedData.svelte.js";
 import { apiClient } from "$lib/api-client/apiClientFactory";
+import { m } from "$lib/paraglide/messages";
 
 /**
  * shares a journey if no sub-journey is unselected and shows the share dialog if supported.
@@ -41,7 +42,7 @@ export async function shareJourney(
 	} else {
 		void navigator.clipboard
 			.writeText(urlHref)
-			.then(() => toast("Link in Zwischenablage kopiert.", "green"));
+			.then(() => toast(m.copied_link_to_clipboard(), "green"));
 	}
 }
 
@@ -64,7 +65,7 @@ async function generateJourneyShortUrl(
 
 	const response = await apiClient("PUT", "journey/shorturl").request(keylessDatabaseEntry);
 	if (response.isError) {
-		toast("Kurzlink konnte nicht generiert werden.", "red");
+		toast(m.short_url_generation_failed(), "red");
 		return;
 	}
 	return apiClient("GET", "journey/shorturl/[shortJourneyId]").formatNonApiUrl(

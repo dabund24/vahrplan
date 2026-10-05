@@ -16,6 +16,7 @@ import type { LocationEquivalenceSystem } from "../../routes/[profile=profileId]
 import type { SvgData } from "$lib/server/svgData/svgData.server";
 import { MAX_DATE } from "$lib/constants";
 import type { RecommendedVia } from "../../routes/[profile=profileId]/api/diagram/viaRecommendations.server";
+import { m } from "$lib/paraglide/messages.js";
 
 export type DiagramData = {
 	columns: JourneyNodesWithRefs[];
@@ -105,7 +106,7 @@ export async function refreshDiagramData(selectedBy: SelectedData): Promise<void
 	await refreshJourneyData(journeys.content.subJourneys, selectedBy);
 	await refreshSvgData(journeys.content.svgData, selectedBy);
 
-	toast("Reisedaten aktualisiert.", "green");
+	toast(m.refreshed_journey_data(), "green");
 }
 
 /**
@@ -163,7 +164,7 @@ export async function scrollDiagramData(scrollDirection: RelativeTimeType): Prom
 
 	const tokens = columns.map((c) => c[`${scrollDirection}Ref`]);
 	if (displayedFormData === undefined || tokens.some((token) => token === "")) {
-		toast("Suche nach mehr Verbindungen ist nicht möglich.", "red");
+		toast(m.cannot_scroll(), "red");
 		return;
 	}
 	const stops = displayedFormData.locations.map((l) => l.value.id);
