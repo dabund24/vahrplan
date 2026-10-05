@@ -5,6 +5,7 @@ import { settings } from "$lib/state/settingStore";
 import { get } from "svelte/store";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { page } from "$app/state";
+import { deLocalizeHref } from "$lib/paraglide/runtime";
 
 /**
  * shares a diagram and shows the share dialog if supported.
@@ -25,6 +26,8 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 	urlHref ??= diagramApiClient.formatNonApiUrl(diagramApiClient.formDataToRequestData(formData), {
 		profileConfig: page.data.profileConfig,
 	}).href;
+
+	urlHref = deLocalizeHref(urlHref);
 
 	if (navigator.share) {
 		void navigator.share({
