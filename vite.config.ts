@@ -11,7 +11,6 @@ export default defineConfig({
 			outdir: "./src/lib/paraglide",
 			emitTsDeclarations: true,
 			strategy: ["url", "preferredLanguage", "baseLocale"],
-
 			urlPatterns: [
 				{
 					pattern: "/",

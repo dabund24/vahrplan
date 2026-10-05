@@ -36,7 +36,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link={basePath(page)}
-		route="/[lang=lang]/[profile=profileId]"
+		route="/[profile=profileId]"
 		pageName="Startseite"
 	>
 		{#snippet icon()}<IconLogo />{/snippet}
@@ -45,7 +45,7 @@
 		<MobileNavbarItem
 			{currentRoute}
 			link={diagramUrl}
-			route="/[lang=lang]/[profile=profileId]/diagram"
+			route="/[profile=profileId]/diagram"
 			pageName="Reiseauswahl"
 		>
 			{#snippet icon()}<IconJourneySelection />{/snippet}
@@ -55,17 +55,17 @@
 		<MobileNavbarItem
 			{currentRoute}
 			link={journeyUrl}
-			route="/[lang=lang]/[profile=profileId]/journey"
+			route="/[profile=profileId]/journey"
 			pageName="Reisedetails"
 		>
 			{#snippet icon()}<IconDetails />{/snippet}
 		</MobileNavbarItem>
 	{/if}
-	{#if currentRoute === "/[lang=lang]/[profile=profileId]/trip/[tripId]"}
+	{#if currentRoute === "/[profile=profileId]/trip/[tripId]"}
 		<MobileNavbarItem
 			{currentRoute}
 			link={browser ? location.href : "/"}
-			route="/[lang=lang]/[profile=profileId]/trip/[tripId]"
+			route="/[profile=profileId]/trip/[tripId]"
 			pageName="Fahrtdetails"
 		>
 			{#snippet icon()}<IconTrip />{/snippet}
@@ -75,7 +75,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/profiles"
-		route="/[lang=lang]/profiles"
+		route="/profiles"
 		pageName="Datenquellen"
 	>
 		{#snippet icon()}<IconDataOrigin />{/snippet}
@@ -83,7 +83,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/bookmarks"
-		route="/[lang=lang]/bookmarks"
+		route="/bookmarks"
 		pageName="Lesezeichen"
 	>
 		{#snippet icon()}<IconBookmarkLarge />{/snippet}
@@ -91,7 +91,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/settings"
-		route="/[lang=lang]/settings"
+		route="/settings"
 		pageName="Einstellungen"
 	>
 		{#snippet icon()}<IconSettings />{/snippet}
@@ -99,7 +99,7 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/about"
-		route="/[lang=lang]/about"
+		route="/about"
 		pageName="Über Vahrplan"
 	>
 		{#snippet icon()}<IconAbout />{/snippet}
@@ -108,13 +108,13 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/imprint"
-		route="/[lang=lang]/imprint"
+		route="/imprint"
 		pageName="Impressum"
 	/>
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/privacy"
-		route="/[lang=lang]/privacy"
+		route="/privacy"
 		pageName="Datenschutz"
 	/>
 </ul>
