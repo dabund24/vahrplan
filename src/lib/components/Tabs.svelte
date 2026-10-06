@@ -1,12 +1,13 @@
 <script lang="ts">
 	import SlidingLine from "$lib/components/SlidingLine.svelte";
 	import type { Snippet } from "svelte";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type Props = {
 		isAtTopOnMobile?: boolean;
 		isBelowHeader?: boolean;
 		tabs: {
-			title: string;
+			title: LocalizedString;
 			content: Snippet;
 		}[];
 	};

@@ -119,8 +119,8 @@
 		<div class="flex-row">
 			<SingleSelect
 				titles={[
-					{ type: "text", title: "Abfahrt" },
-					{ type: "text", title: "Ankunft" },
+					{ type: "text", title: m.departure() },
+					{ type: "text", title: m.arrival() },
 				]}
 				bind:selected={departureArrivalSelection}
 			/>
@@ -138,28 +138,26 @@
 							time = new Date(t);
 						}
 					}
-					aria-label={`${departureArrivalSelection === 0 ? "Abfahrt" : "Ankunft"}szeit`}
+					aria-label={departureArrivalSelection === 0
+						? m.departure_time()
+						: m.arrival_time()}
 				/>
 			</div>
 			<div class="hoverable--visible--group--sep"><div></div></div>
 			<div>
-				<button type="button" onclick={() => void setTimePreset(0)}> jetzt </button>
+				<button type="button" onclick={() => void setTimePreset(0)}>{m.now()}</button>
 			</div>
 			<div>
-				<button type="button" onclick={() => void setTimePreset(15)}> in 15min </button>
+				<button type="button" onclick={() => void setTimePreset(15)}>{m.in_15_mins()}</button>
 			</div>
 			<div>
-				<button type="button" onclick={() => void setTimePreset(60)}> in 1h </button>
+				<button type="button" onclick={() => void setTimePreset(60)}>{m.in_1_hour()}</button>
 			</div>
 		</div>
 		<div class="filter-submit">
 			<FilterModal />
-			<button
-				class="hoverable hoverable--accent padded-top-bottom"
-				type="submit"
-				title="Verbindungen suchen"
-			>
-				Suchen
+			<button class="hoverable hoverable--accent padded-top-bottom" type="submit">
+				{m.search()}
 			</button>
 		</div>
 	</div>

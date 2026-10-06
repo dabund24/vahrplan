@@ -1,6 +1,8 @@
 <script lang="ts" generics="T extends string | boolean | number">
+	import type { LocalizedString } from "@inlang/paraglide-js";
+
 	type Props = {
-		settingName: string;
+		settingName: LocalizedString;
 		setting: T;
 		settingInfo: SettingInfo;
 	};

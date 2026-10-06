@@ -3,9 +3,10 @@
 	import type { Snippet } from "svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import { page } from "$app/state";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type Props = {
-		title: string | Snippet;
+		title: LocalizedString | Snippet;
 		height?: string;
 		children: Snippet;
 		headerItems?: Snippet;

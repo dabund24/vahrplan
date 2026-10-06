@@ -9,6 +9,7 @@
 	import type { Product } from "$lib/types";
 	import type { ProfileConfig } from "$lib/server/profiles/profile";
 	import ProductToggle from "./ProductToggle.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	const products = $derived(
 		Object.entries(page.data.profileConfig.products) as [
@@ -37,38 +38,38 @@
 
 	const modalTabContent: ComponentProps<typeof Tabs>["tabs"] = [
 		{
-			title: "Verkehrsmittel",
+			title: m.means_of_transport(),
 			content: meansFilter,
 		},
 		{
-			title: "Sonstiges",
+			title: m.miscellaneous(),
 			content: generalFilter,
 		},
 	];
 </script>
 
 <ModalToggle showModalKey="showFilterModal">
-	<div class="button-content">Filter</div>
+	<div class="button-content">{m.filter()}</div>
 </ModalToggle>
-<Modal showModalKey="showFilterModal" title="Verbindungsfilter" height="35rem">
+<Modal showModalKey="showFilterModal" title={m.filter()} height="40rem">
 	<Tabs tabs={modalTabContent} isAtTopOnMobile={true} isBelowHeader={true} />
 </Modal>
 
 {#snippet generalFilter()}
 	<Setting
-		settingName="Fahrradmitnahme"
+		settingName={m.bike_carriage()}
 		bind:setting={$settings.options.bike}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Barrierefreies Reisen"
+		settingName={m.accessible_connections()}
 		bind:setting={$settings.options.accessible}
 		settingInfo={{
 			type: "boolean",
 		}}
 	/>
 	<Setting
-		settingName="Maximale Umstiegsanzahl"
+		settingName={m.max_transfers()}
 		bind:setting={$settings.options.maxTransfers}
 		settingInfo={{
 			type: "options",
@@ -79,12 +80,12 @@
 				{ value: 3, name: "3" },
 				{ value: 4, name: "4" },
 				{ value: 5, name: "5" },
-				{ value: -1, name: "beliebig" },
+				{ value: -1, name: "∞" },
 			],
 		}}
 	/>
 	<Setting
-		settingName="Mindestumsteigezeit"
+		settingName={m.min_transfer_time()}
 		bind:setting={$settings.options.minTransferTime}
 		settingInfo={{
 			type: "options",
@@ -110,21 +111,21 @@
 			type="button"
 			class="hoverable hoverable--visible"
 		>
-			Alle
+			{m.all_services()}
 		</button>
 		<button
 			onclick={() => void setQuickMeansPreset("regional")}
 			type="button"
 			class="hoverable hoverable--visible"
 		>
-			Nur Regional-/Nahverkehr
+			{m.regional_local_only()}
 		</button>
 		<button
 			onclick={() => void setQuickMeansPreset("longDistance")}
 			type="button"
 			class="hoverable hoverable--visible"
 		>
-			Nur Fernverkehr
+			{m.long_distance_only()}
 		</button>
 	</div>
 	<hr />

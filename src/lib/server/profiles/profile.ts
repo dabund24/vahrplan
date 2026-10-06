@@ -82,7 +82,7 @@ export abstract class Profile<
 	 */
 	static readonly availableOptions = {
 		bike: {
-			name: { de: "Fahrradmitnahme", en: "Bike Carriage" },
+			name: { de: "Fahrradmitnahme", en: "Bike carriage" },
 			defaultValue: false,
 		},
 		accessible: {
@@ -94,7 +94,7 @@ export abstract class Profile<
 			possibleValues: [0, 1, 2, 3, 4, 5, -1],
 			defaultValue: -1,
 			optionNames: {
-				0: { name: "nur Direkt-Verbindungen" },
+				0: { name: "0" },
 				1: { name: "1" },
 				2: { name: "2" },
 				3: { name: "3" },
