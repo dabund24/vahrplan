@@ -9,8 +9,8 @@
 	"destination": "Destination",
 
 	"max_via_warning": "Maximal count of stopovers reached",
-	"added_some_bookmark": "Added bookmark for {something}",
-	"removed_some_bookmark": "Removed bookmark for {something}",
+	"added_some_bookmark": "Added bookmark for {bookmark}",
+	"removed_some_bookmark": "Removed bookmark for {bookmark}",
 	"added_bookmark": "Added bookmark",
 	"removed_bookmark": "Removed bookmark",
 	"profile_not_selectable": "Cannot select data source. {reason}",
@@ -20,5 +20,25 @@
 	"start_location_or_destination_not_specified": "Start location or destination was not specified",
 	"stop_consecutively_specified": "Stop {stop} was specified consecutively",
 	"copied_link_to_clipboard": "Copied link to clipboard",
-	"short_url_generation_failed": "Short URL generation failed"
+	"short_url_generation_failed": "Short URL generation failed",
+
+	"error": "Error",
+	"error_data_source_invalid_request": "Data source says: invalid request :(",
+	"error_data_source_access_denied": "Data source says: access denied :(",
+	"error_data_source_not_found": "Data source says: not found :(",
+	"error_data_source_server": "Data source says: server error :(",
+	"error_date_source_server_possibly_invalid_request": "Data source says: server error. The request may be invalid",
+	"error_data_source_something": "Data source says: {something} :(",
+	"error_not_found": "Not found",
+	"error_quota": "Request qouta exceeded. Please try again later",
+	"error_server": "Server error",
+	"error_connection_to_server_failed": "Connection to Server failed",
+	"error_invalid_connection_count": "Invalid amount of stops",
+	"error_invalid_time": "Invalid time",
+	"error_no_connections_found_from_m_to_n": "Could not find connections from stop {m} to stop {n}",
+	"error_link_invalid": "Your link is either errorneous or no longer valid",
+	"error_less_than_2_stops_specified": "Specified less than 2 stops",
+
+	"geolocation_permission_denied": "Location access was denied",
+	"geolocation_generic_error": "Your location could not be determined"
 }

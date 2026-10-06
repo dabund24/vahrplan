@@ -12,6 +12,8 @@ import { FptfRequestFormatter } from "$lib/server/journey-data/fptf-clients/Fptf
 import type { LineShapeParser } from "$lib/server/journey-data/line-shapes/LineShapeParser";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
 import type { TicketUrlParser } from "$lib/server/journey-data/TicketUrlParser";
+import type { Locale } from "$lib/paraglide/runtime";
+import { m } from "$lib/paraglide/messages";
 
 export type FptfOptionId = Extract<
 	OptionId,
@@ -87,6 +89,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				request: this.client.journeys,
 				parseRes: this.responseParser.parseResponse.journeys,
 			},
+			params[2].lang,
 			...params,
 		);
 
@@ -100,6 +103,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				request: this.client.refreshJourney!,
 				parseRes: this.responseParser.parseResponse.refresh,
 			},
+			params[1].lang,
 			...params,
 		);
 
@@ -113,18 +117,20 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				request: this.client.trip!,
 				parseRes: this.responseParser.parseResponse.trip,
 			},
+			params[1].lang,
 			...params,
 		);
 
 	public override location = (
 		...params: Parameters<JourneyDataService<ProductT, FptfOptionId>["location"]>
 	): Promise<VahrplanResult<ParsedLocation>> => {
+		const lang = params[1].lang;
 		if (params[0].startsWith("{")) {
 			let hafasLocation: Station | Stop | Location;
 			try {
 				hafasLocation = JSON.parse(params[0]) as Station | Stop | Location;
 			} catch {
-				return Promise.resolve(new VahrplanError("HAFAS_INVALID_REQUEST"));
+				return Promise.resolve(new VahrplanError("HAFAS_INVALID_REQUEST", lang));
 			}
 			const parsedLocation = this.responseParser.parseStationStopLocation(hafasLocation);
 			return Promise.resolve(new VahrplanSuccess(parsedLocation));
@@ -137,6 +143,7 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				request: this.client.stop,
 				parseRes: this.responseParser.parseResponse.location,
 			},
+			lang,
 			...params,
 		);
 	};
@@ -151,18 +158,22 @@ export class FptfDataService<ProductT extends Product> extends JourneyDataServic
 				request: this.client.locations,
 				parseRes: this.responseParser.parseResponse.locations,
 			},
+			params[1].lang,
 			...params,
 		);
 
-	protected override parseError = (err: unknown): VahrplanError => {
+	protected override parseError = (err: unknown, lang: Locale): VahrplanError => {
 		let errorType: VahrplanError["type"] = "ERROR";
-		let message = "Datenquelle sagt: Server-Fehler. Die Anfrage ist möglicherweise ungültig.";
+		let message = m.error_date_source_server_possibly_invalid_request({}, { locale: lang });
 		if (FptfDataService.isHafasError(err)) {
 			if (err.code === "QUOTA_EXCEEDED") {
 				// handle this in a special way since this error is not thrown by hafas/hafas-client!!!
-				return new VahrplanError("QUOTA_EXCEEDED");
+				return new VahrplanError("QUOTA_EXCEEDED", lang);
 			}
-			message = `Datenquelle sagt: ${err.hafasDescription ?? "Server-Fehler"}`;
+			message = m.error_data_source_something(
+				{ something: err.hafasDescription ?? m.error_server({}, { locale: lang }) },
+				{ locale: lang },
+			);
 			errorType = `HAFAS_${err.code ?? "SERVER_ERROR"}`;
 		}
 		return VahrplanError.withMessage(errorType, message);

@@ -8,6 +8,7 @@ import { NonApiUsable } from "$lib/api-client/NonApiUsableApiClient";
 import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 import { ApiClient, type MinimalRequestEvent } from "$lib/api-client/ApiClient";
 import {
+	DEFAULT_LOCALE,
 	DIAGRAM_COLUMN_MAX_REQUESTS,
 	DIAGRAM_MAX_COLUMNS,
 	DIAGRAM_MIN_COLUMNS,
@@ -19,6 +20,8 @@ import {
 	PlausiblePropSettable,
 } from "$lib/api-client/PlausiblePropSettableApiClient";
 import type { OptionId, PossibleOptionValues, Profile } from "$lib/server/profiles/profile";
+import { m } from "$lib/paraglide/messages";
+import { extractLocaleFromUrl } from "$lib/paraglide/runtime";
 
 type ReqType = {
 	stops: string[];
@@ -127,6 +130,7 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 		reqEvent: MinimalRequestEvent<"GET", RequestEvent>,
 	): ReqType => {
 		const url = reqEvent.url;
+		const lang = extractLocaleFromUrl(url) ?? DEFAULT_LOCALE;
 		const stops = this.readArrayQueryParameter(url.searchParams, this.queryParamNames.stops);
 		const timeParam = url.searchParams.get(this.queryParamNames.time);
 		const scrollDirection: RelativeTimeType =
@@ -137,13 +141,19 @@ export class GetDiagramApiClient extends NonApiUsable<ReqType, DiagramData, Requ
 				400,
 				VahrplanError.withMessage(
 					"HAFAS_INVALID_REQUEST",
-					"Ungültige Anzahl an Zwischenstationen.",
+					m.error_invalid_connection_count({}, { locale: lang }),
 				),
 			);
 		}
 
 		if (timeParam === null) {
-			error(400, VahrplanError.withMessage("HAFAS_INVALID_REQUEST", "Ungültige Zeitangabe."));
+			error(
+				400,
+				VahrplanError.withMessage(
+					"HAFAS_INVALID_REQUEST",
+					m.error_invalid_time({}, { locale: lang }),
+				),
+			);
 		}
 
 		const products: Record<Product, boolean> = {

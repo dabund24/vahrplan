@@ -4,6 +4,7 @@ import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { DIAGRAM_COLUMN_MAX_REQUESTS, MAX_DATE } from "$lib/constants";
 import { VahrplanError } from "$lib/VahrplanError";
 import { dateDifference } from "$lib/util";
+import { m } from "$lib/paraglide/messages";
 
 type RequestData = {
 	fromTo: { from: string; to: string };
@@ -38,7 +39,7 @@ export async function fetchJourneys(
 			ctx,
 		);
 		if (column.isError || column.content.journeys.length === 0) {
-			const errMessage = `Keine Verbindungen von ${i + 1}. zu ${i + 2}. Station gefunden`;
+			const errMessage = m.error_no_connections_found_from_m_to_n({ m: i + 1, n: i + 1 });
 			return VahrplanError.withMessage("NOT_FOUND", errMessage);
 		}
 		result[i] = column.content;

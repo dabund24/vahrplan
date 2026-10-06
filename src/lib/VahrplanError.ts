@@ -1,5 +1,9 @@
 import { error, type NumericRange } from "@sveltejs/kit";
 import type { HafasErrorCode } from "$lib/types";
+import type { Locale } from "$lib/paraglide/runtime";
+import type { LocalizedString } from "@inlang/paraglide-js";
+import { m } from "$lib/paraglide/messages";
+import { DEFAULT_LOCALE } from "$lib/constants";
 
 export type VahrplanErrorType =
 	| `HAFAS_${HafasErrorCode}`
@@ -9,12 +13,12 @@ export type VahrplanErrorType =
 
 export class VahrplanError extends Error {
 	isError = true as const;
-	message = "Fehler.";
+	message = m.error({}, { locale: DEFAULT_LOCALE });
 	code: NumericRange<400, 599> = 500;
 	type: VahrplanErrorType = "ERROR";
 
-	constructor(type: VahrplanErrorType) {
-		const message = getDescriptionFromErrorType(type);
+	constructor(type: VahrplanErrorType, lang: Locale) {
+		const message = getDescriptionFromErrorType(type, lang);
 		super(message);
 		this.message = message;
 		this.code = getErrorCodeFromErrorType(type);
@@ -25,8 +29,8 @@ export class VahrplanError extends Error {
 		error(this.code, { ...this });
 	}
 
-	static withMessage(type: VahrplanErrorType, message: string): VahrplanError {
-		const error = new VahrplanError(type);
+	static withMessage(type: VahrplanErrorType, message: LocalizedString): VahrplanError {
+		const error = new VahrplanError(type, DEFAULT_LOCALE);
 		error.message = message;
 		return error;
 	}
@@ -50,22 +54,22 @@ function getErrorCodeFromErrorType(type: VahrplanErrorType): VahrplanError["code
 	}
 }
 
-function getDescriptionFromErrorType(type: VahrplanErrorType): string {
+function getDescriptionFromErrorType(type: VahrplanErrorType, lang: Locale): LocalizedString {
 	switch (type) {
 		case "HAFAS_INVALID_REQUEST":
-			return "Datenquelle sagt: ungültige Anfrage :(";
+			return m.error_data_source_invalid_request({}, { locale: lang });
 		case "HAFAS_ACCESS_DENIED":
-			return "Datenquelle sagt: Zugriff verweigert :(";
+			return m.error_data_source_access_denied({}, { locale: lang });
 		case "HAFAS_NOT_FOUND":
-			return "Datenquelle sagt: Ressource nicht gefunden :(";
+			return m.error_data_source_not_found({}, { locale: lang });
 		case "NOT_FOUND":
-			return "Ressource nicht gefunden.";
+			return m.error_not_found({}, { locale: lang });
 		case "QUOTA_EXCEEDED":
 		case "HAFAS_QUOTA_EXCEEDED":
-			return "Das Anfragelimit für Hafas ist überschritten. Versuche es später erneut.";
+			return m.error_quota({}, { locale: lang });
 		case "ERROR":
-			return "Server-Fehler.";
+			return m.error_server({}, { locale: lang });
 		case "HAFAS_SERVER_ERROR":
-			return "Datenquelle sagt: Server-Fehler :(";
+			return m.error_data_source_server({}, { locale: lang });
 	}
 }

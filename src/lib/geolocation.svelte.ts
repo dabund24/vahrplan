@@ -5,6 +5,8 @@ import { toast } from "$lib/state/toastStore";
 import { startLoading, stopLoading } from "$lib/state/loadingStore";
 import type { Location } from "hafas-client";
 import { SvelteDate } from "svelte/reactivity";
+import type { LocalizedString } from "@inlang/paraglide-js";
+import { m } from "$lib/paraglide/messages";
 
 export type CurrentPositionData = {
 	position: ParsedLocation["position"] | undefined;
@@ -58,12 +60,12 @@ function watchPosition(): () => void {
 	return () => navigator.geolocation.clearWatch(watchId);
 }
 
-function getGeolocationErrorMessage(code: number): string {
+function getGeolocationErrorMessage(code: number): LocalizedString {
 	switch (code) {
 		case GeolocationPositionError.PERMISSION_DENIED:
-			return "Der Zugriff auf den Standort wurde verweigert.";
+			return m.geolocation_permission_denied();
 		default:
-			return "Der Standort konnte nicht ermittelt werden.";
+			return m.geolocation_generic_error();
 	}
 }
 

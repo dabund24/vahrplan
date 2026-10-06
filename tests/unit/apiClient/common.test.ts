@@ -4,6 +4,7 @@ import { expect, test, vi } from "vitest";
 import { VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
 import { exampleProfileConfig } from "../../testUtils";
+import { DEFAULT_LOCALE } from "$lib/constants";
 
 test("api client success", async () => {
 	const client = apiClient("GET", "journey/shorturl/[shortJourneyId]");
@@ -30,7 +31,7 @@ test("api client error", async () => {
 	const client = apiClient("GET", "journey/shorturl/[shortJourneyId]");
 
 	const input = "station";
-	const error = new VahrplanError("ERROR");
+	const error = new VahrplanError("ERROR", DEFAULT_LOCALE);
 
 	global.location = { origin: "http://localhost" } as Location;
 	global.fetch = vi.fn(async (_request: RequestInfo | URL, _?: RequestInit) =>

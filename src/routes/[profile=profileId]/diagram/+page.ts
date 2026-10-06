@@ -10,6 +10,7 @@ import {
 import type { GetDiagramApiClient } from "../api/diagram/getClient";
 import { VahrplanError } from "$lib/VahrplanError";
 import type { ServerRequestData } from "$lib/api-client/ApiClient";
+import { m } from "$lib/paraglide/messages";
 
 const diagramApiClient = apiClient("GET", "diagram");
 
@@ -79,7 +80,10 @@ async function diagramRequestDataToFormData(
 	if (stopObjects.length < 2) {
 		error(
 			400,
-			VahrplanError.withMessage("HAFAS_INVALID_REQUEST", "Weniger als 2 Stationen angegeben"),
+			VahrplanError.withMessage(
+				"HAFAS_INVALID_REQUEST",
+				m.error_less_than_2_stops_specified({}, { locale: serverRequestData.lang }),
+			),
 		);
 	}
 

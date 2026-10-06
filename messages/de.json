@@ -20,5 +20,25 @@
 	"start_location_or_destination_not_specified": "Start oder Ziel ist nicht angegeben",
 	"stop_consecutively_specified": "Stopp {stop} wurde mehrfach in Folge angegeben",
 	"copied_link_to_clipboard": "Link wurde in die Zwischenablage kopiert",
-	"short_url_generation_failed": "Kurzlink konnte nicht generiert werden"
+	"short_url_generation_failed": "Kurzlink konnte nicht generiert werden",
+
+	"error": "Fehler",
+	"error_data_source_invalid_request": "Datenquelle sagt: ungültige Anfrage :(",
+	"error_data_source_access_denied": "Datenquelle sagt: Zugriff verweigert :(",
+	"error_data_source_not_found": "Datenquelle sagt: Ressource nicht gefunden :(",
+	"error_data_source_server": "Datenquelle sagt: Server-Fehler :(",
+	"error_date_source_server_possibly_invalid_request": "Datenquelle sagt: Server-Fehler. Die Anfrage ist möglicherweise ungültig",
+	"error_data_source_something": "Datenquelle sagt: {something} :(",
+	"error_not_found": "Ressource nicht gefunden",
+	"error_quota": "Das Anfragelimit für ist überschritten. Versuche es später erneut",
+	"error_server": "Server-Fehler",
+	"error_connection_to_server_failed": "Verbindung zum Server ist fehlgeschlagen",
+	"error_invalid_connection_count": "Ungültige Anzahl an Zwischenstationen",
+	"error_invalid_time": "Ungültige Zeitangabe",
+	"error_no_connections_found_from_m_to_n": "Keine Verbindungen von {m}. zu {n}. Stopp gefunden",
+	"error_link_invalid": "Der angegebene Link ist fehlerhaft oder nicht mehr gültig.",
+	"error_less_than_2_stops_specified": "Weniger als 2 Stopps angegeben",
+
+	"geolocation_permission_denied": "Der Zugriff auf den Standort wurde verweigert",
+	"geolocation_generic_error": "Der Standort konnte nicht ermittelt werden."
 }

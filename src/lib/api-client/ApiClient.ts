@@ -11,7 +11,8 @@ import type { ProfileConfig } from "../server/profiles/profile";
 import { DEFAULT_LOCALE, EMPTY_PROFILE } from "$lib/constants";
 import type { Ctx } from "$lib/types";
 import type { RouteId } from "$app/types";
-import  { extractLocaleFromUrl, type Locale } from "$lib/paraglide/runtime";
+import { extractLocaleFromUrl, type Locale } from "$lib/paraglide/runtime";
+import { m } from "$lib/paraglide/messages";
 
 export type RequestData = {
 	url: URL;
@@ -149,6 +150,7 @@ export abstract class ApiClient<
 		}
 
 		requestInit.method = this.methodType;
+		const lang = extractLocaleFromUrl(url);
 		const result = await (
 			fetchFn?.(`${url.pathname}?${url.searchParams.toString()}`) ??
 			fetch(new Request(url, requestInit))
@@ -163,7 +165,10 @@ export abstract class ApiClient<
 				return new VahrplanSuccess(vahrplanResult.content);
 			})
 			.catch(() =>
-				VahrplanError.withMessage("ERROR", "Verbindung zum Server ist fehlgeschlagen"),
+				VahrplanError.withMessage(
+					"ERROR",
+					m.error_connection_to_server_failed({}, { locale: lang }),
+				),
 			);
 
 		if (browser && loadingId !== undefined) {
