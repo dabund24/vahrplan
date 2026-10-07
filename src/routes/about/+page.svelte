@@ -1,8 +1,8 @@
 <script lang="ts">
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
-	import { PUBLIC_PAYPAL_LINK, PUBLIC_IMPRINT_EMAIL_ADDRESS } from "$env/static/public";
+	import { PUBLIC_PAYPAL_LINK } from "$env/static/public";
 	import { version } from "$app/environment";
-	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 </script>
 
 <svelte:head>
@@ -13,102 +13,164 @@
 
 <div class="content-wrapper">
 	<h1>Über Vahrplan</h1>
-	<h2>Name</h2>
-	Vahrplan steht für
-	<i
-		><strong>V</strong>oll<strong>a</strong>utomatische <strong>H</strong>ilfe für
-		<strong>R</strong>outen<strong>plan</strong>ung</i
-	>.
-	<h2>Historie</h2>
-	Inspiration für Vahrplan war <a href="https://youtu.be/rD5iATcC9Mo">dieses tolle Video</a>, in
-	dem (neben einigen allgemein sehr hilfreichen Tipps zur Reiseplanung bei Bahnfahrten) das
-	Programm <a href="https://tespace.traines.eu/tstp">Tespace</a> vorgestellt wurde. In den Monaten
-	danach habe ich mir einen anderen Ansatz für dasselbe Problem überlegt, um das Konzept etwas
-	zugänglicher zu machen und dann schließlich im August 2023 mit dem Programmieren begonnen. Nach
-	vielen Erweiterungen, Änderungen und sogar einem vollständigen Neuschreiben des Codes im
-	Frühjahr 2024 konnte ich im September desselben Jahres Vahrplan endlich veröffentichen.
 	<h2>Quellcode</h2>
-	Der vollständige Quellcode für Vahrplan ist
-	<a href="https://github.com/dabund24/vahrplan">auf Github</a>
-	einsehbar.
+	<a class="hoverable hoverable--visible" href="https://github.com/dabund24/vahrplan">Github</a>
 	<h2>FAQ</h2>
 	{#snippet tool(useCase: string, name: string, link: string)}
 		<li>{useCase}: <a href={link}>{name}</a></li>
 	{/snippet}
-	<AccordionElement title="Lässt sich das Programm irgendwie als App installieren?">
-		Ja. Vahrplan ist als sogenannte <a href="https://de.wikipedia.org/wiki/Progressive_Web_App"
-			>Progressive Web App</a
-		>
-		verfügbar. Die Installation erfolgt über den Browser und ist nicht browserübergreifend einheitlich.
-		Es handelt sich aber in der Regel um den Klick auf einen Button mit der Aufschrift
-		<q>Zum Home-Bildschirm hinzufügen</q>
-		oder <q>Installieren</q> im Browser-Menü.
+	<AccordionElement title={m.about_q_idea()}>
+		<p>
+			{m.about_a_idea()}
+		</p>
+		<p>
+			<a class="hoverable hoverable--visible" href="https://tespace.traines.eu">Tespace</a
+			>&nbsp;<a
+				class="hoverable hoverable--visible"
+				href="https://www.youtube.com/watch?v=rD5iATcC9Mo">Video</a
+			>
+		</p>
 	</AccordionElement>
-	<AccordionElement title="Beim Teilen sind mir die Links zu lang. Geht das auch kürzer?">
-		Ja. Aktiviere dafür in den <a href="/{page.data.lang}/settings">Einstellungen</a> unter
-		<q>Generierung von Kurzlinks beim Teilen</q> die entsprechenden Optionen.
+	<AccordionElement title={m.about_q_short_links()}>
+		<p>
+			{m.about_a_short_links()}
+		</p>
 	</AccordionElement>
-	<AccordionElement title="Wie kann ich meine Einstellungen sessionübergreifend behalten?">
-		Wenn du in den <a href="/{page.data.lang}/settings">Einstellungen</a> unter
-		<q>Dauerhaftes Speichern von Einstellungen</q> die Schalter aktivierst, sind die von dir gesetzten
-		App-Einstellungen bzw. Verbindungsfilter auch in der nächsten Browser-Session noch verfügbar.
+	<AccordionElement title={m.about_q_remember_settings()}>
+		<p>
+			{m.about_a_remember_settings()}
+		</p>
 	</AccordionElement>
-	<AccordionElement title="Was muss ich tun, wenn der Standortzugriff verweigert wird?">
-		Erlaube deinem Browser den Zugriff auf den Standort. Dies kann in der Regel in den
-		Systemeinstellungen getan werden.
-	</AccordionElement>
-	<AccordionElement title="Welche Tools/Bibliotheken/Frameworks verwendet Vahrplan?">
-		<h2>Allgemeine Sachen</h2>
+	<AccordionElement title={m.about_q_dependencies()}>
+		<p>
+			{m.about_a_dependencies()}
+		</p>
+		<h3>{m.about_a_dependencies_miscellaneous_tools()}</h3>
 		<ul>
-			{@render tool("Programmiersprache", "TypeScript", "https://www.typescriptlang.org/")}
-			{@render tool("Meta-Framework", "SvelteKit", "https://kit.svelte.dev/")}
-			{@render tool("Container-Virtualisierung", "Docker", "https://www.docker.com/")}
-			{@render tool("Linter", "ESLint", "https://eslint.org/")}
-			{@render tool("Code Formatter", "Prettier", "https://prettier.io/")}
-		</ul>
-		<h3>Backend</h3>
-		<ul>
-			{@render tool("Laufzeitumgebung", "Node.js", "https://nodejs.org/")}
-			{@render tool("Nosql-Datenbank", "Valkey", "https://valkey.io/")}
 			{@render tool(
-				"Verbindungsdaten",
-				"Hafas via db-vendo-client",
-				"https://github.com/public-transport/db-vendo-client",
+				m.about_a_dependencies_miscellaneous_tools_programming_language(),
+				"TypeScript",
+				"https://www.typescriptlang.org/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_miscellaneous_tools_meta_framework(),
+				"SvelteKit",
+				"https://kit.svelte.dev/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_miscellaneous_tools_containerization(),
+				"Docker",
+				"https://www.docker.com/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_miscellaneous_tools_linter(),
+				"ESLint",
+				"https://eslint.org/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_miscellaneous_tools_formatter(),
+				"Prettier",
+				"https://prettier.io/",
 			)}
 		</ul>
-		<h3>Frontend</h3>
+		<h3>Fahrplandaten</h3>
 		<ul>
-			{@render tool("Framework", "Svelte", "https://svelte.dev/")}
-			{@render tool("Build-Tool", "Vite", "https://vitejs.dev/")}
-			{@render tool("Karten-Bibliothek", "Leaflet", "https://leafletjs.com/")}
-			{@render tool("Karten-Kacheln", "OpenStreetMap", "https://www.openstreetmap.org/")}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_routing(),
+				"Motis",
+				"https://github.com/motis-project/motis",
+			)}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_raw_data_collection(),
+				"Transitous",
+				"https://transitous.org/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_motis_parsing(),
+				"motis-fptf-client",
+				"https://github.com/motis-project/motis-fptf-client",
+			)}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_proprietary_parsing(),
+				"hafas-client",
+				"https://github.com/public-transport/hafas-client",
+			)}
 		</ul>
-		<h3>Das Drumherum</h3>
+		<h3>{m.about_a_dependencies_backend()}</h3>
 		<ul>
-			{@render tool("Cloud-Hosting", "Hetzner", "https://www.hetzner.com/cloud/")}
-			{@render tool("Reverse-Proxy", "nginx", "https://nginx.org/")}
-			{@render tool("Analytics", "Plausible (Communtiy Edition)", "https://plausible.io/")}
-			{@render tool("Mail-Server", "mailcow", "https://mailcow.email/")}
+			{@render tool(
+				m.about_a_dependencies_backend_js_runtime_environment(),
+				"Node.js",
+				"https://nodejs.org/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_backend_database(),
+				"Valkey",
+				"https://valkey.io/",
+			)}
+		</ul>
+		<h3>{m.about_a_dependencies_frontend()}</h3>
+		<ul>
+			{@render tool(
+				m.about_a_dependencies_frontend_build_tool(),
+				"Vite",
+				"https://vitejs.dev/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_frontend_map_library(),
+				"Leaflet",
+				"https://leafletjs.com/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_frontend_map_tiles(),
+				"OpenStreetMap",
+				"https://www.openstreetmap.org/",
+			)}
+		</ul>
+		<h3>{m.about_a_dependencies_broader_level()}</h3>
+		<ul>
+			{@render tool(
+				m.about_a_dependencies_broader_level_reverse_proxy(),
+				"nginx",
+				"https://nginx.org/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_broader_level_analytics(),
+				"Plausible (Communtiy Edition)",
+				"https://plausible.io/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_broader_level_mail_server(),
+				"mailcow",
+				"https://mailcow.email/",
+			)}
 		</ul>
 	</AccordionElement>
-	<AccordionElement title="Wie kann ich Vahrplan unterstützen?">
-		Am besten kannst du Vahrplan unterstützen, indem du das Programm in deinem Freundeskreis und
-		in deiner Familie weiterempfielst. Wenn du magst, kannst du auch gerne über <a
-			href={PUBLIC_PAYPAL_LINK}>Paypal</a
-		> eine Spende hinterlassen.
+	<AccordionElement title={m.about_q_support()}>
+		<p>
+			{m.about_a_support()}
+		</p>
+		<p>
+			<a class="hoverable hoverable--visible" href={PUBLIC_PAYPAL_LINK}>Paypal</a>
+		</p>
 	</AccordionElement>
-	<AccordionElement title="Ich habe einen Bug gefunden. Wo kann ich den melden?">
-		Falls du glaubst, einen Fehler gefunden zu haben, würde ich mich darüber freuen, davon zu
-		erfahren. Du kannst gerne ein <a
-			href="https://github.com/dabund24/vahrplan/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
-			>Issue auf Github aufmachen</a
-		>
-		oder mir alternativ
-		<a href="mailto:{PUBLIC_IMPRINT_EMAIL_ADDRESS}">eine E-Mail schreiben</a>.
+	<AccordionElement title={m.about_q_bug()}>
+		<p>
+			{m.about_a_bug()}
+		</p>
+		<p>
+			<a
+				href="https://github.com/dabund24/vahrplan/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
+				class="hoverable hoverable--visible"
+			>
+				{m.about_a_bug_link()}
+			</a>
+		</p>
 	</AccordionElement>
-	<AccordionElement title="Fahrplan schreibt man mit F. Bist du dumm?">
-		Wofür Vahrplan steht, ist ganz oben auf der Seite beschrieben. Ähnlichkeiten mit echten
-		Wörtern sind rein zufällig.
+	<AccordionElement title={m.about_q_f()}>
+		<p>
+			{m.about_a_f()}
+		</p>
 	</AccordionElement>
 
 	<footer class="flex-column">
@@ -126,5 +188,8 @@
 	footer {
 		align-items: center;
 		margin-top: 1rem;
+	}
+	a {
+		width: fit-content;
 	}
 </style>

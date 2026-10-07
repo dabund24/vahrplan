@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import IconExpand from "$lib/components/icons/IconExpand.svelte";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type Props = {
-		title: string;
+		title: LocalizedString;
 		children: Snippet;
 	};
 
