@@ -4,6 +4,7 @@
 	import { type Bookmarks, removeBookmark } from "$lib/bookmarks.svelte";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		bookmarkType: T;
@@ -28,13 +29,13 @@
 		return [
 			{
 				type: "link",
-				name: `${bookmarkType === "diagram" ? "Suchanfrage" : "Reise"} anzeigen`,
+				name: bookmarkType === "diagram" ? m.bookmarks_show_search_query() : m.bookmarks_show_journey(),
 				url,
 				icon: iconRightArrow,
 			},
 			{
 				type: "function",
-				name: "Lesezeichen löschen",
+				name: m.bookmarks_remove(),
 				onClick: () => removeBookmark(bookmarkType, url),
 				icon: iconClose,
 			},

@@ -71,5 +71,18 @@
 	"bookmarks_search_query": "Suchanfrage",
 	"bookmarks_show_journey": "Reise anzeigen",
 	"bookmarks_journey": "Reise",
-	"bookmerks_remove": "Lesezeichen löschen"
+	"bookmarks_remove": "Lesezeichen löschen",
+	"bookmarks_bookmark_something": "{something} favorisieren",
+	"bookmarks_do_bookmark_search": "Suchanfrage favorisieren",
+	"bookmarks_do_bookmark": "Favorisieren",
+
+	"diagram": "Reiseauswahl",
+	"diagram_subtitle": "Wähle deine bevorzugte Verbindung",
+	"diagram_subtitle_long": "Reiseauswahl für eine Fahrt von {startLocation} nach {destination} am {date} mit Abfahrt {departure}",
+	"diagram_via": "über",
+	"diagram_and": "und",
+	"diagram_standard_view": "Standardansicht",
+	"diagram_coordinate_system_view": "Bildfahrplan",
+	"diagram_earlier": "Früher",
+	"diagram_later": "Später"
 }

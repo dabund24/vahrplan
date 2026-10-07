@@ -71,5 +71,8 @@
 	"bookmarks_search_query": "search query",
 	"bookmarks_show_journey": "Show journey",
 	"bookmarks_journey": "journey",
-	"bookmerks_remove": "Delete bookmark"
+	"bookmarks_remove": "Remove bookmark",
+	"bookmarks_bookmark_something": "Bookmark {something}",
+	"bookmarks_do_bookmark_search": "Bookmark search query",
+	"bookmarks_do_bookmark": "Bookmark"
 }

@@ -4,9 +4,10 @@
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import type { BookmarkData, BookmarkType } from "$lib/bookmarks.svelte";
 	import BookmarkToggle from "$lib/components/bookmarks/BookmarkToggle.svelte";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type OptionElement = {
-		name: string;
+		name: LocalizedString;
 		icon: Snippet;
 	} & (OptionElementLink | OptionElementFunction | OptionElementModal | OptionElementBookmark);
 
