@@ -61,9 +61,8 @@ export class TransitousLineShapeParser extends LineShapeParser<Line> {
 		const res = Object.values(LineShapeParser.traewellingLineShapes)
 			.flat()
 			.find(
-				({ gtfsAgencyId, gtfsAgencyName, lineName }) =>
+				({ gtfsAgencyId, lineName }) =>
 					gtfsAgencyId === lineDetails.operator?.id &&
-					gtfsAgencyName === lineDetails.operator?.name &&
 					this.stringToNormalForm(lineName) ===
 						this.stringToNormalForm(lineDetails.name ?? ""),
 			);
