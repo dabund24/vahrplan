@@ -236,7 +236,10 @@
 									iconType={suggestion.type}
 								/>
 							</span>
-							{suggestion.name}
+							<span class="flex-column">
+								<span>{suggestion.name}</span>
+								<small>{suggestion.area}</small>
+							</span>
 						</button>
 						{#if suggestion.name !== "Standort"}
 							<span class="bookmark-toggle" aria-hidden="true">
