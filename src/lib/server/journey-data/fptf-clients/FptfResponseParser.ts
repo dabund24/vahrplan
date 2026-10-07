@@ -332,11 +332,11 @@ export class FptfResponseParser<
 				},
 			};
 		}
-		const area = (location as Location).address;
+		const address = (location as Location).address;
 		if (location.type === "station" || location.type === "stop") {
 			return {
 				name: location.name ?? "undefined",
-				area,
+				address,
 				id: location.id ?? JSON.stringify(location),
 				type: "station",
 				position: {
@@ -347,7 +347,7 @@ export class FptfResponseParser<
 		} else if (location.poi) {
 			return {
 				name: location.name ?? "undefined",
-				area,
+				address,
 				id: JSON.stringify(location),
 				type: "poi",
 				position: {
@@ -358,7 +358,7 @@ export class FptfResponseParser<
 		} else {
 			return {
 				name: location.name ?? location.address ?? "undefined",
-				area: location.name !== undefined ? location.address : undefined,
+				address: location.name !== undefined ? address : undefined,
 				id: JSON.stringify(location),
 				type: "address",
 				position: {

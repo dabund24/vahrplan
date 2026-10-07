@@ -238,7 +238,7 @@
 							</span>
 							<span class="flex-column">
 								<span>{suggestion.name}</span>
-								<small>{suggestion.area}</small>
+								<small>{suggestion.address}</small>
 							</span>
 						</button>
 						{#if suggestion.name !== "Standort"}

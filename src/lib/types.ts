@@ -42,7 +42,7 @@ export type ParsedTime = Partial<
 export type ParsedLocation =
 	| {
 			name: string;
-			area?: string;
+			address?: string;
 			id: string;
 			readonly type: "station" | "address" | "poi";
 			position: { lat: number; lng: number };
@@ -51,7 +51,7 @@ export type ParsedLocation =
 
 export type ParsedGeolocation = {
 	name: string;
-	area?: string;
+	address?: string;
 	id: string;
 	readonly type: "currentLocation";
 	asAt: Date;
