@@ -5,6 +5,7 @@ import { buildTransferLocationEquivalenceSystemFromSubJourneys } from "../diagra
 import { generateSvgData } from "$lib/server/svgData/svgData.server";
 import type { LegBlock, SubJourney, TransitType } from "$lib/types";
 import { journeyDataService } from "$lib/server/profiles/profileRegistry";
+import { postprocessSubJourney } from "$lib/server/postprocessSubJourney";
 
 export const GET: RequestHandler = async function (reqEvent) {
 	const client = apiClient("GET", reqEvent.route.id);
@@ -13,9 +14,15 @@ export const GET: RequestHandler = async function (reqEvent) {
 	const journeyResults = await Promise.all(
 		reqContent.map((token) => dataService.refresh(token, { lang: lang })),
 	);
-	const subJourneys = setMergingProperties(
-		journeyResults.map((subJourney) => subJourney.throwIfError().content),
-	);
+	const postProcessedResult = journeyResults
+		.map((subJourney) => subJourney.throwIfError().content)
+		.map((subJourney, i) =>
+			postprocessSubJourney(subJourney, {
+				isFirst: i === 0,
+				isLast: i === journeyResults.length - 1,
+			}),
+		);
+	const subJourneys = setMergingProperties(postProcessedResult);
 
 	const transferLocations = buildTransferLocationEquivalenceSystemFromSubJourneys(subJourneys);
 

@@ -5,6 +5,7 @@ import { DIAGRAM_COLUMN_MAX_REQUESTS, MAX_DATE } from "$lib/constants";
 import { VahrplanError } from "$lib/VahrplanError";
 import { dateDifference } from "$lib/util";
 import { m } from "$lib/paraglide/messages";
+import { postprocessSubJourney } from "$lib/server/postprocessSubJourney";
 
 type RequestData = {
 	fromTo: { from: string; to: string };
@@ -42,6 +43,9 @@ export async function fetchJourneys(
 			const errMessage = m.error_no_connections_found_from_m_to_n({ m: i + 1, n: i + 2 });
 			return VahrplanError.withMessage("NOT_FOUND", errMessage);
 		}
+		column.content.journeys = column.content.journeys.map((j) =>
+			postprocessSubJourney(j, { isFirst: i === 0, isLast: i === stops.length - 2 }),
+		);
 		result[i] = column.content;
 
 		if (Array.isArray(timeStart)) {
