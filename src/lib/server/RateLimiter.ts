@@ -1,5 +1,6 @@
 import { type VahrplanResult, VahrplanSuccess } from "$lib/VahrplanResult";
 import { VahrplanError } from "$lib/VahrplanError";
+import type { Locale } from "$lib/paraglide/runtime";
 
 /**
  * A utility class allowing to rate-limit access to a limited resource
@@ -20,13 +21,17 @@ export class RateLimiter {
 		setInterval(() => this.recentRequestsCounts.clear(), interval * 1000);
 	}
 
-	accessResource<T>(accessor: string, resourceFn: () => T): VahrplanResult<T> {
+	accessResource<T>(
+		accessor: string,
+		resourceFn: () => T,
+		lang: Locale = "de",
+	): VahrplanResult<T> {
 		const accessorAccesses = this.recentRequestsCounts.get(accessor) ?? 0;
 		if (accessorAccesses < this.rateLimitThreshold) {
 			// allow access
 			this.recentRequestsCounts.set(accessor, accessorAccesses + 1);
 			return new VahrplanSuccess(resourceFn());
 		}
-		return new VahrplanError("QUOTA_EXCEEDED");
+		return new VahrplanError("QUOTA_EXCEEDED", lang);
 	}
 }

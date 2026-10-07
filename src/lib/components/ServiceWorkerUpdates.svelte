@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
 	import StaticToast from "$lib/components/StaticToast.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	let isUpdatable = $state(false);
 	let updateFn: () => void = $state(() => void {}); // the function to run when user clicks "update"
@@ -53,11 +54,11 @@
 
 <StaticToast isVisible={isUpdatable}>
 	{#snippet text()}
-		Eine neue Version ist verfügbar!
+		{m.update_available()}
 	{/snippet}
 	{#snippet buttons()}
 		<button class="hoverable hoverable--visible hoverable--accent" onclick={updateFn}>
-			Aktualisieren
+			{m.update()}
 		</button>
 	{/snippet}
 </StaticToast>

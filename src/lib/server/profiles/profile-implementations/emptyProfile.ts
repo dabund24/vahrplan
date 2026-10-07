@@ -4,6 +4,7 @@ import { VahrplanError } from "$lib/VahrplanError";
 import { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDataRequestFormatter";
 import { FptfResponseParser } from "$lib/server/journey-data/fptf-clients/FptfResponseParser";
 import { DbnavLineShapeParser } from "$lib/server/profiles/profile-implementations/dbnav/DbnavLineShapeParser";
+import { DEFAULT_LOCALE } from "$lib/constants";
 
 /**
  * used as a fallback if no profile is set yet
@@ -42,16 +43,17 @@ export class EmptyProfile extends Profile<"empty"> {
 			lineShapeParser: new DbnavLineShapeParser(),
 		});
 		public journeys = (): Promise<VahrplanError> =>
-			Promise.resolve(new VahrplanError("NOT_FOUND"));
+			Promise.resolve(new VahrplanError("NOT_FOUND", DEFAULT_LOCALE));
 		public refresh = (): Promise<VahrplanError> =>
-			Promise.resolve(new VahrplanError("NOT_FOUND"));
-		public trip = (): Promise<VahrplanError> => Promise.resolve(new VahrplanError("NOT_FOUND"));
+			Promise.resolve(new VahrplanError("NOT_FOUND", DEFAULT_LOCALE));
+		public trip = (): Promise<VahrplanError> =>
+			Promise.resolve(new VahrplanError("NOT_FOUND", DEFAULT_LOCALE));
 		public locations = (): Promise<VahrplanError> =>
-			Promise.resolve(new VahrplanError("NOT_FOUND"));
+			Promise.resolve(new VahrplanError("NOT_FOUND", DEFAULT_LOCALE));
 		public location = (): Promise<VahrplanError> =>
-			Promise.resolve(new VahrplanError("NOT_FOUND"));
+			Promise.resolve(new VahrplanError("NOT_FOUND", DEFAULT_LOCALE));
 		public parseError = (): never => {
-			throw new VahrplanError("ERROR");
+			throw new VahrplanError("ERROR", DEFAULT_LOCALE);
 		};
 	})();
 }

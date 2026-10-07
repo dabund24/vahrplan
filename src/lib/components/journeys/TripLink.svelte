@@ -3,6 +3,7 @@
 	import { page } from "$app/state";
 	import IconRightArrow from "$lib/components/icons/IconRightArrow.svelte";
 	import type { LegBlock } from "$lib/types";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		leg: LegBlock;
@@ -29,7 +30,8 @@
 </script>
 
 <a {href} data-sveltekit-preload-data="off" class="flex-row hoverable hoverable--visible">
-	Ganze Fahrt <IconRightArrow />
+	{m.journey_full_trip()}
+	<IconRightArrow />
 </a>
 
 <style>

@@ -7,6 +7,7 @@ import { goto } from "$app/navigation";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { DIAGRAM_MAX_COLUMNS, DIAGRAM_MIN_COLUMNS } from "$lib/constants";
 import type { ProfileConfig } from "../server/profiles/profile";
+import { m } from "$lib/paraglide/messages";
 
 export type DisplayedFormData = {
 	locations: KeyedItem<ParsedLocation, number>[];
@@ -70,11 +71,11 @@ export function updateDisplayedLocations(
 	const newFormData: DisplayedFormData = { ...displayedFormData };
 	newFormData.locations = updateLocationsFn(newFormData);
 	if (newFormData.locations.length - 1 < DIAGRAM_MIN_COLUMNS) {
-		toast(`Station konnte nicht entfernt werden.`, "red");
+		toast(m.cannot_remove_stop(), "red");
 		return;
 	}
 	if (newFormData.locations.length - 1 > DIAGRAM_MAX_COLUMNS) {
-		toast(`Es sind maximal ${DIAGRAM_MAX_COLUMNS - 1} Zwischenstationen möglich.`, "red");
+		toast(m.max_via_warning(), "red");
 		return;
 	}
 

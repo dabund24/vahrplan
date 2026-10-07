@@ -8,6 +8,7 @@
 	import { toast } from "$lib/state/toastStore";
 	import Warning from "$lib/components/Warning.svelte";
 	import { resolve } from "$app/paths";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		profileConfig: ProfileConfig;
@@ -17,7 +18,7 @@
 
 	function selectProfile(): void {
 		if (profileConfig.disabledNotice !== undefined) {
-			toast(`Datenquelle nicht auswählbar. ${profileConfig.disabledNotice.name}`, "red");
+			toast(m.profile_not_selectable({ reason: profileConfig.disabledNotice }), "red");
 			return;
 		}
 		if (profileConfig.id !== page.data.profileConfig.id) {

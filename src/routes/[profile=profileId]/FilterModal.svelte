@@ -1,0 +1,158 @@
+<script lang="ts">
+	import Tabs from "$lib/components/Tabs.svelte";
+	import ModalToggle from "$lib/components/ModalToggle.svelte";
+	import { settings } from "$lib/state/settingStore";
+	import type { ComponentProps } from "svelte";
+	import Setting from "$lib/components/Setting.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import { page } from "$app/state";
+	import type { Product } from "$lib/types";
+	import type { ProfileConfig } from "$lib/server/profiles/profile";
+	import ProductToggle from "./ProductToggle.svelte";
+	import { m } from "$lib/paraglide/messages";
+	import type { LocalizedString } from "@inlang/paraglide-js";
+
+	const products = $derived(
+		Object.entries(page.data.profileConfig.products) as [
+			Product,
+			NonNullable<ProfileConfig["products"][Product]>,
+		][],
+	);
+
+	function setQuickMeansPreset(preset: "all" | "regional" | "longDistance"): void {
+		settings.update((settings) => {
+			settings.products = {
+				longDistanceExpress: preset === "all" || preset === "longDistance",
+				longDistance: preset === "all" || preset === "longDistance",
+				regionalExpress: preset === "all" || preset === "longDistance",
+				regional: preset === "all" || preset === "regional",
+				subway: preset === "all" || preset === "regional",
+				suburban: preset === "all" || preset === "regional",
+				tram: preset === "all" || preset === "regional",
+				bus: preset === "all" || preset === "regional",
+				taxi: preset === "all" || preset === "regional",
+				ferry: preset === "all" || preset === "regional",
+			};
+			return settings;
+		});
+	}
+
+	const modalTabContent: ComponentProps<typeof Tabs>["tabs"] = [
+		{
+			title: m.means_of_transport(),
+			content: meansFilter,
+		},
+		{
+			title: m.miscellaneous(),
+			content: generalFilter,
+		},
+	];
+</script>
+
+<ModalToggle showModalKey="showFilterModal">
+	<div class="button-content">{m.filter()}</div>
+</ModalToggle>
+<Modal showModalKey="showFilterModal" title={m.filter()} height="40rem">
+	<Tabs tabs={modalTabContent} isAtTopOnMobile={true} isBelowHeader={true} />
+</Modal>
+
+{#snippet generalFilter()}
+	<Setting
+		settingName={m.bike_carriage()}
+		bind:setting={$settings.options.bike}
+		settingInfo={{ type: "boolean" }}
+	/>
+	<Setting
+		settingName={m.accessible_connections()}
+		bind:setting={$settings.options.accessible}
+		settingInfo={{
+			type: "boolean",
+		}}
+	/>
+	<Setting
+		settingName={m.max_transfers()}
+		bind:setting={$settings.options.maxTransfers}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: 0, name: "0" as LocalizedString },
+				{ value: 1, name: "1" as LocalizedString },
+				{ value: 2, name: "2" as LocalizedString },
+				{ value: 3, name: "3" as LocalizedString },
+				{ value: 4, name: "4" as LocalizedString },
+				{ value: 5, name: "5" as LocalizedString },
+				{ value: -1, name: "∞" as LocalizedString },
+			],
+		}}
+	/>
+	<Setting
+		settingName={m.min_transfer_time()}
+		bind:setting={$settings.options.minTransferTime}
+		settingInfo={{
+			type: "options",
+			options: [
+				{ value: 0, name: "0min" as LocalizedString },
+				{ value: 2, name: "2min" as LocalizedString },
+				{ value: 5, name: "5min" as LocalizedString },
+				{ value: 10, name: "10min" as LocalizedString },
+				{ value: 15, name: "15min" as LocalizedString },
+				{ value: 20, name: "20min" as LocalizedString },
+				{ value: 30, name: "30min" as LocalizedString },
+				{ value: 40, name: "40min" as LocalizedString },
+				{ value: 50, name: "50min" as LocalizedString },
+				{ value: 60, name: "1h" as LocalizedString },
+			],
+		}}
+	/>
+{/snippet}
+{#snippet meansFilter()}
+	<div class="quick-means-presets flex-row padded-top-bottom">
+		<button
+			onclick={() => void setQuickMeansPreset("all")}
+			type="button"
+			class="hoverable hoverable--visible"
+		>
+			{m.all_services()}
+		</button>
+		<button
+			onclick={() => void setQuickMeansPreset("regional")}
+			type="button"
+			class="hoverable hoverable--visible"
+		>
+			{m.regional_local_only()}
+		</button>
+		<button
+			onclick={() => void setQuickMeansPreset("longDistance")}
+			type="button"
+			class="hoverable hoverable--visible"
+		>
+			{m.long_distance_only()}
+		</button>
+	</div>
+	<hr />
+	<div class="flex-row products-wrapper padded-top-bottom">
+		{#each products as [productId, { name: productName }] (productId)}
+			<ProductToggle {productId} {productName} />
+		{/each}
+	</div>
+{/snippet}
+
+<style>
+	.quick-means-presets {
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		& > * {
+			padding: 0.5rem 0.75rem;
+			text-wrap: nowrap;
+		}
+	}
+
+	.products-wrapper {
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.button-content {
+		padding: 0.5rem;
+	}
+</style>

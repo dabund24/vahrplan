@@ -1,11 +1,11 @@
 import type { Profile, ProfileConfig } from "./profile";
 import type { ProfileId } from "../../../params/profileId";
-import type { Language } from "../../../params/lang";
 import { EmptyProfile } from "./profile-implementations/emptyProfile";
 import { BvgProfile } from "$lib/server/profiles/profile-implementations/bvg/bvgProfile";
 import { OebbProfile } from "$lib/server/profiles/profile-implementations/oebb/oebbProfile";
 import { SbahnmuenchenProfile } from "$lib/server/profiles/profile-implementations/sbahnmuenchen/sbahnmuenchenProfile";
 import { TransitousProfile } from "$lib/server/profiles/profile-implementations/transitous/transitousProfile";
+import type { Locale } from "$lib/paraglide/runtime";
 
 const profiles = {
 	empty: new EmptyProfile(),
@@ -23,7 +23,7 @@ export function profileRegistry<T extends ProfileId>(id: T): (typeof profiles)[T
 	return profiles[id];
 }
 
-export function allProfileConfigs(lang: Language): ProfileConfig[] {
+export function allProfileConfigs(lang: Locale): ProfileConfig[] {
 	return Object.values(profiles)
 		.map((p) => p.configOfLanguage(lang))
 		.filter(({ id }) => id !== "empty");
@@ -31,7 +31,7 @@ export function allProfileConfigs(lang: Language): ProfileConfig[] {
 
 export function journeyDataService<ProfileT extends ProfileId>(
 	profile: ProfileT,
-	_lang: Language,
+	_lang: Locale,
 ): (typeof profiles)[ProfileT]["dataService"] {
 	return profiles[profile].dataService;
 	// TODO proxy data service such that the future language parameter doesn't need to be specified

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Duration from "$lib/components/Duration.svelte";
+	import { dateToString } from "$lib/util";
+	import { page } from "$app/state";
 
 	type Props = {
 		date: string | undefined;
@@ -8,16 +10,7 @@
 
 	let { date, duration }: Props = $props();
 
-	let dateString = $derived(
-		date === undefined
-			? ""
-			: new Date(date).toLocaleDateString("de-DE", {
-					weekday: "short",
-					day: "numeric",
-					month: "short",
-					year: "numeric",
-				}),
-	);
+	let dateString = $derived(dateToString(date, page.data.lang));
 </script>
 
 {#if date !== undefined || duration !== undefined}

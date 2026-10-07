@@ -6,6 +6,8 @@
 	import NameDelayPlatform from "$lib/components/journeys/NameDelayPlatform.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import TrainProgressIndicator from "$lib/components/TrainProgressIndicator.svelte";
+	import { m } from "$lib/paraglide/messages";
+	import { capFirstLetter } from "$lib/util";
 
 	type Props = {
 		block: FillerBlock;
@@ -64,9 +66,10 @@
 	{#if block.type === "walk"}
 		<a href={osmLink} target="_blank">
 			{#if block.distance !== undefined && block.travelTime !== undefined}
-				{block.distance}m Fußweg (ca. <i>{block.travelTime}min</i>)
+				{block.distance}m {m.journey_by_foot()} ({m.journey_approx()}
+				<i>{block.travelTime}min</i>)
 			{:else}
-				Fußweg
+				{capFirstLetter(m.journey_by_foot())}
 			{/if}
 		</a>
 	{:else if block.type === "onward-journey"}
@@ -74,7 +77,8 @@
 			Anreise zur nächsten Station{#if block.recommendedAction !== undefined},
 				{block.recommendedAction}
 			{/if}
-			({(block.distance - (block.distance % 100)) / 1000}km, ca. <i>{block.travelTime}min</i>)
+			({(block.distance - (block.distance % 100)) / 1000}km, {m.journey_approx()}
+			<i>{block.travelTime}min</i>)
 		</span>
 	{:else if block.type === "transfer" && block.isStopover}
 		<NameDelayPlatform transitData={block.transitData} hasStrongName={true} />

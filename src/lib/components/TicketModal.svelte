@@ -2,9 +2,10 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { type ParsedLocation } from "$lib/types";
-	import Warning from "$lib/components/Warning.svelte";
 	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte";
+	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	const displayedFormData = $derived(getDisplayedFormData());
 	let locations = $derived(displayedFormData?.locations.map((l) => l.value) ?? []);
@@ -23,7 +24,7 @@
 	</div>
 {/snippet}
 
-<Modal title="Tickets" showModalKey="showTicketModal">
+<Modal title={m.journey_tickets()} showModalKey="showTicketModal">
 	<div class="padded-top-bottom flex-column">
 		{#each ticketData as data, i (i)}
 			{@render locationRow(locations[i])}
@@ -35,25 +36,21 @@
 						class="hoverable hoverable--accent ticket-data"
 					>
 						Tickets {data.minPrice !== undefined
-							? `ab ${new Intl.NumberFormat("de-DE", {
+							? `${m.journey_tickets_from()} ${new Intl.NumberFormat(page.data.lang, {
 									style: "currency",
 									currency: data.currency,
 								}).format(data.minPrice)}`
 							: ""}
 					</a>
 				{:else}
-					<span class="ticket-data padded-top-bottom"> Keine Ticketdaten vefügbar </span>
+					<span class="ticket-data padded-top-bottom">
+						{m.journey_tickets_no_data_available()}
+					</span>
 				{/if}
 			</div>
 		{/each}
 		{@render locationRow(locations[locations.length - 1])}
 	</div>
-	<Warning>
-		Hinweis bei Teilstreckentickets: Wenn nur für einen Abschnitt der Reise ein Ticket benötigt
-		wird, können Start- und Zielbahnhof dieser Teilstrecke als Zwischenstationen festgelegt
-		werden. So lässt sich vermeiden, Tickets für Strecken zu kaufen, die bereits durch andere
-		Tickets (z. B. Deutschlandticket) abgedeckt sind.
-	</Warning>
 </Modal>
 
 <style>

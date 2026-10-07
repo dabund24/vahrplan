@@ -2,8 +2,9 @@
 	import type { Route } from "$lib/components/navbar/util";
 	import IconLogo from "$lib/components/icons/IconLogo.svelte";
 	import NavigationDrawer from "$lib/components/navbar/NavigationDrawer.svelte";
-	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
+	import { basePath } from "../../../routes/[profile=profileId]/basePath.svelte";
 	import { page } from "$app/state";
+	import LanguageSelection from "$lib/components/navbar/LanguageSelection.svelte";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -20,6 +21,7 @@
 		Vahrplan
 	</a>
 
+	<LanguageSelection />
 	<NavigationDrawer {currentRoute} {diagramUrl} {journeyUrl} />
 </div>
 

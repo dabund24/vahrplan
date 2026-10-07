@@ -1,14 +1,15 @@
 import { writable } from "svelte/store";
+import type { LocalizedString } from "@inlang/paraglide-js";
 
 type Toast = {
 	id: number;
-	message: string;
+	message: LocalizedString;
 	color: "red" | "green" | undefined;
 };
 
 export const toasts = writable<Toast[]>([]);
 
-export function toast(message: string, color: Toast["color"]): void {
+export function toast(message: LocalizedString, color: Toast["color"]): void {
 	const id = Math.random();
 	const toast = { id, message, color };
 	toasts.update((toasts) => {

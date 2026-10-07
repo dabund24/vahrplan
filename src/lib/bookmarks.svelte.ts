@@ -7,6 +7,9 @@ import { browser } from "$app/environment";
 import type { DiagramData } from "$lib/state/diagramData.svelte";
 import type { ProfileId } from "../params/profileId";
 import type { ProfileConfig } from "$lib/server/profiles/profile";
+import { m } from "./paraglide/messages.js";
+import { deLocalizeUrl } from "$lib/paraglide/runtime";
+import type { LocalizedString } from "@inlang/paraglide-js";
 
 export type BookmarkType = "diagram" | "journey" | "location" | "profile";
 
@@ -91,14 +94,16 @@ const formatBookmarkId: {
 } = {
 	diagram: ({ formData }, ctx) => {
 		const diagramApiClient = apiClient("GET", "diagram");
-		return diagramApiClient.formatNonApiUrl(
+		const url = diagramApiClient.formatNonApiUrl(
 			diagramApiClient.formDataToRequestData(formData),
 			ctx,
-		).href;
+		);
+		return deLocalizeUrl(url).href;
 	},
 	journey: (bookmarkData, ctx) => {
 		const tokens = bookmarkData.selectedSubJourneys.map((j) => j?.refreshToken ?? "");
-		return apiClient("GET", "journey").formatNonApiUrl(tokens, ctx).href;
+		const url = apiClient("GET", "journey").formatNonApiUrl(tokens, ctx);
+		return deLocalizeUrl(url).href;
 	},
 	location: (bookmarkData) => bookmarkData.id,
 	profile: (bookmarkData) => bookmarkData.id,
@@ -185,15 +190,14 @@ export function toggleBookmark<T extends BookmarkType>(
 ): void {
 	const id = formatBookmarkId[type](bookmarkData, ctx);
 	const indexInOldData = bookmarks[type].findIndex((bookmark) => bookmark.id === id);
-	const toastMessage = `Lesezeichen für ${bookmarkToString[type](bookmarkData)}`;
 	if (indexInOldData !== -1) {
 		// remove bookmark
 		bookmarks[type].splice(indexInOldData, 1);
-		toast(`${toastMessage} entfernt.`, "green");
+		toast(m.removed_some_bookmark({ bookmark: bookmarkToString[type](bookmarkData) }), "green");
 	} else {
 		addBookmark[type](id, bookmarkData, ctx);
 		bookmarks[type] = sortBookmarks[type](bookmarks[type]);
-		toast(`${toastMessage} hinzugefügt.`, "green");
+		toast(m.added_some_bookmark({ bookmark: bookmarkToString[type](bookmarkData) }), "green");
 	}
 
 	syncLocalStorage(type);
@@ -218,13 +222,14 @@ export function getIsBookmarked<T extends BookmarkType>(
 	);
 }
 
-export const bookmarkToString: { [T in BookmarkType]: (bookmarkData: BookmarkData<T>) => string } =
-	{
-		diagram: (_) => "Suchanfrage",
-		journey: (_) => "Reise",
-		location: (bookmarkData) => bookmarkData.name,
-		profile: (bookmarkData) => bookmarkData.name,
-	};
+export const bookmarkToString: {
+	[T in BookmarkType]: (bookmarkData: BookmarkData<T>) => LocalizedString;
+} = {
+	diagram: (_) => m.bookmarks_search_query(),
+	journey: (_) => m.bookmarks_journey(),
+	location: (bookmarkData) => bookmarkData.name as LocalizedString,
+	profile: (bookmarkData) => bookmarkData.name as LocalizedString,
+};
 
 /**
  * get all bookmarks of a type
@@ -241,7 +246,7 @@ export function getBookmarks<T extends BookmarkType>(type: T): Bookmarks[T] {
  */
 export function removeBookmark<T extends BookmarkType>(type: T, id: string): void {
 	bookmarks[type] = remove[type](id);
-	toast("Lesezeichen gelöscht", "green");
+	toast(m.removed_bookmark(), "green");
 	syncLocalStorage(type);
 }
 

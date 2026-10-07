@@ -7,6 +7,7 @@
 	import MiniTabs from "$lib/components/MiniTabs.svelte";
 	import type { ComponentProps, Snippet } from "svelte";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		block: LegBlock;
@@ -17,29 +18,29 @@
 	const { blockKey, lineShape, product, name, productName } = $derived(block);
 
 	function loadFactorToString(loadFactor: NonNullable<LegBlock["loadFactor"]>): string {
-		return `Auslastung: ${
+		return `${m.journey_occupancy()}: ${
 			{
-				low: "gering",
-				medium: "mittel",
-				high: "hoch",
-				"very-high": "sehr hoch",
+				low: m.journey_occupancy_low(),
+				medium: m.journey_occupancy_medium(),
+				high: m.journey_occupancy_high(),
+				"very-high": m.journey_occupancy_very_high(),
 			}[loadFactor]
 		}`;
 	}
 
 	function operatorToString(operator: NonNullable<LegBlock["operator"]>): string {
-		return `Betreiber: ${operator}`;
+		return `${m.journey_operator()}: ${operator}`;
 	}
 
 	function cycleToString(cycle: NonNullable<LegBlock["cycle"]>): string {
 		if (cycle.min === cycle.max) {
-			return `Fährt alle ${cycle.max} Minuten`;
+			return m.journey_cycle_single({ n: cycle.max });
 		}
-		return `Fährt alle ${cycle.min} bis ${cycle.max} Minuten`;
+		return m.journey_cycle_range({ m: cycle.min, n: cycle.max });
 	}
 
 	function tripNumberToString(tripNumber: NonNullable<LegBlock["tripNumber"]>): string {
-		return `Fahrtnummer: ${tripNumber}`;
+		return `${m.journey_trip_number()}: ${tripNumber}`;
 	}
 
 	const info = $derived.by(() => {
@@ -69,12 +70,12 @@
 				(key) =>
 					({
 						statuses: {
-							title: "Aktuelle Informationen",
+							title: m.journey_current_info(),
 							icon: infoIconRed,
 							content: statuses,
 						},
 						hints: {
-							title: "Fahrthinweise",
+							title: m.journey_trip_info(),
 							icon: infoIconRegular,
 							content: hints,
 						},
@@ -123,7 +124,7 @@
 
 {#if info.statuses.length > 0 || info.hints.length > 0}
 	<button
-		title="Fahrtinformationen anzeigen"
+		title={m.journey_show_trip_info()}
 		class="hoverable hoverable--visible"
 		onclick={showInfoModal}
 	>

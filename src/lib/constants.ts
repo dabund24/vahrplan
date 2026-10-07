@@ -1,4 +1,6 @@
 import type { ProfileConfig } from "./server/profiles/profile";
+import type { Locale } from "$lib/paraglide/runtime";
+import type { ProfileId } from "../params/profileId";
 
 export const YEAR_IN_SECONDS = 31_536_000;
 export const DAY_IN_SECONDS = 86400;
@@ -19,3 +21,6 @@ export const EMPTY_PROFILE: ProfileConfig = {
 	products: {},
 	options: {},
 };
+
+export const DEFAULT_LOCALE = "en" satisfies Locale;
+export const DEFAULT_PROFILE = "transitous" satisfies ProfileId;

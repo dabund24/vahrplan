@@ -8,6 +8,8 @@
 	import IconFiller from "$lib/components/icons/IconFiller.svelte";
 	import Duration from "$lib/components/Duration.svelte";
 	import LineNameDirection from "$lib/components/LineNameDirection.svelte";
+	import { m } from "$lib/paraglide/messages";
+	import { capFirstLetter } from "$lib/util";
 
 	type Props = {
 		popupData: PopupData;
@@ -59,9 +61,10 @@
 		</div>
 		<span>
 			{#if popupData.distance !== undefined && popupData.walkingTime !== undefined}
-				{popupData.distance}m Fußweg (ca. <i>{popupData.walkingTime}min</i>)
+				{popupData.distance}m {m.journey_by_foot()} ({m.journey_approx()}
+				<i>{popupData.walkingTime}min</i>)
 			{:else}
-				Fußweg
+				{capFirstLetter(m.journey_by_foot())}
 			{/if}
 		</span>
 	{:else if popupData.type === "onward-journey"}
@@ -70,10 +73,10 @@
 			<IconFiller type="onward-journey" isSmallIcon={true} />
 		</div>
 		<span>
-			Anreise zur nächsten Station{#if popupData.recommendedAction !== undefined},
+			{m.journey_to_next_station()}{#if popupData.recommendedAction !== undefined},
 				{popupData.recommendedAction}
 			{/if}
-			({(popupData.distance - (popupData.distance % 100)) / 1000}km, ca.
+			({(popupData.distance - (popupData.distance % 100)) / 1000}km, {m.journey_approx()}
 			<i>{popupData.travelTime}min</i>)
 		</span>
 	{:else}

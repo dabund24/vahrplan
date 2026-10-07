@@ -10,10 +10,11 @@
 	import { beforeNavigate } from "$app/navigation";
 	import IconJourneySelection from "$lib/components/icons/IconJourneySelection.svelte";
 	import { page } from "$app/state";
-	import { basePath } from "../../../routes/[lang=lang]/[profile=profileId]/basePath.svelte";
+	import { basePath } from "../../../routes/[profile=profileId]/basePath.svelte";
 	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
 	import IconTrip from "$lib/components/icons/IconTrip.svelte";
 	import { browser } from "$app/environment";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -24,7 +25,12 @@
 	const { currentRoute, diagramUrl, journeyUrl }: Props = $props();
 </script>
 
-<button popovertarget="navigation-drawer" class="hoverable">
+<button
+	popovertarget="navigation-drawer"
+	aria-label={m.navigation()}
+	title={m.navigation()}
+	class="hoverable"
+>
 	<IconDrawer />
 </button>
 
@@ -36,8 +42,8 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link={basePath(page)}
-		route="/[lang=lang]/[profile=profileId]"
-		pageName="Startseite"
+		route="/[profile=profileId]"
+		pageName={m.home()}
 	>
 		{#snippet icon()}<IconLogo />{/snippet}
 	</MobileNavbarItem>
@@ -45,8 +51,8 @@
 		<MobileNavbarItem
 			{currentRoute}
 			link={diagramUrl}
-			route="/[lang=lang]/[profile=profileId]/diagram"
-			pageName="Reiseauswahl"
+			route="/[profile=profileId]/diagram"
+			pageName={m.diagram()}
 		>
 			{#snippet icon()}<IconJourneySelection />{/snippet}
 		</MobileNavbarItem>
@@ -55,18 +61,18 @@
 		<MobileNavbarItem
 			{currentRoute}
 			link={journeyUrl}
-			route="/[lang=lang]/[profile=profileId]/journey"
-			pageName="Reisedetails"
+			route="/[profile=profileId]/journey"
+			pageName={m.journey()}
 		>
 			{#snippet icon()}<IconDetails />{/snippet}
 		</MobileNavbarItem>
 	{/if}
-	{#if currentRoute === "/[lang=lang]/[profile=profileId]/trip/[tripId]"}
+	{#if currentRoute === "/[profile=profileId]/trip/[tripId]"}
 		<MobileNavbarItem
 			{currentRoute}
 			link={browser ? location.href : "/"}
-			route="/[lang=lang]/[profile=profileId]/trip/[tripId]"
-			pageName="Fahrtdetails"
+			route="/[profile=profileId]/trip/[tripId]"
+			pageName={m.trip()}
 		>
 			{#snippet icon()}<IconTrip />{/snippet}
 		</MobileNavbarItem>
@@ -75,32 +81,32 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/profiles"
-		route="/[lang=lang]/profiles"
-		pageName="Datenquellen"
+		route="/profiles"
+		pageName={m.profiles()}
 	>
 		{#snippet icon()}<IconDataOrigin />{/snippet}
 	</MobileNavbarItem>
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/bookmarks"
-		route="/[lang=lang]/bookmarks"
-		pageName="Lesezeichen"
+		route="/bookmarks"
+		pageName={m.bookmarks()}
 	>
 		{#snippet icon()}<IconBookmarkLarge />{/snippet}
 	</MobileNavbarItem>
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/settings"
-		route="/[lang=lang]/settings"
-		pageName="Einstellungen"
+		route="/settings"
+		pageName={m.settings()}
 	>
 		{#snippet icon()}<IconSettings />{/snippet}
 	</MobileNavbarItem>
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/about"
-		route="/[lang=lang]/about"
-		pageName="Über Vahrplan"
+		route="/about"
+		pageName={m.about()}
 	>
 		{#snippet icon()}<IconAbout />{/snippet}
 	</MobileNavbarItem>
@@ -108,14 +114,14 @@
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/imprint"
-		route="/[lang=lang]/imprint"
-		pageName="Impressum"
+		route="/imprint"
+		pageName={m.imprint()}
 	/>
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/privacy"
-		route="/[lang=lang]/privacy"
-		pageName="Datenschutz"
+		route="/privacy"
+		pageName={m.privacy()}
 	/>
 </ul>
 

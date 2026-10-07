@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { page } from "$app/state";
 	import { resolve } from "$app/paths";
+	import { m } from "$lib/paraglide/messages";
 </script>
 
 <div class="content-wrapper padded-top-bottom">
-	<h1>Fehler {page.status}</h1>
+	<h1>{m.error()} {page.status}</h1>
 	<p>{page.error?.message}</p>
 	<div class="line--regular line--accent"></div>
 	<p class="flex-row">
 		<button onclick={() => void history.back()} class="hoverable hoverable--visible">
-			Zurück
+			{m.back()}
 		</button>
-		<a href={resolve("/")} class="hoverable hoverable--visible">Startseite</a>
+		<a href={resolve("/")} class="hoverable hoverable--visible">{m.home()}</a>
 	</p>
 </div>
 

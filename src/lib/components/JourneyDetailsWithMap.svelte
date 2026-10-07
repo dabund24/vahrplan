@@ -9,6 +9,7 @@
 	import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import type { SelectedData } from "$lib/state/selectedData.svelte";
 	import type { DisplayedFormData } from "$lib/state/displayedFormData.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		header: Snippet;
@@ -55,8 +56,8 @@
 {#if clientWidth < 1000}
 	<MiniTabs
 		tabs={[
-			{ title: "Klassische Ansicht", icon: iconJourneyInfo, content: journeyOverview },
-			{ title: "Karte", icon: iconMap, content: map, isFullHeight: true },
+			{ title: m.journey_classic_view(), icon: iconJourneyInfo, content: journeyOverview },
+			{ title: m.journey_map_view(), icon: iconMap, content: map, isFullHeight: true },
 		]}
 		startingTab={$settings.general.journeyDetailsStandardView === "classic" ? 0 : 1}
 	>

@@ -10,6 +10,7 @@ export default [
 			"build/",
 			".svelte-kit/",
 			"src/service-worker.js",
+			"src/lib/paraglide/",
 			"svelte.config.js",
 			"eslint.config.js",
 		],

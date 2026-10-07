@@ -2,6 +2,7 @@
 	import type { Snippet } from "svelte";
 	import { scale } from "svelte/transition";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		isVisible?: boolean;
@@ -29,6 +30,8 @@
 				<button
 					class="hoverable hoverable--visible"
 					onclick={() => void (isVisible = false)}
+					aria-label={m.close_dialog()}
+					title={m.close_dialog()}
 				>
 					<IconClose />
 				</button>

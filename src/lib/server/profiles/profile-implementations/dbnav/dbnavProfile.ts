@@ -30,25 +30,26 @@ export class DbnavProfile extends Profile<
 	FptfOptionId
 > {
 	protected override readonly id = "empty";
-	protected override readonly name = { de: "Deutschland" };
+	protected override readonly name = { de: "Deutschland", en: "Germany" };
 	protected override readonly disabledNotice = {
 		name: {
-			de: "Leider ist die Datenschnittstelle der DB aktuell nicht verwendbar. Ich weiß noch nicht, ob dies in naher Zukunft behebbar sein wird. Sorry für die Umstände.",
+			de: "Leider ist die Datenschnittstelle der DB nicht verwendbar.",
+			en: "Unfortunately, the API of DB is not usable.",
 		},
 	};
-	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
-	protected override readonly fallbackLanguage = "de";
+	protected override readonly supportedLanguages = ["de", "en"] as const satisfies string[];
+	protected override readonly fallbackLanguage = "en";
 	protected override readonly products = {
 		longDistanceExpress: { name: Profile.translingual("InterCityExpress") },
 		longDistance: { name: Profile.translingual("InterCity") },
-		regionalExpress: { name: { de: "sonst. Fernzug" } },
-		regional: { name: { de: "Regionalexpress/-bahn" } },
-		suburban: { name: { de: "S-Bahn" } },
-		subway: { name: { de: "U-Bahn" } },
-		tram: { name: { de: "Straßenbahn" } },
-		bus: { name: { de: "Bus" } },
-		taxi: { name: { de: "Ruftaxi" } },
-		ferry: { name: { de: "Schiff" } },
+		regionalExpress: { name: { de: "sonst. Fernzug", en: "other Long-Distance Train" } },
+		regional: { name: { de: "Regionalexpress/-bahn", en: "Regional Train" } },
+		suburban: { name: { de: "S-Bahn", en: "S-Bahn" } },
+		subway: { name: { de: "U-Bahn", en: "Underground Railway" } },
+		tram: { name: { de: "Straßenbahn", en: "Tram" } },
+		bus: { name: { de: "Bus", en: "Bus" } },
+		taxi: { name: { de: "Ruftaxi", en: "On-Demand Service" } },
+		ferry: { name: { de: "Schiff", en: "Ferry" } },
 	};
 	protected override readonly options = {
 		bike: {},

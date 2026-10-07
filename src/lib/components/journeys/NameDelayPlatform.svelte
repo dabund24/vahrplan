@@ -2,6 +2,7 @@
 	import type { TransitData } from "$lib/types";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
 	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		transitData: TransitData;
@@ -69,14 +70,14 @@
 			<div>&#8203;</div>
 		{:else}
 			<div class="platform-text" class:text--red={platformData.platformChanged}>
-				Gl. {platformData.platform}
+				{m.journey_pl()}&nbsp;{platformData.platform}
 			</div>
 		{/if}
 		{#if platformData2 === null}
 			<div>&#8203;</div>
 		{:else if platformData2 !== undefined}
 			<div class="platform-text" class:text--red={platformData2.platformChanged}>
-				Gl. {platformData2.platform}
+				{m.journey_pl()}&nbsp;{platformData2.platform}
 			</div>
 		{/if}
 	</div>

@@ -1,0 +1,241 @@
+<script lang="ts">
+	import { type KeyedItem, type ParsedLocation, type RelativeTimeType } from "$lib/types.js";
+	import { dateToInputDate, valueIsDefined } from "$lib/util.js";
+	import { settings } from "$lib/state/settingStore";
+	import SingleSelect from "$lib/components/SingleSelect.svelte";
+	import { get } from "svelte/store";
+	import { toast } from "$lib/state/toastStore";
+	import { getCurrentGeolocation } from "$lib/geolocation.svelte.js";
+	import FilterModal from "./FilterModal.svelte";
+	import { searchDiagram, type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import MainStationInputs from "./MainStationInputs.svelte";
+	import { SvelteDate } from "svelte/reactivity";
+	import { page } from "$app/state";
+	import { untrack } from "svelte";
+	import { m } from "$lib/paraglide/messages";
+
+	type Props = {
+		initialFormData?: DisplayedFormData;
+	};
+
+	let { initialFormData }: Props = $props();
+
+	let stops: KeyedItem<ParsedLocation | undefined, number>[] = $state([
+		{ value: undefined, key: 0 },
+		{ value: undefined, key: 1 },
+	]);
+	$effect.pre(() => {
+		if (page.data.profileConfig && initialFormData === undefined) {
+			stops = untrack(() => stops).map(({ key }) => ({ value: undefined, key }));
+			return;
+		}
+		if (initialFormData === undefined) {
+			stops = [
+				{ value: undefined, key: 0 },
+				{ value: undefined, key: 1 },
+			];
+			return;
+		}
+		stops = initialFormData.locations;
+	});
+
+	let departureArrivalSelection: 0 | 1 = $state(0);
+	let time = $state(new Date());
+
+	$effect.pre(() => initTimeInputs(initialFormData));
+
+	function initTimeInputs(displayedFormData: DisplayedFormData | undefined): void {
+		if (displayedFormData === undefined) {
+			return;
+		}
+
+		departureArrivalSelection =
+			displayedFormData.timeData.scrollDirection === "earlier" ? 1 : 0;
+		time = new Date(dateToInputDate(displayedFormData.timeData.time));
+	}
+
+	function setTimePreset(minuteOffset: number): void {
+		const now = new SvelteDate();
+		now.setTime(now.getTime() + 60 * 1000 * minuteOffset);
+		time = now;
+	}
+
+	async function handleFormSubmit(event: SubmitEvent): Promise<void> {
+		event.preventDefault();
+		const stopsToBeDisplayed = stops.filter(valueIsDefined);
+		if (!verifyUserInput(stopsToBeDisplayed.map((s) => s.value))) {
+			return;
+		}
+		const journeyTime = new SvelteDate(time);
+		journeyTime.setSeconds(0, 0); // round minute to improve caching behaviour
+		const scrollDirection: RelativeTimeType =
+			departureArrivalSelection === 0 ? "later" : "earlier";
+		const filters = { ...get(settings) };
+		const profileConfig = page.data.profileConfig;
+		const formData: DisplayedFormData = {
+			locations: stopsToBeDisplayed.map((stop) => ({ ...stop })), // important, unwanted dom updates would happen otherwise later on!
+			timeData: { type: "absolute", scrollDirection, time: journeyTime.toISOString() },
+			filters,
+			geolocationDate: new Date(),
+			profileConfig,
+		};
+		// handle current position
+		if (formData.locations.some((l) => l.value.type === "currentLocation")) {
+			const currentLocation = await getCurrentGeolocation();
+			if (currentLocation === undefined) {
+				return;
+			}
+			formData.geolocationDate = currentLocation.asAt;
+			formData.locations = formData.locations.map((l) => {
+				if (l.value.type === "currentLocation") {
+					return { key: l.key, value: currentLocation };
+				}
+				return l;
+			});
+		}
+
+		void searchDiagram(formData);
+	}
+
+	function verifyUserInput(stops: ParsedLocation[]): boolean {
+		if (stops.length < 2) {
+			toast(m.start_location_or_destination_not_specified(), "red");
+			return false;
+		}
+		for (let i = 1; i < stops.length; i++) {
+			if (stops[i].name === stops[i - 1].name) {
+				toast(m.stop_consecutively_specified({ stop: stops[i].name }), "red");
+				return false;
+			}
+		}
+		return true;
+	}
+</script>
+
+<form autocomplete="off" class="flex-column" onsubmit={(e) => void handleFormSubmit(e)}>
+	<MainStationInputs bind:stops />
+
+	<div class="time-filter-submit">
+		<div class="flex-row">
+			<SingleSelect
+				titles={[
+					{ type: "text", title: m.departure() },
+					{ type: "text", title: m.arrival() },
+				]}
+				bind:selected={departureArrivalSelection}
+			/>
+		</div>
+		<div class="time-input-container hoverable--visible--group flex-row">
+			<div>
+				<input
+					class=""
+					type="datetime-local"
+					bind:value={
+						(): string => {
+							return dateToInputDate(time.toISOString());
+						},
+						(t): void => {
+							time = new Date(t);
+						}
+					}
+					aria-label={departureArrivalSelection === 0
+						? m.departure_time()
+						: m.arrival_time()}
+				/>
+			</div>
+			<div class="hoverable--visible--group--sep"><div></div></div>
+			<div>
+				<button type="button" onclick={() => void setTimePreset(0)}>{m.now()}</button>
+			</div>
+			<div>
+				<button type="button" onclick={() => void setTimePreset(15)}
+					>{m.in_15_mins()}</button
+				>
+			</div>
+			<div>
+				<button type="button" onclick={() => void setTimePreset(60)}>{m.in_1_hour()}</button
+				>
+			</div>
+		</div>
+		<div class="filter-submit">
+			<FilterModal />
+			<button class="hoverable hoverable--accent padded-top-bottom" type="submit">
+				{m.search()}
+			</button>
+		</div>
+	</div>
+</form>
+
+<style>
+	form {
+		padding-top: calc(0.5rem + env(safe-area-inset-top));
+		width: 100%;
+		align-items: center;
+		container-type: inline-size;
+	}
+
+	.time-filter-submit {
+		width: 100%;
+		max-width: 30rem;
+		margin: 1rem 0;
+		container-type: inline-size;
+		> * {
+			display: flex;
+		}
+		input[type="datetime-local"] {
+			box-sizing: border-box;
+			font-variant-numeric: tabular-nums;
+			appearance: none;
+			-webkit-appearance: none;
+		}
+		.time-input-container {
+			padding-top: var(--line-width);
+			> * {
+				min-height: 100%;
+			}
+		}
+	}
+
+	@container (max-width: 29.5rem) {
+		.time-input-container > :nth-child(4) {
+			display: none;
+		}
+	}
+
+	@container (max-width: 24rem) {
+		.time-input-container > :nth-child(5) {
+			display: none;
+		}
+		.time-input-container > :nth-child(3) button {
+			border-top-right-radius: 50vh;
+			border-bottom-right-radius: 50vh;
+			padding-right: calc(var(--base-padding) + 0.25rem);
+			&:not(:hover) {
+				border-right: var(--border--very-transparant);
+			}
+		}
+	}
+
+	@container (max-width: 20.5rem) {
+		.time-input-container > :where(:nth-child(2), :nth-child(3)) {
+			display: none;
+		}
+		.time-input-container > :nth-child(1) input {
+			border-radius: 50vh;
+			padding-right: calc(var(--base-padding) + 0.25rem);
+			&:not(:hover) {
+				border-right: var(--border--very-transparant);
+			}
+		}
+	}
+
+	.filter-submit {
+		margin-top: 1.5rem;
+		justify-content: end;
+		gap: 0.5rem;
+		& > button {
+			width: fit-content;
+			padding: 0.5rem 1rem;
+		}
+	}
+</style>

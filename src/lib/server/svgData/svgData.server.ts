@@ -1,9 +1,9 @@
 import type { JourneyBlock, ParsedLocation, SubJourney, TransitType } from "$lib/types";
-import { MAX_DATE } from "$lib/constants";
+import { DEFAULT_LOCALE, MAX_DATE } from "$lib/constants";
 import {
 	getLocationRepresentative,
 	type LocationEquivalenceSystem,
-} from "../../../routes/[lang=lang]/[profile=profileId]/api/diagram/locationRepresentativesUtils";
+} from "../../../routes/[profile=profileId]/api/diagram/locationRepresentativesUtils";
 import { computeTransferSvgData, type TransferSvgData } from "$lib/server/svgData/transferSvgData";
 import { computeLegSvgData, type LegSvgData } from "$lib/server/svgData/legSvgData";
 import { error } from "@sveltejs/kit";
@@ -117,7 +117,7 @@ function legBlockToLocation(
 	} else if (block.type === "leg") {
 		location = block[`${locationType}Data`].location;
 	} else {
-		error(500, new VahrplanError("ERROR"));
+		error(500, new VahrplanError("ERROR", DEFAULT_LOCALE));
 	}
 
 	return getLocationRepresentative(transferLocations, location);

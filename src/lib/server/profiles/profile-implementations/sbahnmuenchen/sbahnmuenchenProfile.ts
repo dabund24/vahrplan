@@ -22,19 +22,19 @@ export class SbahnmuenchenProfile extends Profile<
 	FptfOptionId
 > {
 	protected override readonly id = "sbahnmuenchen";
-	protected override readonly name = { de: "München" };
-	protected override readonly supportedLanguages = ["de"] as const satisfies string[];
-	protected override readonly fallbackLanguage = "de";
+	protected override readonly name = { de: "München", en: "Munich" };
+	protected override readonly supportedLanguages = ["de", "en"] as const satisfies string[];
+	protected override readonly fallbackLanguage = "en";
 	protected override readonly products = {
 		longDistanceExpress: { name: Profile.translingual("InterCityExpress") },
 		longDistance: { name: Profile.translingual("InterCity/EuroCity") },
-		regionalExpress: { name: { de: "sonst. Fernzüge" } },
-		regional: { name: { de: "Regionalzüge" } },
-		suburban: { name: { de: "S-Bahn" } },
-		subway: { name: { de: "U-Bahn" } },
-		tram: { name: { de: "Tram" } },
-		bus: { name: { de: "Bus" } },
-		taxi: { name: { de: "Ruftaxi" } },
+		regionalExpress: { name: { de: "sonst. Fernzüge", en: "other Long-Distance Trains" } },
+		regional: { name: { de: "Regionalzüge", en: "Regional Trains" } },
+		suburban: { name: Profile.translingual("S-Bahn") },
+		subway: { name: Profile.translingual("U-Bahn") },
+		tram: { name: { de: "Tram", en: "Tram" } },
+		bus: { name: { de: "Bus", en: "Bus" } },
+		taxi: { name: { de: "Ruftaxi", en: "On-Demand Service" } },
 	};
 	protected override readonly options = {
 		bike: {},

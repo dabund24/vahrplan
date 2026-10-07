@@ -17,6 +17,7 @@ import type { OptionId } from "../profiles/profile";
 import { RateLimiter } from "$lib/server/RateLimiter";
 import type { JourneyDataRequestFormatter } from "$lib/server/journey-data/JourneyDataRequestFormatter";
 import type { JourneyDataResponseParser } from "$lib/server/journey-data/JourneyDataResponseParser";
+import type { Locale } from "$lib/paraglide/runtime";
 
 export type JourneyNodesWithRefs = {
 	journeys: SubJourney[];
@@ -93,7 +94,7 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 	 * parse an error that may be thrown when data fetching goes wrong
 	 * @param err
 	 */
-	protected abstract parseError: (err: unknown) => VahrplanError;
+	protected abstract parseError: (err: unknown, lang: Locale) => VahrplanError;
 
 	/**
 	 * perform a request and return a `VahrplanResult` wrapping the result or a corresponding error
@@ -116,21 +117,21 @@ export abstract class JourneyDataService<ProductT extends Product, OptionT exten
 				Awaited<ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]>>
 			>;
 		},
+		lang: Locale,
 		...reqData: Parameters<JourneyDataService<ProductT, OptionT>[EndpointT]>
 	): ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]> => {
 		const formattedReqParams = callbacks.formatReqParams(...reqData);
 		const res = this.rateLimiter.accessResource(
 			"global",
 			() =>
-				callbacks
-					.request(...formattedReqParams)
-					.then(
-						(r) => new VahrplanSuccess(callbacks.parseRes(r)),
-						this.parseError,
-					) as ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]>, // this assertion is stupid. Why is this necessary ts????
+				callbacks.request(...formattedReqParams).then(
+					(r) => new VahrplanSuccess(callbacks.parseRes(r)),
+					(err) => this.parseError(err, lang),
+				) as ReturnType<JourneyDataService<ProductT, OptionT>[EndpointT]>, // this assertion is stupid. Why is this necessary ts????
+			lang,
 		);
 		if (res.isError) {
-			return Promise.resolve(new VahrplanError("QUOTA_EXCEEDED")) as ReturnType<
+			return Promise.resolve(new VahrplanError("QUOTA_EXCEEDED", lang)) as ReturnType<
 				JourneyDataService<ProductT, OptionT>[EndpointT]
 			>;
 		}

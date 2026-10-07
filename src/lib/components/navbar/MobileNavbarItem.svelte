@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import type { Route } from "$lib/components/navbar/util";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type Props = {
 		currentRoute: Route | null;
 		icon?: Snippet;
-		pageName: string;
+		pageName: LocalizedString;
 		link: string;
 		route: Route;
 	};

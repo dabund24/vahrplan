@@ -8,6 +8,7 @@
 		toggleBookmark,
 	} from "$lib/bookmarks.svelte";
 	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		type: T;
@@ -48,7 +49,8 @@
 	type="button"
 	role="checkbox"
 	aria-checked={isBookmarked}
-	aria-label="{bookmarkToString[type](value)} favorisieren"
+	aria-label={m.bookmarks_bookmark_something({ something: bookmarkToString[type](value) })}
+	title={m.bookmarks_bookmark_something({ something: bookmarkToString[type](value) })}
 	class="hoverable"
 	class:hoverable--visible={hasBorder}
 	class:visually-hidden={isVisuallyHidden}
@@ -57,9 +59,9 @@
 	{tabindex}
 >
 	{#if hasText && type === "diagram"}
-		Suchanfrage merken
+		{m.bookmarks_do_bookmark_search()}
 	{:else if hasText}
-		Merken
+		{m.bookmarks_do_bookmark()}
 	{/if}
 	<IconBookmark {isBookmarked} type={iconType} />
 </button>
