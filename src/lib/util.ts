@@ -9,6 +9,7 @@ import type {
 	ParsedTime,
 } from "$lib/types";
 import { MINUTE_IN_MS } from "$lib/constants";
+import type { Locale } from "$lib/paraglide/runtime";
 
 export function isDefined<T>(arg: T | undefined): arg is T {
 	return arg !== undefined;
@@ -115,11 +116,11 @@ export function timeToString(time: string | number | undefined): string {
 	});
 }
 
-export function dateToString(date: string | undefined): string {
+export function dateToString(date: string | undefined, lang: Locale): string {
 	if (date === undefined) {
 		return "";
 	}
-	return new Date(date).toLocaleDateString("de-DE", {
+	return new Date(date).toLocaleDateString(lang, {
 		weekday: "short",
 		day: "numeric",
 		month: "short",
@@ -161,4 +162,8 @@ export function dateDifference(
 	const dateB = new Date(later).getTime();
 	const differenceMilliseconds = dateB - dateA;
 	return differenceMilliseconds / MINUTE_IN_MS;
+}
+
+export function capFirstLetter(str: string): string {
+	return str.charAt(0).toUpperCase() + str.slice(1);
 }

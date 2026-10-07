@@ -3,6 +3,8 @@
 	import StaticToast from "$lib/components/StaticToast.svelte";
 	import ModalToggle from "$lib/components/ModalToggle.svelte";
 	import Modal from "$lib/components/Modal.svelte";
+	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		news: ServerNews;
@@ -22,24 +24,24 @@
 <StaticToast {isVisible} isCloseButtonHidden={message !== undefined}>
 	{#snippet text()}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html title}
+		{@html title[page.data.lang]}
 	{/snippet}
 	{#snippet buttons()}
 		{#if message !== undefined}
 			<ModalToggle showModalKey={`serverNewsModal${id}`}>
-				<div class="padded-top-bottom">Mehr lesen</div>
+				<div class="padded-top-bottom">{m.read_more()}</div>
 			</ModalToggle>
-			<Modal {title} showModalKey={`serverNewsModal${id}`}>
+			<Modal title={title[page.data.lang]} showModalKey={`serverNewsModal${id}`}>
 				<div class="modal-content">
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-					{@html message}
+					{@html message[page.data.lang]}
 				</div>
 				<div class="flex-row">
 					<button
 						class="hoverable hoverable--visible hoverable--accent"
 						onclick={hideNews}
 					>
-						Okay
+						{m.okay()}
 					</button>
 				</div>
 			</Modal>

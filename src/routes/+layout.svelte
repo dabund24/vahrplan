@@ -1,7 +1,5 @@
 <script lang="ts">
-	import type { Pathname } from "$app/types";
-	import { resolve } from "$app/paths";
-	import { locales, localizeHref } from "$lib/paraglide/runtime";
+	import { locales, localizeUrl } from "$lib/paraglide/runtime";
 	import "./styles.css";
 	import Navbar from "$lib/components/navbar/Navbar.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
@@ -11,6 +9,7 @@
 	import { PUBLIC_ANALYTICS_SCRIPT } from "$env/static/public";
 	import type { LayoutProps } from "./$types";
 	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	let { children, data }: LayoutProps = $props();
 
@@ -48,7 +47,7 @@
 
 <div class="app">
 	<noscript>
-		<dialog open>Leider ist Vahrplan nicht ohne Javascript nutzbar :/</dialog>
+		<dialog open>{m.noscript()}</dialog>
 	</noscript>
 	<ProgressBar />
 	<Navbar />
@@ -56,8 +55,8 @@
 		{@render children()}
 		<footer>
 			<small>
-				<a href="/de/privacy">Datenschutz</a>
-				<a href="/de/imprint">Impressum</a>
+				<a href="/de/privacy">{m.privacy()}</a>
+				<a href="/de/imprint">{m.imprint()}</a>
 			</small>
 		</footer>
 	</main>
@@ -66,7 +65,7 @@
 
 <div style="display:none">
 	{#each locales as locale (locale)}
-		<a href={resolve(localizeHref(page.url.pathname, { locale }) as Pathname)}>{locale}</a>
+		<a href={localizeUrl(page.url, { locale }).href}>{locale}</a>
 	{/each}
 </div>
 

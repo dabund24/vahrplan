@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { ComponentProps, Snippet } from "svelte";
 	import SingleSelect from "$lib/components/SingleSelect.svelte";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type Props = {
 		isContentPadded?: boolean;
 		tabs: {
-			title: string; // for accessibility
+			title: LocalizedString; // for accessibility
 			icon: Snippet; // the icon used
 			content: Snippet; // the content associated with the tab
 			isFullHeight?: boolean; // sets the height of the content to 100vh instead of 100%

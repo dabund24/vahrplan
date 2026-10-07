@@ -3,92 +3,86 @@
 	import { settings } from "$lib/state/settingStore";
 	import ButtonModal from "$lib/components/ModalToggle.svelte";
 	import Warning from "$lib/components/Warning.svelte";
-	import IconShare from "$lib/components/icons/IconShare.svelte";
 	import Modal from "$lib/components/Modal.svelte";
-	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 </script>
 
 <svelte:head>
-	<title>Vahrplan - Einstellungen</title>
-	<meta name="description" content="Einstellungen für Vahrplan" />
+	<title>Vahrplan - {m.settings()}</title>
+	<meta name="description" content={m.settings_subtitle()} />
 </svelte:head>
 
 <div class="content-wrapper">
-	<h1>Einstellungen</h1>
-	<h2>Allgemein</h2>
+	<h1>{m.settings()}</h1>
+	<h2>{m.settings_general()}</h2>
 	<Setting
-		settingName="Schema"
+		settingName={m.settings_theme()}
 		bind:setting={$settings.general.colorScheme}
 		settingInfo={{
 			type: "options",
 			options: [
-				{ value: "system", name: "System" },
-				{ value: "light", name: "Hell" },
-				{ value: "dark", name: "Dunkel" },
-				{ value: "midnight", name: "Mitternacht" },
+				{ value: "system", name: m.settings_theme_system() },
+				{ value: "light", name: m.settings_theme_light() },
+				{ value: "dark", name: m.settings_theme_dark() },
+				{ value: "midnight", name: m.settings_theme_midnight() },
 			],
 		}}
 	/>
 	<Setting
-		settingName="Akzentfarbe"
+		settingName={m.settings_accent_color()}
 		bind:setting={$settings.general.color}
 		settingInfo={{
 			type: "options",
 			options: [
-				{ value: "red", name: "Rot" },
-				{ value: "yellow", name: "Gelb" },
-				{ value: "green", name: "Grün" },
-				{ value: "blue", name: "Blau" },
-				{ value: "purple", name: "Violett" },
+				{ value: "red", name: m.settings_accent_color_red() },
+				{ value: "yellow", name: m.settings_accent_color_yellow() },
+				{ value: "green", name: m.settings_accent_color_green() },
+				{ value: "blue", name: m.settings_accent_color_blue() },
+				{ value: "purple", name: m.settings_accent_color_purple() },
 			],
 		}}
 	/>
 	<Setting
-		settingName="Linien-Icons verwenden"
+		settingName={m.settings_use_line_icons()}
 		bind:setting={$settings.general.isLineIcons}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<h2>
-		<span class="mobile-only">Reisedetails</span><span class="desktop-only">Reisevorschau</span>
+		<span class="mobile-only">{m.settings_journey_details()}</span><span class="desktop-only"
+			>{m.settings_journey_preview()}</span
+		>
 	</h2>
 	<Setting
-		settingName="Standardansicht"
+		settingName={m.diagram_standard_view()}
 		bind:setting={$settings.general.journeyDetailsStandardView}
 		settingInfo={{
 			type: "options",
 			options: [
-				{ value: "classic", name: "Klassisch" },
-				{ value: "map", name: "Karte" },
+				{ value: "classic", name: m.settings_default_view_classic() },
+				{ value: "map", name: m.settings_map() },
 			],
 		}}
 	/>
 	<h2>Karte</h2>
 	<Setting
-		settingName="Live-Standort auf Karte anzeigen"
+		settingName={m.settings_map_show_live_location()}
 		bind:setting={$settings.general.mapGeolocation}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Karte vom Farbschema unabhängig immer hell lassen"
+		settingName={m.settings_map_always_light()}
 		bind:setting={$settings.general.isMapAlwaysLight}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<h2>Generierung von Kurzlinks beim Teilen</h2>
+	<h2>{m.settings_short_links()}</h2>
 	<div class="button-modal-container">
-		<Modal title="Datenschutzhinweis Kurzlinks" showModalKey="showPrivacyLinkModal">
+		<Modal title={m.settings_short_links_how_it_works()} showModalKey="showPrivacyLinkModal">
 			<div class="inline-icons">
 				<p>
-					Wird eine der folgenden beiden Einstellungen aktiviert, generiert Vahrplan beim
-					Klick auf das
-					<q>Teilen</q>-Symbol (<IconShare />) einer Suchanfrage bzw. einer Reise einen
-					Kurzlink.
+					{m.settings_short_links_text_a()}
 				</p>
 				<p>
-					Der Server speichert für einen Kurzlink bis 7 Tage nach der ausgewählten
-					Abfahrts-/Ankunftszeit einer Suchanfrage/des Endes der Reise, welche
-					Suche/welche Reise ihm zugeordnet ist. Dies ist technisch notwendig, damit beim
-					Aufrufen des Links das richtige Diagramm/die richtige Verbindung angezeigt
-					werden kann. Zusätzliche Daten werden nicht gespeichert.
+					{m.settings_short_links_text_b()}
 				</p>
 			</div>
 		</Modal>
@@ -97,52 +91,28 @@
 		</ButtonModal>
 	</div>
 	<Setting
-		settingName="Kurzlinks für Suchanfragen"
+		settingName={m.settings_short_links_for_search_queries()}
 		bind:setting={$settings.general.shortLinksDiagrams}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Kurzlinks für Reisen"
+		settingName={m.settings_short_links_for_journeys()}
 		bind:setting={$settings.general.shortLinksJourneys}
 		settingInfo={{ type: "boolean" }}
 	/>
-	<h2>Dauerhaftes Speichern von Einstellungen</h2>
-	<div class="button-modal-container">
-		<Modal title="Datenschutzhinweis Local Storage" showModalKey="showPrivacyStoreModal">
-			<div class="inline-icons">
-				<p>
-					Wird eine der folgenden beiden Einstellungen aktiviert, werden die
-					App-Einstellungen bzw. die gesetzten Verbindungsfilter im Browser mit der
-					Web-Technologie <a
-						target="_blank"
-						href="https://de.wikipedia.org/wiki/Web_Storage"><q>Local Storage</q></a
-					> sessionübergreifend gespeichert. Dies ist für die Funktionalität technisch notwendig.
-				</p>
-				<p> Wird eine Einstellung wieder deaktiviert, werden die Daten wieder gelöscht.</p>
-				<p
-					>Mehr Informationen zu Local Storage befinden sich <a
-						href="/{page.data.lang}/about/privacy#web-storage"
-						>in der Datenschutzerklärung</a
-					>.
-				</p>
-			</div>
-		</Modal>
-		<ButtonModal showModalKey="showPrivacyStoreModal">
-			<Warning>Datenschutzhinweis</Warning>
-		</ButtonModal>
-	</div>
+	<h2>{m.settings_remember_choices()}</h2>
 	<Setting
-		settingName="App-Einstellungen"
+		settingName={m.settings_remember_choices_app_settings()}
 		bind:setting={$settings.storage.general}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Verkehrsmittel"
+		settingName={m.means_of_transport()}
 		bind:setting={$settings.storage.products}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName="Sonstige Suchfilter"
+		settingName={m.miscellaneous()}
 		bind:setting={$settings.storage.options}
 		settingInfo={{ type: "boolean" }}
 	/>

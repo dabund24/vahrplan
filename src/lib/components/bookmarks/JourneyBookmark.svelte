@@ -5,6 +5,7 @@
 	import Duration from "$lib/components/Duration.svelte";
 	import { type Bookmarks } from "$lib/bookmarks.svelte";
 	import BookmarkShell from "$lib/components/bookmarks/BookmarkShell.svelte";
+	import { page } from "$app/state";
 
 	type Props = {
 		bookmark: Bookmarks["journey"][number];
@@ -15,7 +16,7 @@
 </script>
 
 <BookmarkShell bookmarkType="journey" {bookmark} {bookmarkIndex}>
-	<div class="padded-top-bottom">{dateToString(bookmark.departure)}</div>
+	<div class="padded-top-bottom">{dateToString(bookmark.departure, page.data.lang)}</div>
 
 	<div class="journey-data flex-row">
 		<div class="time">

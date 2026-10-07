@@ -78,7 +78,7 @@ export const exampleProfileConfig2: ProfileConfig = {
 			defaultValue: -1,
 			optionNames: {
 				"0": {
-					name: "nur Direkt-Verbindungen",
+					name: "0",
 				},
 				"1": {
 					name: "1",

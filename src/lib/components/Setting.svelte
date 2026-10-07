@@ -9,7 +9,7 @@
 	type SettingInfo = T extends string | number
 		? {
 				type: "options";
-				options: { value: T; name: string }[];
+				options: { value: T; name: LocalizedString }[];
 			}
 		: T extends boolean
 			? {

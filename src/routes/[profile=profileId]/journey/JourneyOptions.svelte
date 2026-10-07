@@ -10,6 +10,7 @@
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 	import { refreshDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	const selectedData = $derived(getSelectedData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -17,13 +18,13 @@
 	const options: ComponentProps<typeof Options<"journey">>["options"] = [
 		{
 			type: "function",
-			name: "Aktualisieren",
+			name: m.refresh(),
 			icon: iconRefresh,
 			onClick: () => refreshDiagramData(selectedData),
 		},
 		{
 			type: "function",
-			name: "Teilen",
+			name: m.share(),
 			icon: iconShare,
 			onClick: async () =>
 				shareJourney(displayedJourney, selectedData, {
@@ -32,14 +33,14 @@
 		},
 		{
 			type: "bookmark",
-			name: "Merken",
+			name: m.bookmarks_do_bookmark(),
 			icon: iconRefresh,
 			bookmarkType: "journey",
 			bookmarkValue: () => displayedJourney,
 		},
 		{
 			type: "modal",
-			name: "Tickets",
+			name: m.journey_tickets(),
 			icon: iconTickets,
 			showModalKey: "showTicketModal",
 		},

@@ -10,6 +10,7 @@
 	import type { ProfileConfig } from "$lib/server/profiles/profile";
 	import ProductToggle from "./ProductToggle.svelte";
 	import { m } from "$lib/paraglide/messages";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	const products = $derived(
 		Object.entries(page.data.profileConfig.products) as [
@@ -74,13 +75,13 @@
 		settingInfo={{
 			type: "options",
 			options: [
-				{ value: 0, name: "0" },
-				{ value: 1, name: "1" },
-				{ value: 2, name: "2" },
-				{ value: 3, name: "3" },
-				{ value: 4, name: "4" },
-				{ value: 5, name: "5" },
-				{ value: -1, name: "∞" },
+				{ value: 0, name: "0" as LocalizedString },
+				{ value: 1, name: "1" as LocalizedString },
+				{ value: 2, name: "2" as LocalizedString },
+				{ value: 3, name: "3" as LocalizedString },
+				{ value: 4, name: "4" as LocalizedString },
+				{ value: 5, name: "5" as LocalizedString },
+				{ value: -1, name: "∞" as LocalizedString },
 			],
 		}}
 	/>
@@ -90,16 +91,16 @@
 		settingInfo={{
 			type: "options",
 			options: [
-				{ value: 0, name: "0min" },
-				{ value: 2, name: "2min" },
-				{ value: 5, name: "5min" },
-				{ value: 10, name: "10min" },
-				{ value: 15, name: "15min" },
-				{ value: 20, name: "20min" },
-				{ value: 30, name: "30min" },
-				{ value: 40, name: "40min" },
-				{ value: 50, name: "50min" },
-				{ value: 60, name: "1h" },
+				{ value: 0, name: "0min" as LocalizedString },
+				{ value: 2, name: "2min" as LocalizedString },
+				{ value: 5, name: "5min" as LocalizedString },
+				{ value: 10, name: "10min" as LocalizedString },
+				{ value: 15, name: "15min" as LocalizedString },
+				{ value: 20, name: "20min" as LocalizedString },
+				{ value: 30, name: "30min" as LocalizedString },
+				{ value: 40, name: "40min" as LocalizedString },
+				{ value: 50, name: "50min" as LocalizedString },
+				{ value: 60, name: "1h" as LocalizedString },
 			],
 		}}
 	/>

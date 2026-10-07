@@ -5,6 +5,7 @@
 	import type { BookmarkData, BookmarkType } from "$lib/bookmarks.svelte";
 	import BookmarkToggle from "$lib/components/bookmarks/BookmarkToggle.svelte";
 	import type { LocalizedString } from "@inlang/paraglide-js";
+	import { m } from "$lib/paraglide/messages";
 
 	type OptionElement = {
 		name: LocalizedString;
@@ -51,7 +52,7 @@
 
 <div class="container">
 	<button
-		title="Optionen"
+		title={m.options()}
 		style="anchor-name: --{id}-popover-button"
 		popovertarget="{id}-popover"
 		class="hoverable"

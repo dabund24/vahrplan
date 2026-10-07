@@ -2,6 +2,7 @@
 	import { page } from "$app/state";
 	import { getBookmarks } from "$lib/bookmarks.svelte";
 	import ProfileSelectionEntry from "$lib/components/profiles/ProfileSelectionEntry.svelte";
+	import { m } from "$lib/paraglide/messages";
 	import { flip } from "svelte/animate";
 	import { crossfade } from "svelte/transition";
 	const [send, receive] = crossfade({ duration: 400 });
@@ -10,8 +11,7 @@
 </script>
 
 <p>
-	Wähle hier aus, woher die Verbindungsdaten kommen sollen. Eine regionalere Quelle bedeutet in
-	der Regel eine bessere Datenqualität.
+	{m.profiles_intro()}
 </p>
 
 <ul class="flex-column">
@@ -47,7 +47,7 @@
 </ul>
 
 <p>
-	<i>Mehr Datenquellen folgen in Zukunft...</i>
+	<i>{m.profiles_more_in_future()}</i>
 </p>
 
 <style>

@@ -8,7 +8,12 @@
 	};
 </script>
 
-<button popovertarget="language-selection" aria-label="Languages" class="hoverable">
+<button
+	popovertarget="language-selection"
+	aria-label="Languages"
+	title="Languages"
+	class="hoverable"
+>
 	<strong>{page.data.lang.toUpperCase()}</strong>
 </button>
 

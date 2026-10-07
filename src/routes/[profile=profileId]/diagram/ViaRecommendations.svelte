@@ -2,7 +2,6 @@
 	import type { KeyedItem, ParsedLocation } from "$lib/types.js";
 	import Setting from "$lib/components/Setting.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
-	import Warning from "$lib/components/Warning.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import {
 		getDisplayedFormData,
@@ -10,6 +9,8 @@
 		updateDisplayedLocations,
 	} from "$lib/state/displayedFormData.svelte.js";
 	import type { RecommendedVia } from "../api/diagram/viaRecommendations.server";
+	import { m } from "$lib/paraglide/messages";
+	import type { LocalizedString } from "@inlang/paraglide-js";
 
 	type Props = {
 		recommendedVias: RecommendedVia[][];
@@ -86,14 +87,8 @@
 	}
 </script>
 
-<Modal title="Auswahl Zwischenstationen" showModalKey="showRecommendationModal">
+<Modal title={m.diagram_select_vias()} showModalKey="showRecommendationModal">
 	<form onsubmit={handleFormSubmit}>
-		{#if recommendedVias.flat().length > 0}
-			<Warning>
-				Für die hier zusätzlich angezeigten Zwischenstationen lohnt es sich möglicherweise,
-				sie auch in der Suchanfrage zu berücksichtigen.
-			</Warning>
-		{/if}
 		<div>
 			{#each suggestedLocations as suggestedLocation, i (i)}
 				<div class="station-row" class:displayed={suggestedLocation.isDisplayed}>
@@ -108,7 +103,7 @@
 						>
 					{:else}
 						<Setting
-							settingName={suggestedLocation.location.value.name}
+							settingName={suggestedLocation.location.value.name as LocalizedString}
 							settingInfo={{ type: "boolean" }}
 							bind:setting={suggestedLocation.isSelected}
 						/>

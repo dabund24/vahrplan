@@ -9,6 +9,7 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { type DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import { type SelectedData } from "$lib/state/selectedData.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		displayedJourney: DisplayedJourney;
@@ -21,11 +22,11 @@
 	let warningMessage = $derived.by(() => {
 		const statuses = displayedJourney.statuses;
 		if (statuses.has("cancelled") && statuses.has("impossibleTransfer")) {
-			return "Reise nicht möglich: Nicht erreichbarer Umstieg und Fahrt entfällt";
+			return m.journey_impossible_transfer_and_cancellation();
 		} else if (statuses.has("impossibleTransfer")) {
-			return "Reise nicht möglich: Nicht erreichbarer Umstieg";
+			return m.journey_impossible_transfer();
 		} else if (statuses.has("cancelled")) {
-			return "Reise nicht möglich: Fahrt entfällt";
+			return m.journey_impossible_cancellation();
 		}
 	});
 </script>

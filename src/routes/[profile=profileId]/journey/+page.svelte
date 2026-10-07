@@ -15,6 +15,7 @@
 	import JourneyDetailsWithMap from "$lib/components/JourneyDetailsWithMap.svelte";
 	import { getDisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 	import JourneyOptions from "./JourneyOptions.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	const diagramApiClient = apiClient("GET", "diagram");
 
@@ -33,12 +34,17 @@
 		} else {
 			return {
 				pageTitle: "",
-				pageDescription: "Reisedetails in Vahrplan",
+				pageDescription: m.journey_subtitle(),
 			};
 		}
 		return {
 			pageTitle: `${formData1.locations[0].value.name} — ${formData1.locations.at(-1)?.value.name}`,
-			pageDescription: `Details zur Reise von ${formData1.locations[0].value.name} nach ${formData1.locations.at(-1)?.value.name} am ${dateToString(formData1.timeData.time)} mit Abfahrt ${timeToString(formData1.timeData.time)} Uhr`,
+			pageDescription: m.journey_subtitle_long({
+				startLocation: formData1.locations[0]?.value.name ?? "",
+				destination: formData1.locations.at(-1)?.value.name ?? "",
+				date: dateToString(formData1.timeData.time, page.data.lang),
+				departure: timeToString(formData1.timeData.time),
+			}),
 		};
 	});
 
@@ -50,7 +56,7 @@
 
 	const diagramUrl = $derived.by(() => {
 		if (displayedFormData === undefined) {
-			return "/de/profiles";
+			return "/";
 		}
 
 		return diagramApiClient.formatNonApiUrl(
@@ -61,14 +67,14 @@
 </script>
 
 <svelte:head>
-	<title>Vahrplan - Reisedetails{pageTitle.length > 0 ? ": " : ""}{pageTitle}</title>
+	<title>Vahrplan - {m.journey()}{pageTitle.length > 0 ? ": " : ""}{pageTitle}</title>
 	<meta
 		name="title"
-		content="Vahrplan - Reisedetails{pageTitle.length > 0 ? ': ' : ''}{pageTitle}"
+		content="Vahrplan - {m.journey()}{pageTitle.length > 0 ? ': ' : ''}{pageTitle}"
 	/>
 	<meta
 		name="description"
-		content={pageDescription.length > 0 ? "Reisedetails" : pageDescription}
+		content={pageDescription.length > 0 ? m.journey_subtitle() : pageDescription}
 	/>
 </svelte:head>
 
@@ -77,16 +83,14 @@
 		<h1>Reisedetails</h1>
 		{#if formData === undefined && displayedFormData === undefined}
 			<Warning>
-				Suche auf der Startseite nach Verbindungen und wähle anschließend in der
-				Reiseauswahl für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise
-				wird dann hier angezeigt.
+				{m.journey_none_selected()}
 			</Warning>
 		{/if}
 	{/snippet}
 	{#snippet backButton()}
 		<a href={diagramUrl} class="hoverable hoverable--visible">
 			<IconLeftArrow />
-			Reiseauswahl
+			{m.diagram()}
 		</a>
 	{/snippet}
 	{#snippet options()}

@@ -14,6 +14,7 @@
 	import IconDataOrigin from "$lib/components/icons/IconDataOrigin.svelte";
 	import IconTrip from "$lib/components/icons/IconTrip.svelte";
 	import { browser } from "$app/environment";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		currentRoute: Route | null;
@@ -24,7 +25,12 @@
 	const { currentRoute, diagramUrl, journeyUrl }: Props = $props();
 </script>
 
-<button popovertarget="navigation-drawer" class="hoverable">
+<button
+	popovertarget="navigation-drawer"
+	aria-label={m.navigation()}
+	title={m.navigation()}
+	class="hoverable"
+>
 	<IconDrawer />
 </button>
 
@@ -37,7 +43,7 @@
 		{currentRoute}
 		link={basePath(page)}
 		route="/[profile=profileId]"
-		pageName="Startseite"
+		pageName={m.home()}
 	>
 		{#snippet icon()}<IconLogo />{/snippet}
 	</MobileNavbarItem>
@@ -46,7 +52,7 @@
 			{currentRoute}
 			link={diagramUrl}
 			route="/[profile=profileId]/diagram"
-			pageName="Reiseauswahl"
+			pageName={m.diagram()}
 		>
 			{#snippet icon()}<IconJourneySelection />{/snippet}
 		</MobileNavbarItem>
@@ -56,7 +62,7 @@
 			{currentRoute}
 			link={journeyUrl}
 			route="/[profile=profileId]/journey"
-			pageName="Reisedetails"
+			pageName={m.journey()}
 		>
 			{#snippet icon()}<IconDetails />{/snippet}
 		</MobileNavbarItem>
@@ -66,7 +72,7 @@
 			{currentRoute}
 			link={browser ? location.href : "/"}
 			route="/[profile=profileId]/trip/[tripId]"
-			pageName="Fahrtdetails"
+			pageName={m.trip()}
 		>
 			{#snippet icon()}<IconTrip />{/snippet}
 		</MobileNavbarItem>
@@ -76,7 +82,7 @@
 		{currentRoute}
 		link="/{page.data.lang}/profiles"
 		route="/profiles"
-		pageName="Datenquellen"
+		pageName={m.profiles()}
 	>
 		{#snippet icon()}<IconDataOrigin />{/snippet}
 	</MobileNavbarItem>
@@ -84,7 +90,7 @@
 		{currentRoute}
 		link="/{page.data.lang}/bookmarks"
 		route="/bookmarks"
-		pageName="Lesezeichen"
+		pageName={m.bookmarks()}
 	>
 		{#snippet icon()}<IconBookmarkLarge />{/snippet}
 	</MobileNavbarItem>
@@ -92,7 +98,7 @@
 		{currentRoute}
 		link="/{page.data.lang}/settings"
 		route="/settings"
-		pageName="Einstellungen"
+		pageName={m.settings()}
 	>
 		{#snippet icon()}<IconSettings />{/snippet}
 	</MobileNavbarItem>
@@ -100,7 +106,7 @@
 		{currentRoute}
 		link="/{page.data.lang}/about"
 		route="/about"
-		pageName="Über Vahrplan"
+		pageName={m.about()}
 	>
 		{#snippet icon()}<IconAbout />{/snippet}
 	</MobileNavbarItem>
@@ -109,13 +115,13 @@
 		{currentRoute}
 		link="/{page.data.lang}/imprint"
 		route="/imprint"
-		pageName="Impressum"
+		pageName={m.imprint()}
 	/>
 	<MobileNavbarItem
 		{currentRoute}
 		link="/{page.data.lang}/privacy"
 		route="/privacy"
-		pageName="Datenschutz"
+		pageName={m.privacy()}
 	/>
 </ul>
 

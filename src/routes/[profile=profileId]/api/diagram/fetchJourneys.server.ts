@@ -39,7 +39,7 @@ export async function fetchJourneys(
 			ctx,
 		);
 		if (column.isError || column.content.journeys.length === 0) {
-			const errMessage = m.error_no_connections_found_from_m_to_n({ m: i + 1, n: i + 1 });
+			const errMessage = m.error_no_connections_found_from_m_to_n({ m: i + 1, n: i + 2 });
 			return VahrplanError.withMessage("NOT_FOUND", errMessage);
 		}
 		result[i] = column.content;

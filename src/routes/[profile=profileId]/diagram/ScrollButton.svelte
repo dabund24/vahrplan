@@ -14,7 +14,9 @@
 
 	const { isClickable, scrollDirection, isTextHidden }: Props = $props();
 
-	const buttonText = $derived(scrollDirection === "earlier" ? "Früher" : "Später");
+	const buttonText = $derived(
+		scrollDirection === "earlier" ? m.diagram_earlier() : m.diagram_later(),
+	);
 
 	function scroll(): void {
 		if (!isClickable) {

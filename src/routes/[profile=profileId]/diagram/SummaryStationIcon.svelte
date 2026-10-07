@@ -10,6 +10,7 @@
 	} from "$lib/state/displayedFormData.svelte.js";
 	import { getDiagramData } from "$lib/state/diagramData.svelte.js";
 	import { getLocationRepresentative } from "../api/diagram/locationRepresentativesUtils";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		location: ParsedLocation;
@@ -63,7 +64,7 @@
 		class="icon-neighbor action-button"
 		onclick={() => void removeDisplayedLocation(locationIndex)}
 		transition:fly={{ y: -36 }}
-		title="Station als Zwischenstation entfernen"
+		title={m.diagram_unsplit_journey()}
 	>
 		<IconClose />
 	</button>
@@ -72,7 +73,7 @@
 		class="icon-neighbor action-button"
 		transition:fly={{ y: -36 }}
 		onclick={() => void addDisplayedLocation(location, locationIndex + 1)}
-		title="Station als Zwischenstation hinzufügen"
+		title={m.diagram_split_journey()}
 	>
 		<IconPlus />
 	</button>

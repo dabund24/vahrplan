@@ -3,6 +3,7 @@
 	import Time from "$lib/components/Time.svelte";
 	import { getSelectedData, toggleJourneySelection } from "$lib/state/selectedData.svelte.js";
 	import JourneyDiagramDateIndicator from "./JourneyDiagramDateIndicator.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		subJourney: SubJourney;
@@ -52,7 +53,7 @@
 		class:is-new={isNew}
 		aria-current={isSelected}
 		onclick={handleDiagramElementClick}
-		title="Verbindung aus-/abwählen"
+		title={m.diagram_toggle_connection_selection()}
 	>
 		<span class="time">
 			<Time time={{ departure: subJourney.departureTime }} />

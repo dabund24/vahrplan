@@ -26,6 +26,7 @@
 	import SvgTransferStations from "./SvgTransferStations.svelte";
 	import DiagramOptions from "./DiagramOptions.svelte";
 	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		miniTabsSnippet: Snippet;
@@ -104,10 +105,10 @@
 					{ profileConfig: page.data.profileConfig },
 				).href}
 				class="hoverable hoverable--accent"
-				title="Reisedetails anzeigen"
+				title={m.diagram_view_journey()}
 				transition:scale
 			>
-				Reisedetails
+				{m.journey()}
 				<IconRightArrow />
 			</a>
 		{/if}

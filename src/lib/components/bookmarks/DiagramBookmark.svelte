@@ -4,6 +4,7 @@
 	import { type Bookmarks } from "$lib/bookmarks.svelte";
 	import BookmarkShell from "$lib/components/bookmarks/BookmarkShell.svelte";
 	import { m } from "$lib/paraglide/messages";
+	import { page } from "$app/state";
 
 	type Props = {
 		bookmark: Bookmarks["diagram"][number];
@@ -17,6 +18,7 @@
 	<div class="time-data">
 		{bookmark.scrollDirection === "later" ? m.arrival() : m.departure()}: {dateToString(
 			bookmark.time,
+			page.data.lang,
 		)}, {timeToString(bookmark.time)}
 	</div>
 	<ol>

@@ -10,6 +10,7 @@
 	import IconHome from "$lib/components/icons/IconHome.svelte";
 	import { browser } from "$app/environment";
 	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	const { data }: PageProps = $props();
 
@@ -30,7 +31,7 @@
 <svelte:head>
 	<title>Vahrplan - {trip.leg.name}</title>
 	<meta name="title" content="Vahrplan - {trip.leg.name}" />
-	<meta name="description" content="Fahrtdetails zu {trip.leg.name}" />
+	<meta name="description" content="{m.trip()} zu {trip.leg.name}" />
 </svelte:head>
 
 <JourneyDetailsWithMap {displayedJourney} {selectedData} isCompact={true}>
@@ -59,7 +60,7 @@
 				href="/{page.data.lang}/{page.data.profileConfig.id}"
 			>
 				<IconHome />
-				Startseite
+				{m.home()}
 			</a>
 		{/if}
 	{/snippet}

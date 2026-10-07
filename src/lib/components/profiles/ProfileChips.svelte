@@ -8,6 +8,7 @@
 	import Warning from "$lib/components/Warning.svelte";
 	import { scale } from "svelte/transition";
 	import { flip } from "svelte/animate";
+	import { m } from "$lib/paraglide/messages";
 
 	const bookmarkedProfiles = $derived(
 		getBookmarks("profile").filter(({ id }) => page.data.profileConfig.id !== id),
@@ -22,7 +23,7 @@
 				<IconPencil />
 			</span>
 		</ModalToggle>
-		<Modal showModalKey="showProfileModal" title="Auswahl Datenquelle">
+		<Modal showModalKey="showProfileModal" title={m.profiles_select_data_source()}>
 			<ProfileSelection />
 		</Modal>
 		{#each bookmarkedProfiles as { name, id } (id)}

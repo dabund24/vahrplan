@@ -17,7 +17,13 @@
 	}
 </script>
 
-<button type="button" {title} class="hoverable hoverable--visible" onclick={handleButtonClick}>
+<button
+	type="button"
+	{title}
+	aria-label={title}
+	class="hoverable hoverable--visible"
+	onclick={handleButtonClick}
+>
 	{@render children()}
 </button>
 

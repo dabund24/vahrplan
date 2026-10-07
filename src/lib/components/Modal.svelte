@@ -4,6 +4,7 @@
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 	import { page } from "$app/state";
 	import type { LocalizedString } from "@inlang/paraglide-js";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		title: LocalizedString | Snippet;
@@ -39,7 +40,8 @@
 					onclick={() => void dialog?.close()}
 					class="hoverable"
 					type="button"
-					title="Dialog schließen"
+					title={m.close_dialog()}
+					aria-label={m.close_dialog()}
 				>
 					<IconClose />
 				</button>

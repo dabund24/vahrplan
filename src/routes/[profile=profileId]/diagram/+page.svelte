@@ -32,6 +32,7 @@
 	import { getSelectedData } from "$lib/state/selectedData.svelte.js";
 	import type { JourneyNodesWithRefs } from "$lib/server/journey-data/JourneyDataService";
 	import JourneyDiagramDateIndicator from "./JourneyDiagramDateIndicator.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	let displayedFormData = $derived(page.data.formData ?? getDisplayedFormData());
 	const displayedJourney = $derived(getDisplayedJourney());
@@ -42,29 +43,33 @@
 		const { departure, locations } = displayedJourney;
 		if (locations.length === 0) {
 			return {
-				pageTitle: "Reiseauswahl",
-				pageDescription: "Reiseauswahl in Vahrplan",
+				pageTitle: m.diagram(),
+				pageDescription: m.diagram_subtitle(),
 			};
 		}
 		const viaString =
 			locations.length <= 2
 				? ""
-				: ` über ${locations
+				: ` ${m.diagram_via()} ${locations
 						.slice(1, -1)
 						.map((location) => location.value.name)
 						.reduce(
 							(acc, name, i, array) =>
-								`${acc}${i === array.length - 1 ? " und" : ","} ${name}`,
+								`${acc}${i === array.length - 1 ? ` ${m.diagram_and()}` : ","} ${name}`,
 						)}`;
 		return {
 			pageTitle:
-				"Reiseauswahl: " +
+				`${m.diagram()}: ` +
 				locations
 					.map((location) => location.value.name)
 					.reduce((acc, name) => `${acc} – ${name}`),
-			pageDescription:
-				`Reiseauswahl für eine Fahrt von ${locations[0].value.name}${viaString} nach ${locations.at(-1)?.value.name}` +
-				` am ${dateToString(departure)} mit Abfahrt ${timeToString(departure)} Uhr`,
+			pageDescription: m.diagram_subtitle_long({
+				startLocation: locations[0]?.value.name ?? "",
+				vias: viaString,
+				destination: locations.at(-1)?.value.name ?? "",
+				departure: dateToString(departure, page.data.lang),
+				date: timeToString(departure),
+			}),
 		};
 	});
 
@@ -99,8 +104,12 @@
 	}
 
 	const diagramTabData: ComponentProps<typeof MiniTabs>["tabs"] = [
-		{ title: "Schematisches Diagramm", icon: schematicIcon, content: schematicTabContent },
-		{ title: "Bildfahrplan", icon: timeSpaceIcon, content: timeSpaceTabContent },
+		{ title: m.diagram_standard_view(), icon: schematicIcon, content: schematicTabContent },
+		{
+			title: m.diagram_coordinate_system_view(),
+			icon: timeSpaceIcon,
+			content: timeSpaceTabContent,
+		},
 	];
 </script>
 
@@ -159,7 +168,7 @@
 	<meta name="description" content={pageDescription} />
 </svelte:head>
 
-<h1 class="visually-hidden">Reiseauswahl</h1>
+<h1 class="visually-hidden">{m.diagram()}</h1>
 
 <div class="split-container" bind:clientWidth={windowWidth}>
 	<SplitPane
@@ -216,11 +225,11 @@
 					<MiniTabs
 						tabs={[
 							{
-								title: "Klassische Ansicht",
+								title: m.journey_classic_view(),
 								icon: detailsIcon,
 								content: journeyOverview,
 							},
-							{ title: "Karte", icon: mapIcon, content: map },
+							{ title: m.journey_map_view(), icon: mapIcon, content: map },
 						]}
 						startingTab={$settings.general.journeyDetailsStandardView === "classic"
 							? 0

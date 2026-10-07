@@ -8,6 +8,7 @@
 	import Options from "$lib/components/Options.svelte";
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import ResponsiveOptions from "$lib/components/ResponsiveOptions.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	const displayedFormData = $derived(getDisplayedFormData());
 	const diagramData = $derived(getDiagramData());
@@ -21,14 +22,14 @@
 		const opt: ComponentProps<typeof Options>["options"] = [
 			{
 				type: "function",
-				name: "Suchanfrage teilen",
+				name: m.diagram_share(),
 				onClick: () => shareDiagram(displayedFormData),
 				icon: iconShare,
 			},
 			{
 				type: "bookmark",
-				name: "Suchanfrage merken",
-				icon: iconShare,
+				name: m.bookmarks_do_bookmark_search(),
+				icon: iconShare, // will be replace with bookmark icon
 				bookmarkType: "diagram",
 				bookmarkValue: async () => ({
 					formData: displayedFormData,
@@ -40,7 +41,7 @@
 		if (hasViaRecommendations) {
 			opt.push({
 				type: "modal",
-				name: "Auswahl Zwischenstationen",
+				name: m.diagram_select_vias(),
 				showModalKey: "showRecommendationModal",
 				icon: iconStation,
 			});
