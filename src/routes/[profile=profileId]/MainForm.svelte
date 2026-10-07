@@ -148,10 +148,13 @@
 				<button type="button" onclick={() => void setTimePreset(0)}>{m.now()}</button>
 			</div>
 			<div>
-				<button type="button" onclick={() => void setTimePreset(15)}>{m.in_15_mins()}</button>
+				<button type="button" onclick={() => void setTimePreset(15)}
+					>{m.in_15_mins()}</button
+				>
 			</div>
 			<div>
-				<button type="button" onclick={() => void setTimePreset(60)}>{m.in_1_hour()}</button>
+				<button type="button" onclick={() => void setTimePreset(60)}>{m.in_1_hour()}</button
+				>
 			</div>
 		</div>
 		<div class="filter-submit">

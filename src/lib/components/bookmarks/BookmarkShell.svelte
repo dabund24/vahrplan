@@ -29,7 +29,10 @@
 		return [
 			{
 				type: "link",
-				name: bookmarkType === "diagram" ? m.bookmarks_show_search_query() : m.bookmarks_show_journey(),
+				name:
+					bookmarkType === "diagram"
+						? m.bookmarks_show_search_query()
+						: m.bookmarks_show_journey(),
 				url,
 				icon: iconRightArrow,
 			},
