@@ -7,7 +7,7 @@
 	import { flip } from "svelte/animate";
 	import AccordionElement from "$lib/components/AccordionElement.svelte";
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
-	import IconOptions from "$lib/components/icons/IconOptions.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	function splitBookmarksByDate<T extends "diagram" | "journey">(
 		bookmarks: Bookmarks[T],
@@ -70,11 +70,7 @@
 
 {#if futureBookmarks.length === 0 && pastBookmarks.length === 0}
 	<p class="inline-icons">
-		Noch keine Lesezeichen vorhanden. Merke dir Suchanfragen und Reisen
-		<span class="desktop-only">
-			mit einem Klick auf das Lesezeichen-Symbol (<IconBookmark isBookmarked={false} />)
-		</span>
-		<span class="mobile-only"> über das jeweilige Menü (<IconOptions />)</span>.
+		{m.bookmarks_none_yet()} (<IconBookmark isBookmarked={false} />)
 	</p>
 {/if}
 

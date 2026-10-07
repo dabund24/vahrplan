@@ -2,24 +2,25 @@
 	import MainForm from "./MainForm.svelte";
 	import Bookmarks from "$lib/components/bookmarks/Bookmarks.svelte";
 	import ProfileChips from "$lib/components/profiles/ProfileChips.svelte";
+	import { m } from "$lib/paraglide/messages";
 </script>
 
 <svelte:head>
-	<title>Vahrplan - Startseite</title>
+	<title>Vahrplan - {m.home()}</title>
 	<meta name="title" content="Vahrplan" />
-	<meta name="description" content="Reiseplanung mit Verbindungsdiagrammen" />
+	<meta name="description" content={m.subtitle()} />
 </svelte:head>
 
-<h1 class="visually-hidden">Vahrplan: Reiseplanung mit Verbindungsdiagrammen</h1>
+<h1 class="visually-hidden">Vahrplan: {m.subtitle}</h1>
 
 <section class="form">
-	<h2 class="visually-hidden">Verbindungssuche</h2>
+	<h2 class="visually-hidden">{m.journey_search()}</h2>
 	<ProfileChips />
 	<MainForm />
 </section>
 <section class="bookmarks content-wrapper" data-sveltekit-preload-data="off">
 	<hr />
-	<h2>Lesezeichen</h2>
+	<h2>{m.bookmarks()}</h2>
 	<Bookmarks />
 </section>
 

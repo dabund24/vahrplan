@@ -1,6 +1,9 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 
+	"home": "Startseite",
+	"subtitle": "Reiseplanung mit Verbindungsdiagrammen",
+	"journey_search": "Verbindungssuche",
 	"add_stop": "Stopp hinzufügen",
 	"remove_stop": "Stopp entfernen",
 	"reverse_stops": "Stopp-Reihenfolge umkehren",
@@ -58,5 +61,15 @@
 	"error_less_than_2_stops_specified": "Weniger als 2 Stopps angegeben",
 
 	"geolocation_permission_denied": "Der Zugriff auf den Standort wurde verweigert",
-	"geolocation_generic_error": "Der Standort konnte nicht ermittelt werden."
+	"geolocation_generic_error": "Der Standort konnte nicht ermittelt werden",
+
+	"bookmarks": "Lesezeichen",
+	"bookmarks_subtitle": "Gemerkte Suchanfragen und Reisen",
+	"bookmarks_none_yet": "Noch keine Lesezeichen vorhanden. Merke dir Suchanfragen und Reisen mit einem Klick auf das Lesezeichen-Symbol",
+	"bookmarks_old": "Alte Lesezeichen",
+	"bookmarks_show_search_query": "Suchanfrage anzeigen",
+	"bookmarks_search_query": "Suchanfrage",
+	"bookmarks_show_journey": "Reise anzeigen",
+	"bookmarks_journey": "Reise",
+	"bookmerks_remove": "Lesezeichen löschen"
 }

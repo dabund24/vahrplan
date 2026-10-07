@@ -3,6 +3,7 @@
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { type Bookmarks } from "$lib/bookmarks.svelte";
 	import BookmarkShell from "$lib/components/bookmarks/BookmarkShell.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		bookmark: Bookmarks["diagram"][number];
@@ -14,7 +15,7 @@
 
 <BookmarkShell bookmarkType="diagram" {bookmark} {bookmarkIndex}>
 	<div class="time-data">
-		{bookmark.scrollDirection === "later" ? "Abfahrt" : "Ankunft"}: {dateToString(
+		{bookmark.scrollDirection === "later" ? m.arrival() : m.departure()}: {dateToString(
 			bookmark.time,
 		)}, {timeToString(bookmark.time)}
 	</div>

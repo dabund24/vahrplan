@@ -1,6 +1,9 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 
+	"home": "Home",
+	"subtitle": "Plan journeys with connection diagrams",
+	"journey_search": "Connection search",
 	"add_stop": "Add stop",
 	"remove_stop": "Remove stop",
 	"reverse_stops": "Reverse stop order",
@@ -54,9 +57,19 @@
 	"error_invalid_connection_count": "Invalid amount of stops",
 	"error_invalid_time": "Invalid time",
 	"error_no_connections_found_from_m_to_n": "Could not find connections from stop {m} to stop {n}",
-	"error_link_invalid": "Your link is either errorneous or no longer valid",
+	"error_link_invalid": "Your link is either erroneous or no longer valid",
 	"error_less_than_2_stops_specified": "Specified less than 2 stops",
 
 	"geolocation_permission_denied": "Location access was denied",
-	"geolocation_generic_error": "Your location could not be determined"
+	"geolocation_generic_error": "Your location could not be determined",
+
+	"bookmarks": "Bookmarks",
+	"bookmarks_subtitle": "Saved search queries and journeys",
+	"bookmarks_none_yet": "No bookmarks, yet. Save search queries and journeys by clicking the bookmark symbol.",
+	"bookmarks_old": "Old bookmarks",
+	"bookmarks_show_search_query": "Show search query",
+	"bookmarks_search_query": "search query",
+	"bookmarks_show_journey": "Show journey",
+	"bookmarks_journey": "journey",
+	"bookmerks_remove": "Delete bookmark"
 }
