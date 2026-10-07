@@ -91,7 +91,7 @@
 {@render bookmarks(futureBookmarks)}
 
 {#if pastBookmarks.length !== 0}
-	<AccordionElement title="Alte Lesezeichen">
+	<AccordionElement title={m.bookmarks_old()}>
 		{@render bookmarks(pastBookmarks)}
 	</AccordionElement>
 {/if}
