@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Locale, locales, localizeHref } from "$lib/paraglide/runtime";
+	import { type Locale, locales, localizeUrl } from "$lib/paraglide/runtime";
 	import { page } from "$app/state";
 
 	const localeNames: Record<Locale, string> = {
@@ -20,7 +20,7 @@
 <div id="language-selection" popover="auto">
 	{#each locales as locale (locale)}
 		<a
-			href={localizeHref(page.url.pathname, { locale })}
+			href={localizeUrl(page.url, { locale }).href}
 			class="hoverable"
 			aria-current={page.data.lang === locale}
 			data-sveltekit-reload
