@@ -168,6 +168,7 @@
 	"settings_remember_choices_miscellaneous_filters": "Miscellaneous filters",
 
 	"about": "About Vahrplan",
+	"about_subtitle": "Further information about Vahrplan",
 	"about_source_code": "Source code",
 	"about_q_idea": "Was the underlying concept of Vahrplan your idea?",
 	"about_a_idea": "No, it wasn't. The idea of splitting journeys originates from the project Tespace and is explained in the video linked below. The goal of Vahrplan is a symbiosis of Tespace and traditional journey planners.",

@@ -52,7 +52,7 @@
 		{#if isShowBackButton}
 			<button class="hoverable hoverable--visible" onclick={() => void history.back()}>
 				<IconLeftArrow />
-				Zurück
+				{m.back()}
 			</button>
 		{:else}
 			<a
@@ -72,6 +72,8 @@
 					trip.leg.tripId,
 					highlightData,
 				)) ?? { displayedJourney, trip })}
+			title={m.refresh()}
+			aria-label={m.refresh()}
 		>
 			<IconRefresh />
 		</button>

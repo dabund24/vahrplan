@@ -87,7 +87,7 @@
 			</div>
 		</Modal>
 		<ButtonModal showModalKey="showPrivacyLinkModal">
-			<Warning>Datenschutzhinweis</Warning>
+			<Warning>{m.settings_short_links_how_it_works()}</Warning>
 		</ButtonModal>
 	</div>
 	<Setting
@@ -107,12 +107,12 @@
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName={m.means_of_transport()}
+		settingName={m.settings_remember_choices_means_of_transport()}
 		bind:setting={$settings.storage.products}
 		settingInfo={{ type: "boolean" }}
 	/>
 	<Setting
-		settingName={m.miscellaneous()}
+		settingName={m.settings_remember_choices_miscellaneous_filters()}
 		bind:setting={$settings.storage.options}
 		settingInfo={{ type: "boolean" }}
 	/>

@@ -80,7 +80,7 @@
 
 <JourneyDetailsWithMap {displayedFormData} {displayedJourney} {selectedData}>
 	{#snippet header()}
-		<h1>Reisedetails</h1>
+		<h1>{m.journey()}</h1>
 		{#if formData === undefined && displayedFormData === undefined}
 			<Warning>
 				{m.journey_none_selected_journey_view()}
