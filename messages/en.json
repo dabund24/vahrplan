@@ -114,7 +114,7 @@
 	"journey_occupancy_medium": "medium",
 	"journey_occupancy_high": "high",
 	"journey_occupancy_very_high": "very high",
-	"journey_operator": "operator",
+	"journey_operator": "Operator",
 	"journey_cycle_single": "Every {n} minutes",
 	"journey_cycle_range": "Every {m} to {n} minutes",
 	"journey_trip_number": "Trip number",
