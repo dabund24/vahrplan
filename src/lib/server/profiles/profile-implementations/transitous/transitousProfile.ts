@@ -77,7 +77,7 @@ export class TransitousProfile extends Profile<
 		},
 		lineShapeParser: new TransitousLineShapeParser(),
 		quota: {
-			threshold: 180,
+			threshold: 1000,
 			interval: 60,
 		},
 	});
