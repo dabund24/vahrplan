@@ -83,7 +83,7 @@
 		<h1>Reisedetails</h1>
 		{#if formData === undefined && displayedFormData === undefined}
 			<Warning>
-				{m.journey_none_selected()}
+				{m.journey_none_selected_journey_view()}
 			</Warning>
 		{/if}
 	{/snippet}

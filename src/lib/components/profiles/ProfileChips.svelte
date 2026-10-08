@@ -41,7 +41,8 @@
 <div class="content-wrapper">
 	{#if page.data.profileConfig.disabledNotice !== undefined}
 		<Warning color="red">
-			{page.data.profileConfig.disabledNotice.name} Wähle oben eine andere Datenquelle aus.
+			{page.data.profileConfig.disabledNotice.name}
+			{m.profiles_select_a_different_data_source()}
 		</Warning>
 	{/if}
 	{#if page.data.profileConfig.infoLink !== undefined}
