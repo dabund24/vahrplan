@@ -31,6 +31,7 @@
 	<button
 		class="hoverable hoverable--visible flex-row"
 		class:not-scrollable={!isClickable}
+		title={scrollDirection === "earlier" ? m.diagram_earlier() : m.diagram_later()}
 		onclick={scroll}
 	>
 		{#if scrollDirection === "earlier"}

@@ -18,7 +18,13 @@
 
 	function selectProfile(): void {
 		if (profileConfig.disabledNotice !== undefined) {
-			toast(m.profile_not_selectable({ reason: profileConfig.disabledNotice }), "red");
+			toast(
+				m.profiles_profile_not_selectable({
+					profile: profileConfig.name,
+					reason: profileConfig.disabledNotice,
+				}),
+				"red",
+			);
 			return;
 		}
 		if (profileConfig.id !== page.data.profileConfig.id) {
@@ -39,7 +45,8 @@
 		<button
 			class="hoverable hoverable--visible"
 			class:hoverable--accent={profileConfig.id !== page.data.profileConfig.id}
-			title="Profil {profileConfig.name} auswählen"
+			title={m.profiles_do_select_data_source({ profile: profileConfig.name })}
+			aria-label={m.profiles_do_select_data_source({ profile: profileConfig.name })}
 			onclick={selectProfile}
 		>
 			{#if profileConfig.id === page.data.profileConfig.id}
@@ -52,7 +59,10 @@
 </div>
 {#if profileConfig.disabledNotice !== undefined}
 	<Warning color="red">
-		Datenquelle {profileConfig.name} nicht auswählbar. {profileConfig.disabledNotice.name}
+		{m.profiles_profile_not_selectable({
+			profile: profileConfig.name,
+			reason: profileConfig.disabledNotice,
+		})}
 	</Warning>
 {/if}
 

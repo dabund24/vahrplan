@@ -6,14 +6,14 @@
 </script>
 
 <svelte:head>
-	<title>Vahrplan - Über</title>
-	<meta name="title" content="Vahrplan - Über" />
-	<meta name="description" content="Weiterführende Informationen über Vahrplan" />
+	<title>Vahrplan - {m.about()}</title>
+	<meta name="title" content="Vahrplan - {m.about()}" />
+	<meta name="description" content={m.about_subtitle()} />
 </svelte:head>
 
 <div class="content-wrapper">
-	<h1>Über Vahrplan</h1>
-	<h2>Quellcode</h2>
+	<h1>{m.about()}</h1>
+	<h2>{m.about_source_code()}</h2>
 	<a class="hoverable hoverable--visible" href="https://github.com/dabund24/vahrplan">Github</a>
 	<h2>FAQ</h2>
 	{#snippet tool(useCase: string, name: string, link: string)}

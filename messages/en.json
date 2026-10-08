@@ -34,7 +34,6 @@
 	"removed_some_bookmark": "Removed bookmark for {bookmark}",
 	"added_bookmark": "Added bookmark",
 	"removed_bookmark": "Removed bookmark",
-	"profile_not_selectable": "Cannot select data source. {reason}",
 	"refreshed_journey_data": "Refreshed journey data",
 	"cannot_scroll": "Cannot find more connections",
 	"cannot_remove_stop": "Cannot remove stop",
@@ -96,7 +95,8 @@
 	"journey": "Journey details",
 	"journey_subtitle": "Information about your journey",
 	"journey_subtitle_long": "Information about a trip from {startLocation} to {destination} on {date} departing at {departure}",
-	"journey_none_selected": "On the home page, select a connection for every section of your journey. The resulting journey will be displayed here.",
+	"journey_none_selected_journey_view": "On the home page, select a connection for every section of your journey. The resulting journey will be displayed here.",
+	"journey_none_selected_split_view": "Select a connection for every section of your journey",
 	"journey_tickets": "Tickets",
 	"journey_tickets_no_data_available": "No ticket data available",
 	"journey_tickets_from": "from",
@@ -114,7 +114,7 @@
 	"journey_occupancy_medium": "medium",
 	"journey_occupancy_high": "high",
 	"journey_occupancy_very_high": "very high",
-	"journey_operator": "operator",
+	"journey_operator": "Operator",
 	"journey_cycle_single": "Every {n} minutes",
 	"journey_cycle_range": "Every {m} to {n} minutes",
 	"journey_trip_number": "Trip number",
@@ -126,9 +126,12 @@
 	"trip": "Trip details",
 
 	"profiles": "Data sources",
-	"profiles_intro": "Choose where the data used should come from. More regional sources usually provide data of higher quality.",
+	"profiles_intro": "Choose where the data used should come from. More regional sources usually provide data of higher quality",
+	"profiles_select_a_different_data_source": "Select a different data source above",
 	"profiles_select_data_source": "Select data source",
 	"profiles_more_in_future": "More data sources will be added in the future...",
+	"profiles_do_select_data_source": "Datenquelle {profile} auswählen",
+	"profiles_profile_not_selectable": "Cannot select data source. {reason}",
 
 	"settings": "Settings",
 	"settings_subtitle": "Modify how Vahrplan looks and behaves",
@@ -165,6 +168,7 @@
 	"settings_remember_choices_miscellaneous_filters": "Miscellaneous filters",
 
 	"about": "About Vahrplan",
+	"about_subtitle": "Further information about Vahrplan",
 	"about_source_code": "Source code",
 	"about_q_idea": "Was the underlying concept of Vahrplan your idea?",
 	"about_a_idea": "No, it wasn't. The idea of splitting journeys originates from the project Tespace and is explained in the video linked below. The goal of Vahrplan is a symbiosis of Tespace and traditional journey planners.",
@@ -219,5 +223,7 @@
 	"update": "Update",
 	"close_dialog": "Close dialog",
 	"back": "Back",
+	"cancel": "Abbrechen",
+	"apply": "Übernehmen",
 	"navigation": "Navigation"
 }

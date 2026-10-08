@@ -34,7 +34,6 @@
 	"removed_some_bookmark": "Lesezeichen für {bookmark} entfernt",
 	"added_bookmark": "Lesezeichen hinzugefügt",
 	"removed_bookmark": "Lesezeichen entfernt",
-	"profile_not_selectable": "Datenquelle nicht auswählbar. {reason}",
 	"refreshed_journey_data": "Reisedaten aktualisiert",
 	"cannot_scroll": "Suche nach mehr Verbindungen nicht möglich",
 	"cannot_remove_stop": "Stopp kann nicht entfernt werden",
@@ -96,7 +95,8 @@
 	"journey": "Reisedetails",
 	"journey_subtitle": "Informationen zu einer Reise",
 	"journey_subtitle_long": "Details zur Reise von {startLocation} nach {destination} am {date} mit Abfahrt {departure} Uhr",
-	"journey_none_selected": "Suche auf der Startseite nach Verbindungen und wähle anschließend in der Reiseauswahl für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann hier angezeigt.",
+	"journey_none_selected_journey_view": "Suche auf der Startseite nach Verbindungen und wähle anschließend in der Reiseauswahl für jeden Reiseabschnitt eine Verbindung aus. Die ausgewählte Reise wird dann hier angezeigt",
+	"journey_none_selected_split_view": "Wähle in der Reiseauswahl für jeden Reiseabschnitt eine Verbindung aus",
 	"journey_tickets": "Tickets",
 	"journey_tickets_no_data_available": "Keine Ticketdaten vefügbar",
 	"journey_tickets_from": "ab",
@@ -126,9 +126,12 @@
 	"trip": "Fahrtdetails",
 
 	"profiles": "Datenquellen",
-	"profiles_intro": "Wähle hier aus, woher die Verbindungsdaten kommen sollen. Eine regionalere Quelle bedeutet in der Regel eine bessere Datenqualität.",
+	"profiles_intro": "Wähle hier aus, woher die Verbindungsdaten kommen sollen. Eine regionalere Quelle bedeutet in der Regel eine bessere Datenqualität",
+	"profiles_select_a_different_data_source": "Wähle oben eine andere Datenquelle aus",
 	"profiles_select_data_source": "Auswahl Datenquelle",
 	"profiles_more_in_future": "Mehr Datenquellen folgen in Zukunft...",
+	"profiles_do_select_data_source": "Datenquelle {profile} auswählen",
+	"profiles_profile_not_selectable": "Datenquelle {profile} nicht auswählbar. {reason}",
 
 	"settings": "Einstellungen",
 	"settings_subtitle": "Verändere das Aussehen und Verhalten von Vahrplan",
@@ -165,6 +168,7 @@
 	"settings_remember_choices_miscellaneous_filters": "Sonstige Suchfilter",
 
 	"about": "Über Vahrplan",
+	"about_subtitle": "Weiterführende Informationen über Vahrplan",
 	"about_source_code": "Quellcode",
 	"about_q_idea": "Ist das Konzept, auf dem Vahrplan beruht, deine Idee gewesen?",
 	"about_a_idea": "Nein. Die Idee, Reisen aufzuteilen, stammt vom Projekt Tespace und ist im unten verlinkten Video veranschaulicht. Das Ziel von Vahrplan ist eine Symbiose von Tespace und herkömmlichen Reiseplanern.",
@@ -219,5 +223,7 @@
 	"update": "Aktualisieren",
 	"close_dialog": "Dialog schließen",
 	"back": "Zurück",
+	"cancel": "Abbrechen",
+	"apply": "Übernehmen",
 	"navigation": "Navigation"
 }
