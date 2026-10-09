@@ -33,9 +33,17 @@
 		getParsedGeolocation(new Date(), { lat: 0, lng: 0 }),
 		...getBookmarks("location").filter(({ profile }) => profile === page.data.profileConfig.id),
 	]);
-	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
-		getApiSuggestionsFromInput(inputText.trim()),
-	);
+	let apiSuggestions = $state<Promise<ParsedLocation[]>>(Promise.resolve([]));
+	$effect(() => {
+		const input = inputText.trim();
+		const timeout = setTimeout(() => {
+			apiSuggestions = getApiSuggestionsFromInput(input).then((suggestions) =>
+				inputText.trim() === input ? suggestions : [],
+			);
+		}, 500);
+
+		return () => clearTimeout(timeout);
+	});
 	let suggestions = $derived.by(async () => {
 		const bookmarkSuggestions = bookmarkedLocations.filter((suggestion) =>
 			suggestion.name.toLowerCase().startsWith(inputText.trim().toLowerCase()),
