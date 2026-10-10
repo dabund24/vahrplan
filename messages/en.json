@@ -217,6 +217,7 @@
 	"read_more": "Read more",
 	"refresh": "Refresh",
 	"share": "Share",
+	"share_failed": "Sharing failed",
 	"options": "Options",
 	"noscript": "Unfortunately, Vahrplan works only when Javascript is enabled :/",
 	"update_available": "An update is available!",

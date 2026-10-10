@@ -7,6 +7,7 @@ import { apiClient } from "$lib/api-client/apiClientFactory";
 import { page } from "$app/state";
 import { deLocalizeHref } from "$lib/paraglide/runtime";
 import { m } from "$lib/paraglide/messages";
+import { share } from "$lib/share";
 
 /**
  * shares a diagram and shows the share dialog if supported.
@@ -30,16 +31,7 @@ export async function shareDiagram(formData: DisplayedFormData | undefined): Pro
 
 	urlHref = deLocalizeHref(urlHref);
 
-	if (navigator.share) {
-		void navigator.share({
-			title: document.title,
-			url: urlHref,
-		});
-	} else {
-		void navigator.clipboard
-			.writeText(urlHref)
-			.then(() => toast(m.copied_link_to_clipboard(), "green"));
-	}
+	void share(document.title, urlHref);
 }
 
 /**
