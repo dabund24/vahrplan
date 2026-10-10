@@ -2,6 +2,7 @@
 	import type { TimeMark } from "./svgDiagramUtils";
 	import ProgressIndicator from "$lib/components/ProgressIndicator.svelte";
 	import { MINUTE_IN_MS } from "$lib/constants";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		timeMarks: TimeMark[];
@@ -19,7 +20,7 @@
 		arrivalTime={maxTime * MINUTE_IN_MS}
 		orientation="vertical"
 	>
-		<div class="now-mark">jetzt</div>
+		<div class="now-mark">{m.now()}</div>
 	</ProgressIndicator>
 	{#each timeMarks as { content, newDateContent, topInsetPercent } (topInsetPercent)}
 		<div class="skeleton-text time-mark" style:top="{topInsetPercent}%">

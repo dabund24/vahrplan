@@ -45,6 +45,29 @@
 		<p>
 			{m.about_a_dependencies()}
 		</p>
+		<h3>{m.about_a_dependencies_public_transport_data()}</h3>
+		<ul>
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_routing(),
+				"Motis",
+				"https://github.com/motis-project/motis",
+			)}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_raw_data_collection(),
+				"Transitous",
+				"https://transitous.org/",
+			)}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_motis_parsing(),
+				"motis-fptf-client",
+				"https://github.com/motis-project/motis-fptf-client",
+			)}
+			{@render tool(
+				m.about_a_dependencies_public_transport_data_proprietary_parsing(),
+				"hafas-client",
+				"https://github.com/public-transport/hafas-client",
+			)}
+		</ul>
 		<h3>{m.about_a_dependencies_miscellaneous_tools()}</h3>
 		<ul>
 			{@render tool(
@@ -71,29 +94,6 @@
 				m.about_a_dependencies_miscellaneous_tools_formatter(),
 				"Prettier",
 				"https://prettier.io/",
-			)}
-		</ul>
-		<h3>Fahrplandaten</h3>
-		<ul>
-			{@render tool(
-				m.about_a_dependencies_public_transport_data_routing(),
-				"Motis",
-				"https://github.com/motis-project/motis",
-			)}
-			{@render tool(
-				m.about_a_dependencies_public_transport_data_raw_data_collection(),
-				"Transitous",
-				"https://transitous.org/",
-			)}
-			{@render tool(
-				m.about_a_dependencies_public_transport_data_motis_parsing(),
-				"motis-fptf-client",
-				"https://github.com/motis-project/motis-fptf-client",
-			)}
-			{@render tool(
-				m.about_a_dependencies_public_transport_data_proprietary_parsing(),
-				"hafas-client",
-				"https://github.com/public-transport/hafas-client",
 			)}
 		</ul>
 		<h3>{m.about_a_dependencies_backend()}</h3>
