@@ -6,6 +6,7 @@ import type { DisplayedJourney } from "$lib/state/displayedJourney.svelte.js";
 import type { SelectedData } from "$lib/state/selectedData.svelte.js";
 import { apiClient } from "$lib/api-client/apiClientFactory";
 import { m } from "$lib/paraglide/messages";
+import { share } from "$lib/share";
 
 /**
  * shares a journey if no sub-journey is unselected and shows the share dialog if supported.
@@ -34,16 +35,7 @@ export async function shareJourney(
 
 	urlHref ??= apiClient("GET", "journey").formatNonApiUrl(tokens, ctx).href;
 
-	if (navigator.share) {
-		void navigator.share({
-			title: document.title,
-			url: urlHref,
-		});
-	} else {
-		void navigator.clipboard
-			.writeText(urlHref)
-			.then(() => toast(m.copied_link_to_clipboard(), "green"));
-	}
+	void share(document.title, urlHref);
 }
 
 /**

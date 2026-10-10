@@ -217,6 +217,7 @@
 	"read_more": "Mehr lesen",
 	"refresh": "Aktualisieren",
 	"share": "Teilen",
+	"share_failed": "Teilen ist fehlgeschlagen",
 	"options": "Optionen",
 	"noscript": "Leider ist Vahrplan nicht ohne Javascript nutzbar :/",
 	"update_available": "Eine neue Version ist verfügbar!",
