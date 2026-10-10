@@ -9,6 +9,7 @@
 	import IconBookmark from "$lib/components/icons/IconBookmark.svelte";
 	import { getParsedGeolocation } from "$lib/geolocation.svelte.js";
 	import { page } from "$app/state";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -176,7 +177,7 @@
 				aria-expanded={isFocused && !isSuggestionsHidden}
 				aria-controls="search-input__{stationInputId}--suggestions"
 			/>
-			{#if selectedLocation !== undefined && selectedLocation.name !== "Standort"}
+			{#if selectedLocation !== undefined && selectedLocation.name !== m.current_location()}
 				<BookmarkToggle
 					type="location"
 					value={selectedLocation}
@@ -241,7 +242,7 @@
 								<small>{suggestion.address}</small>
 							</span>
 						</button>
-						{#if suggestion.name !== "Standort"}
+						{#if suggestion.name !== m.current_location()}
 							<span class="bookmark-toggle" aria-hidden="true">
 								<BookmarkToggle
 									type="location"

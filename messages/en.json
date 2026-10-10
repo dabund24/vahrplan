@@ -224,7 +224,8 @@
 	"update": "Update",
 	"close_dialog": "Close dialog",
 	"back": "Back",
-	"cancel": "Abbrechen",
-	"apply": "Übernehmen",
-	"navigation": "Navigation"
+	"cancel": "Cancel",
+	"apply": "Apply",
+	"navigation": "Navigation",
+	"current_location": "Current location"
 }

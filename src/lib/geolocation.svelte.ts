@@ -142,8 +142,8 @@ function relativeDate(date: Date): string {
 	return "";
 }
 
-export function getGeolocationString(creationDate: Date, prefix = "Standort"): string {
-	return `${prefix} ${relativeDate(creationDate)}`;
+export function getGeolocationString(creationDate: Date, prefix?: string): string {
+	return `${prefix ?? m.current_location()} ${relativeDate(creationDate)}`;
 }
 
 export function getParsedGeolocation(
@@ -152,10 +152,10 @@ export function getParsedGeolocation(
 ): ParsedGeolocation {
 	return {
 		type: "currentLocation",
-		name: "Standort",
+		name: m.current_location(),
 		id: JSON.stringify({
 			type: "location",
-			address: "Standort",
+			address: m.current_location(),
 			latitude: position.lat,
 			longitude: position.lng,
 		} as Location),

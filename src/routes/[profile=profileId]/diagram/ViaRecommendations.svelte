@@ -115,9 +115,9 @@
 			<button
 				class="hoverable hoverable--visible"
 				type="button"
-				onclick={() => void history.back()}>Abbrechen</button
+				onclick={() => void history.back()}>{m.cancel()}</button
 			>
-			<button class="hoverable hoverable--accent" type="submit">Übernehmen</button>
+			<button class="hoverable hoverable--accent" type="submit">{m.apply()}</button>
 		</div>
 	</form>
 </Modal>
