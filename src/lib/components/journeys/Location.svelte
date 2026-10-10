@@ -4,6 +4,7 @@
 	import IconStationLocation from "$lib/components/icons/IconStationLocation.svelte";
 	import { getGeolocationString } from "$lib/geolocation.svelte";
 	import { getDisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		block: LocationBlock;
@@ -18,7 +19,7 @@
 		let locationType = block.location.type;
 		if (block.location.type === "currentLocation") {
 			locationName = getGeolocationString(block.location.asAt);
-		} else if (block.location.name === "Standort") {
+		} else if (block.location.name === m.current_location()) {
 			locationName = getGeolocationString(displayedFormData?.geolocationDate ?? new Date());
 			locationType = "currentLocation";
 		}

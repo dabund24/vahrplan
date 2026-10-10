@@ -4,6 +4,7 @@
 	import { getContext, onDestroy, onMount, setContext, type Snippet } from "svelte";
 	import Popup from "$lib/components/leaflet/Popup.svelte";
 	import IconFlashLight from "$lib/components/icons/IconFlashLight.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		data: TransitData;
@@ -40,7 +41,7 @@
 			});
 			marker = L.marker(data.location.position, {
 				icon,
-				zIndexOffset: data.location.name === "Live-Standort" ? -100000 : 0,
+				zIndexOffset: data.location.name === m.current_location() ? -100000 : 0,
 			}).addTo(map);
 		}
 	});

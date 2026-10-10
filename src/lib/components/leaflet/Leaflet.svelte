@@ -17,6 +17,7 @@
 	import { type DisplayedFormData } from "$lib/state/displayedFormData.svelte.js";
 	import { type DisplayedJourney } from "$lib/state/displayedJourney.svelte";
 	import { type SelectedData } from "$lib/state/selectedData.svelte";
+	import { m } from "$lib/paraglide/messages";
 
 	type Props = {
 		displayedFormData: DisplayedFormData | undefined;
@@ -182,7 +183,7 @@
 					>
 						<IconStationLocation
 							color="foreground"
-							iconType={block.location.name === "Standort"
+							iconType={block.location.name === m.current_location()
 								? "currentLocation"
 								: block.location.type}
 						/>
@@ -198,7 +199,7 @@
 					location: {
 						position: currentPositionData.position,
 						type: "address", // this is important since it does not behave like "currentLocation" (it is never outdated)
-						name: "Live-Standort",
+						name: m.current_location(),
 						id: JSON.stringify({ type: "location" }),
 					},
 					time: {},

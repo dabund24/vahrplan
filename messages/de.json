@@ -226,5 +226,6 @@
 	"back": "Zurück",
 	"cancel": "Abbrechen",
 	"apply": "Übernehmen",
-	"navigation": "Navigation"
+	"navigation": "Navigation",
+	"current_location": "Standort"
 }

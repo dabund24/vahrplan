@@ -31,7 +31,8 @@
 	);
 
 	let locationName = $derived(
-		transitData.location.type === "currentLocation" || transitData.location.name === "Standort"
+		transitData.location.type === "currentLocation" ||
+			transitData.location.name === m.current_location()
 			? getGeolocationString(asAt, transitData.location.name)
 			: transitData.location.name,
 	);
