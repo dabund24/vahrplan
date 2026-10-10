@@ -4,6 +4,8 @@
 	import { getSelectedData, toggleJourneySelection } from "$lib/state/selectedData.svelte.js";
 	import JourneyDiagramDateIndicator from "./JourneyDiagramDateIndicator.svelte";
 	import { m } from "$lib/paraglide/messages";
+	import { dateDifference } from "$lib/util";
+	import Duration from "$lib/components/Duration.svelte";
 
 	type Props = {
 		subJourney: SubJourney;
@@ -11,9 +13,10 @@
 		isNew: boolean;
 		columnIndex: number;
 		rowIndex: number;
+		isSoleColumn: boolean;
 	};
 
-	let { subJourney, nextJourney, isNew, columnIndex, rowIndex }: Props = $props();
+	let { subJourney, nextJourney, isNew, columnIndex, rowIndex, isSoleColumn }: Props = $props();
 
 	const selectedData = $derived(getSelectedData());
 
@@ -46,33 +49,48 @@
 	const nextJourneyDifferentDepartureDate = $derived(computeNextJourneyDifferentDateDeparture());
 </script>
 
-<div class="flex-column diagram-element-wrapper">
+<div class="flex-column diagram-element-wrapper" class:sole-column={isSoleColumn}>
 	<button
 		type="button"
-		class="flex-row diagram-element hoverable"
+		class="hoverable flex-column"
 		class:is-new={isNew}
 		aria-current={isSelected}
 		onclick={handleDiagramElementClick}
 		title={m.diagram_toggle_connection_selection()}
 	>
-		<span class="time">
-			<Time time={{ departure: subJourney.departureTime }} />
+		<span class="flex-row top-row">
+			<span class="time flex-row">
+				<Time time={{ departure: subJourney.departureTime }} />
+				&nbsp;&mdash;&nbsp;
+				<Time time={{ arrival: subJourney.arrivalTime }} />
+			</span>
+			<Duration
+				duration={dateDifference(
+					subJourney.departureTime?.time,
+					subJourney.arrivalTime?.time,
+				)}
+			/>
 		</span>
-		<span class="flex-row legs">
-			{#each displayedBlocks as block (block.blockKey)}
-				<svelte:element
-					this={block.attribute === "cancelled" ? "s" : "span"}
-					class="leg product--{block.product}"
-					class:cancelled={block.attribute === "cancelled"}
-					style="--duration: {getLegWidth(block.duration)}"
-				>
-					<span class="leg__name--long">{block.name}</span>
-					<span class="leg__name--short">{block.productName}</span>
-				</svelte:element>
-			{/each}
-		</span>
-		<span class="time">
-			<Time time={{ arrival: subJourney.arrivalTime }} />
+		<span class="flex-row diagram-element">
+			<span class="time">
+				<Time time={{ departure: subJourney.departureTime }} />
+			</span>
+			<span class="flex-row legs">
+				{#each displayedBlocks as block (block.blockKey)}
+					<svelte:element
+						this={block.attribute === "cancelled" ? "s" : "span"}
+						class="leg product--{block.product}"
+						class:cancelled={block.attribute === "cancelled"}
+						style="--duration: {getLegWidth(block.duration)}"
+					>
+						<span class="leg__name--long">{block.name}</span>
+						<span class="leg__name--short">{block.productName}</span>
+					</svelte:element>
+				{/each}
+			</span>
+			<span class="time">
+				<Time time={{ arrival: subJourney.arrivalTime }} />
+			</span>
 		</span>
 	</button>
 	{#if nextJourneyDifferentDepartureDate !== undefined}
@@ -81,14 +99,14 @@
 </div>
 
 <style>
-	.time {
+	.diagram-element .time {
 		border-width: 1px calc(var(--line-width) / 2);
 		border-color: transparent;
 		border-style: solid;
 		padding: 0 8px;
 	}
 
-	.diagram-element {
+	button {
 		width: calc(var(--connection-width) + 2 * var(--line-width));
 		margin: 0 calc(-1 * var(--line-width));
 		position: relative;
@@ -96,7 +114,6 @@
 		border-radius: 50vh;
 		padding: var(--line-width) 0;
 		text-align: center;
-		align-items: stretch;
 		transition: border-radius 0.4s;
 		&[aria-current="true"] {
 			border-color: var(--accent-color);
@@ -104,6 +121,10 @@
 		&.is-new {
 			animation: 10s highlight-new-journey;
 		}
+	}
+
+	.diagram-element {
+		align-items: stretch;
 	}
 
 	@keyframes highlight-new-journey {
@@ -123,23 +144,23 @@
 				> .diagram-column
 					> :first-child
 					> .diagram-element-wrapper
-					> .diagram-element[aria-current="true"]
+					> button[aria-current="true"]
 			)
 		)
 		> .diagram-element-wrapper
-		> .diagram-element[aria-current="true"] {
+		> button[aria-current="true"] {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-right-color: transparent;
 	}
 
 	:global(
-			.diagram-box:has(> .diagram-element-wrapper > .diagram-element[aria-current="true"])
+			.diagram-box:has(> .diagram-element-wrapper > button[aria-current="true"])
 				> .diagram-column
 				> :first-child
 		)
 		> .diagram-element-wrapper
-		> .diagram-element[aria-current="true"] {
+		> button[aria-current="true"] {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
 		border-left-color: transparent;
@@ -180,6 +201,25 @@
 
 	.leg__name--short {
 		display: none;
+	}
+
+	.top-row {
+        display: none;
+	}
+	.sole-column {
+		margin: var(--line-width) 0;
+		button {
+			padding: var(--line-width) 1rem;
+            margin: 0 calc(-1 * var(--line-width));
+			gap: var(--line-width);
+		}
+		.top-row {
+			display: flex;
+			justify-content: space-between;
+		}
+		.diagram-element .time {
+			display: none;
+		}
 	}
 
 	@container leg (max-width: 4.5em) {

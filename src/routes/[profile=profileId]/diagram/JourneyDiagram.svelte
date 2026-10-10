@@ -27,6 +27,7 @@
 					columnIndex={node.columnIndex}
 					rowIndex={node.rowIndex}
 					isNew={isNewElement}
+					isSoleColumn={columns.length === 1}
 				/>
 			{:else}
 				<div class="empty-node"></div>
