@@ -33,6 +33,7 @@
 	"added_some_bookmark": "Lesezeichen für {bookmark} hinzugefügt",
 	"removed_some_bookmark": "Lesezeichen für {bookmark} entfernt",
 	"added_bookmark": "Lesezeichen hinzugefügt",
+	"remove_from_station_history": "{station} aus dem Verlauf entfernen",
 	"removed_bookmark": "Lesezeichen entfernt",
 	"refreshed_journey_data": "Reisedaten aktualisiert",
 	"cannot_scroll": "Suche nach mehr Verbindungen nicht möglich",

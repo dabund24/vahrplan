@@ -33,6 +33,7 @@
 	"added_some_bookmark": "Added bookmark for {bookmark}",
 	"removed_some_bookmark": "Removed bookmark for {bookmark}",
 	"added_bookmark": "Added bookmark",
+	"remove_from_station_history": "Remove {station} from history",
 	"removed_bookmark": "Removed bookmark",
 	"refreshed_journey_data": "Refreshed journey data",
 	"cannot_scroll": "Cannot find more connections",
