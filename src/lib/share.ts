@@ -2,7 +2,7 @@ import { toast } from "$lib/state/toastStore";
 import { m } from "$lib/paraglide/messages";
 
 export function share(title: string, url: string): Promise<void> {
-	if (navigator?.canShare({ title, url }) === true) {
+	if (navigator.canShare?.({ title, url }) === true) {
 		return shareWithShareApi(title, url).catch(() => shareWithClipboardApi(url));
 	}
 	return shareWithClipboardApi(url);
