@@ -116,6 +116,11 @@
 		bind:setting={$settings.storage.options}
 		settingInfo={{ type: "boolean" }}
 	/>
+	<Setting
+		settingName={m.settings_remember_choices_station_history()}
+		bind:setting={$settings.storage.stationHistory}
+		settingInfo={{ type: "boolean" }}
+	/>
 </div>
 
 <style>
