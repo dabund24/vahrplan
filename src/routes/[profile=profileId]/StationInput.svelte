@@ -11,7 +11,6 @@
 	import { page } from "$app/state";
 	import { m } from "$lib/paraglide/messages";
 	import { getStationHistory, removeFromStationHistory } from "$lib/history.svelte.js";
-	import IconHistory from "$lib/components/icons/IconHistory.svelte";
 	import IconClose from "$lib/components/icons/IconClose.svelte";
 
 	type Props = {
@@ -257,14 +256,10 @@
 							onclick={() => void handleSuggestionClick(suggestion)}
 						>
 							<span class="suggestion-icon">
-								{#if historySuggestionIds.has(suggestion.id)}
-									<IconHistory />
-								{:else}
-									<IconStationLocation
-										color="foreground"
-										iconType={suggestion.type}
-									/>
-								{/if}
+								<IconStationLocation
+									color="foreground"
+									iconType={suggestion.type}
+								/>
 							</span>
 							<span class="flex-column">
 								<span>{suggestion.name}</span>
