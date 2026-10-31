@@ -10,6 +10,8 @@
 	import { getParsedGeolocation } from "$lib/geolocation.svelte.js";
 	import { page } from "$app/state";
 	import { m } from "$lib/paraglide/messages";
+	import { getStationHistory, removeFromStationHistory } from "$lib/history.svelte.js";
+	import IconClose from "$lib/components/icons/IconClose.svelte";
 
 	type Props = {
 		selectedLocation: ParsedLocation | undefined;
@@ -37,16 +39,29 @@
 	let apiSuggestions: Promise<ParsedLocation[]> = $derived(
 		getApiSuggestionsFromInput(inputText.trim()),
 	);
-	let suggestions = $derived.by(async () => {
-		const bookmarkSuggestions = bookmarkedLocations.filter((suggestion) =>
+	let bookmarkSuggestions = $derived(
+		bookmarkedLocations.filter((suggestion) =>
 			suggestion.name.toLowerCase().startsWith(inputText.trim().toLowerCase()),
-		);
+		),
+	);
+	let historySuggestions: ParsedLocation[] = $derived(
+		getStationHistory(page.data.profileConfig.id)
+			.filter(
+				(suggestion) =>
+					suggestion.name.toLowerCase().includes(inputText.trim().toLowerCase()) &&
+					bookmarkSuggestions.every((s) => s.id !== suggestion.id),
+			)
+			.slice(0, 5),
+	);
+	let historySuggestionIds = $derived(new Set(historySuggestions.map(({ id }) => id)));
+	let suggestions = $derived.by(async () => {
+		const localSuggestions = [...bookmarkSuggestions, ...historySuggestions];
 		const filteredApiSuggestions = await apiSuggestions.then((unfilteredSuggestions) =>
 			unfilteredSuggestions.filter((suggestion) =>
-				bookmarkSuggestions.every((s) => s.name !== suggestion.name),
+				localSuggestions.every((s) => s.name !== suggestion.name && s.id !== suggestion.id),
 			),
 		);
-		return [...bookmarkSuggestions, ...filteredApiSuggestions];
+		return [...localSuggestions, ...filteredApiSuggestions];
 	});
 
 	/**
@@ -145,6 +160,12 @@
 		inputElement.focus();
 		selectedLocation = undefined;
 	}
+
+	function handleRemoveFromHistoryClick(suggestion: ParsedLocation): void {
+		inputElement.focus();
+		isInputBlurredBySelection = true;
+		removeFromStationHistory(suggestion.id, page.data.profileConfig.id);
+	}
 </script>
 
 <div class="outer-wrapper">
@@ -227,6 +248,9 @@
 						<button
 							type="button"
 							class="flex-row hoverable suggestion__button"
+							class:suggestion__button--history={historySuggestionIds.has(
+								suggestion.id,
+							)}
 							class:focused={focusedId === i}
 							tabindex="-1"
 							onclick={() => void handleSuggestionClick(suggestion)}
@@ -242,6 +266,24 @@
 								<small>{suggestion.address}</small>
 							</span>
 						</button>
+						{#if historySuggestionIds.has(suggestion.id)}
+							<span class="remove-from-history" aria-hidden="true">
+								<button
+									type="button"
+									class="hoverable"
+									tabindex="-1"
+									aria-label={m.remove_from_station_history({
+										station: suggestion.name,
+									})}
+									title={m.remove_from_station_history({
+										station: suggestion.name,
+									})}
+									onclick={() => void handleRemoveFromHistoryClick(suggestion)}
+								>
+									<IconClose />
+								</button>
+							</span>
+						{/if}
 						{#if suggestion.name !== m.current_location()}
 							<span class="bookmark-toggle" aria-hidden="true">
 								<BookmarkToggle
@@ -339,12 +381,21 @@
 		align-self: stretch;
 	}
 
+	.suggestion__button--history {
+		padding-right: calc(4rem + 4 * var(--line-width));
+	}
+
 	.suggestion__button.focused {
 		border-color: var(--accent-color);
 	}
 
 	.bookmark-toggle {
 		margin-left: calc(-2rem - 2 * var(--line-width));
+	}
+
+	.remove-from-history {
+		margin-left: calc(-4rem - 4 * var(--line-width));
+		margin-right: calc(2rem + 2 * var(--line-width));
 	}
 
 	.suggestion-icon {

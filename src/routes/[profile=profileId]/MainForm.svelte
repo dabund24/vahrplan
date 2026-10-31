@@ -13,6 +13,7 @@
 	import { page } from "$app/state";
 	import { untrack } from "svelte";
 	import { m } from "$lib/paraglide/messages";
+	import { addToStationHistory } from "$lib/history.svelte.js";
 
 	type Props = {
 		initialFormData?: DisplayedFormData;
@@ -94,6 +95,10 @@
 			});
 		}
 
+		addToStationHistory(
+			formData.locations.map((l) => l.value),
+			profileConfig.id,
+		);
 		void searchDiagram(formData);
 	}
 

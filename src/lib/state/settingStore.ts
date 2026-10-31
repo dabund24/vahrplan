@@ -16,7 +16,7 @@ export type Settings = {
 		mapGeolocation: boolean;
 		isMapAlwaysLight: boolean;
 	};
-	storage: Record<Exclude<keyof Settings, "storage">, boolean>;
+	storage: Record<Exclude<keyof Settings, "storage">, boolean> & { stationHistory: boolean };
 };
 
 const defaultProducts: Record<Product, true> = {
@@ -62,6 +62,7 @@ export const settings = writable<Settings>({
 		general: false,
 		options: false,
 		products: false,
+		stationHistory: false,
 	},
 });
 
@@ -74,6 +75,7 @@ if (browser) {
 			}
 			settings = applyLocalStorageSettingGroupToAppSettings(key, settings);
 		}
+		settings.storage.stationHistory = window.localStorage.getItem("stationHistory") !== null;
 		document.documentElement.setAttribute("data-theme", settings.general.colorScheme);
 		document.documentElement.setAttribute("data-color", settings.general.color);
 		return settings;
@@ -88,6 +90,12 @@ if (browser) {
 			} else {
 				window.localStorage.removeItem(k);
 			}
+		}
+		if (!settings.storage.stationHistory) {
+			window.localStorage.removeItem("stationHistory");
+		} else if (window.localStorage.getItem("stationHistory") === null) {
+			// the existence of the key marks the station history as enabled
+			window.localStorage.setItem("stationHistory", "[]");
 		}
 		document.documentElement.setAttribute("data-theme", settings.general.colorScheme);
 		document.documentElement.setAttribute("data-color", settings.general.color);
